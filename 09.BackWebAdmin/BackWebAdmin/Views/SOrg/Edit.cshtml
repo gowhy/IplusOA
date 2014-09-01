@@ -1,0 +1,93 @@
+﻿@using Common;
+@model IplusOAEntity.SocialOrgEntity
+
+<script type="text/javascript">
+    function check_incharge_form() {
+
+        return true;
+    }
+</script>
+<div class="main">
+
+    <div class="blank5"></div>
+    <form name="edit" action="@Url.Action("PostEdit")" method="post" enctype="multipart/form-data" onsubmit="return check_incharge_form();">
+        <table class="form" cellpadding="0" cellspacing="0">
+            <tbody>
+                <tr>
+                    <td colspan="2" class="topTd"></td>
+                </tr>
+                <tr>
+                    <td class="item_title">登记名称:</td>
+                    <td class="item_input"><input type="text" class="textbox require" name="Name" value="@Model.Name" /></td>
+                </tr>
+
+                <tr>
+                    <td class="item_title">
+                        组织类型:
+                    </td>
+                    <td class="item_input">
+                        <select name="Type">
+                            <option value="SS">枢纽型社会组织</option>
+                            <option value="MF">民非类社会组织</option>
+                            <option value="ST">社团类社会组织</option>
+                            <option value="SY">商业类社会组织</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="item_title">登记证号:</td>
+                    <td class="item_input"><input type="text" class="textbox require" name="RegNO" value="@Model.RegNO" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">登记类型:</td>
+                    <td class="item_input"><input type="text" class="textbox require" name="RegType" value="@Model.RegType" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">机构代码证号:</td>
+                    <td class="item_input"><input type="text" class="textbox require" name="OrgNo" value="@Model.OrgNo" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">业务范围:</td>
+                    <td class="item_input"><textarea class="textbox require" name="BusDesc" rows="5" cols="70"> @Model.BusDesc </textarea></td>
+                </tr>
+                <tr>
+                    <td class="item_title">登记时间:</td>
+                    <td class="item_input"><input type="text" class="textbox require" name="RegTime" value="@Model.RegTime" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">有效期:</td>
+                    <td class="item_input"><input type="text" class="textbox require" name="EffectiveTime" value="@Model.EffectiveTime" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">运营状态:</td>
+                    <td class="item_input">
+                        <label>有效<input type="radio" name="State" value="true"  @(@Model.State != -1 ? "checked=\"checked\"" : "") /></label>
+                        <label>无效<input type="radio" name="State" value="false" @(@Model.State==-1?"checked=\"checked\"":"") /></label>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="item_title"></td>
+                    <td class="item_input">
+                        <input type="submit" class="button" value="保存修改">
+                        <input  type="hidden" name="Id" value="@Model.Id"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="bottomTd"></td>
+                </tr>
+            </tbody>
+        </table>
+        <script>
+
+            $(document).ready(function () {
+               
+
+                $("#Type").val("@Model.Type");
+
+            });
+
+        </script>
+    </form>
+</div>
