@@ -1,4 +1,9 @@
-﻿
+﻿@using Common;
+
+@Html.IncludeCSS("~/Content/plug-in/ztree/css/zTreeStyle/zTreeStyle.css")
+@Html.IncludeCSS("~/Content/Css/demo.css")
+@Html.IncludeScript("~/Content/plug-in/ztree/js/jquery.ztree.core-3.5.js")
+@Html.IncludeScript("~/Content/plug-in/ztree/js/jquery.ztree.excheck-3.5.js")
 
 <script type="text/javascript">
     function check_incharge_form() {
@@ -36,7 +41,15 @@
                 </tr> 
                 <tr>
                     <td class="item_title">居住地址:</td>
-                    <td class="item_input"><input type="text" class="textbox require" name="Address" /></td>
+                    @*<td class="item_input"><input type="text" class="textbox require" name="Address" /></td>*@
+                    <td class="item_input">
+                        <input type="hidden" name="DeptId" id="DeptId" />
+                        <input type="text" class="textbox require" id="Address" name="Address" onclick="showMenu(); return false;" />
+                        <div id="menuContent" class="menuContent" style="display:none; position: absolute;">
+                            <ul id="ztree" class="ztree" style="margin-top:0;  overflow:scroll; height:270px;"></ul>
+                        </div>
+
+                    </td>
                 </tr>
                 <tr>
                     <td class="item_title">实名制状态:</td>
@@ -116,5 +129,78 @@
                 </tr>
             </tbody>
         </table>
+
+   
+        <script type="text/javascript">
+            function check_incharge_form() {
+
+                return true;
+            }
+        </script>
+
+        <script type="text/javascript">
+
+
+    var setting = {
+        view: {
+            dblClickExpand: false,
+            showLine: true,
+            selectedMulti: false
+
+        },
+        check: {
+            enable: true ,
+            chkStyle: "radio",
+            radioType: "all"
+        },
+        data: {
+            simpleData: {
+                enable: true,
+                idKey: "Id",
+                pIdKey: "PId",
+                rootPId: ""
+            },
+            key: {
+                name: "Name"
+            }
+
+        },
+        callback: {
+            beforeCheck: beforeCheck,
+            onCheck: onCheck
+        }
+    };
+
+    var zNodes =@(Html.Raw(ViewData["Department_List"].ToString()));
+
+
+    function beforeCheck(treeId, treeNode) {
+
+    }
+    function onCheck(e, treeId, treeNode) {
+        $("#DeptId").val(treeNode.Id);
+        $("#Address").val(treeNode.Name);
+    }
+
+    function showMenu() {
+        $("#menuContent").slideDown("fast");
+        $("body").bind("mousedown", onBodyDown);
+    }
+    function hideMenu() {
+        $("#menuContent").fadeOut("fast");
+        $("body").unbind("mousedown", onBodyDown);
+    }
+    function onBodyDown(event) {
+        if (!(event.target.id == "menuBtn" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length>0)) {
+            hideMenu();
+        }
+    }
+
+
+    $(document).ready(function () {
+        $.fn.zTree.init($("#ztree"), setting, zNodes);
+    });
+
+      </script>
     </form>
 </div>

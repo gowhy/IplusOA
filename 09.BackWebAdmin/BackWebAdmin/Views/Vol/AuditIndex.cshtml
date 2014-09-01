@@ -4,27 +4,12 @@
 @using MvcContrib.UI.Pager;
 @using Common;
 
-<script type="text/javascript">
-
-    function deleteVol(id) {
-
-        var url = '@Url.Action("Delete")' + '?id=' + id;
-        deleteMethod(id, "Delete");
-        //showAjaxResult(url, "删除用户中......", 600, 400);
-    }
-
-
-</script>
-
 <div class="main_title">
-    志愿者列表
+    待审核志愿者列表
 </div>
 <div class="blank5">
 </div>
-<div class="button_row">
-    <a class="button" href="@Url.Action("Add")">新增</a>
-    @*<a class="button" href="javascript: del()">删除</a>*@
-</div>
+
 <div class="blank5">
 </div>
 <div class="grid_box">
@@ -41,12 +26,12 @@
                                       column.For(x => x.EMail).Named("邮箱");
                                       column.For(x => x.Phone).Named("手机号");
                                       column.For(x => x.QQ).Named("QQ号");
-                                      column.For(x => x.RealName).Named("姓名"); 
+                                      column.For(x => x.RealName).Named("姓名");
                                       column.For(x => x.VID).Named("自愿者编号");
-                                    
-                                      column.Buttons(btns => btns.Add(x => Html.ActionLink("编辑", "Edit", new { id = x.Id }))
-                                                                 //.Add(x => Html.ActionLink("查看", "View", new { id = x.Id }))
-                                                                 .Add(x => Html.ScriptLink("删除", "deleteVol({0})".FormatWith(x.Id)))
+
+                                      column.Buttons(btns => btns.Add(x => Html.ActionLink("审核", "Audit", new { id = x.Id }))
+                                          //.Add(x => Html.ActionLink("查看", "View", new { id = x.Id }))
+                                                                
                                                                  );
                                   }).Complex(ViewData)
     <div class="grid_foot">

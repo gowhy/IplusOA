@@ -533,6 +533,12 @@
     <Content Include="Views\SOrg\Add - back1.cshtml" />
     <Content Include="Views\SocSer\Add - 复制.cshtml" />
     <Content Include="Views\SocSer\Edit.cshtml" />
+    <Content Include="Views\SOrg\Edit.cshtml" />
+    <Content Include="Views\SOrg\Add - 复制.cshtml" />
+    <Content Include="Views\Vol\AuditIndex.cshtml" />
+    <Content Include="Views\Vol\Audit.cshtml" />
+    <Content Include="Views\SocSer\ManagerIndex.cshtml" />
+    <Content Include="Views\SocSer\NoTakeIn.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\02.Common\Common\Common.csproj">
@@ -583,8 +589,6 @@
           <DevelopmentServerPort>6508</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/</IISUrl>
-          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
-          <IISAppRootUrl>http://localhost:80/</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

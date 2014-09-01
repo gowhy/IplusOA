@@ -28,7 +28,7 @@ namespace IplusOAEntity
         private int? _thsscore;
         private int? _score;
         private string _vid;
-        private int? _socid;
+   
         private int? _state;
         /// <summary>
         /// auto_increment
@@ -182,16 +182,13 @@ namespace IplusOAEntity
             set { _vid = value; }
             get { return _vid; }
         }
+
         /// <summary>
-        /// 
+        /// 社会组织编号
         /// </summary>
-        public int? SocID
-        {
-            set { _socid = value; }
-            get { return _socid; }
-        }
+        public string SocialNO { get; set; }
         /// <summary>
-        /// 
+        /// 审核通过是1,其他状态为审核未通过
         /// </summary>
         public int? State
         {
@@ -200,6 +197,13 @@ namespace IplusOAEntity
         }
 
         public string Msg { get; set; }
+
+        public string PassWord { get; set; }
+
+      /// <summary>
+      /// 是否接受任务
+      /// </summary>
+        public int? Doing { get; set; }
         #endregion Model
 
     }

@@ -25,6 +25,22 @@ namespace BackWebAdmin.Controllers
             return View(list.ToPagedList(pageNumber - 1, pageSize));
         }
 
+        /// <summary>
+        /// 管理员查看自己所属社区活动
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+
+        public ActionResult ManagerIndex(int? page)
+        {
+            var pageNumber = page ?? 1;
+            string depId = AdminUser.DeptId.ToString();
+            IplusOADBContext db = new IplusOADBContext();
+            var list = db.SocServiceDetailEntityTable.AsQueryable().Where(x => x.CoverCommunity.IndexOf(depId) != -1).ToList();
+            return View(list.ToPagedList(pageNumber - 1, pageSize));
+        }
+
+
         public ActionResult Add()
         {
 
@@ -83,6 +99,7 @@ namespace BackWebAdmin.Controllers
             return View(entity);
         }
 
+
         public ActionResult PostEdit(SocServiceDetailEntity entity)
         {
             IplusOADBContext db = new IplusOADBContext();
@@ -91,6 +108,19 @@ namespace BackWebAdmin.Controllers
             db.Dispose();
             return Success("修改成功");
           
+        }
+
+        public ActionResult NoTakeIn(int id)
+        {
+            IplusOADBContext db = new IplusOADBContext();
+            SocServiceDetailEntity entity = db.SocServiceDetailEntityTable.Find(id);
+            return View(entity);
+        }
+        public ActionResult PostNoTakeIn(SocServiceDetailEntity entity)
+        {
+            //IplusOADBContext db = new IplusOADBContext();
+            //SocServiceDetailEntity entity = db.SocServiceDetailEntityTable.Find(id);
+            return Success("操作成功");
         }
 
         public ActionResult Delete(int id)

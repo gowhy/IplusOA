@@ -32,12 +32,13 @@ namespace BackWebAdmin.Controllers
         }
         public ActionResult Add()
         {
-            IList<DepartmentEntity> list = null;
-            using (IplusOADBContext db = new IplusOADBContext())
-            {
-                list = db.DepartmentTable.AsQueryable<DepartmentEntity>().ToList();
-            }
-            ViewData["Department_List"] = list;
+            //IList<DepartmentEntity> list = null;
+            //using (IplusOADBContext db = new IplusOADBContext())
+            //{
+            //    list = db.DepartmentTable.AsQueryable<DepartmentEntity>().ToList();
+            //}
+            //ViewData["Department_List"] = list;
+
             return View();
         }
 
@@ -66,14 +67,24 @@ namespace BackWebAdmin.Controllers
         public ActionResult PostEdit(SocialOrgEntity entity)
         {
             IplusOADBContext db = new IplusOADBContext();
-            db.Update<SocialOrgEntity>(entity);
+            SocialOrgEntity so = db.SocialOrgEntityTable.Single(x => x.Id == entity.Id);
+
+            so.Name = entity.Name;
+            so.OrgNo = entity.OrgNo;
+            so.RegNO = entity.RegNO;
+            so.RegType = entity.RegType;
+            so.BusDesc = entity.BusDesc;
+            so.EffectiveTime = entity.EffectiveTime;
+            so.RegTime = entity.RegTime;
+
+            db.Update<SocialOrgEntity>(so);
             db.SaveChanges();
             db.Dispose();
             return Success("修改成功");
 
         }
 
-        [SecurityNode(Name = "删除用户")]
+        [SecurityNode(Name = "删除社会组织")]
         public ActionResult Delete(int id)
         {
             IplusOADBContext db = new IplusOADBContext();
