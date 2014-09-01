@@ -1,0 +1,123 @@
+﻿
+*
+{
+    margin: 0;
+    padding: 0;
+}
+
+body
+{
+    position: relative;
+    height: 100%;
+    background: #fff url('img/loginbg.png') left top repeat-x;
+    font-family: 'microsoft yahei ui' , 'microsoft yahei' , 'simhei' ,Arial,sans-serif;
+}
+
+img
+{
+    border: 0;
+}
+
+#container
+{
+    width: 960px;
+    margin: 0 auto;
+}
+
+#container .logo
+{
+    margin: 260px auto 0;
+}
+
+#container .logo-label
+{
+    height: 81px;
+    line-height: 81px;
+    display: block;
+    text-align: center;
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+#container #box
+{
+    clear: both;
+    float: none;
+    width: 70%;
+    margin: 30px auto 0;
+}
+
+p.main label
+{
+    float: left;
+    padding: 5px;
+    display: inline;
+    margin-left: 40px;
+    font-size: 13px;
+    color: #000;
+    margin-right: 10px;
+}
+
+#box p
+{
+    clear: both;
+    float: none;
+    width: 100%;
+}
+
+p.main INPUT
+{
+    background: url('img/input.png') 0 0 repeat-x;
+    border: 1px solid #d3d3d3;
+    color: #555;
+    padding: 5px;
+    float: left;
+    width: 200px;
+}
+p.main input.error {
+    border-color: #b94a48;
+}
+input.login
+{
+    float: right;
+    padding: 3px 10px 3px 10px;
+    color: #fff;
+    font-size: 16px;
+    text-decoration: none;
+    border: 1px solid #555;
+    background: url('img/rep1.png') 50% 50% repeat-x;
+    display: inline;
+    margin-right: 65px;
+    cursor: pointer;
+}
+
+span
+{
+    font-size: 13px;
+    color: #666;
+}
+
+.space
+{
+    padding-top: 15px;
+}
+.errors
+{
+    color: #b94a48;
+    font-size: 14px;
+    float: right;
+    margin-right: 22px;
+}
+.errors ul
+{
+    list-style: none;
+}
+span input
+{
+    margin-left: 102px;
+    margin-right: 5px;
+    border: 1px solid #111;
+    background: #444;
+    color: #fff;
+}

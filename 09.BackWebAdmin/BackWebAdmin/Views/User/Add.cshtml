@@ -1,0 +1,154 @@
+﻿@using Common;
+
+@Html.IncludeCSS("~/Content/plug-in/ztree/css/zTreeStyle/zTreeStyle.css")
+@Html.IncludeCSS("~/Content/Css/demo.css")
+@Html.IncludeScript("~/Content/plug-in/ztree/js/jquery.ztree.core-3.5.js")
+@Html.IncludeScript("~/Content/plug-in/ztree/js/jquery.ztree.excheck-3.5.js")
+<script type="text/javascript">
+    function check_incharge_form() {
+       
+        return true;
+    }
+</script>
+
+<script type="text/javascript">
+
+
+    var setting = {
+        view: {
+            dblClickExpand: false,
+            showLine: true,
+            selectedMulti: false
+         
+        },
+        check: {
+            enable: true ,
+            chkStyle: "radio",
+            radioType: "all"
+        },
+        data: {
+            simpleData: {
+                enable: true,
+                idKey: "Id",
+                pIdKey: "PId",
+                rootPId: ""
+            },
+            key: {
+                name: "Name"
+            }
+
+        },
+        callback: {
+            beforeCheck: beforeCheck,
+            onCheck: onCheck
+        }
+    };
+
+    var zNodes =@(Html.Raw(ViewData["Department_List"].ToString()));
+
+
+    function beforeCheck(treeId, treeNode) {
+
+    }
+    function onCheck(e, treeId, treeNode) {
+        $("#DeptId").val(treeNode.Id);
+        $("#CoverCommunity").val(treeNode.Name);
+    }
+
+    function showMenu() {
+        $("#menuContent").slideDown("fast");
+        $("body").bind("mousedown", onBodyDown);
+    }
+    function hideMenu() {
+        $("#menuContent").fadeOut("fast");
+        $("body").unbind("mousedown", onBodyDown);
+    }
+    function onBodyDown(event) {
+        if (!(event.target.id == "menuBtn" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length>0)) {
+            hideMenu();
+        }
+    }
+
+
+    $(document).ready(function () {
+        $.fn.zTree.init($("#ztree"), setting, zNodes);
+    });
+
+</script>
+<div class="main">
+   
+    <div class="blank5"></div>
+    <form name="edit" action="@Url.Action("PostAdd")" method="post" enctype="multipart/form-data" onsubmit="return check_incharge_form();">
+        <table class="form" cellpadding="0" cellspacing="0">
+            <tbody>
+                <tr>
+                    <td colspan="2" class="topTd"></td>
+                </tr>
+                <tr>
+                    <td class="item_title">
+                        角色组:
+                    </td>
+                    <td class="item_input">
+                        <select name="RoleId">
+                            @foreach (var role in ViewData["UserRole"] as IList<IplusOAEntity.RoleEntity> ?? new List<IplusOAEntity.RoleEntity>())
+                            {
+                                <option value="@role.Id">@role.Name</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="item_title">
+                        行政级别:
+                    </td>
+                    <td class="item_input">
+                        <input type="hidden" name="DeptId" id="DeptId" />
+                        <input type="text" class="textbox require" id="CoverCommunity" name="CoverCommunity" onclick="showMenu(); return false;" />
+                         <div id="menuContent" class="menuContent" style="display:none; position: absolute;">
+                             <ul id="ztree" class="ztree" style="margin-top:0;  overflow:scroll; height:270px;"></ul>
+                        </div>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="item_title">
+                        社会组织:
+                    </td>
+                    <td class="item_input">
+                        <select name="SocOrgId">
+                            @foreach (var soc in ViewData["SocialOrg_List"] as IList<IplusOAEntity.SocialOrgEntity> ?? new List<IplusOAEntity.SocialOrgEntity>())
+                            {
+                                <option value="@soc.Id">@soc.Name</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="item_title">真实姓名:</td>
+                    <td class="item_input"><input type="text" class="textbox require" name="RealName" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">用户名:</td>
+                    <td class="item_input"><input type="text" class="textbox require" name="UserName"/></td>
+                </tr>
+                <tr>
+                    <td class="item_title">密码:</td>
+                    <td class="item_input">
+                        <input id="PassWord" name="PassWord" class="textbox require" type="text" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="item_title"></td>
+                    <td class="item_input">
+                        <input type="submit" class="button" value="新增">
+                        <input type="reset" class="button" value="重置">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="bottomTd"></td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>

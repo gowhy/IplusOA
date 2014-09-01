@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>MySql.ConnectorNET.Entity</id>
+    <version>6.8.3.2</version>
+    <authors>Oracle</authors>
+    <owners>Oracle</owners>
+    <licenseUrl>http://www.gnu.org/licenses/old-licenses/gpl-2.0.html</licenseUrl>
+    <projectUrl>http://dev.mysql.com/downloads/</projectUrl>
+    <iconUrl>http://www.mysql.com/common/logos/logo-mysql-110x57.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>MySql Connector/NET for Entity Framework 6</description>
+    <releaseNotes>Review readme.txt for details.</releaseNotes>
+    <copyright>Copyright 2014</copyright>
+    <tags>MySql MySql.Data.Entity</tags>
+    <dependencies>
+      <dependency id="EntityFramework" version="6.0.1" />
+      <dependency id="MySql.ConnectorNET.Data" version="6.8.3" />
+    </dependencies>
+  </metadata>
+</package>

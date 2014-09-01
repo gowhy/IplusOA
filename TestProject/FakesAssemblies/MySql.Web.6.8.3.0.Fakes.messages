@@ -1,0 +1,9 @@
+E:\贵阳社会组织系统\Source\SocialOrgProject\TestProject\Fakes\MySql.Web.fakes : warning : 无法为 MySql.Web.General.Application 生成存根: 类型对 exported or assembly(MySql.Web.6.8.3.0.Fakes) 不可见。
+E:\贵阳社会组织系统\Source\SocialOrgProject\TestProject\Fakes\MySql.Web.fakes : warning : 无法为 MySql.Web.Security.MySQLMembershipProvider 生成存根: 类型已密封。
+E:\贵阳社会组织系统\Source\SocialOrgProject\TestProject\Fakes\MySql.Web.fakes : warning : 无法为 MySql.Web.Properties.Resources 生成存根: 类型是编译器生成的。
+E:\贵阳社会组织系统\Source\SocialOrgProject\TestProject\Fakes\MySql.Web.fakes : warning : 无法为 MySql.Web.Security.MySQLRoleProvider 生成存根: 类型已密封。
+E:\贵阳社会组织系统\Source\SocialOrgProject\TestProject\Fakes\MySql.Web.fakes : warning : 无法为 MySql.Web.Security.Runtime 生成存根: 类型已密封。
+E:\贵阳社会组织系统\Source\SocialOrgProject\TestProject\Fakes\MySql.Web.fakes : warning : 无法为 MySql.Web.Common.SchemaManager 生成存根: 类型已密封。
+E:\贵阳社会组织系统\Source\SocialOrgProject\TestProject\Fakes\MySql.Web.fakes : warning : 无法为 MySql.Web.General.Application 生成填充码: 类型对 exported or assembly(MySql.Web.6.8.3.0.Fakes) 不可见。
+E:\贵阳社会组织系统\Source\SocialOrgProject\TestProject\Fakes\MySql.Web.fakes : warning : 无法为 MySql.Web.Properties.Resources 生成填充码: 类型是编译器生成的。
+E:\贵阳社会组织系统\Source\SocialOrgProject\TestProject\Fakes\MySql.Web.fakes : warning : 无法为 MySql.Web.Security.Runtime 生成填充码: 类型对 exported or assembly(MySql.Web.6.8.3.0.Fakes) 不可见。

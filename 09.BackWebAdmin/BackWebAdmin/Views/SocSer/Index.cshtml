@@ -1,0 +1,54 @@
+﻿@model  Common.IPagedList<IplusOAEntity.SocServiceDetailEntity>
+@using MvcContrib.UI.Grid
+@using MvcContrib.Pagination;
+@using MvcContrib.UI.Pager;
+@using Common;
+
+<script type="text/javascript">
+
+    function deleteSer(id) {
+
+        var url = '@Url.Action("Delete")' + '?id=' + id;
+        deleteMethod(id, "Delete");
+        //showAjaxResult(url, "删除用户中......", 600, 400);
+    }
+</script>
+
+<div class="main_title">
+    社会服务内容
+</div>
+<div class="blank5">
+</div>
+<div class="button_row">
+    <a class="button" href="@Url.Action("Add")">新增</a>
+    @*<a class="button" href="javascript: del()">删除</a>*@
+</div>
+<div class="blank5">
+</div>
+<div class="grid_box">
+    <div class="grid_top">
+    </div>
+    @Html.Grid(Model).Columns(column =>
+                                  {
+                                      column.CheckBox(x => x.Id);
+                                      column.For(x => x.Id).Named("编号").HeaderAttributes(style => "width:50px;align:center;");
+                                      column.For(x => x.SerNum).Named("服务内容编号");
+                                      column.For(x => x.Type).Named("服务类型");
+                                      column.For(x => x.SocialNo).Named("社组织编号");
+                                      column.For(x => x.Context).Named("服务内容");
+                                      column.For(x => x.PubTime).Named("发布时间");
+                                      column.For(x => x.Phone).Named("手机号");
+                                      column.For(x => x.EndTime).Named("截止时间");
+                                      column.For(x => x.Contacts).Named("联系人");
+                                      column.For(x => x.Score).Named("服务分值");
+
+                                      column.Buttons(btns => btns.Add(x => Html.ActionLink("编辑", "Edit", new { id = x.Id }))
+                                                                 .Add(x => Html.ScriptLink("删除", "deleteSer({0})".FormatWith(x.Id)))
+                                                                 );
+                                  }).Complex(ViewData)
+    <div class="grid_foot">
+    </div>
+</div>
+<div class="blank5">
+</div>
+@Html.Pager(Model)

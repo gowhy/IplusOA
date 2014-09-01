@@ -1,0 +1,94 @@
+﻿
+
+<script type="text/javascript">
+    function check_incharge_form() {
+
+        return true;
+    }
+</script>
+<div class="main">
+
+    <div class="blank5"></div>
+    <form name="edit" action="@Url.Action("PostAdd")" method="post" enctype="multipart/form-data" onsubmit="return check_incharge_form();">
+        <table class="form" cellpadding="0" cellspacing="0">
+            <tbody>
+                <tr>
+                    <td colspan="2" class="topTd"></td>
+                </tr>
+                <tr>
+                    <td class="item_title">登记名称:</td>
+                    <td class="item_input"><input type="text" class="textbox require" name="Name" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">
+                        行政级别:
+                    </td>
+                    <td class="item_input">
+                        <select name="DepId">
+                            @foreach (var dep in ViewData["Department_List"] as IList<IplusOAEntity.DepartmentEntity> ?? new List<IplusOAEntity.DepartmentEntity>())
+                            {
+                                <option value="@dep.Id">@dep.Name</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="item_title">
+                        组织类型:
+                    </td>
+                    <td class="item_input">
+                        <select name="Type">
+                            <option value="SS">枢纽型社会组织</option>
+                            <option value="MF">民非类社会组织</option>
+                            <option value="ST">社团类社会组织</option>
+                            <option value="SY">商业类社会组织</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="item_title">登记证号:</td>
+                    <td class="item_input"><input type="text" class="textbox require" name="RegNO" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">登记类型:</td>
+                    <td class="item_input"><input type="text" class="textbox require" name="RegType" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">机构代码证号:</td>
+                    <td class="item_input"><input type="text" class="textbox require" name="OrgNo" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">业务范围:</td>
+                    <td class="item_input"><textarea class="textbox require" name="BusDesc" rows="5" cols="70" > </textarea></td>
+                </tr>
+                <tr>
+                    <td class="item_title">登记时间:</td>
+                    <td class="item_input"><input type="text" class="textbox require" name="RegTime" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">有效期:</td>
+                    <td class="item_input"><input type="text" class="textbox require" name="EffectiveTime" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">运营状态:</td>
+                    <td class="item_input">
+                    <label>有效<input type="radio" name="State" value="true" checked="checked" /></label>
+                    <label>无效<input type="radio" name="State" value="false" /></label>
+                    </td>
+                </tr>
+              
+
+                <tr>
+                    <td class="item_title"></td>
+                    <td class="item_input">
+                        <input type="submit" class="button" value="新增">
+                        <input type="reset" class="button" value="重置">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="bottomTd"></td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>

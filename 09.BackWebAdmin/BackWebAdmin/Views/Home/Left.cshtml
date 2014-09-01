@@ -1,0 +1,111 @@
+﻿@using Common;
+ 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <title>用户菜单权限 </title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    @Html.IncludeCSS("~/Content/plug-in/ztree/css/zTreeStyle/zTreeStyle.css")
+    @*@Html.IncludeCSS("~/Content/Css/demo.css")*@
+    @Html.IncludeScript("~/Content/plug-in/ztree/js/jquery-1.4.4.min.js")
+    @Html.IncludeScript("~/Content/plug-in/ztree/js/jquery.ztree.core-3.5.js")
+    <style type="text/css">
+        .ztree li a.level0 {
+            width: 100%;
+            height: 25px;
+            text-align: center;
+            display: block;
+            background: url(/Content/Css/img/topbg.png) repeat-x;
+            border: 1px silver solid;
+        }
+
+            .ztree li a.level0.cur {
+                background-color: #66A3D2;
+            }
+
+            .ztree li a.level0 span {
+                display: block;
+                color: white;
+                padding-top: 3px;
+                font-size: 14px;
+                font-weight: bold;
+                word-spacing: 2px;
+                text-align:center;
+            }
+
+                .ztree li a.level0 span.button {
+                    float: right;
+                    margin-left: 10px;
+                    visibility: visible;
+                    display: none;
+                }
+
+        .ztree li span.button.switch.level0 {
+            display: none;
+        }
+        .main {
+            padding:0;
+        }
+        .ztree {
+             font-size:14px;
+        }
+    </style>
+
+    <script type="text/javascript">
+
+    var zTree;
+    var demoIframe;
+
+    var setting = {
+        view: {
+            dblClickExpand: false,
+            showLine: false,
+            showIcon: false,
+            selectedMulti: false
+        },
+        data: {
+            simpleData: {
+                enable: true,
+                idKey: "id",
+                pIdKey: "pId",
+                rootPId: ""
+            }
+        },
+        callback: {
+            beforeClick:function(treeId, treeNode) {
+                var zTree = $.fn.zTree.getZTreeObj("tree");
+                if (treeNode.isParent) {
+                    zTree.expandNode(treeNode);
+                    return false;
+                } else {
+                    //demoIframe.attr("src",treeNode.file + ".html");
+                  
+                    self.parent.frames["main"].location=treeNode.file;
+                    return true;
+                }
+            }
+        }
+    };
+
+      
+    var zNodes =@(Html.Raw(ViewData["menuJsonDate"].ToString()));
+    var zNodes2 =decodeURIComponent(  zNodes);
+
+        $(document).ready(function () {
+            var t = $("#tree");
+            t = $.fn.zTree.init(t, setting, zNodes);
+            var zTree = $.fn.zTree.getZTreeObj("tree");
+            zTree.selectNode(zTree.getNodeByParam("id", 101));
+
+        });
+
+
+
+    </script>
+</head>
+<body>
+    <div id="demo_menu" class="demo_menu left">
+        <ul id="tree" class="ztree" style="width:auto; overflow:auto;"></ul>
+    </div>
+</body>
+</html>

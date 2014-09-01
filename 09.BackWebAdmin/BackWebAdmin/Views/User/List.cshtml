@@ -1,0 +1,28 @@
+﻿
+@model  List<IplusOAEntity.BackAdminUser>
+@using MvcContrib.UI.Grid
+@using MvcContrib.Pagination;
+@using MvcContrib.UI.Pager;
+@using Common;
+
+ 
+<div class="blank5">
+</div>
+<div class="grid_box">
+    <div class="grid_top">
+    </div>
+   
+    @Html.Grid(Model).Columns(column =>
+    {
+        column.CheckBox(x => x.Id);
+        column.For(x => x.Id).Named("用户编号");
+        column.For(x => x.UserName).Named("用户名");
+        column.For(x => x.RoleId).Named("用户角色");
+    
+    }).Complex(ViewData)
+    <div class="grid_foot">
+    </div>
+</div>
+<div class="blank5">
+</div>
+@*@Html.Pager(Model)*@

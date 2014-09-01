@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{28DB7178-112B-44E5-BCCD-4A74D5480954}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Common</RootNamespace>
+    <AssemblyName>Common</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MvcContrib">
+      <HintPath>..\..\packages\MvcContrib.Mvc5.5.0.0.0\lib\MvcContrib.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.5.0.0\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CommAttribute\EnumItemDescriptionAttribute.cs" />
+    <Compile Include="CommAttribute\LocalizableAttribute.cs" />
+    <Compile Include="Check.cs" />
+    <Compile Include="CollectionExtensions.cs" />
+    <Compile Include="Des.cs" />
+    <Compile Include="Extensions\DictionaryExtensions.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Extensions\GridExtensions.cs" />
+    <Compile Include="Extensions\HtmlExntensions.cs" />
+    <Compile Include="IMvcRegister.cs" />
+    <Compile Include="IPathResolver.cs" />
+    <Compile Include="IVirtualPathProvider.cs" />
+    <Compile Include="JsonMessage.cs" />
+    <Compile Include="PageList\BasePagedList.cs" />
+    <Compile Include="PageList\ClientPager.cs" />
+    <Compile Include="PageList\IPagedList.cs" />
+    <Compile Include="PageList\PagedList.cs" />
+    <Compile Include="PageList\PageListExtensions.cs" />
+    <Compile Include="PageList\Pager.cs" />
+    <Compile Include="PageList\PaginationExtensions.cs" />
+    <Compile Include="PathResolver.cs" />
+    <Compile Include="Extensions\RegularExtensions.cs" />
+    <Compile Include="Permission\CommonAction.cs" />
+    <Compile Include="Permission\Node.cs" />
+    <Compile Include="Permission\Permission.cs" />
+    <Compile Include="Permission\PermissionCollection.cs" />
+    <Compile Include="Permission\Role.cs" />
+    <Compile Include="Permission\RoleAccess.cs" />
+    <Compile Include="Permission\SecurityManager.cs" />
+    <Compile Include="Permission\SecurityModuleAttribute.cs" />
+    <Compile Include="Permission\SecurityNodeAttribute.cs" />
+    <Compile Include="RegularUtil.cs" />
+    <Compile Include="Extensions\ScriptManagementExtension.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SerializerHelp\HelpSerializer.cs" />
+    <Compile Include="SiteMap\SiteMapBase.cs" />
+    <Compile Include="SiteMap\SiteMapBuilder.cs" />
+    <Compile Include="SiteMap\SiteMapDictionary.cs" />
+    <Compile Include="SiteMap\SiteMapManager.cs" />
+    <Compile Include="SiteMap\SiteMapNode.cs" />
+    <Compile Include="SiteMap\SiteMapNodeBuilder.cs" />
+    <Compile Include="SiteMap\SiteMapNodeCollection.cs" />
+    <Compile Include="SiteMap\SiteMapNodeExtensions.cs" />
+    <Compile Include="SiteMap\SiteMapNodeFactory.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="UploadImage.cs" />
+    <Compile Include="ValidateImage.cs" />
+    <Compile Include="VirtualPathProviderWrapper.cs" />
+    <Compile Include="SiteMap\XmlSiteMap.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\03.Cache\Cache\Cache.csproj">
+      <Project>{267783f3-a1f5-45ba-97df-0450e717d029}</Project>
+      <Name>Cache</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

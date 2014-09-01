@@ -1,0 +1,33 @@
+﻿@using Common;
+@model IList<Common.SiteMapNode>
+@{
+    Layout = null;
+}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>贵阳社区公益平台</title>
+    @Html.IncludeCSS("~/content/css/style.css")
+    @Html.IncludeCSS("~/content/css/top.css")
+    @Html.IncludeScript("~/content/js/jquery.min.js")
+    @Html.IncludeScript("~/content/js/top.js")
+</head>
+<body>
+    <div id="info">
+    </div>
+    <div id="tips">
+        <a href="#" target="main">修改密码</a><a href="@Url.Action("LogOff", "Account")" target="_parent">注销</a>
+    </div>
+    <div class="blank5">
+    </div>
+    <div id="navs">
+        <ul>
+            @*@foreach (var nav in Model)
+            {
+                <li><a href="@Url.Action("Left", new { key = nav.Attributes["key"] })">@nav.Title</a></li>
+            }*@
+        </ul>
+    </div>
+</body>
+</html>

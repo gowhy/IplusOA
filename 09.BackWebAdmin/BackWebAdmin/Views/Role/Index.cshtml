@@ -1,0 +1,47 @@
+﻿
+@model  Common.IPagedList<IplusOAEntity.RoleEntity>
+@using MvcContrib.UI.Grid
+@using MvcContrib.Pagination;
+@using MvcContrib.UI.Pager;
+@using Common;
+
+<script type="text/javascript">
+
+        function deleteRole(id) {
+
+            var url = '@Url.Action("Delete")' + '?id=' + id;
+            deleteMethod(id, "Delete");
+           //showAjaxResult(url, "删除用户中......", 600, 400);
+        }
+</script>
+
+<div class="main_title">
+    管理员分组
+</div>
+<div class="blank5">
+</div>
+<div class="button_row">
+    <a class="button" href="@Url.Action("Add")">新增</a>
+    @*<a class="button" href="javascript: del()">删除</a>*@
+</div>
+<div class="blank5">
+</div>
+<div class="grid_box">
+    <div class="grid_top">
+    </div>
+    @Html.Grid(Model).Columns(column =>
+                                  {
+                                      column.CheckBox(x => x.Id);
+                                      column.For(x => x.Id).Named("编号").HeaderAttributes(style => "width:50px;align:center;");
+                                      column.For(x => x.Name).Named("名称");
+                                      column.For(x => x.IsEffect ? "有效" : "无效").Named("状态").SortColumnName("IsEffect");
+                                      column.Buttons(btns => btns.Add(x => Html.ActionLink("编辑", "Edit", new { id = x.Id }))
+                                                                 .Add(x => Html.ScriptLink("删除", "deleteRole({0})".FormatWith(x.Id)))
+                                                                 );
+                                  }).Complex(ViewData)
+    <div class="grid_foot">
+    </div>
+</div>
+<div class="blank5">
+</div>
+@Html.Pager(Model)

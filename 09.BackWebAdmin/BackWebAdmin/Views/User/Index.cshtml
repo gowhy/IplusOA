@@ -1,0 +1,64 @@
+﻿@model  Common.IPagedList<IplusOAEntity.BackAdminUser>
+@using MvcContrib.UI.Grid
+@using MvcContrib.Pagination;
+@using MvcContrib.UI.Pager;
+@using Common;
+@section HeadSection {
+    <script type="text/javascript">
+        function addUser() {
+
+            var url = '@Url.Action("Add")' + '?id=' +00;
+
+            showAjaxResult(url, "增加用户", 650, 400);
+        }
+        function editUser(id) {
+
+            var url = '@Url.Action("Edit")' + '?id=' + id;
+
+            showAjaxResult(url, "修改用户信息", 650, 400);
+        }
+        function deleteUser(id) {
+
+            var url = '@Url.Action("Delete")' + '?id=' + id;
+            deleteMethod(id, "Delete");
+           //showAjaxResult(url, "删除用户中......", 600, 400);
+        }
+    </script>
+    @Html.IncludeCSS("~/Content/Css/calendar.css")
+    @Html.IncludeScript("~/Content/JS/calendar.js")
+}
+
+<div class="button_row">
+  
+    @Html.ScriptLink("新增", "addUser()", "button", new object[] { })
+  @*  <a href="javascript: addUser()" class="button">新增</a>*@
+    @*<input type="button" class="button" value="彻底删除" >*@
+</div>
+<div class="blank5">
+</div>
+<div class="grid_box">
+    <div class="grid_top">
+    </div>
+
+    @Html.Grid(Model).Columns(column =>
+    {
+        column.CheckBox(x => x.Id);
+        column.For(x => x.Id).Named("用户编号");
+        column.For(x => x.UserName).Named("用户名");
+        column.For(x => x.RealName).Named("真实姓名");
+        column.For(x => x.Role.Name).Named("用户角色");
+
+        column.For(x => x.Department.Name).Named("行政组织");
+        column.For(x => x.SocialOrg.Name).Named("社会组织"); 
+       
+        column.Buttons(btn => btn.Add(x => Html.ScriptLink("编辑", "editUser({0})", x.Id))
+                                 .Add(x => Html.ScriptLink("删除", "deleteUser({0})", x.Id))
+              
+            );
+    }).Complex(ViewData)
+    <div class="grid_foot">
+    </div>
+</div>
+<div class="blank5">
+</div>
+@Html.Pager(Model)

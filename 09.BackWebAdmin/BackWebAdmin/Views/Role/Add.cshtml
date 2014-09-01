@@ -1,0 +1,68 @@
+﻿@model BackWebAdmin.Models.RoleModel
+<div class="main_title">
+    新增 <a href="@Url.Action("Index", "Role")" class="back_list">返回列表</a>
+</div>
+<div class="blank5">
+</div>
+@using (Html.BeginForm("PostAdd", "Role"))
+{
+    <table class="form">
+        <tr>
+            <td colspan="2" class="topTd"></td>
+        </tr>
+        <tr>
+            <td class="item_title">
+                名称:
+            </td>
+            <td class="item_input">
+                <input type="text" class="textbox require" name="Name" />
+            </td>
+        </tr>
+        <tr>
+            <td class="item_title">
+                状态:
+            </td>
+            <td class="item_input">
+                <label>有效<input type="radio" name="IsEffect" value="true" @(Model.IsEffect ? "checked=\"checked\"" : "") /></label>
+                <label>无效<input type="radio" name="IsEffect" value="false" @(!Model.IsEffect ? "checked=\"checked\"" : "") /></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="item_title"></td>
+            <td class="item_input">
+                <table class="access_list" style="width: 100%">
+                    @foreach (var module in Model.Modules)
+                    {
+                        <tr>
+                            <td class="access_left" style="width: 180px;">
+                                <span title="@module.Value">@module.Name</span>
+                                &nbsp;&nbsp;全选
+                                <input type="checkbox" value="@module.Value" name="RoleModule" onclick="check_module(this);" />
+                            </td>
+                            <td>
+                                @foreach (var node in module.RoleNodes)
+                                {
+                                    <label style="padding:5px;">
+                                        <span title="index">@node.Name</span>
+                                        <input type="checkbox" value="@node.Value" name="RoleNode" class="node_item" onclick="check_is_all(this);" />
+                                    </label>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td class="item_title"></td>
+            <td class="item_input">
+                <!--隐藏元素-->
+                <input type="submit" class="button" value="新增" />
+                <input type="reset" class="button" value="重置" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" class="bottomTd"></td>
+        </tr>
+    </table>
+}

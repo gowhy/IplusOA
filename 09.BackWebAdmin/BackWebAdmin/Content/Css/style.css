@@ -1,0 +1,164 @@
+body{ background: #fff; color: #404040; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 12px; margin: 0px; padding: 0px; }
+
+div{ margin: 0 auto; padding: 0; }
+
+h1, h2, h3, h4, h5, h6, ul, li, dl, dt, dd, form, img, p{ border: none; list-style-type: none; margin: 0; padding: 0; }
+
+a{ color: #4e6a81; }
+
+a:hover{ color: #ff9600; }
+
+table{ border-collapse: collapse; border-spacing: 0; }
+
+input{ vertical-align: middle; }
+
+#info{ background: #fff; border: #ccc 2px solid; color: #f30; display: none; font-weight: bold; padding: 10px 5px; position: absolute; right: 2px; top: 2px; }
+
+/*自动高对齐*/
+
+.clearfix:after{ clear: both; content: "."; display: block; height: 0; visibility: hidden; }
+
+* html .clearfix{ height: 1%; }
+
+* + html .clearfix{ height: 1%; }
+
+.blank5{ clear: both; height: 5px; overflow: hidden; visibility: visible }
+
+.blank10{ clear: both; height: 10px; overflow: hidden; visibility: visible }
+
+/* 公共样式 */
+
+.button_row{ padding: 2px 4px; }
+
+.button{ background: none repeat scroll 0 0 #4e6a81; border-color: #dddddd #000000 #000000 #dddddd; border-style: solid; border-width: 2px; color: #FFFFFF; cursor: pointer; cursor: pointer; letter-spacing: 0.1em; overflow: visible; padding: 3px 15px; text-decoration: none; width: auto; }
+
+a.button{ display: inline-block; padding: 5px 15px; }
+
+a:hover.button{ color: #fff; }
+
+.tip_span{ color: #ff9600; ; }
+
+.currentbtn{ background: none repeat scroll 0 0 #4e6a81; border-color: #000000 #dddddd #dddddd #000000; border-style: solid; border-width: 2px 2px 2px 2px; color: #FFFFFF; cursor: pointer; cursor: pointer; letter-spacing: 0.1em; overflow: visible; padding: 3px 15px; text-decoration: none; width: auto; }
+
+.change_password{ width: 450px; }
+
+.textbox{ color: #666; padding: 4px; }
+
+
+.textarea{ color: #666; font-size: 12px; height: 150px; padding: 4px; width: 300px; }
+
+.require{ border-left: #f30 solid 2px; }
+
+.is_effect{ cursor: pointer; }
+
+.pagination{ padding: 5px 0px; text-align: right; }
+
+.item_title{ background: #e2e8eb; color: #000; text-align: right; width: 130px; }
+
+.item_input{ text-align: left; }
+
+.back_list{ font-size: 12px; font-weight: normal; }
+
+#set_sort{ border: #ccc solid 1px; color: #666; font-size: 12px; padding: 4px; width: 20px; }
+
+/* 提示消息 */
+
+.message{ padding-top: 100px; width: 400px; }
+
+.message table{ width: 100%; }
+
+.message td{ padding: 5px 0px; text-align: center; }
+
+.title_row{ font-size: 14px; font-weight: bold; padding: 10px 0px; ; }
+
+.message_row{ color: #f30; font-size: 12px; font-weight: bold; padding: 10px 0px; }
+
+.main{ padding: 10px; }
+
+.main_title{ background: #8ba9c0; border: #ccc solid 1px; color: #fff; font-size: 14px; font-weight: bolder; padding: 5px 15px; }
+
+.search_row{ background: #8ba9c0; border: #ccc solid 1px; color: #fff; font-size: 14px; font-weight: bolder; padding: 5px 15px; }
+
+/* 数据表 */
+
+.grid_box{ background: #fff; }
+
+.grid_top, .grid_foot{ background: url(img/bgline.gif) repeat-x 0px 0px; border: #ccc solid 1px; height: 5px; padding: 0px; }
+
+.grid_foot{ border-top: 0; }
+
+.grid{ border-left: #ccc solid 1px; border-right: #ccc solid 1px; width: 100%; }
+
+.grid th{ background: #edf3f7; border-bottom: #ccc solid 1px; border-right: #ccc solid 1px; height: 25px; text-align: center; }
+
+.grid th a{ display: inline-block; height: 18px; line-height: 18px; }
+
+.grid td{ border-bottom: #ccc solid 1px; border-right: #ccc solid 1px; padding: 5px 12px; }
+
+.grid th.sort_desc b{ background-image: url(img/desc.gif); display: inline-block; height: 17px; vertical-align: middle; width: 12px; }
+
+.grid th.sort_asc b{ background-image: url(img/asc.gif); display: inline-block; height: 17px; vertical-align: middle; width: 12px; }
+
+.grid td.grid_btn a{ margin-right: 8px; }
+
+.grid .nodata{ margin: 0 auto; text-align: center; }
+
+table.form{ background: #fff; border-left: #ccc solid 1px; border-top: #ccc solid 1px; font-size: 14px; width: 100%; }
+
+table.form th{ background: #edf3f7; border-bottom: #ccc solid 1px; border-right: #ccc solid 1px; height: 25px; line-height: 25px; text-align: center; }
+
+table.form td{ border-bottom: #ccc solid 1px; border-right: #ccc solid 1px; padding: 5px; }
+
+table.form .topTd, table.form .bottomTd{ background: url(img/bgline.gif) repeat-x; font-size: 0px; height: 5px; padding: 0px; }
+
+table.access_list td{ border: none; border-bottom: dotted 1px #ccc; padding: 8px; }
+
+table.access_list td label{ display: inline-block; padding: 0px 10px; }
+
+table.access_list td.access_left{ border-right: dotted 1px #ccc; text-align: right; }
+
+table.access_list td input{ margin: 0; vertical-align: text-top; }
+
+.dataTable{ background: #fff; border-left: #ccc solid 1px; border-top: #ccc solid 1px; width: 100%; }
+
+table.form .ke-container{ border: 1px solid #ccc; padding: 0px; }
+
+table.form .ke-content{ border: 0px; padding: 0px; }
+
+table.form .ke-container td, .ke-container th{ border: 0px; padding: 0px; }
+
+table.form .ke-bottom{ border: 0px; padding: 0px; }
+
+table.form .ke-bottom td, table.form .ke-bottom th{ border: 0px; padding: 0px; }
+
+.none_border table.ke-container{ background: #fff; border: 0px solid #ccc; padding: 0px; }
+
+.none_border table.ke-content{ border: 0px; padding: 0px; }
+
+.none_border table.ke-container td, .ke-container th{ border: 0px; padding: 0px; }
+
+.none_border table.ke-bottom{ border: 0px; padding: 0px; }
+
+.none_border table.ke-bottom td, table.form .ke-bottom th{ border: 0px; padding: 0px; }
+
+.none_border table{ border: 0px; }
+
+#region_conf div{ padding: 5px 0px; }
+
+.cfg_title{ display: inline-block; float: left; width: 100px; }
+
+.cfg_content{ display: inline-block; float: left; }
+
+table.no_border td{ border: 0px; }
+
+#filter_row{ display: none; }
+
+.topic_image{ border: #ccc solid 1px; display: inline-block; float: left; height: 100px; margin: 5px; overflow: hidden; position: relative; width: 100px; }
+
+.topic_image img{ height: 98px; width: 98px; }
+
+.topic_image span{ background: #f30; border: #fff solid 1px; color: #fff; cursor: pointer; height: 20px; left: 2px; line-height: 20px; position: absolute; text-align: center; top: 2px; width: 20px; }
+
+.ct_footer_tip{ background: #fff; height: 32px; line-height: 30px; padding-left: 15px; padding-right: 30px; position: absolute; right: 1px; top: 1px }
+
+.ct_footer_tip .close{ background: #fff; border: 1px solid #ccc; display: inline-block; font-family: Tahoma; font-size: 12px; height: 12px; line-height: 12px; position: absolute; right: 5px; text-align: center; text-decoration: none; top: 8px; width: 12px; }

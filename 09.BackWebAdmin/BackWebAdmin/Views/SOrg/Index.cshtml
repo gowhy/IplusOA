@@ -1,0 +1,61 @@
+﻿@model  Common.IPagedList<SocialOrgEntity>
+@using MvcContrib.UI.Grid
+@using MvcContrib.Pagination;
+@using MvcContrib.UI.Pager;
+@using Common;
+@using IplusOAEntity;
+
+@section HeadSection {
+    <script type="text/javascript">
+        function addSorg() {
+
+            var url = '@Url.Action("Add")' + '?id=' +00;
+
+            showAjaxResult(url, "增加用户", 600, 400);
+        }
+
+        function deleteSorg(id) {
+
+            var url = '@Url.Action("Delete")' + '?id=' + id;
+            deleteMethod(id, "Delete");
+           //showAjaxResult(url, "删除用户中......", 600, 400);
+        }
+    </script>
+    @Html.IncludeCSS("~/Content/Css/calendar.css")
+    @Html.IncludeScript("~/Content/JS/calendar.js")
+}
+
+<div class="button_row">
+    <a class="button" href="@Url.Action("Add")">新增</a>
+</div>
+<div class="blank5">
+</div>
+<div class="grid_box">
+    <div class="grid_top">
+    </div>
+
+    @Html.Grid(Model).Columns(column =>
+    {
+        column.CheckBox(x => x.Id);
+        column.For(x => x.Id).Named("编号");
+        column.For(x => x.Type).Named("组织类型");
+        column.For(x => x.SocialNO).Named("社会组织内部编号");
+        column.For(x => x.Name).Named("名称");
+        column.For(x => x.RegNO).Named("登记证号");
+        column.For(x => x.RegType).Named("登记类型");
+
+        column.For(x => x.OrgNo).Named("机构代码证号");
+        column.For(x => x.RegTime).Named("登记时间");
+        column.For(x => x.EffectiveTime).Named("有效期");
+      //  column.For(x => x.Department.Name).Named("行政级别");
+        column.Buttons(btn => btn.Add(x => Html.ActionLink("编辑", "Edit", new { id = x.Id }))
+            .Add(x => Html.ScriptLink("删除", "deleteUser({0})", x.Id))
+
+            );
+    }).Complex(ViewData)
+    <div class="grid_foot">
+    </div>
+</div>
+<div class="blank5">
+</div>
+@Html.Pager(Model)

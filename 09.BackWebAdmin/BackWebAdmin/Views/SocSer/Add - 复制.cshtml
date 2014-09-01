@@ -1,0 +1,232 @@
+﻿@using Common;
+
+<script type="text/javascript">
+    function check_incharge_form() {
+
+        return true;
+    }
+</script>
+
+@Html.IncludeCSS("~/Content/plug-in/ztree/css/zTreeStyle/zTreeStyle.css")
+@Html.IncludeCSS("~/Content/Css/demo.css")
+@Html.IncludeScript("~/Content/plug-in/ztree/js/jquery.ztree.core-3.5.js")
+@Html.IncludeScript("~/Content/plug-in/ztree/js/jquery.ztree.excheck-3.5.js")
+<style type="text/css">
+ 
+     
+</style>
+
+<script type="text/javascript">
+
+
+    var setting = {
+        view: {
+            dblClickExpand: false,
+            showLine: true,
+            selectedMulti: false
+        },
+        check: {
+            enable: true
+        },
+        data: {
+            simpleData: {
+                enable: true,
+                idKey: "Id",
+                pIdKey: "PId",
+                rootPId: ""
+            },
+            key: {
+                name: "Name"
+            }
+
+        },
+        callback: {
+            beforeCheck: beforeCheck,
+            onCheck: onCheck
+        }
+    };
+
+    var zNodes =@(Html.Raw(ViewData["Department_List"].ToString()));
+
+    var code, log, className = "dark";
+ 
+    function beforeCheck(treeId, treeNode) {
+        //className = (className === "dark" ? "" : "dark");
+        //showLog("[ " + getTime() + " beforeCheck ]&nbsp;&nbsp;&nbsp;&nbsp;" + treeNode.name);
+        //return (treeNode.doCheck !== false);
+
+   
+    }
+    var chlidlist= new  Array()  
+    function onCheck(e, treeId, treeNode) {
+        var checkString="";
+        var zTree = $.fn.zTree.getZTreeObj("ztree");
+        var checkNodesChild=    zTree.getCheckedNodes(true);
+        for (var i = 0; i < checkNodesChild.length; i++) {
+            if (!checkNodesChild[i].isParent) {
+                checkString+=","+checkNodesChild[i].Id;
+               
+            }
+          
+        }
+        $("#ztreeChilid").val(checkString);
+
+    }
+    function showLog(str) {
+        if (!log) log = $("#log");
+        log.append("<li class='" + className + "'>" + str + "</li>");
+        if (log.children("li").length > 6) {
+            log.get(0).removeChild(log.children("li")[0]);
+        }
+    }
+    function getTime() {
+        var now = new Date(),
+        h = now.getHours(),
+        m = now.getMinutes(),
+        s = now.getSeconds(),
+        ms = now.getMilliseconds();
+        return (h + ":" + m + ":" + s + " " + ms);
+    }
+
+    function checkNode(e) {
+        var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+        type = e.data.type,
+        nodes = zTree.getSelectedNodes();
+        if (type.indexOf("All") < 0 && nodes.length == 0) {
+            alert("请先选择一个节点");
+        }
+
+        if (type == "checkAllTrue") {
+            zTree.checkAllNodes(true);
+        } else if (type == "checkAllFalse") {
+            zTree.checkAllNodes(false);
+        } else {
+            var callbackFlag = $("#callbackTrigger").attr("checked");
+            for (var i = 0, l = nodes.length; i < l; i++) {
+                if (type == "checkTrue") {
+                    zTree.checkNode(nodes[i], true, false, callbackFlag);
+                } else if (type == "checkFalse") {
+                    zTree.checkNode(nodes[i], false, false, callbackFlag);
+                } else if (type == "toggle") {
+                    zTree.checkNode(nodes[i], null, false, callbackFlag);
+                } else if (type == "checkTruePS") {
+                    zTree.checkNode(nodes[i], true, true, callbackFlag);
+                } else if (type == "checkFalsePS") {
+                    zTree.checkNode(nodes[i], false, true, callbackFlag);
+                } else if (type == "togglePS") {
+                    zTree.checkNode(nodes[i], null, true, callbackFlag);
+                }
+            }
+        }
+    }
+
+    function setAutoTrigger(e) {
+        var zTree = $.fn.zTree.getZTreeObj("ztree");
+        zTree.setting.check.autoCheckTrigger = $("#autoCallbackTrigger").attr("checked");
+        $("#autoCheckTriggerValue").html(zTree.setting.check.autoCheckTrigger ? "true" : "false");
+    }
+
+    $(document).ready(function () {
+        $.fn.zTree.init($("#ztree"), setting, zNodes);
+        $("#checkTrue").bind("click", { type: "checkTrue" }, checkNode);
+        $("#checkFalse").bind("click", { type: "checkFalse" }, checkNode);
+        $("#toggle").bind("click", { type: "toggle" }, checkNode);
+        $("#checkTruePS").bind("click", { type: "checkTruePS" }, checkNode);
+        $("#checkFalsePS").bind("click", { type: "checkFalsePS" }, checkNode);
+        $("#togglePS").bind("click", { type: "togglePS" }, checkNode);
+        $("#checkAllTrue").bind("click", { type: "checkAllTrue" }, checkNode);
+        $("#checkAllFalse").bind("click", { type: "checkAllFalse" }, checkNode);
+
+        $("#autoCallbackTrigger").bind("change", {}, setAutoTrigger);
+    });
+
+</script>
+<div class="main">
+
+    <div class="blank5"></div>
+    <form name="edit" action="@Url.Action("PostAdd")" method="post" enctype="multipart/form-data" onsubmit="return check_incharge_form();">
+        <table class="form" cellpadding="0" cellspacing="0">
+            <tbody>
+                <tr>
+                    <td colspan="2" class="topTd"></td>
+                </tr>
+                <tr>
+                    <td class="item_title">
+                        服务类型:
+                    </td>
+                    <td class="item_input">
+                        <select name="Type">
+                            <option value="GYFN">法律服务</option>
+                            <option value="GYYL">医疗服务</option>
+                            <option value="GYWH">文化娱乐</option>
+                            <option value="GYYL">居家养老</option>
+                            <option value="GYBF">社区帮扶</option>
+                            <option value="GYWH">文化课堂</option>
+                            <option value="GYNSD">社区绿丝带</option>
+                            <option value="SYJZ">社区家政</option>
+                            <option value="SYMY">美食娱乐</option>
+                            <option value="SYWX">家居维修</option>
+                            <option value="SYJR">金融服务</option>
+                            <option value="SYYH">优惠进社区</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="item_title">服务内容标题:</td>
+                    <td class="item_input"><input type="text" class="textbox require" name="Context" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">发布时间:</td>
+                    <td class="item_input"><input type="text" class="textbox require" name="PubTime" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">截止时间:</td>
+                    <td class="item_input"><input type="text" class="textbox require" name="EndTime" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">服务描述:</td>
+                    <td class="item_input"><textarea class="textbox require" name="Desc" rows="5" cols="70"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="item_title">自愿者帮助说明:</td>
+                    <td class="item_input"><textarea  class="textbox require" name="VHelpDesc" rows="5" cols="70"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="item_title">覆盖社区:</td>
+                    <td class="">
+                        <input type="hidden" name="CoverCommunity" id="ztreeChilid" />
+                        @*<input type="text" class="textbox require" name="CoverCommunity" />*@
+                        <ul id="ztree" class="ztree" style=" width:55%; overflow:visible;"></ul>
+                    </td>
+                  
+                </tr>
+                <tr>
+                    <td class="item_title">感谢分值:</td>
+                    <td class="item_input"><input type="text" class="textbox require" name="THSScore" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">服务分值:</td>
+                    <td class="item_input"><input type="text" class="textbox require" name="Score" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">联系电话:</td>
+                    <td class="item_input"><input type="text" class="textbox require" name="Phone" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">联系人:</td>
+                    <td class="item_input"><input type="text" class="textbox require" name="Contacts" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title"></td>
+                    <td class="item_input">
+                        <input type="submit" class="button" value="新增">
+                        <input type="reset" class="button" value="重置">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="bottomTd"></td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>

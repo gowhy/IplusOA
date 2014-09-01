@@ -1,0 +1,59 @@
+﻿@using Common
+@model BackWebAdmin.Models.LoginModel
+ @{
+   Layout = null;
+}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="windows-Target" content="_parent">
+    <title>贵阳市社区公益平台</title>
+    @Html.IncludeCSS("~/Content/Css/login.css")
+    @Html.IncludeScript("~/Scripts/jquery-1.10.2.min.js")
+ 
+    <script type="text/javascript">
+        $(function () {
+            $("form input:first").focus();
+            $('form').validate({
+                onKeyup: true,
+                eachValidField: function () {
+                    $(this).removeClass('error').addClass('success');
+                },
+                eachInvalidField: function () {
+                    $(this).removeClass('success').addClass('error');
+                },
+                invalid: function () {
+                    $("#errors").empty().html("用户名和密码不能为空！");
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <div id="container">
+        <div class="logo">
+            <a class="logo-label">贵阳市社区公益平台</a>
+        </div>
+        <div id="box">
+            @using (Html.BeginForm())
+            {
+                <p class="main">
+                    <label>
+                        用户名
+                    </label>
+                    <input type="text" name="username" tabindex="1" data-required />
+                    <label>
+                        密码
+                    </label>
+                    <input type="password" name="password" tabindex="2" data-required />
+                </p>
+                <p class="space">
+                    <input type="submit" value="登录" class="login" tabindex="3" />
+                 
+                </p>
+            }
+        </div>
+    </div>
+</body>
+</html>
