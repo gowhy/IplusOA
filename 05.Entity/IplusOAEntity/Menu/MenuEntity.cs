@@ -58,6 +58,9 @@ namespace IplusOAEntity
             set { _open = value; }
             get { return _open; }
         }
+
+        public string Module { get; set; }
+
         #endregion Model
 
     }

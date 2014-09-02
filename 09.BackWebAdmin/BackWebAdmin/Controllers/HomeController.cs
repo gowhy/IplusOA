@@ -14,17 +14,17 @@ using System.Runtime.Serialization.Json;
 
 namespace BackWebAdmin.Controllers
 {
-     [SecurityModule(Name = "Home-主页")]
+    [SecurityModule(Name = "Home-主页")]
     public class HomeController : BaseController
     {
-     
+
         //public ActionResult Index()
         //{
         //    var s = AdminUser;
-           
+
         //    return View();
         //}
-         [SecurityNode(Name = "测试API")]
+        [SecurityNode(Name = "测试API")]
         public JsonResult TestAPI()
         {
             string userToken = "8F93F21C92FA8B926F44D993CE0B36919A7F4EA1394430E08883AE157CF3EA7B504E1AD4E9FE9E6FF0886EA8CB4886DA7A8DC20A9B16A97B3939AAFC10E7B3472A34E8294BE5D4C887188AE59F64548422034FD2F48D5797A81F11D8AE6F9C8062B0DF96992885FD6E60DC38F5D7D61EDA342A6D2465B052A271019236898C12733D7FB1";
@@ -32,10 +32,10 @@ namespace BackWebAdmin.Controllers
             return Json(AdminUser);
         }
 
-          [SecurityNode(Name = "默认Index页")]
+        [SecurityNode(Name = "默认Index页")]
         //
         // GET: /Default/
-      //  [OutputCache(Duration = 6000)]
+        //  [OutputCache(Duration = 6000)]
         public ActionResult Index()
         {
             IplusOADBContext db = new IplusOADBContext();
@@ -46,7 +46,7 @@ namespace BackWebAdmin.Controllers
             return View();
         }
 
-       // [OutputCache(Duration = 6000)]
+        // [OutputCache(Duration = 6000)]
         public ActionResult Top()
         {
             var nav = SiteMapManager.SiteMaps.DefaultSiteMap.RootNode.ChildNodes;
@@ -54,7 +54,7 @@ namespace BackWebAdmin.Controllers
             return View(nav);
         }
 
-     //   [OutputCache(Duration = 6000)]
+        //   [OutputCache(Duration = 6000)]
         public ActionResult Left3(string key)
         {
             //IplusOADBContext db = new IplusOADBContext();
@@ -70,12 +70,12 @@ namespace BackWebAdmin.Controllers
             db.Dispose();
 
 
-            var smap = list.Where(x=>x.pId==0);
+            var smap = list.Where(x => x.pId == 0);
 
             List<Common.SiteMapNode> list2 = new List<Common.SiteMapNode>();
             foreach (var item in smap)
             {
-                Common.SiteMapNode tmp= new Common.SiteMapNode();
+                Common.SiteMapNode tmp = new Common.SiteMapNode();
                 tmp.ActionName = item.name;
                 tmp.Url = item.file;
 
@@ -91,8 +91,8 @@ namespace BackWebAdmin.Controllers
                 list2.Add(tmp);
             }
 
-       
-          
+
+
 
             return View(list2);
 
@@ -103,16 +103,26 @@ namespace BackWebAdmin.Controllers
             IplusOADBContext db = new IplusOADBContext();
             var list = db.MenuEntityTable.AsQueryable<MenuEntity>().ToList();
 
+            var rolelist = db.RolePermission.AsQueryable().Where(x => x.RoleId == AdminUser.RoleId).ToList();
+
             db.Dispose();
-            ViewData["menuJsonDate"] = HelpSerializer.JSONSerialize<List<MenuEntity>>(list);
 
+            List<MenuEntity> userMenuList = new List<MenuEntity>();
+            foreach (var ritem in rolelist)
+            {
+                if (!string.IsNullOrEmpty(ritem.Module))
+                {
 
+                    userMenuList.AddRange(list.Where(x => x.Module.ToLower() == ritem.Module.ToLower()));
+                }
+                else
+                {
+                    userMenuList.AddRange(list.Where(x => x.file.Trim().ToLower() == "/" + ritem.Node.Trim().ToLower().Replace('_', '/')));
+                }
+            }
+
+            ViewData["menuJsonDate"] = HelpSerializer.JSONSerialize<List<MenuEntity>>(userMenuList);
             return View();
-
-            //var subNav =
-            //  SiteMapManager.SiteMaps.DefaultSiteMap.RootNode.ChildNodes.FirstOrDefault(x => x.Attributes["key"].ToString() == key);
-
-            //return View(subNav != null ? subNav.ChildNodes.ToList() : new List<Common.SiteMapNode>());
 
         }
 

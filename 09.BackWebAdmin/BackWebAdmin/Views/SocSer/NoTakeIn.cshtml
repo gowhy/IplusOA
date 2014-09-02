@@ -1,11 +1,6 @@
 ﻿@using Common;
 @model IplusOAEntity.SocServiceDetailEntity
-<script type="text/javascript">
-    function check_incharge_form() {
 
-        return true;
-    }
-</script>
 
 @Html.IncludeCSS("~/Content/plug-in/ztree/css/zTreeStyle/zTreeStyle.css")
 @Html.IncludeCSS("~/Content/Css/demo.css")
@@ -20,7 +15,7 @@
 <div class="main">
 
     <div class="blank5"></div>
-    <form name="edit" action="@Url.Action("PostEdit")" method="post" enctype="multipart/form-data" onsubmit="return check_incharge_form();">
+    <form id="TakeIn" name="TakeIn" action="@Url.Action("PostNoTakeIn")" method="post" enctype="multipart/form-data">
         <table class="form" cellpadding="0" cellspacing="0">
             <tbody>
                 <tr>
@@ -49,7 +44,7 @@
                 </tr>
                 <tr>
                     <td class="item_title">服务内容标题:</td>
-                    <td class="item_input"><input type="text" disabled="disabled"  class="textbox require" name="Context" value="@Model.Context" /></td>
+                    <td class="item_input"><input type="text" disabled="disabled" class="textbox require" name="Context" value="@Model.Context" /></td>
                 </tr>
                 <tr>
                     <td class="item_title">发布时间:</td>
@@ -91,11 +86,23 @@
                     <td class="item_input"><input type="text" disabled="disabled" class="textbox require" name="Contacts" value="@Model.Contacts" /></td>
                 </tr>
                 <tr>
+                    <td class="item_title">本社区参与状况：</td>
+                    <td class="item_input">
+                       <span style="color:red;">@ViewBag.IsJoin </span><br />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="item_title">原因:</td>
+                    <td class="item_input"><textarea class="textbox require" id="msg" name="Msg" rows="5" cols="70">@ViewBag.Msg  </textarea></td>
+                </tr>
+                <tr>
                     <td class="item_title"></td>
                     <td class="item_input">
-                        <input type="hidden" name="Id" value="@Model.Id" />
-                        <input type="submit" class="button" value="本社区不参与服务">
-
+                        <span>@ViewBag.IsJoin </span><br />
+                        <input type="hidden" id="Id" name="Id" value="@Model.Id" />
+                        <input type="button" id="No" class="button" value="本社区不参与服务">
+                        <input type="button" id="Stop" class="button" value="本社区暂停服务">
+                        <input type="button" id="ReStart" class="button" value="本社重新启动服务">
                     </td>
                 </tr>
                 <tr>
@@ -105,73 +112,61 @@
         </table>
         <script type="text/javascript">
 
-
-            var setting = {
-                view: {
-                    dblClickExpand: false,
-                    showLine: true,
-                    selectedMulti: false
-                },
-                check: {
-                    enable: true
-                },
-                data: {
-                    simpleData: {
-                        enable: true,
-                        idKey: "Id",
-                        pIdKey: "PId",
-                        rootPId: ""
-                    },
-                    key: {
-                        name: "Name",
-                        checked: "IsCheck"
-
-                    }
-
-                },
-                callback: {
-                    beforeCheck: beforeCheck,
-                    onCheck: onCheck
-                }
-            };
-
-            var zNodes =@(Html.Raw(ViewData["Department_List"].ToString()));
-
-            function onCheck(e, treeId, treeNode) {
-                var checkString="";
-                var  checkStringNames="";
-                var zTree = $.fn.zTree.getZTreeObj("ztree");
-                var checkNodesChild=    zTree.getCheckedNodes(true);
-                for (var i = 0; i < checkNodesChild.length; i++) {
-                    if (!checkNodesChild[i].isParent) {
-                        checkString+=","+checkNodesChild[i].Id;
-                        checkStringNames+=checkNodesChild[i].Name+",";
-                    }
-                }
-                $("#CoverCommunityIds").val(checkString);
-                $("#CoverCommunityNames").text(checkStringNames);
-
-            }
-
-            function beforeCheck(treeId, treeNode) {
-
-            }
-            function showMenu() {
-                $("#menuContent").slideDown("fast");
-                $("body").bind("mousedown", onBodyDown);
-            }
-            function hideMenu() {
-                $("#menuContent").fadeOut("fast");
-                $("body").unbind("mousedown", onBodyDown);
-            }
-            function onBodyDown(event) {
-                if (!(event.target.id == "menuBtn" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length>0)) {
-                    hideMenu();
-                }
-            }
-
             $(document).ready(function () {
-                $.fn.zTree.init($("#ztree"), setting, zNodes);
+
+                function isTakeIn(id, state, msg) {
+
+                    var url = "/SocSer/PostNoTakeIn" + '?detailId=' + id + "&state=" + state + "&msg=" + msg;
+                    url = encodeURI(url);
+                    //window.document.forms["TakeIn"].action = url;
+                    //window.document.forms["method"].action = "get";
+
+                    //$('#TakeIn').action = url;
+                    //$('#TakeIn').method = "POST";
+                    //$('#TakeIn').enctype = "multipart/form-data";
+                    //$('#TakeIn').submit();
+
+                    $.ajax({
+                        url: url,
+                        //data: { id: id },
+                        type: 'POST',
+                        dataType: "json",
+                        success: function (obj) {
+                            $("#info").html(obj.Info);
+                            if (obj.Status == true)
+                                location.href = location.href;
+                        }
+                    });
+                    //showAjaxResult(url, "执行操作中", 600, 400);
+                }
+
+                $("#No").click(function () {
+
+                    var id = $("#Id").val();
+                    var msg = $("#msg").val();
+                    var state = -1;
+                    isTakeIn(id, state, msg);
+
+                });
+
+                $("#Stop").click(function () {
+
+                    var id = $("#Id").val();
+                    var msg = $("#msg").val();
+                    var state = 0;
+                    isTakeIn(id, state, msg);
+                });
+
+                $("#ReStart").click(function () {
+                    var id = $("#Id").val();
+                    var msg = $("#msg").val();
+                    var state = 1;
+                    isTakeIn(id, state, msg);
+
+                });
+
+
+
 
                 $("#Type").val("@Model.Type");
 
@@ -181,4 +176,5 @@
 
         </script>
     </form>
+
 </div>

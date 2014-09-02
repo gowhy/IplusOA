@@ -29,7 +29,7 @@
                                       column.For(x => x.Contacts).Named("联系人");
                                       column.For(x => x.Score).Named("服务分值");
 
-                                      column.Buttons(btns => btns.Add(x => Html.ActionLink("服务处理", "Edit", new { id = x.Id }))
+                                      column.Buttons(btns => btns.Add(x => Html.ActionLink("服务处理", "NoTakeIn", new { id = x.Id }))
                                                                
                                                                  );
                                   }).Complex(ViewData)

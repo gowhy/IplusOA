@@ -31,6 +31,8 @@ namespace DataLayer.IplusOADB
             modelBuilder.Configurations.Add(new VolunteerEntityToVolunteerMap());
             modelBuilder.Configurations.Add(new SocServiceDetailEntityToSocServiceDetailMap());
             modelBuilder.Configurations.Add(new MenuEntityToMenuMap());
+            modelBuilder.Configurations.Add(new SocSerDetailJoinEntityToSocSerDetailJoinMap());
+           
             
         }
 
@@ -51,6 +53,7 @@ namespace DataLayer.IplusOADB
         public virtual DbSet<SocServiceDetailEntity> SocServiceDetailEntityTable { get; set; }
         public virtual DbSet<VolunteerEntity> VolunteerEntityTable { get; set; }
         public virtual DbSet<MenuEntity> MenuEntityTable { get; set; }
+        public virtual DbSet<SocSerDetailJoinEntity> SocSerDetailJoinEntityTable { get; set; }
        
         
     }

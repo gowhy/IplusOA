@@ -11,6 +11,7 @@ using System.Data.Entity;
 
 namespace BackWebAdmin.Controllers
 {
+    [SecurityModule(Name = "社会组织管理")]
     /// <summary>
     /// 社会组织控制器
     /// </summary>
@@ -21,8 +22,8 @@ namespace BackWebAdmin.Controllers
         /// </summary>
         const int pageSize = 20;
 
-        //
-        // GET: /SOrg/
+
+        [SecurityNode(Name = "首页")]
         public ActionResult Index(int? page)
         {
             var pageNumber = page ?? 1;
@@ -30,6 +31,7 @@ namespace BackWebAdmin.Controllers
             var list = db.SocialOrgEntityTable.AsQueryable<SocialOrgEntity>().ToList();
             return View(list.ToPagedList(pageNumber - 1, pageSize));
         }
+        [SecurityNode(Name = "添加页")]
         public ActionResult Add()
         {
             //IList<DepartmentEntity> list = null;
@@ -41,7 +43,7 @@ namespace BackWebAdmin.Controllers
 
             return View();
         }
-
+        [SecurityNode(Name = "保存添加")]
         [HttpPost]
         public ActionResult PostAdd(SocialOrgEntity entity)
         {
@@ -55,7 +57,7 @@ namespace BackWebAdmin.Controllers
             return Success("操作成功");
         }
 
-
+        [SecurityNode(Name = "编辑")]
         public ActionResult Edit(int id)
         {
             IplusOADBContext db = new IplusOADBContext();
@@ -63,7 +65,7 @@ namespace BackWebAdmin.Controllers
             db.Dispose();
             return View(entity);
         }
-
+        [SecurityNode(Name = "保存编辑")]
         public ActionResult PostEdit(SocialOrgEntity entity)
         {
             IplusOADBContext db = new IplusOADBContext();
@@ -93,5 +95,5 @@ namespace BackWebAdmin.Controllers
             db.SaveChanges();
             return Success("操作成功");
         }
-	}
+    }
 }
