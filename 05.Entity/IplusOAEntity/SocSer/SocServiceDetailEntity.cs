@@ -26,6 +26,9 @@ namespace IplusOAEntity
         private string _contacts;
         private DateTime _addtime =DateTime.Now ;
         private string _adduser;
+
+        public string PayType { get; set; }
+
         /// <summary>
         /// auto_increment
         /// </summary>
