@@ -49,6 +49,7 @@ namespace BackWebAdmin.Controllers
         // [OutputCache(Duration = 6000)]
         public ActionResult Top()
         {
+            ViewBag.username = AdminUser.UserName;
             var nav = SiteMapManager.SiteMaps.DefaultSiteMap.RootNode.ChildNodes;
 
             return View(nav);

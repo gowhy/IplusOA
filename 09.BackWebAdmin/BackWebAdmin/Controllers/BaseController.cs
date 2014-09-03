@@ -13,6 +13,10 @@ namespace BackWebAdmin.Controllers
     [BaseAuthenticationAttribute]
     public class BaseController : AdminController
     {
+        public BaseController()
+        {
+          
+        }
         protected ActionResult Message(MsgModel model)
         {
             if (Request.IsAjaxRequest())
