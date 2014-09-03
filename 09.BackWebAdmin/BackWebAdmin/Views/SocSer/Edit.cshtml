@@ -28,7 +28,14 @@
                 </tr>
                 <tr>
                     <td class="item_title">收费类型:</td>
-                    <td class="item_input"><input type="text" class="textbox require" name="PayType" value="@Model.PayType" /></td>
+                    <td class="item_input">
+                    @*<input type="text" class="textbox require" name="PayType" value="@Model.PayType" />*@
+                        <select id="PayType" name="PayType">
+                            <option value="无偿">无偿</option>
+                            <option value="无偿">低偿</option>
+
+                        </select>
+                    </td>
                 </tr>
                 <tr>
                     <td class="item_title">
@@ -184,6 +191,8 @@
         $.fn.zTree.init($("#ztree"), setting, zNodes);
 
         $("#Type").val("@Model.Type");
+        $("#PayType").val("@Model.PayType");
+        
 
     });
 
