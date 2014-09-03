@@ -24,15 +24,12 @@ namespace BackWebAdmin.Controllers
         // GET: /Role/
         public ActionResult Index(int? page)
         {
-
-          
             var pageNumber = page ?? 1;
-
-            IplusOADBContext db = new IplusOADBContext();
-            var role = db.RoleTable.AsQueryable<RoleEntity>().ToList();
-
-            return View(role.ToPagedList(pageNumber - 1, pageSize));
-
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                var  role = db.RoleTable.AsQueryable<RoleEntity>().ToList();
+                  return View(role.ToPagedList(pageNumber - 1, pageSize));
+            }
         }
 
         [SecurityNode(Name = "添加")]
@@ -59,15 +56,15 @@ namespace BackWebAdmin.Controllers
         [SecurityNode(Name = "修改")]
         public ActionResult Edit(int id)
         {
-            IplusOADBContext db = new IplusOADBContext();
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                RoleEntity role = db.RoleTable.FirstOrDefault(x => x.Id == id);
 
-            RoleEntity role = db.RoleTable.FirstOrDefault(x => x.Id == id);
-
-            if (role == null) return Error("角色不存在");
-            PermissionCollection per = new RoleCommService().GetPermissions(id);
-            var roleModel = CreateRoleModel(role, per);
-            return View(roleModel);
-
+                if (role == null) return Error("角色不存在");
+                PermissionCollection per = new RoleCommService().GetPermissions(id);
+                var roleModel = CreateRoleModel(role, per);
+                return View(roleModel);
+            }
         }
 
         #region 编辑角色权限
@@ -90,11 +87,13 @@ namespace BackWebAdmin.Controllers
         [SecurityNode(Name = "删除")]
         public ActionResult Delete(int id)
         {
-            IplusOADBContext db = new IplusOADBContext();
-            RoleEntity role = db.RoleTable.FirstOrDefault(x => x.Id == id);
-            db.Delete<RoleEntity>(role);
-            db.SaveChanges();
-            return Success("操作成功");
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                RoleEntity role = db.RoleTable.FirstOrDefault(x => x.Id == id);
+                db.Delete<RoleEntity>(role);
+                db.SaveChanges();
+                return Success("操作成功");
+            }
         }
     }
 }

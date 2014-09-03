@@ -27,9 +27,11 @@ namespace BackWebAdmin.Controllers
         public ActionResult Index(int? page)
         {
             var pageNumber = page ?? 1;
-            IplusOADBContext db = new IplusOADBContext();
-            var list = db.SocialOrgEntityTable.AsQueryable<SocialOrgEntity>().ToList();
-            return View(list.ToPagedList(pageNumber - 1, pageSize));
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                var list = db.SocialOrgEntityTable.AsQueryable<SocialOrgEntity>().ToList();
+                return View(list.ToPagedList(pageNumber - 1, pageSize));
+            }
         }
         [SecurityNode(Name = "添加页")]
         public ActionResult Add()
@@ -60,40 +62,45 @@ namespace BackWebAdmin.Controllers
         [SecurityNode(Name = "编辑")]
         public ActionResult Edit(int id)
         {
-            IplusOADBContext db = new IplusOADBContext();
-            SocialOrgEntity entity = db.SocialOrgEntityTable.Find(id);
-            db.Dispose();
-            return View(entity);
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                SocialOrgEntity entity = db.SocialOrgEntityTable.Find(id);
+                db.Dispose();
+                return View(entity);
+            }
         }
         [SecurityNode(Name = "保存编辑")]
         public ActionResult PostEdit(SocialOrgEntity entity)
         {
-            IplusOADBContext db = new IplusOADBContext();
-            SocialOrgEntity so = db.SocialOrgEntityTable.Single(x => x.Id == entity.Id);
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                SocialOrgEntity so = db.SocialOrgEntityTable.Single(x => x.Id == entity.Id);
 
-            so.Name = entity.Name;
-            so.OrgNo = entity.OrgNo;
-            so.RegNO = entity.RegNO;
-            so.RegType = entity.RegType;
-            so.BusDesc = entity.BusDesc;
-            so.EffectiveTime = entity.EffectiveTime;
-            so.RegTime = entity.RegTime;
+                so.Name = entity.Name;
+                so.OrgNo = entity.OrgNo;
+                so.RegNO = entity.RegNO;
+                so.RegType = entity.RegType;
+                so.BusDesc = entity.BusDesc;
+                so.EffectiveTime = entity.EffectiveTime;
+                so.RegTime = entity.RegTime;
 
-            db.Update<SocialOrgEntity>(so);
-            db.SaveChanges();
-            db.Dispose();
-            return Success("修改成功");
-
+                db.Update<SocialOrgEntity>(so);
+                db.SaveChanges();
+                db.Dispose();
+                return Success("修改成功");
+            }
         }
 
         [SecurityNode(Name = "删除社会组织")]
         public ActionResult Delete(int id)
         {
-            IplusOADBContext db = new IplusOADBContext();
-            SocialOrgEntity entity = db.SocialOrgEntityTable.Find(id);
-            db.Delete<SocialOrgEntity>(entity);
-            db.SaveChanges();
-            return Success("操作成功");
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                SocialOrgEntity entity = db.SocialOrgEntityTable.Find(id);
+                db.Delete<SocialOrgEntity>(entity);
+                db.SaveChanges();
+                return Success("操作成功");
+            }
         }
     }
 }
