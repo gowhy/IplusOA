@@ -55,5 +55,11 @@ namespace BusLogic.Login
 
            return SSO.UserTicketManager.ValidateUserTicket(encryptTicket, ref user);
         }
+        public static void LoginOut()
+        {
+
+              SSO.UserTicketManager.Logout();
+        }
+
     }
 }

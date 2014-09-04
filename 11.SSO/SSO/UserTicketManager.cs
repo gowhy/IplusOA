@@ -48,7 +48,9 @@ namespace SSO
        /// </summary>
         public static void Logout()
         {
-            FormsAuthentication.SignOut();
+            HttpContext.Current.Response.Cookies.Add(new HttpCookie("UserLoginCookieToken", ""));
+          //  HttpContext.Current.Response.Cookies.Clear();
+           
         }  
         /// <summary>
         /// 解密票据信息
@@ -68,17 +70,6 @@ namespace SSO
                 user.RoleId =int.Parse(userInfoArr[1]??"0");
                 user.DeptId = long.Parse(userInfoArr[2] ?? "0");
                 user.SocOrgId = int.Parse(userInfoArr[3] ?? "0");
-             
-                //string strUserName = adminUser.UserName;
-                //int? roleId = adminUser.RoleId;
-                //long? deptId = adminUser.DeptId;
-                //int? socOrgId = adminUser.SocOrgId;
-
-
-                //user.IsEffect = bool.Parse(userInfoArr[2]);
-                //user.IsDefaultAdmin = bool.Parse(userInfoArr[3]);
-                //检查用户名、密码是否正确，验证是合法用户  
-                //var isQuilified = CheckUser(userName, password);  
                 return true;
             }
             catch (Exception e)

@@ -63,6 +63,12 @@ namespace BackWebAdmin.Controllers
             return Json(admin, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult Out()
+        {
+            Login.LoginOut();
+            return RedirectToAction("Index", "Login");
+
+        }
 
     }
 }

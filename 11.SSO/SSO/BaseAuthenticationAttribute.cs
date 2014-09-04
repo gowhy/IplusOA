@@ -48,20 +48,7 @@ namespace SSO
        
 
             }
-            ErrorRedirect(actionContext);
-            
-            //else
-            //{
-            //        //如果请求Header不包含ticket，则判断是否是匿名调用  
-            //        var attr = actionContext.ActionDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().OfType<AllowAnonymousAttribute>();
-            //        bool isAnonymous = attr.Any(a => a is AllowAnonymousAttribute);
-
-            //        //是匿名用户，则继续执行；非匿名用户，抛出“未授权访问”信息  
-            //        if (isAnonymous)
-            //            base.OnActionExecuting(actionContext);
-            //        else
-            //            actionContext.Response = new HttpResponseMessage(HttpStatusCode.Unauthorized);
-            //}
+            ErrorRedirect(actionContext);   
         }
         private void ErrorRedirect(ActionExecutingContext filterContext)
         {
