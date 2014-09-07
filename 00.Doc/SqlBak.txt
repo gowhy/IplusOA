@@ -1,0 +1,48 @@
+
+统计 社区参与活动的服务数量
+
+SELECT  count(S.id) FROM  socservicedetail  s
+
+WHERE CoverCommunity LIKE '%8510101%' 
+
+
+AND  NOW() BETWEEN s.`PubTime` AND s.`EndTime`
+
+
+AND   NOT EXISTS (
+SELECT j.`SSDetailId`  FROM socserdetailjoin  j WHERE j.`State`<>1 AND s.`Id`=j.`SSDetailId` AND j.`DepId`='8510101'
+)
+
+
+
+统计 参与社区活动的社会组织
+
+SELECT COUNT(*) FROM (
+
+SELECT  DISTINCT s.`SocialNo` FROM  socservicedetail  s
+
+WHERE CoverCommunity LIKE '%8510101%' 
+
+AND  NOW() BETWEEN s.`PubTime` AND s.`EndTime`
+AND   NOT EXISTS (
+SELECT j.`SSDetailId`  FROM socserdetailjoin  j WHERE j.`State`<>1 AND s.`Id`=j.`SSDetailId` AND j.`DepId`='8510101'
+
+)
+) AS t1
+
+
+统计辖区内的自愿者数量：
+SELECT COUNT(*) FROM volunteer WHERE   depid LIKE '8510104%'  
+
+
+统计在辖区活动的志愿者：
+
+SELECT  * FROM  serrecord r LEFT JOIN  socservicedetail  s
+ ON r.`SDId`=s.`Id`
+WHERE CoverCommunity LIKE '%8510101%' 
+
+
+AND   NOT EXISTS (
+SELECT j.`SSDetailId`  FROM socserdetailjoin  j WHERE j.`State`<>1 AND s.`Id`=j.`SSDetailId` AND j.`DepId`='8510101'
+)
+
