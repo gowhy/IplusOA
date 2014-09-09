@@ -116,7 +116,7 @@ namespace BackWebAdmin.Controllers
                                             SELECT j.`SSDetailId`  FROM socserdetailjoin  j WHERE j.`State`<>1 AND s.`Id`=j.`SSDetailId` AND j.`DepId` LIKE '{0}%'
                                             ) 
 
-                                            AND  CoverCommunity LIKE '%{0}%' ", udepId);
+                                            AND  CoverCommunity LIKE '%{0}%'    GROUP BY T.`Code` ", udepId);
             MySqlParameter[] parm = new MySqlParameter[] { };
             List<DpEntity> SerVol = db.Database.SqlQuery<DpEntity>(sql, parm).ToList();
             res.Chlids = SerVol;
