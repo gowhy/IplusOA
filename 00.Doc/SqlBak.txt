@@ -41,8 +41,67 @@ SELECT  * FROM  serrecord r LEFT JOIN  socservicedetail  s
  ON r.`SDId`=s.`Id`
 WHERE CoverCommunity LIKE '%8510101%' 
 
+AND  DATE_ADD( r.`BeginTime`, INTERVAL 8 HOUR) <NOW() 
+AND  NOW() BETWEEN s.`PubTime` AND s.`EndTime`
+AND   NOT EXISTS (
+SELECT j.`SSDetailId`  FROM socserdetailjoin  j WHERE j.`State`<>1 AND s.`Id`=j.`SSDetailId` AND j.`DepId`='8510101'
+)
+
+
+SELECT  COUNT(s.`type`) COUNT,s.type  FROM  socservicedetail  s
+
+WHERE CoverCommunity LIKE '%8510101%' 
+
 
 AND   NOT EXISTS (
 SELECT j.`SSDetailId`  FROM socserdetailjoin  j WHERE j.`State`<>1 AND s.`Id`=j.`SSDetailId` AND j.`DepId`='8510101'
 )
 
+GROUP BY s.`Type`
+
+
+
+统计 社区参与活动的服务数量
+
+SELECT  COUNT(S.`Id`) `COUNT`,T.`Name`,T.`Code`  FROM  sertype t LEFT JOIN   socservicedetail  s
+ ON  t.`Code`=s.`Type` 
+ AND S.`Id`  NOT IN (
+SELECT j.`SSDetailId`  FROM socserdetailjoin  j WHERE j.`State`<>1 AND s.`Id`=j.`SSDetailId` AND j.`DepId`='8510101'
+) 
+
+AND  CoverCommunity LIKE '%8510101%' 
+
+
+AND  NOW() BETWEEN s.`PubTime` AND s.`EndTime`
+ 
+ GROUP BY T.`Code`
+
+
+
+ SELECT  COUNT(S.`Id`) `COUNT`,T.`Name`,T.`Code`  FROM  sertype t LEFT JOIN   socservicedetail  s
+ ON  t.`Code`=s.`Type` 
+ AND S.`Id`  NOT IN (
+SELECT j.`SSDetailId`  FROM socserdetailjoin  j WHERE j.`State`<>1 AND s.`Id`=j.`SSDetailId` AND j.`DepId`='8510101'
+) 
+
+AND  CoverCommunity LIKE '%8510101%' 
+
+
+AND s.`EndTime` < NOW() 
+ 
+ GROUP BY T.`Code`
+
+ --统计服务志愿者数量
+
+  SELECT  COUNT(r.`Id`) `COUNT`,T.`Name`,T.`Code`  FROM  sertype t LEFT JOIN   socservicedetail  s
+ ON  t.`Code`=s.`Type`  LEFT JOIN serrecord  r  ON r.`SDId`=s.`Id`
+ AND S.`Id`  NOT IN (
+SELECT j.`SSDetailId`  FROM socserdetailjoin  j WHERE j.`State`<>1 AND s.`Id`=j.`SSDetailId` AND j.`DepId`='8510101'
+) 
+
+AND  CoverCommunity LIKE '%8510101%' 
+
+
+AND s.`EndTime` < NOW() 
+ 
+ GROUP BY T.`Code`

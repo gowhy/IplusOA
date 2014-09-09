@@ -45,8 +45,9 @@ namespace BackWebAdmin.Controllers
 
             entity.State = 0;//待审核
             entity.Doing = 1;//默认接受任务
-            entity.PassWord = "000000";//自愿者默认密码
-
+           // entity.PassWord = "000000";//自愿者默认密码
+            //model.Score = entity.Score;
+            entity.Score = 0;
             using (IplusOADBContext db = new IplusOADBContext())
             {
 
@@ -89,7 +90,8 @@ namespace BackWebAdmin.Controllers
             model.QQ = entity.QQ;
             model.RealName = entity.RealName;
             model.RealNameState = entity.RealNameState;
-            model.Score = entity.Score;
+            //model.Score = entity.Score;
+            model.Score =0;
             model.SocialNO = entity.SocialNO;
             model.ThsScore = entity.ThsScore;
             model.Type = entity.Type;

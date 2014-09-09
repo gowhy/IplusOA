@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="why_dbModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.6" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="role">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsEffect" Type="bool" />
+          <Property Name="AddTime" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“def.why_db.table1”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="table1">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="name2" Type="varchar" MaxLength="100" />
+          <Property Name="password2" Type="varchar" MaxLength="100" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="why_dbModelStoreContainer">
+          <EntitySet Name="role" EntityType="Self.role" Schema="why_db" store:Type="Tables" />
+          <EntitySet Name="table1" EntityType="Self.table1" store:Type="Tables" store:Schema="why_db">
+            <DefiningQuery>SELECT
+`table1`.`name2`, 
+`table1`.`password2`, 
+`table1`.`ID`
+FROM `table1` AS `table1`</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="why_dbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="role">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IsEffect" Type="Boolean" />
+          <Property Name="AddTime" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="table1">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="name2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="password2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityContainer Name="why_dbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="role" EntityType="Self.role" />
+          <EntitySet Name="table1" EntityType="Self.table1" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="why_dbModelStoreContainer" CdmEntityContainer="why_dbEntities">
+          <EntitySetMapping Name="role">
+            <EntityTypeMapping TypeName="why_dbModel.role">
+              <MappingFragment StoreEntitySet="role">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IsEffect" ColumnName="IsEffect" />
+                <ScalarProperty Name="AddTime" ColumnName="AddTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="table1">
+            <EntityTypeMapping TypeName="why_dbModel.table1">
+              <MappingFragment StoreEntitySet="table1">
+                <ScalarProperty Name="name2" ColumnName="name2" />
+                <ScalarProperty Name="password2" ColumnName="password2" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

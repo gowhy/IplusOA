@@ -67,8 +67,24 @@ namespace BackWebAdmin.Controllers
             entity.AddTime = DateTime.Now;
             entity.AddUser = AdminUser.UserName;
 
+
+            IList<string> coverList = entity.CoverCommunity.Split(',');
+
+            List<SocSerDetailJoinEntity> Join = new List<SocSerDetailJoinEntity>();
+            //foreach (var item in coverList)
+            //{
+            //    SocSerDetailJoinEntity tmp = new SocSerDetailJoinEntity();
+            //    tmp.DepId = item;
+            //    tmp.SSDetailId=
+                
+            //}
+           
+
+
             using (IplusOADBContext db = new IplusOADBContext())
             {
+               
+
                 SocialOrgEntity soc = db.SocialOrgEntityTable.SingleOrDefault(x => x.Id == AdminUser.SocOrgId);
                 entity.SocialNo = soc.SocialNO;
 
@@ -80,6 +96,7 @@ namespace BackWebAdmin.Controllers
                 return Success("添加成功");
             }
         }
+
         [SecurityNode(Name = "修改社区服务内容")]
         public ActionResult Edit(int id)
         {

@@ -29,14 +29,33 @@ namespace BackWebAdmin.Controllers
             BackAdminUser admin = new BackAdminUser();
             admin.UserName = model.UserName;
             admin.PassWord = model.Password;
-            if (Login.VLogin(admin))
+            if (Login.VLogin( admin))
             {
                 return RedirectToAction("Index", "Home");
             }
             return View(model);
 
         }
-        
+
+        [HttpPost]
+        public ActionResult App(LoginModel model)
+        {
+            BackAdminUser admin = new BackAdminUser();
+            admin.UserName = model.UserName;
+            admin.PassWord = model.Password;
+            var res = Login.VLoginApp(admin);
+            if (res != null)
+            {
+                res.Msg += "登录成功2-res";
+                return Json(res);
+            }
+            else
+            {
+                return Json("用户名或者密码不对");
+            }
+        }
+
+
         public ActionResult LoginAPI([System.Web.Http.FromBody]LoginModel model)
         {
             
@@ -69,6 +88,31 @@ namespace BackWebAdmin.Controllers
             return RedirectToAction("Index", "Login");
 
         }
+        public ActionResult Select(BackAdminUser model)
+        {
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
 
+                DbSet<VolunteerEntity> vol = db.VolunteerEntityTable;
+                DbSet<SocialOrgEntity> soc = db.SocialOrgEntityTable;
+
+
+                var query = from v in  soc
+                            join s in vol on v.SocialNO equals s.SocialNO into ogroup
+                            select new { v2 = v.SocialNO, s2 = ogroup.Count() };
+                string str=query.ToString()+ "\\r\\n";
+                foreach (var order in query)
+                {
+
+                    
+                   str+=string.Format( "  CustomerID: {0}  Orders Count: {1} ",
+                        order.v2, 
+                        order.s2);
+                }
+                var sss = str;
+                return Content(str);
+            }
+
+        }
     }
 }

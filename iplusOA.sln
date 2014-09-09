@@ -28,6 +28,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "10.Web", "10.Web", "{91301ECE-3A29-41BE-9FDA-0794CDE10460}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00.Doc", "00.Doc", "{2196078D-C9E9-4B17-B8A7-11F8CF90AC27}"
+	ProjectSection(SolutionItems) = preProject
+		00.Doc\SqlBak.txt = 00.Doc\SqlBak.txt
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestP2", "TestP2\TestP2.csproj", "{D57C8541-80B0-41E4-AB50-22EB0CD35435}"
 EndProject

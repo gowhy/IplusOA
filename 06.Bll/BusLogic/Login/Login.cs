@@ -12,7 +12,7 @@ namespace BusLogic.Login
 {
     public class Login
     {
-        public static bool VLogin(BackAdminUser admin)
+        public static bool VLogin( BackAdminUser admin)
         {
             IplusOADBContext db = null;
             try
@@ -44,6 +44,37 @@ namespace BusLogic.Login
             }
         }
 
+        public static BackAdminUser VLoginApp(BackAdminUser admin)
+        {
+            IplusOADBContext db = null;
+            try
+            {
+                db = new IplusOADBContext();
+
+                admin = db.BackAdminUserEntityDBSet.FirstOrDefault<BackAdminUser>(x => x.UserName == admin.UserName && x.PassWord == admin.PassWord);
+                if (admin != null)
+                {
+                    admin.LoginToken = SSO.UserTicketManager.CreateLoginUserTicket(admin);
+                    return admin;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception e)
+            {
+                admin.Msg = e.Message;
+                throw e;
+            }
+            finally
+            {
+                if (db != null)
+                {
+                    db.Dispose();
+                }
+            }
+        }
         /// <summary>
         /// 验证用户登陆
         /// </summary>

@@ -36,13 +36,6 @@ namespace BackWebAdmin.Controllers
         [SecurityNode(Name = "添加页")]
         public ActionResult Add()
         {
-            //IList<DepartmentEntity> list = null;
-            //using (IplusOADBContext db = new IplusOADBContext())
-            //{
-            //    list = db.DepartmentTable.AsQueryable<DepartmentEntity>().ToList();
-            //}
-            //ViewData["Department_List"] = list;
-
             return View();
         }
         [SecurityNode(Name = "保存添加")]

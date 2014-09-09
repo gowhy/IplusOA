@@ -11,6 +11,7 @@
         return true;
     }
 </script>
+
 <div class="main">
     <div class="main_title">
         自愿者注册
@@ -24,11 +25,11 @@
                 </tr>
                 <tr>
                     <td class="item_title">登录用户名:</td>
-                    <td class="item_input"><input type="text" class="textbox require" name="UerName" /></td>
+                    <td class="item_input"><input type="text" class="textbox require" name="UerName" value=""    autocomplete="off"/></td>
                 </tr>
                 <tr>
                     <td class="item_title">登录密码:</td>
-                    <td class="item_input"><input type="password" class="textbox require" name="PassWord" /></td>
+                    <td class="item_input"><input type="password" class="textbox require" name="PassWord" value="" /></td>
                 </tr>
                 <tr>
                     <td class="item_title">用户编号:</td>
@@ -44,18 +45,23 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="item_title">社区编号:</td>
-                    <td class="item_input"><input type="text" class="textbox require" name="DepId" /></td>
+                    <td class="item_title">社区:</td>
+                    <td class="item_input">
+                        <input type="hidden" name="DeptId" id="DeptId" />
+                        <input type="text" class="textbox require" id="DeptIdName" name="DeptIdName" onclick="showMenu(); return false;" />
+                        <div id="menuContent" class="menuContent" style="display:none; position: absolute;">
+                            <ul id="ztree" class="ztree" style="margin-top:0;  overflow:scroll; height:270px;"></ul>
+                        </div>
+                    </td>
+
                 </tr> 
                 <tr>
                     <td class="item_title">居住地址:</td>
                     @*<td class="item_input"><input type="text" class="textbox require" name="Address" /></td>*@
                     <td class="item_input">
-                        <input type="hidden" name="DeptId" id="DeptId" />
-                        <input type="text" class="textbox require" id="Address" name="Address" onclick="showMenu(); return false;" />
-                        <div id="menuContent" class="menuContent" style="display:none; position: absolute;">
-                            <ul id="ztree" class="ztree" style="margin-top:0;  overflow:scroll; height:270px;"></ul>
-                        </div>
+                     
+                        <input type="text" class="textbox require" id="Address" width="200" name="Address"  />
+                       
 
                     </td>
                 </tr>
@@ -84,7 +90,7 @@
              
                 <tr>
                     <td class="item_title">信誉指数:</td>
-                    <td class="item_input"><input type="text" class="textbox require" name="Honor" /></td>
+                    <td class="item_input"><input type="text" class="textbox require" name="Honor" value="100"  disabled="disabled"/></td>
                 </tr>
                 <tr>
                     <td class="item_title">联系电话:</td>
@@ -104,24 +110,24 @@
                 </tr>
                 <tr>
                     <td class="item_title">群体ID:</td>
-                    <td class="item_input"><input type="text" class="textbox require" name="GroupID" /></td>
+                    <td class="item_input"><input type="text" class="textbox require" name="GroupID"  value="0" disabled="disabled"/></td>
                 </tr>
                 <tr>
                     <td class="item_title">感恩卡:</td>
-                    <td class="item_input"><input type="text" class="textbox require" name="ThsScore" /></td>
+                    <td class="item_input"><input type="text" class="textbox require" name="ThsScore"  value="20" disabled="disabled"/></td>
                 </tr>
                 <tr>
                     <td class="item_title">积分:</td>
-                    <td class="item_input"><input type="text" class="textbox require" name="Score" /></td>
+                    <td class="item_input"><input type="text" class="textbox require" name="Score"  disabled="disabled" value="0"/></td>
                 </tr>
                 <tr>
                     <td class="item_title">志愿者编号:</td>
                     <td class="item_input"><input type="text" class="textbox require" name="VID" /></td>
                 </tr>
-                <tr>
+                @*<tr>
                     <td class="item_title">社会组织编号:</td>
                     <td class="item_input"><input type="text" class="textbox require" name="SocID" /></td>
-                </tr>
+                </tr>*@
                 <tr>
                     <td class="item_title"></td>
                     <td class="item_input">
@@ -184,7 +190,7 @@
     }
     function onCheck(e, treeId, treeNode) {
         $("#DeptId").val(treeNode.Id);
-        $("#Address").val(treeNode.Name);
+        $("#DeptIdName").val(treeNode.Name);
     }
 
     function showMenu() {

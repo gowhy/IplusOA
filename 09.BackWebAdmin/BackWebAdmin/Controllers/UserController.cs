@@ -70,7 +70,7 @@ namespace BackWebAdmin.Controllers
         {
             using (IplusOADBContext db = new IplusOADBContext())
             {
-                if (db.BackAdminUserEntityDBSet.Count(u => u.UserName == user.UserName) > 0)
+                if (db.BackAdminUserEntityDBSet.Count(u => u.UserName.Trim() == user.UserName.Trim()) > 0)
                 {
                     db.Dispose();
                     return Error("用户已经存在");
@@ -142,5 +142,7 @@ namespace BackWebAdmin.Controllers
                 return Success("操作成功");
             }
         }
+
+   
 	}
 }

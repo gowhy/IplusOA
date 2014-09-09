@@ -159,6 +159,7 @@
     <Compile Include="CommService\Role\RoleCommService.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\Default1Controller.cs" />
+    <Compile Include="Controllers\DpController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
@@ -540,6 +541,7 @@
     <Content Include="Views\Vol\Audit.cshtml" />
     <Content Include="Views\SocSer\ManagerIndex.cshtml" />
     <Content Include="Views\SocSer\NoTakeIn.cshtml" />
+    <Content Include="Views\Dp\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\02.Common\Common\Common.csproj">
@@ -589,7 +591,9 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>6508</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:12345</IISUrl>
+          <IISUrl>http://localhost:6508/</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>http://localhost:6508/</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -39,14 +39,34 @@
                         </select>
                     </td>
                 </tr>
-                <tr>
+                @*<tr>
                     <td class="item_title">社区编号:</td>
                     <td class="item_input"><input type="text" class="textbox require" name="DepId" value="@Model.DepId" /></td>
                 </tr>
                 <tr>
                     <td class="item_title">居住地址:</td>
                     <td class="item_input"><input type="text" class="textbox require" name="Address" value="@Model.Address" /></td>
+                </tr>*@
+
+                <tr>
+                    <td class="item_title">社区:</td>
+                    <td class="item_input">
+                        <input type="hidden" name="DeptId" id="DeptId" />
+                        <input type="text" class="textbox require" id="DeptIdName" name="DeptIdName" value="@Model.DepId" onclick="showMenu(); return false;" />
+                        <div id="menuContent" class="menuContent" style="display:none; position: absolute;">
+                            <ul id="ztree" class="ztree" style="margin-top:0;  overflow:scroll; height:270px;"></ul>
+                        </div>
+                    </td>
+
                 </tr>
+                <tr>
+                    <td class="item_title">居住地址:</td>
+                    @*<td class="item_input"><input type="text" class="textbox require" name="Address" /></td>*@
+                    <td class="item_input">
+                        <input type="text" class="textbox require" id="Address" width="200" name="Address" value="@Model.Address" />
+                    </td>
+                </tr>
+
                 <tr>
                     <td class="item_title">实名制状态:</td>
                     <td class="item_input"><input type="text" class="textbox require" name="RealNameState" value="@Model.RealNameState" /></td>
@@ -96,20 +116,20 @@
                 </tr>
                 <tr>
                     <td class="item_title">感恩卡:</td>
-                    <td class="item_input"><input type="text" class="textbox require" name="ThsScore" value="@Model.ThsScore" /></td>
+                    <td class="item_input"><input type="text" class="textbox require" name="ThsScore" value="@Model.ThsScore" disabled="disabled" /></td>
                 </tr>
                 <tr>
                     <td class="item_title">积分:</td>
-                    <td class="item_input"><input type="text" class="textbox require" name="Score" value="@Model.Score" /></td>
+                    <td class="item_input"><input type="text" class="textbox require" name="Score" value="@Model.Score" disabled="disabled" /></td>
                 </tr>
                 <tr>
                     <td class="item_title">志愿者编号:</td>
                     <td class="item_input"><input type="text" class="textbox require" name="VID" value="@Model.VID" /></td>
                 </tr>
-                <tr>
+                @*<tr>
                     <td class="item_title">社会组织编号:</td>
                     <td class="item_input"><input type="text" class="textbox require" name="SocialNO" value="@Model.SocialNO" /></td>
-                </tr>
+                </tr>*@
                 <tr>
                     <td class="item_title"></td>
                     <td class="item_input">
@@ -122,5 +142,70 @@
                 </tr>
             </tbody>
         </table>
+
+        <script type="text/javascript">
+
+
+    var setting = {
+        view: {
+            dblClickExpand: false,
+            showLine: true,
+            selectedMulti: false
+
+        },
+        check: {
+            enable: true ,
+            chkStyle: "radio",
+            radioType: "all"
+        },
+        data: {
+            simpleData: {
+                enable: true,
+                idKey: "Id",
+                pIdKey: "PId",
+                rootPId: ""
+            },
+            key: {
+                name: "Name"
+            }
+
+        },
+        callback: {
+            beforeCheck: beforeCheck,
+            onCheck: onCheck
+        }
+    };
+
+    var zNodes =@(Html.Raw(ViewData["Department_List"].ToString()));
+
+
+    function beforeCheck(treeId, treeNode) {
+
+    }
+    function onCheck(e, treeId, treeNode) {
+        $("#DeptId").val(treeNode.Id);
+        $("#DeptIdName").val(treeNode.Name);
+    }
+
+    function showMenu() {
+        $("#menuContent").slideDown("fast");
+        $("body").bind("mousedown", onBodyDown);
+    }
+    function hideMenu() {
+        $("#menuContent").fadeOut("fast");
+        $("body").unbind("mousedown", onBodyDown);
+    }
+    function onBodyDown(event) {
+        if (!(event.target.id == "menuBtn" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length>0)) {
+            hideMenu();
+        }
+    }
+
+
+    $(document).ready(function () {
+        $.fn.zTree.init($("#ztree"), setting, zNodes);
+    });
+
+        </script>
     </form>
 </div>

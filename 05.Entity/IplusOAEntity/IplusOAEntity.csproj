@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackAdminUser.cs" />
+    <Compile Include="Count\DpEntity.cs" />
     <Compile Include="Menu\MenuEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Role\RoleEntity.cs" />
