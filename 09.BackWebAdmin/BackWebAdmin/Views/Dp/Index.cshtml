@@ -13,8 +13,8 @@
     }
 
     .wid20 {
-        width: 40%;
-        height: 748px;
+        width: 39%;
+        height: 1000px;
     }
 
     .textLeft {
@@ -36,154 +36,116 @@
         font-family: 'Microsoft YaHei';
     }
 </style>
-<div class="dpshow textCenter "><span > 社区1+1-----实时监控大屏 </span>  <span class="right">@DateTime.Now.ToString("yyyy-MM-dd hh:ss")</span> </div>
+<script   type="text/javascript">
+
+    $(function () {
+        
+        ShowData();
+        setInterval(ShowData, 5*60*1000)
+        function ShowData() {
+
+            $.ajax({
+                url: ROOT + MODULE_NAME + "/AjaxCount",
+                data: { id: "1" },
+                type: 'POST',
+                dataType: "json",
+                success: function (data) {
+                    BindShowCount(data);
+                }
+            });
+        }
+        function BindShowCount(item) {
+            var tHtml = " <thead>  <tr> <td colspan=\"2\"></td> <td>累计</td> <td>实时</td> </tr> </thead>";
+           
+            //item[0].Name
+
+            for (var i = 0; i < item.length; i++) {
+                tHtml += "<tr><td colspan=\"2\" class=\"textLeft\">" + item[i].Name + "</td> <td>" + item[i].old + "</td><td>" + item[i].now + "</td> </tr>";
+                if (item[i].Chlids) {
+                    for (var j = 0; j < item[i].Chlids.length; j++) {
+                        tHtml += "<tr> <td colspan=\"2\">" + item[i].Chlids[j].Name + "</td><td>" + item[i].Chlids[j].old + "</td><td>" + item[i].Chlids[j].now + "</td> </tr>";
+                    }
+                }
+               
+            }
+
+            if (tHtml.length > 10) {
+                $("#showForm").html(tHtml);
+            }
+
+        }
+
+
+        ShowSerVol();
+        setInterval(ShowSerVol, 5 * 60 * 1000)
+        function ShowSerVol() {
+
+            $.ajax({
+                url: ROOT + MODULE_NAME + "/SerVolShow",
+                data: { id: "1" },
+                type: 'POST',
+                dataType: "json",
+                success: function (data) {
+                    BindSerVol(data);
+                }
+            });
+        }
+
+        function BindSerVol(data) {
+            if (data.ser) {
+                var serHtml = "";
+                for (var i = 0; i < data.ser.length; i++) {
+                    serHtml += "<li>服务时间:" + data.ser[i].PubTime - data.ser[i].EndTime + " 项目：" + data.ser[i].Context + "</li>";
+                }
+                if (serHtml.length > 10) {
+                    $("#SocSer_ul").html(serHtml);
+                }
+            }
+
+            if (data.vol) {
+                var volHtml = "";
+                for (var i = 0; i < data.vol.length; i++) {
+                    volHtml += "<li>服务时间:" + data.vol[i].BeginTime + " 姓名：" + data.vol[i].RealName + " 项目：" + data.vol[i].Context + "</li>";
+                }
+                if (volHtml.length>10) {
+                    $("#volSer_ul").html(volHtml);
+                }
+               
+            }
+
+
+        }
+        
+    });
+</script>
+
+<div class="dpshow textCenter "><span > 社区1+1-----实时监控大屏 </span>  <span class="right" id="spTimeNow">@DateTime.Now.ToString("yyyy-MM-dd HH:mm")</span> </div>
 <div class="left wid80 textCenter">
-    <table class="form yahei" style=" font-size: 40px;">
-        <thead>
-            <tr>
-
-                <td colspan="2"></td>
-                <td>累计</td>
-                <td>实时</td>
-            </tr>
-        </thead>
-        <tr>
-            <td colspan="2" class="textLeft">辖区社会组织总计</td>
-
-            <td>999999</td>
-            <td>99</td>
-        </tr>
-        <tr>
-            <td colspan="2" class="textLeft">辖区社会服务总计</td>
-
-
-            <td>999999</td>
-            <td>99</td>
-        </tr>
-        <tr>
-
-            <td colspan="2">法律服务</td>
-
-            <td>999999</td>
-            <td>99</td>
-        </tr>
-        <tr>
-
-            <td colspan="2">医疗服务</td>
-
-            <td>999999</td>
-            <td>99</td>
-        </tr>
-        <tr>
-
-            <td colspan="2">文化娱乐</td>
-
-            <td>999999</td>
-            <td>99</td>
-        </tr>
-        <tr>
-
-            <td colspan="2">居家养老</td>
-
-            <td>999999</td>
-            <td>99</td>
-        </tr>
-
-        <tr>
-            <td colspan="2" class="textLeft">辖区服务志愿者总计</td>
-            <td>999999</td>
-            <td>99</td>
-        </tr>
-     
-        <tr>
-
-            <td colspan="2">法律服务</td>
-
-            <td>999999</td>
-            <td>99</td>
-        </tr>
-        <tr>
-
-            <td colspan="2">医疗服务</td>
-
-            <td>999999</td>
-            <td>99</td>
-        </tr>
-        <tr>
-
-            <td colspan="2">文化娱乐</td>
-
-            <td>999999</td>
-            <td>99</td>
-        </tr>
-        <tr>
-
-            <td colspan="2">居家养老</td>
-
-            <td>999999</td>
-            <td>99</td>
-        </tr>
-        <tr>
-            <td colspan="2" class="textLeft">辖区注册志愿者总计</td>
-
-
-            <td>999999    </td>
-            <td>99</td>
-        </tr>
-        <tr>
-
-            <td colspan="2">法律服务</td>
-
-            <td>999999  </td>
-            <td>99</td>
-        </tr>
-        <tr>
-
-            <td colspan="2">医疗服务</td>
-
-            <td>999999</td>
-            <td>99</td>
-        </tr>
-        <tr>
-
-            <td colspan="2">文化娱乐</td>
-
-            <td>999999</td>
-            <td>99</td>
-        </tr>
-        <tr>
-
-            <td colspan="2">居家养老</td>
-
-            <td>999999</td>
-            <td>99</td>
-        </tr>
+    <table class="form yahei" id="showForm" style=" font-size: 30px;">
+ 
+      
     </table>
 </div>
-<div class="right wid20" style=" font-family: 'Microsoft YaHei'; font-size: 20px; ">
+<div class="right wid20" style=" font-family: 'Microsoft YaHei'; margin-top: -5px; font-size: 20px; border: 1px solid #ccc; ">
+    <div>
+        <span>真正进行社区服务:</span><br />
+        <div id="SocSer" style=" height:300px;">
+            <ul id="SocSer_ul">
+                <li>sfa萨芬是的方式sf</li>
+                <li>sfa所发生的sf</li>
+                <li>sfa萨芬是sf</li>
 
-    1. 实得分十大闪电富士达富士达闪电闪电闪电闪电闪电闪电闪电闪电
-    阿福闪电闪电
-    <br /> 2.实得分十大闪电富士达富士达闪电闪电闪电闪电闪电闪电闪电闪电
-    阿福闪电闪电
-    <br /> 2.实得分十大闪电富士达富士达闪电闪电闪电闪电闪电闪电闪电闪电
-    阿福闪电闪电
-    2.实得分十大闪电富士达富士达闪电闪电闪电闪电闪电闪电闪电闪电
-    2.实得分十大闪电富士达富士达闪电闪电闪电闪电闪电闪电闪电闪电
-    2.实得分十大闪电富士达富士达闪电闪电闪电闪电闪电闪电闪电闪电\<br />
-    阿福闪电闪电
-    2.实得分十大闪电富士达富士达闪电闪电闪电闪电闪电闪电闪电闪电\<br />
-    阿福闪电闪电
-    2.实得分十大闪电富士达富士达闪电闪电闪电闪电闪电闪电闪电闪电\<br />
-    阿福闪电闪电
-    2.实得分十大闪电富士达富士达闪电闪电闪电闪电闪电闪电闪电闪电\<br />
-    阿福闪电闪电
-    2.实得分十大闪电富士达富士达闪电闪电闪电闪电闪电闪电闪电闪电\<br />
-    阿福闪电闪电
-    2.实得分十大闪电富士达富士达闪电闪电闪电闪电闪电闪电闪电闪电\<br />
-    阿福闪电闪电
-    2.实得分十大闪电富士达富士达闪电闪电闪电闪电闪电闪电闪电闪电
-    阿福闪电闪电
-    阿福闪电闪电
-    阿福闪电闪电
+            </ul>
+        </div>
+    </div>
+    <div>
+        <span>真正进行志愿者服务:</span><br />
+        <div id="volSer" style=" height:300px;">
+
+            <ul id="volSer_ul">
+                <li>sfa萨芬是的方式sf</li>
+                <li>sfa所发生的sf</li>
+            </ul>
+        </div>
+    </div>
 </div>

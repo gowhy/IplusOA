@@ -157,6 +157,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="CommService\Role\RoleCommService.cs" />
+    <Compile Include="CommService\SocSer\SocSerService.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\Default1Controller.cs" />
     <Compile Include="Controllers\DpController.cs" />
@@ -542,6 +543,7 @@
     <Content Include="Views\SocSer\ManagerIndex.cshtml" />
     <Content Include="Views\SocSer\NoTakeIn.cshtml" />
     <Content Include="Views\Dp\Index.cshtml" />
+    <Content Include="Views\Dp\Index - 复制.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\02.Common\Common\Common.csproj">

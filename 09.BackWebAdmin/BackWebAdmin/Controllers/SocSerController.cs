@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Common;
+using BackWebAdmin.CommService;
 
 namespace BackWebAdmin.Controllers
 {
@@ -38,11 +39,19 @@ namespace BackWebAdmin.Controllers
         {
             var pageNumber = page ?? 1;
             string depId = AdminUser.DeptId.ToString();
-            using (IplusOADBContext db = new IplusOADBContext())
-            {
-                var list = db.SocServiceDetailEntityTable.AsQueryable().Where(x => x.CoverCommunity.IndexOf(depId) != -1).ToList();
-                return View(list.ToPagedList(pageNumber - 1, pageSize));
-            }
+            //using (IplusOADBContext db = new IplusOADBContext())
+            //{
+            //    var list = db.SocServiceDetailEntityTable.AsQueryable().Where(x => x.CoverCommunity.IndexOf(depId) != -1).ToList();
+            //    return View(list.ToPagedList(pageNumber - 1, pageSize));
+            //}
+            return View(SocSerService.CList(pageNumber, pageSize, depId));
+        }
+        [SecurityNode(Name = "App获取用户本社区服务内容")]
+        public ActionResult AppIndex(int? page, int pageSize=20)
+        {
+            var pageNumber = page ?? 1;
+            string depId = AdminUser.DeptId.ToString();
+            return Json(SocSerService.CList(pageNumber,pageSize, depId));
         }
 
         [SecurityNode(Name = "发布社区服务内容")]
@@ -71,19 +80,8 @@ namespace BackWebAdmin.Controllers
             IList<string> coverList = entity.CoverCommunity.Split(',');
 
             List<SocSerDetailJoinEntity> Join = new List<SocSerDetailJoinEntity>();
-            //foreach (var item in coverList)
-            //{
-            //    SocSerDetailJoinEntity tmp = new SocSerDetailJoinEntity();
-            //    tmp.DepId = item;
-            //    tmp.SSDetailId=
-                
-            //}
-           
-
-
             using (IplusOADBContext db = new IplusOADBContext())
             {
-               
 
                 SocialOrgEntity soc = db.SocialOrgEntityTable.SingleOrDefault(x => x.Id == AdminUser.SocOrgId);
                 entity.SocialNo = soc.SocialNO;
@@ -106,7 +104,6 @@ namespace BackWebAdmin.Controllers
                 var list = db.DepartmentTable.AsQueryable<DepartmentEntity>().ToList();
 
                 IList<SocSerDetailJoinEntity> joinList = db.SocSerDetailJoinEntityTable.AsQueryable().Where(x => x.SSDetailId == id && x.DepId == AdminUser.DeptId && x.State != 1).ToList();
-                //  joinList.FirstOrDefault()
                 db.Dispose();
                 string CoverCommunityNames = "";
                 IList<string> clit = entity.CoverCommunity.Trim().Split(',');
@@ -125,6 +122,15 @@ namespace BackWebAdmin.Controllers
                 return View(entity);
             }
           
+        }
+             [SecurityNode(Name = "APP-获取服务内容详情")]
+        public ActionResult AppView(int id)
+        {
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                SocServiceDetailEntity entity = db.SocServiceDetailEntityTable.Find(id);
+                return Json(entity);
+            }
         }
 
         [SecurityNode(Name = "保存修改社区服务内容")]

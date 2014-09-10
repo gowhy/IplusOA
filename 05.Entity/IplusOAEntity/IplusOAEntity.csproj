@@ -46,6 +46,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Role\RoleEntity.cs" />
     <Compile Include="Role\RolePermissionEntity.cs" />
+    <Compile Include="SocSer\SerRecordEntity.cs" />
     <Compile Include="SocSer\SocSerDetailJoinEntity.cs" />
     <Compile Include="SocSer\SocServiceDetailEntity.cs" />
     <Compile Include="SocSer\VolunteerEntity.cs" />

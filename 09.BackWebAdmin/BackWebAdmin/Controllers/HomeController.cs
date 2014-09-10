@@ -147,17 +147,6 @@ namespace BackWebAdmin.Controllers
             var now = DateTime.Now.Date;
             var threeDay = now.AddDays(2);
 
-            //ViewBag.FullProjectCount = DbProvider.D<Project>().Count(x => x.InnerStatus == 3 && x.IsEffect && !x.IsDelete);
-            //ViewBag.ThreeProjectCount = DbProvider.D<Project>().Count(x => !x.IsDelete && x.InnerStatus == 4 && x.NextRepayTime != null && x.NextRepayTime.Value <= threeDay);
-            //ViewBag.OverRepayCount = DbProvider.D<Project>().Count(x => !x.IsDelete && x.InnerStatus == 4 && x.NextRepayTime != null && x.NextRepayTime.Value < now);
-            //ViewBag.ChargeSuccessCount = DbProvider.D<ChargeOrder>().Count(x => x.InnerStatus == 2);
-            //ViewBag.ChargeSuccessAmount = DbProvider.D<ChargeOrder>().Where(x => x.InnerStatus == 2 && !x.IsDelete).Sum(x => x.PayAmount).ToMoney();
-            //ViewBag.UserCount = DbProvider.D<User>().Count(x => x.IsEffect && !x.IsDelete && x.GroupID == 3);
-            //ViewBag.UserIdPassedCount = DbProvider.D<User>().Count(x => x.IDCardPassed && x.GroupID == 3);
-            //ViewBag.UserLockAmount = DbProvider.D<User>().Include(x => x.UserAccount).Where(x => x.IsEffect && !x.IsDelete && x.GroupID == 3).Sum(x => x.UserAccount.LockMoney).ToMoney();
-            //ViewBag.UserCarryCount = DbProvider.D<UserCarry>().Count(x => x.Status == 0);
-            //ViewBag.UserCarryAmount = DbProvider.D<UserCarry>().Where(x => x.Status == 1).Sum(x => x.Money).ToMoney();
-            //ViewBag.UserRealAmount = DbProvider.D<User>().Include(x => x.UserAccount).Where(x => x.IsEffect && !x.IsDelete && x.GroupID == 3).Sum(x => x.UserAccount.Money).ToMoney();
             return View();
         }
 

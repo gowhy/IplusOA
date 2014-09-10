@@ -1,14 +1,14 @@
 ﻿$(function () {
     $(document).ajaxStart(function () {
-        $("#info").html("正在处理");
-        $("#info").show();
+        //$("#info").html("正在处理");
+        //$("#info").show();
     });
     $(document).ajaxStop(function () {
-        $("#info").oneTime(2000, function () {
-            $(this).fadeOut(2, function () {
-                $("#info").html("");
-            });
-        });
+        //$("#info").oneTime(2000, function () {
+        //    $(this).fadeOut(2, function () {
+        //        $("#info").html("");
+        //    });
+        //});
     });
 
     //表格处理

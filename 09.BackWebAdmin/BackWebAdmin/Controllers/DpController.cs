@@ -8,6 +8,8 @@ using System.Web.Mvc;
 using Common;
 using DataLayer;
 using MySql.Data.MySqlClient;
+using BackWebAdmin.CommService;
+using System.Data.Entity;
 
 
 namespace BackWebAdmin.Controllers
@@ -21,6 +23,7 @@ namespace BackWebAdmin.Controllers
             return View();
         }
 
+        #region 大屏数量统计 Ajax数据
         //[HttpPost]
         public ActionResult AjaxCount()
         {
@@ -40,7 +43,7 @@ namespace BackWebAdmin.Controllers
             db.Dispose();
             resList.OrderBy(x => x.OderBy);
 
-            return Json(resList,JsonRequestBehavior.AllowGet);
+            return Json(resList, JsonRequestBehavior.AllowGet);
         }
 
         public DpEntity CountSer(BaseContext db)
@@ -66,6 +69,8 @@ namespace BackWebAdmin.Controllers
             List<DpEntity> ser = db.Database.SqlQuery<DpEntity>(sql, parm).ToList();
             res.Chlids = ser;
             res.OderBy = 2;
+            res.old = ser.Sum(x => x.old);
+            res.now = ser.Sum(x => x.now);
             res.Name = "辖区社会服务总计";
             res.Chlids.OrderBy(x => x.OderBy);
             return res;
@@ -121,6 +126,8 @@ namespace BackWebAdmin.Controllers
             List<DpEntity> SerVol = db.Database.SqlQuery<DpEntity>(sql, parm).ToList();
             res.Chlids = SerVol;
             res.OderBy = 3;
+            res.old = SerVol.Sum(x => x.old);
+            res.now = SerVol.Sum(x => x.now);
             return res;
 
         }
@@ -141,6 +148,46 @@ namespace BackWebAdmin.Controllers
             return org;
 
         }
-        
-	}
+        #endregion
+
+        public ActionResult SerVolShow()
+        {
+            string depId = AdminUser.DeptId.ToString();
+            Dictionary<string, object> dic = new Dictionary<string, object>();
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                var SerList = db.SocServiceDetailEntityTable.AsQueryable()//
+                    .Where(x => x.CoverCommunity.IndexOf(depId) != -1//
+                              && x.PubTime < DateTime.Now //
+                              && x.EndTime > DateTime.Now
+                           )//
+                    .ToList();
+             
+
+                DbSet<SocServiceDetailEntity> soc = db.SocServiceDetailEntityTable;
+                DbSet<SerRecordEntity> record = db.SerRecordTable;
+                DbSet<VolunteerEntity> vol = db.VolunteerEntityTable;
+                DbSet<DepartmentEntity> dep = db.DepartmentTable;
+
+              DateTime gdate=DateTime.Now.AddHours(-8);
+                var vlist = (from r in record
+                            join s in soc on r.SDId equals s.Id
+                            join v in vol on r.VId equals v.VID
+                            join d in dep on r.SocID equals d.Id
+                            where r.BeginTime<DateTime.Now //
+                                && r.BeginTime != null//
+                                && (r.BeginTime > gdate)//
+                                &&(r.EndTime > DateTime.Now || r.EndTime == null)//
+                                &&s.PubTime <= DateTime.Now //
+                                &&s.EndTime >= DateTime.Now
+
+                            select new { s.Context, v.RealName, r.BeginTime,d.Name,CDate=DateTime.Now  }).ToList();
+
+                dic.Add("ser", SerList);
+                dic.Add("vol", vlist);
+            }
+
+            return Json(dic);
+        }
+    }
 }

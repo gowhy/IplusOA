@@ -49,6 +49,7 @@
     <Compile Include="EntityMap\MenuEntityToMenuMap.cs" />
     <Compile Include="EntityMap\RoleEntityToRoleMap.cs" />
     <Compile Include="EntityMap\RolePermissionMap.cs" />
+    <Compile Include="EntityMap\SerRecordMap.cs" />
     <Compile Include="EntityMap\SocialOrgEntityToSocialOrgMap.cs" />
     <Compile Include="EntityMap\SocSerDetailJoinEntityToSocSerDetailJoinMap.cs" />
     <Compile Include="EntityMap\SocServiceDetailEntityToSocServiceDetailMap.cs" />
