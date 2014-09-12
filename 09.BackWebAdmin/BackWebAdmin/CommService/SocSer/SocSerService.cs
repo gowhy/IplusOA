@@ -20,6 +20,27 @@ namespace BackWebAdmin.CommService
             }
         }
 
+        public static IPagedList<SocServiceDetailEntity> TypeList(int pageNumber, int pageSize, string depId,string type=null)
+        {
+
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                List<SocServiceDetailEntity> list = null;
+                if (type==null)
+                {
+                    list = db.SocServiceDetailEntityTable.AsQueryable().Where(x => x.CoverCommunity.IndexOf(depId) != -1).ToList();
+                }
+                else
+                {
+                    list = db.SocServiceDetailEntityTable.AsQueryable().Where(x => x.CoverCommunity.IndexOf(depId) != -1 && x.Type.Trim().ToUpper() == type.Trim().ToUpper()).ToList();
+                }
+                if (list==null)
+                {
+                    return null;
+                }
+                return list.ToPagedList(pageNumber - 1, pageSize);
+            }
+        }
      
     }
 }

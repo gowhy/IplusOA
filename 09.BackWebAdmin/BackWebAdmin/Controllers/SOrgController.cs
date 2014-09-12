@@ -33,6 +33,21 @@ namespace BackWebAdmin.Controllers
                 return View(list.ToPagedList(pageNumber - 1, pageSize));
             }
         }
+
+        [SecurityNode(Name = "APP获取社会组织")]
+        public ActionResult AppGetOrg(int? page, int? pageSize)
+        {
+            var pageNumber = page ?? 1;
+            int size = pageSize ?? SOrgController.pageSize;
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                var list = db.SocialOrgEntityTable.AsQueryable<SocialOrgEntity>().ToList();
+                return Json(list.ToPagedList(pageNumber - 1, size));
+            }
+        }
+
+
+
         [SecurityNode(Name = "添加页")]
         public ActionResult Add()
         {

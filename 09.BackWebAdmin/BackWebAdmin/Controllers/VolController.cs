@@ -61,6 +61,30 @@ namespace BackWebAdmin.Controllers
             }
         }
 
+        [SecurityNode(Name = "自愿者注册")]
+        public ActionResult AppPostAdd(VolunteerEntity entity)
+        {
+
+            entity.State = 0;//待审核
+            entity.Doing = 1;//默认接受任务
+            entity.Score = 0;
+       
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+
+                //SocialOrgEntity so = db.SocialOrgEntityTable.Single(x => x.Id == AdminUser.SocOrgId);
+                //entity.SocialNO = so.SocialNO;
+
+
+
+                db.Add<VolunteerEntity>(entity);
+                db.SaveChanges();
+                db.Dispose();
+
+                return Success("添加成功");
+            }
+        }
+
         [SecurityNode(Name = "编辑")]
         public ActionResult Edit(int id)
         {
@@ -71,6 +95,19 @@ namespace BackWebAdmin.Controllers
 
             }
         }
+
+        [SecurityNode(Name = "查看自愿者信息")]
+        public ActionResult AppView(int id)
+        {
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                VolunteerEntity entity = db.VolunteerEntityTable.FirstOrDefault(x => x.Id == id);
+                return Json(entity);
+
+            }
+        }
+
+
         [SecurityNode(Name = "保存编辑")]
         public ActionResult PostEdit(VolunteerEntity entity)
         {

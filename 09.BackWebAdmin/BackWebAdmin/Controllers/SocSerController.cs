@@ -39,20 +39,20 @@ namespace BackWebAdmin.Controllers
         {
             var pageNumber = page ?? 1;
             string depId = AdminUser.DeptId.ToString();
-            //using (IplusOADBContext db = new IplusOADBContext())
-            //{
-            //    var list = db.SocServiceDetailEntityTable.AsQueryable().Where(x => x.CoverCommunity.IndexOf(depId) != -1).ToList();
-            //    return View(list.ToPagedList(pageNumber - 1, pageSize));
-            //}
             return View(SocSerService.CList(pageNumber, pageSize, depId));
         }
         [SecurityNode(Name = "App获取用户本社区服务内容")]
-        public ActionResult AppIndex(int? page, int pageSize=20)
+        public ActionResult AppIndex(int? page, int? pageSize=20,string type=null)
         {
             var pageNumber = page ?? 1;
+            int size = pageSize ?? 20;
             string depId = AdminUser.DeptId.ToString();
-            return Json(SocSerService.CList(pageNumber,pageSize, depId));
+            return Json(SocSerService.TypeList(pageNumber, size, depId, type));
         }
+
+
+     
+
 
         [SecurityNode(Name = "发布社区服务内容")]
         public ActionResult Add()
