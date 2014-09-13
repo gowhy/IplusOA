@@ -89,13 +89,17 @@
                     <td class="item_title">本社区参与状况：</td>
                     <td class="item_input">
                        <span style="color:red;">@ViewBag.IsJoin </span><br />
+                        <input type="hidden" id="Id" name="Id" value="@Model.Id" />
+                        <input type="button" id="No" class="button" value="本社区不参与服务">
+                        <input type="button" id="Stop" class="button" value="本社区暂停服务">
+                        <input type="button" id="ReStart" class="button" value="本社重新启动服务">
                     </td>
                 </tr>
                 <tr>
                     <td class="item_title">原因:</td>
                     <td class="item_input"><textarea class="textbox require" id="msg" name="Msg" rows="5" cols="70">@ViewBag.Msg  </textarea></td>
                 </tr>
-                <tr>
+                @*<tr>
                     <td class="item_title"></td>
                     <td class="item_input">
                         <span>@ViewBag.IsJoin </span><br />
@@ -104,7 +108,7 @@
                         <input type="button" id="Stop" class="button" value="本社区暂停服务">
                         <input type="button" id="ReStart" class="button" value="本社重新启动服务">
                     </td>
-                </tr>
+                </tr>*@
                 <tr>
                     <td colspan="2" class="bottomTd"></td>
                 </tr>

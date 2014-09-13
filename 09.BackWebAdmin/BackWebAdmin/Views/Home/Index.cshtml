@@ -1,24 +1,93 @@
 ﻿@using Common;
+@model  List<IplusOAEntity.MenuEntity>
 @{
     Layout = null;
 }
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>贵阳社区公益平台 - 管理平台 </title>
+    @Html.IncludeCSS("~/Content/EasyUI/themes/default/easyui.css")
+    @Html.IncludeScript("~/Content/EasyUI/jquery-1.8.0.min.js")
+    @Html.IncludeScript("~/Content/EasyUI/jquery.easyui.min.js")
 
+
+    <script>
+        var index = 0;
+        function addTab(name, url) {
+            if ($('#tt').tabs('exists', name)) {
+                $('#tt').tabs('select', name);
+            } else {
+                $('#tt').tabs('add', {
+                    title: name,
+                    content: " <iframe scrolling=\"yes\" frameborder=\"0\" src=" + url + " style=\"width:100%;height:530px;\"></iframe>",
+                    iconCls: 'icon-save',
+                    closable: true,
+                    tools: [{
+                        iconCls: 'icon-mini-refresh',
+                        handler: function () {
+                            alert('refresh');
+                        }
+                    }]
+                });
+            }
+        }
+
+    </script>
 </head>
-<frameset frameborder="10" framespacing="0" border="0" rows="75, *,32">
-    <noframes>
-        您的浏览器版本过低或者不支持Frameset!
-    </noframes>
-    <FRAME SRC="@Url.Action("Top")" name="top" FRAMEBORDER=0 NORESIZE SCROLLING='no' marginwidth=0 marginheight=0>
-    <frameset frameborder="0" framespacing="0" border="0" cols="200,7, *" id="frame-body">
-        <FRAME SRC="@Url.Action("Left")" FRAMEBORDER=0 id="menu-frame" name="menu">
-        <frame src="@Url.Action("Drag")" id="drag-frame" name="drag-frame" frameborder="0" scrolling="no">
-        <FRAME SRC="@Url.Action("Main")" FRAMEBORDER=0 id="main-frame" name="main">
-    </frameset>
-    <FRAME SRC="@Url.Action("Footer")" name="footer" FRAMEBORDER=0 NORESIZE SCROLLING='no' marginwidth=0 marginheight=0>
-</frameset>
+<body class="easyui-layout">
+    <div data-options="region:'north',split:true" style="height: 60px;">
+        <div style="float:right;  ">
+            <span>欢迎 &nbsp; @ViewBag.username  &nbsp;用户使用贵阳市社区公益信息平台</span>
+            <a href="@Url.Action("Out", "Login")" target="_parent">注销</a>
+        </div>
+    </div>
+    <div data-options="region:'west',split:true,title:'菜单'" style="width:150px;">
+        @*<iframe scrolling="yes" frameborder="0" src="/home/Left" style="width:100%;height:530px;"></iframe>*@
+
+        <div id="aa" class="easyui-accordion">
+
+
+            @foreach (var item in Model)
+                {
+                   <div title="@item.name" data-options="iconCls:'icon-ok'" style="overflow:auto; text-align:center;" >
+
+                        @foreach (var chlid in item.ChildList)
+                                {
+                                    <div  style="padding-bottom:5px; padding-top:5px;"><a style="color: #0099FF; color: black; " href="#" onclick="addTab('@chlid.name', '@chlid.file')">@chlid.name</a>  </div>
+                                }
+                  </div>
+                }
+
+            @*<div title="Title1" data-options="iconCls:'icon-ok'" style="overflow:auto">
+                <a style="color:#0099FF;">Accordion for jQuery</a>
+                <a style="color:#0099FF;">Accordion for jQuery</a>
+                <a style="color:#0099FF;">Accordion for jQuery</a>
+                <a style="color:#0099FF;">Accordion for jQuery</a>
+                <a style="color:#0099FF;">Accordion for jQuery</a>
+            </div>
+            <div title="Title1" data-options="iconCls:'icon-ok'" style="overflow:auto">
+                <a style="color:#0099FF;">Accordion for jQuery</a>
+                <a style="color:#0099FF;">Accordion for jQuery</a>
+                <a style="color:#0099FF;">Accordion for jQuery</a>
+                <a style="color:#0099FF;">Accordion for jQuery</a>
+                <a style="color:#0099FF;">Accordion for jQuery</a>
+                <a style="color:#0099FF;">Accordion for jQuery</a>
+            </div>*@
+        </div>
+    </div>
+    @*<div data-options="region:'east',split:true,collapsed:true,title:'East'" style="width:100px;padding:10px;">east region</div>
+        <div data-options="region:'south',border:false" style="height:20px;background:#A9FACD;"></div>*@
+    <div data-options="region:'center'">
+        <div id="tt" class="easyui-tabs" data-options="tools:'#tab-tools'">
+            <div title="首页" data-options="closable:true" style="overflow:hidden">
+                <iframe scrolling="yes" frameborder="0" src="/home/Main" style="width:100%;height:530px;"></iframe>
+            </div>
+
+
+        </div>
+
+    </div>
+</body>
 </html>

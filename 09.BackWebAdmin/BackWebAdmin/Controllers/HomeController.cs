@@ -40,10 +40,33 @@ namespace BackWebAdmin.Controllers
         {
             IplusOADBContext db = new IplusOADBContext();
             var list = db.MenuEntityTable.AsQueryable<MenuEntity>().ToList();
-            db.Dispose();
-            ViewData["menuJsonDate"] = HelpSerializer.JSONSerialize(list);
 
-            return View();
+            var rolelist = db.RolePermission.AsQueryable().Where(x => x.RoleId == AdminUser.RoleId).ToList();
+
+            db.Dispose();
+
+            List<MenuEntity> userMenuList = new List<MenuEntity>();
+            foreach (var ritem in rolelist)
+            {
+                if (!string.IsNullOrEmpty(ritem.Module))
+                {
+
+                    userMenuList.AddRange(list.Where(x => x.Module.ToLower() == ritem.Module.ToLower()));
+                }
+                else
+                {
+                    userMenuList.AddRange(list.Where(x => x.file.Trim().ToLower() == "/" + ritem.Node.Trim().ToLower().Replace('_', '/')));
+                }
+            }
+
+            List<MenuEntity> Root = userMenuList.Where(x => x.pId == 0).ToList();
+
+            foreach (var item in Root)
+            {
+                item.ChildList = userMenuList.Where(x => x.pId == item.id).ToList();
+            }
+
+            return View(Root);
         }
 
         // [OutputCache(Duration = 6000)]
@@ -122,8 +145,8 @@ namespace BackWebAdmin.Controllers
                 }
             }
 
-            ViewData["menuJsonDate"] = HelpSerializer.JSONSerialize<List<MenuEntity>>(userMenuList);
-            return View();
+            //ViewData["menuJsonDate"] = HelpSerializer.JSONSerialize<List<MenuEntity>>(userMenuList);
+            return View(userMenuList);
 
         }
 

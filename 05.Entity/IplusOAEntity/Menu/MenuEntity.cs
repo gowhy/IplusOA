@@ -60,6 +60,8 @@ namespace IplusOAEntity
         }
 
         public string Module { get; set; }
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
+        public List<MenuEntity> ChildList;
 
         #endregion Model
 

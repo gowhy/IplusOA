@@ -1,0 +1,24 @@
+﻿@using Common;
+@{
+    Layout = null;
+}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>贵阳社区公益平台 - 管理平台 </title>
+
+</head>
+<frameset frameborder="10" framespacing="0" border="0" rows="75, *,32">
+    <noframes>
+        您的浏览器版本过低或者不支持Frameset!
+    </noframes>
+    <FRAME SRC="@Url.Action("Top")" name="top" FRAMEBORDER=0 NORESIZE SCROLLING='no' marginwidth=0 marginheight=0>
+    <frameset frameborder="0" framespacing="0" border="0" cols="200,7, *" id="frame-body">
+        <FRAME SRC="@Url.Action("Left")" FRAMEBORDER=0 id="menu-frame" name="menu">
+        <frame src="@Url.Action("Drag")" id="drag-frame" name="drag-frame" frameborder="0" scrolling="no">
+        <FRAME SRC="@Url.Action("Main")" FRAMEBORDER=0 id="main-frame" name="main">
+    </frameset>
+    <FRAME SRC="@Url.Action("Footer")" name="footer" FRAMEBORDER=0 NORESIZE SCROLLING='no' marginwidth=0 marginheight=0>
+</frameset>
+</html>
