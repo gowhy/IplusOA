@@ -46,14 +46,24 @@ namespace BusLogic.Login
 
         public static BackAdminUser VLoginApp(BackAdminUser admin)
         {
+            if (admin==null)
+            {
+                return null;
+            }
             IplusOADBContext db = null;
             try
             {
                 db = new IplusOADBContext();
 
-                admin = db.BackAdminUserEntityDBSet.FirstOrDefault<BackAdminUser>(x => x.UserName == admin.UserName && x.PassWord == admin.PassWord);
-                if (admin != null)
+                //admin = db.BackAdminUserEntityDBSet.FirstOrDefault<BackAdminUser>(x => x.UserName == admin.UserName && x.PassWord == admin.PassWord);
+                VolunteerEntity volentity = db.VolunteerEntityTable.FirstOrDefault<VolunteerEntity>(x => x.VID == admin.UserName && x.PassWord == admin.PassWord);
+
+                if (volentity != null)
                 {
+                    admin.DeptId = volentity.DepId;
+                    //admin.SocOrgId = volentity.SocialNO;
+                    //admin.DeptId = volentity.DepId;
+
                     admin.LoginToken = SSO.UserTicketManager.CreateLoginUserTicket(admin);
                     return admin;
                 }

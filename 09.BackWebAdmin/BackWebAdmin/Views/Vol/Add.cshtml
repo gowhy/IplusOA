@@ -52,7 +52,7 @@
                 <tr>
                     <td class="item_title">社区:</td>
                     <td class="item_input">
-                        <input type="hidden" name="DeptId" id="DeptId" />
+                        <input type="hidden" name="DepId" id="DepId" /> 
                         <input type="text" class="textbox require" id="DeptIdName" name="DeptIdName" onclick="showMenu(); return false;" />
                         <div id="menuContent" class="menuContent" style="display:none; position: absolute;">
                             <ul id="ztree" class="ztree" style="margin-top:0;  overflow:scroll; height:270px;"></ul>
@@ -188,7 +188,7 @@
 
             }
             function onCheck(e, treeId, treeNode) {
-                $("#DeptId").val(treeNode.Id);
+                $("#DepId").val(treeNode.Id);
                 $("#DeptIdName").val(treeNode.Name);
             }
 

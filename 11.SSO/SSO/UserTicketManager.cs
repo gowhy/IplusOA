@@ -19,9 +19,9 @@ namespace SSO
        public static string CreateLoginUserTicket(BackAdminUser adminUser)
         {
            string strUserName=adminUser.UserName;
-           int? roleId = adminUser.RoleId;
-           long? deptId = adminUser.DeptId;
-           int? socOrgId = adminUser.SocOrgId;
+           int roleId = adminUser.RoleId??0;
+           long deptId = adminUser.DeptId??0;
+           int socOrgId = adminUser.SocOrgId??0;
             //构造Form验证的票据信息  
             FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, strUserName, DateTime.Now, DateTime.Now.AddMinutes(90),
                 true, string.Format("{0}:{1}:{2}:{3}", strUserName, roleId, deptId, socOrgId), FormsAuthentication.FormsCookiePath);

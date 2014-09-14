@@ -46,7 +46,7 @@ namespace BackWebAdmin.Controllers
             var res = Login.VLoginApp(admin);
             if (res != null)
             {
-                res.Msg += "登录成功2-res";
+                res.Msg += "登录成功";
                 return Json(res);
             }
             else

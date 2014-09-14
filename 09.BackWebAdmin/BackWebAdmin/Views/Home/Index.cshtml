@@ -10,9 +10,9 @@
     <title>贵阳社区公益平台 - 管理平台 </title>
     @Html.IncludeCSS("~/Content/EasyUI/themes/gray/easyui.css")
     @Html.IncludeCSS("~/Content/EasyUI/themes/icon.css")
-    @Html.IncludeScript("~/Content/EasyUI/jquery.min.js")
+    @Html.IncludeScript("~/Scripts/jquery-1.10.2.min.js")
     @Html.IncludeScript("~/Content/EasyUI/jquery.easyui.min.js")
-
+    @*<script src="~/Content/JS/jquery.min.js"></script>*@
 
     <script>
         var index = 0;
@@ -23,7 +23,7 @@
                 $('#tt').tabs('add', {
                     title: name,
                     content: " <iframe scrolling=\"yes\" frameborder=\"0\" src=" + url + " style=\"width:100%;height:530px;\"></iframe>",
-                    iconCls: 'icon-save',
+                    iconCls: 'icon-reload',
                     closable: true
                     //,
                     //tools: [{
@@ -53,13 +53,13 @@
 
             @foreach (var item in Model)
                 {
-                   <div title="@item.name" data-options="iconCls:'icon-ok'" style="overflow:auto; text-align:center;" >
+                    <div title="@item.name" data-options="iconCls:'icon-reload'" style="overflow:auto; text-align:center;">
 
                         @foreach (var chlid in item.ChildList)
-                                {
-                                    <div  style="padding-bottom:5px; padding-top:5px;"><a style="color: #0099FF; color: black; " href="#" onclick="addTab('@chlid.name', '@chlid.file')">@chlid.name</a>  </div>
-                                }
-                  </div>
+                        {
+                            <div style="padding-bottom:5px; padding-top:5px;"><a style="color: #0099FF; color: black; " href="#" onclick="addTab('@chlid.name', '@chlid.file')">@chlid.name</a>  </div>
+                        }
+                    </div>
                 }
 
             @*<div title="Title1" data-options="iconCls:'icon-ok'" style="overflow:auto">
