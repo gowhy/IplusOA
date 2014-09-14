@@ -1,15 +1,26 @@
 ﻿
+<style>
+    .panel-tool {
+        width: 95%;
+        float: left;
+    }
 
+    .item_title {
+        background: none;
+    }
+</style>
 <script type="text/javascript">
     function check_incharge_form() {
 
         return true;
     }
 </script>
-<div class="main">
-
-    <div class="blank5"></div>
-    <form name="edit" action="@Url.Action("PostAdd")" method="post" enctype="multipart/form-data" onsubmit="return check_incharge_form();">
+<div id="tt">
+    <a href="@Url.Action("Index", "Sorg")" style=" width:100px;">返回列表</a>
+</div>
+<div id="p" class="easyui-panel" title="新增" style="height:530px;padding:10px;"
+     data-options="iconCls:'icon-add',closable:false,tools:'#tt'">
+    <form name="postadd" id="postadd" action="@Url.Action("PostAdd")" method="post" enctype="multipart/form-data" onsubmit="return check_incharge_form();">
         <table class="form" cellpadding="0" cellspacing="0">
             <tbody>
                 <tr>
@@ -19,7 +30,7 @@
                     <td class="item_title">登记名称:</td>
                     <td class="item_input"><input type="text" class="textbox require" name="Name" /></td>
                 </tr>
-            
+
                 <tr>
                     <td class="item_title">
                         组织类型:
@@ -69,8 +80,10 @@
                 <tr>
                     <td class="item_title"></td>
                     <td class="item_input">
-                        <input type="submit" class="button" value="新增">
-                        <input type="reset" class="button" value="重置">
+                        @*<input type="submit" class="button" value="新增">
+                        <input type="reset" class="button" value="重置">*@
+                        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">新增</a>
+                        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">重置</a>
                     </td>
                 </tr>
                 <tr>
@@ -78,5 +91,14 @@
                 </tr>
             </tbody>
         </table>
+        <script>
+            function submitForm() {
+                // var url = "/SocSer/PostNoTakeIn" + '?detailId=' + id + "&state=" + state + "&msg=" + msg;
+                $('#postadd').submit();
+            }
+            function clearForm() {
+                $('#postadd').form('clear');
+            }
+        </script>
     </form>
 </div>

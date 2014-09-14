@@ -245,6 +245,7 @@
     <Content Include="Content\EasyUI\easyui.css" />
     <Content Include="Content\EasyUI\jquery-1.8.0.min.js" />
     <Content Include="Content\EasyUI\jquery.easyui.min.js" />
+    <Content Include="Content\EasyUI\jquery.min.js" />
     <Content Include="Content\EasyUI\themes\black\accordion.css" />
     <Content Include="Content\EasyUI\themes\black\calendar.css" />
     <Content Include="Content\EasyUI\themes\black\combo.css" />

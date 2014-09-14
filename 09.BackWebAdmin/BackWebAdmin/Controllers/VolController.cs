@@ -91,6 +91,8 @@ namespace BackWebAdmin.Controllers
             using (IplusOADBContext db = new IplusOADBContext())
             {
                 VolunteerEntity entity = db.VolunteerEntityTable.FirstOrDefault(x => x.Id == id);
+                var list = db.DepartmentTable.AsQueryable<DepartmentEntity>().ToList();
+                ViewData["Department_List"] = HelpSerializer.JSONSerialize<List<DepartmentEntity>>(list);
                 return View(entity);
 
             }

@@ -14,16 +14,9 @@
     }
 </script>
 
-<div class="main_title">
-    社会服务内容
-</div>
-<div class="blank5">
-</div>
-<div class="button_row">
-    <a class="button" href="@Url.Action("Add")">新增</a>
-    @*<a class="button" href="javascript: del()">删除</a>*@
-</div>
-<div class="blank5">
+
+<div id="button-bar">
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-add'" title="新增" href="@Url.Action("Add")" >新增</a>
 </div>
 <div class="grid_box">
     <div class="grid_top">

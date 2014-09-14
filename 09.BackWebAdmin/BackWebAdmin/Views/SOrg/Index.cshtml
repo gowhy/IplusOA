@@ -25,15 +25,12 @@
     @Html.IncludeScript("~/Content/JS/calendar.js")
 }
 
-<div class="button_row">
-    <a class="button" href="@Url.Action("Add")">新增</a>
-</div>
-<div class="blank5">
+
+<div id="button-bar">
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-add'" title="新增" href="@Url.Action("Add")" onclick="addTab()">新增</a>
 </div>
 <div class="grid_box">
-    <div class="grid_top">
-    </div>
-
+ 
     @Html.Grid(Model).Columns(column =>
     {
         column.CheckBox(x => x.Id);

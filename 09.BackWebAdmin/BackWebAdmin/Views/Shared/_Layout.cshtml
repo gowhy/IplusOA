@@ -10,7 +10,8 @@
         var MODULE_NAME = '@ViewContext.RouteData.Values["controller"]';
         var ACTION_NAME = '@ViewContext.RouteData.Values["action"]';
     </script>
-    @Html.IncludeScript("~/Content/Js/jquery.min.js")
+    @*@Html.IncludeScript("~/Content/Js/jquery.min.js")*@
+    @Html.IncludeScript("~/Content/EasyUI/jquery.min.js")
     @Html.IncludeScript("~/Content/Js/jquery.timer.js")
     @Html.IncludeScript("~/Content/Js/common.js")
     @Html.IncludeScript("~/Content/JS/kindediter/kindeditor-min.js")
@@ -20,14 +21,15 @@
     @Html.IncludeCSS("~/Content/Css/weebox.css")
     @Html.IncludeCSS("~/Content/CSS/kindediter/default/default.css")
 
-    @Html.IncludeCSS("~/Content/EasyUI/themes/default/easyui.css")
-    @Html.IncludeScript("~/Content/EasyUI/jquery-1.8.0.min.js")
+    @Html.IncludeCSS("~/Content/EasyUI/themes/gray/easyui.css")
+    @Html.IncludeCSS("~/Content/EasyUI/themes/icon.css")
+
     @Html.IncludeScript("~/Content/EasyUI/jquery.easyui.min.js")
 
     @RenderSection("HeadSection", required: false)
 </head>
 <body>
-    <div class="main">
+    <div class="Center-Main">
         @RenderBody()
     </div>
     <div id="info"></div>

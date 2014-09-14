@@ -28,13 +28,8 @@
     @Html.IncludeScript("~/Content/JS/calendar.js")
 }
 
-<div class="button_row">
-  
-    @Html.ScriptLink("新增", "addUser()", "button", new object[] { })
-  @*  <a href="javascript: addUser()" class="button">新增</a>*@
-    @*<input type="button" class="button" value="彻底删除" >*@
-</div>
-<div class="blank5">
+<div id="button-bar">
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-add'" title="新增" href="javascript: addUser()">新增</a>
 </div>
 <div class="grid_box">
     <div class="grid_top">

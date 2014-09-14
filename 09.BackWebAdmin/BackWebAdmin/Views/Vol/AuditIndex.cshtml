@@ -4,17 +4,9 @@
 @using MvcContrib.UI.Pager;
 @using Common;
 
-<div class="main_title">
-    待审核志愿者列表
-</div>
-<div class="blank5">
-</div>
 
-<div class="blank5">
-</div>
 <div class="grid_box">
-    <div class="grid_top">
-    </div>
+   
     @Html.Grid(Model).Columns(column =>
                                   {
                                       column.CheckBox(x => x.Id);

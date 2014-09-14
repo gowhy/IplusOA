@@ -5,12 +5,21 @@
 @Html.IncludeCSS("~/Content/Css/demo.css")
 @Html.IncludeScript("~/Content/plug-in/ztree/js/jquery.ztree.core-3.5.js")
 @Html.IncludeScript("~/Content/plug-in/ztree/js/jquery.ztree.excheck-3.5.js")
-<script type="text/javascript">
-    function check_incharge_form() {
+@Html.IncludeCSS("~/Content/EasyUI/themes/gray/easyui.css")
+@Html.IncludeCSS("~/Content/EasyUI/themes/icon.css")
 
-        return true;
+@Html.IncludeScript("~/Content/EasyUI/jquery.easyui.min.js")
+<style>
+    .panel-tool {
+        width: 95%;
+        float: left;
     }
-</script>
+
+    .item_title {
+        background: none;
+    }
+</style>
+
 
 <script type="text/javascript">
 
@@ -81,14 +90,14 @@
 <div class="main">
 
     <div class="blank5"></div>
-    <form name="edit" action="@Url.Action("PostEdit")" method="post" enctype="multipart/form-data" onsubmit="return check_incharge_form();">
+    <form name="PostEdit" id="PostEdit" action="@Url.Action("PostEdit")" method="post" enctype="multipart/form-data" onsubmit="return check_incharge_form();">
         <table class="form" cellpadding="0" cellspacing="0">
             <tbody>
                 <tr>
                     <td class="item_title">用户名:</td>
                     <td class="item_input">
                         <input type="hidden" name="Id" id="Id" value="@Model.Id" />
-                        <span   >@Model.UserName</span>              
+                        <span>@Model.UserName</span>
                     </td>
 
                 </tr>
@@ -103,7 +112,7 @@
                         <select name="RoleId">
                             @foreach (var role in ViewData["UserRole"] as IList<IplusOAEntity.RoleEntity> ?? new List<IplusOAEntity.RoleEntity>())
                             {
-                                <option value="@role.Id"  @(Model.RoleId == role.Id ? "selected = \"selected\"" : "")  >@role.Name</option>
+                                <option value="@role.Id" @(Model.RoleId == role.Id ? "selected = \"selected\"" : "")>@role.Name</option>
                             }
                         </select>
                     </td>
@@ -130,9 +139,9 @@
                         <select name="SocOrgId">
                             @*<option value="-1">无</option>*@
                             @foreach (var soc in ViewData["SocialOrg_List"] as IList<IplusOAEntity.SocialOrgEntity> ?? new List<IplusOAEntity.SocialOrgEntity>())
-                                {
-                                    <option value="@soc.Id" @(Model.SocOrgId == soc.Id ? "selected = \"selected\"" : "")>@soc.Name</option>
-                                }
+                            {
+                                <option value="@soc.Id" @(Model.SocOrgId == soc.Id ? "selected = \"selected\"" : "")>@soc.Name</option>
+                            }
                         </select>
                     </td>
                 </tr>
@@ -140,13 +149,13 @@
                     <td class="item_title">真实姓名:</td>
                     <td class="item_input"><input type="text" class="textbox require" name="RealName" value="@Model.RealName" /></td>
                 </tr>
-            
+
 
                 <tr>
                     <td class="item_title"></td>
                     <td class="item_input">
-                        <input type="submit" class="button" value="保存修改">
-                       
+                        @*<input type="submit" class="button" value="保存修改">*@
+                        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">保存修改</a>
                     </td>
                 </tr>
                 <tr>
@@ -154,5 +163,17 @@
                 </tr>
             </tbody>
         </table>
+        <script>
+            function submitForm() {
+                // var url = "/SocSer/PostNoTakeIn" + '?detailId=' + id + "&state=" + state + "&msg=" + msg;
+                $('#PostEdit').submit();
+            }
+        
+            function check_incharge_form() {
+
+                return true;
+            }
+        </script>
     </form>
+
 </div>

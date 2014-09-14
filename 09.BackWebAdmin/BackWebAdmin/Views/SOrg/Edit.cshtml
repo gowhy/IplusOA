@@ -1,16 +1,29 @@
 ﻿@using Common;
 @model IplusOAEntity.SocialOrgEntity
 
+<style>
+    .panel-tool {
+        width: 95%;
+        float: left;
+    }
+
+    .item_title {
+        background: none;
+    }
+</style>
 <script type="text/javascript">
     function check_incharge_form() {
 
         return true;
     }
 </script>
-<div class="main">
+<div id="tt">
+    <a href="@Url.Action("Index", "Sorg")" style=" width:100px;">返回列表</a>
+</div>
+<div id="p" class="easyui-panel" title="编辑" style="height:530px;padding:10px;"
+     data-options="iconCls:'icon-edit',closable:false,tools:'#tt'">
 
-    <div class="blank5"></div>
-    <form name="edit" action="@Url.Action("PostEdit")" method="post" enctype="multipart/form-data" onsubmit="return check_incharge_form();">
+    <form name="PostEdit" id="PostEdit" action="@Url.Action("PostEdit")" method="post" enctype="multipart/form-data" onsubmit="return check_incharge_form();">
         <table class="form" cellpadding="0" cellspacing="0">
             <tbody>
                 <tr>
@@ -61,8 +74,8 @@
                 <tr>
                     <td class="item_title">运营状态:</td>
                     <td class="item_input">
-                        <label>有效<input type="radio" name="State" value="true"  @(@Model.State != -1 ? "checked=\"checked\"" : "") /></label>
-                        <label>无效<input type="radio" name="State" value="false" @(@Model.State==-1?"checked=\"checked\"":"") /></label>
+                        <label>有效<input type="radio" name="State" value="1" @(@Model.State != -1 ? "checked=\"checked\"" : "") /></label>
+                        <label>无效<input type="radio" name="State" value="-1" @(@Model.State == -1 ? "checked=\"checked\"" : "") /></label>
                     </td>
                 </tr>
 
@@ -70,8 +83,9 @@
                 <tr>
                     <td class="item_title"></td>
                     <td class="item_input">
-                        <input type="submit" class="button" value="保存修改">
-                        <input  type="hidden" name="Id" value="@Model.Id"/>
+                        @*<input type="submit" class="button" value="保存修改">*@
+                        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">保存修改</a>
+                        <input type="hidden" name="Id" value="@Model.Id" />
                     </td>
                 </tr>
                 <tr>
@@ -82,12 +96,17 @@
         <script>
 
             $(document).ready(function () {
-               
+
 
                 $("#Type").val("@Model.Type");
 
             });
-
+  
+function submitForm() {
+    // var url = "/SocSer/PostNoTakeIn" + '?detailId=' + id + "&state=" + state + "&msg=" + msg;
+    $('#PostEdit').submit();
+}
+ 
         </script>
     </form>
 </div>

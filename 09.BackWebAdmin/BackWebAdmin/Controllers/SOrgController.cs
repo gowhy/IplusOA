@@ -91,6 +91,7 @@ namespace BackWebAdmin.Controllers
                 so.BusDesc = entity.BusDesc;
                 so.EffectiveTime = entity.EffectiveTime;
                 so.RegTime = entity.RegTime;
+                so.State = entity.State;
 
                 db.Update<SocialOrgEntity>(so);
                 db.SaveChanges();
