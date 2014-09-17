@@ -177,6 +177,7 @@
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\MsgModel.cs" />
     <Compile Include="Models\Role\RoleModel.cs" />
+    <Compile Include="Models\SocSer\SelectSocSerModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -7,6 +7,9 @@ using System.Web;
 using System.Web.Mvc;
 using Common;
 using BackWebAdmin.CommService;
+using MvcContrib.UI.Grid;
+using MvcContrib.Sorting;
+using BackWebAdmin.Models;
 
 namespace BackWebAdmin.Controllers
 {
@@ -19,13 +22,22 @@ namespace BackWebAdmin.Controllers
         const int pageSize = 20;
         //
         [SecurityNode(Name = "已发布社会服务")]
-        public ActionResult Index(int? page)
+        public ActionResult Index(int? page, SelectSocSerModel model, GridSortOptions sort)
         {
             var pageNumber = page ?? 1;
             using (IplusOADBContext db = new IplusOADBContext())
             {
-                var list = db.SocServiceDetailEntityTable.AsQueryable().ToList();
-                return View(list.ToPagedList(pageNumber - 1, pageSize));
+                var filter = PredicateExtensionses.True<SocServiceDetailEntity>();
+
+                if (!string.IsNullOrWhiteSpace(model.type)) filter = filter.And(x => x.Type == model.type);
+
+                ViewData["type"] = model.type;
+
+                model.SocSerList = db.SocServiceDetailEntityTable//
+                    .Where(filter.And(x => x.Id > 0))//
+                    .OrderBy(sort.Column, sort.Direction == SortDirection.Descending)//
+                    .ToPagedList(pageNumber - 1, pageSize);
+                return View(model);
             }
         }
 

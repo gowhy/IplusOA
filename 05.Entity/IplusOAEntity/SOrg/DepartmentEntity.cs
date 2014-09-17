@@ -66,6 +66,14 @@ namespace IplusOAEntity
         [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public bool IsCheck { get; set; }
 
+        /// <summary>
+        /// 纬度
+        /// </summary>
+        public Nullable<double> Lat { get; set; }
+        /// <summary>
+        /// 经度
+        /// </summary>
+        public Nullable<double> Lng { get; set; }
         // public virtual ICollection<SocialOrgEntity> ListSocialOrgEntity { get; set; }
     }
 }

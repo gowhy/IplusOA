@@ -35,9 +35,11 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -59,6 +61,7 @@
     <Compile Include="Check.cs" />
     <Compile Include="CollectionExtensions.cs" />
     <Compile Include="Des.cs" />
+    <Compile Include="Dynamic.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
@@ -71,10 +74,12 @@
     <Compile Include="PageList\BasePagedList.cs" />
     <Compile Include="PageList\ClientPager.cs" />
     <Compile Include="PageList\IPagedList.cs" />
+    <Compile Include="PageList\OrderByHelper.cs" />
     <Compile Include="PageList\PagedList.cs" />
     <Compile Include="PageList\PageListExtensions.cs" />
     <Compile Include="PageList\Pager.cs" />
     <Compile Include="PageList\PaginationExtensions.cs" />
+    <Compile Include="ParameterExpression\ParameterExpression.cs" />
     <Compile Include="PathResolver.cs" />
     <Compile Include="Extensions\RegularExtensions.cs" />
     <Compile Include="Permission\CommonAction.cs" />

@@ -21,5 +21,7 @@ namespace TestProject.AutoCode
         public Nullable<int> State { get; set; }
         public string Desc { get; set; }
         public Nullable<int> Level { get; set; }
+        public Nullable<double> Lat { get; set; }
+        public Nullable<double> Lng { get; set; }
     }
 }

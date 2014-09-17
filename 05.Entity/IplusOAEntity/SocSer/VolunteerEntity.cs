@@ -204,6 +204,7 @@ namespace IplusOAEntity
       /// 是否接受任务
       /// </summary>
         public int? Doing { get; set; }
+        public byte[] VolHeadImg { get; set; }
         #endregion Model
 
     }

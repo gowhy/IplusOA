@@ -39,5 +39,6 @@ namespace TestProject.AutoCode
         public string PassWord { get; set; }
         public Nullable<int> Doing { get; set; }
         public System.DateTime AddTime { get; set; }
+        public byte[] VolHeadImg { get; set; }
     }
 }

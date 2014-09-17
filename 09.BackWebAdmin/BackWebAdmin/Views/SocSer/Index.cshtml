@@ -1,4 +1,4 @@
-﻿@model  Common.IPagedList<IplusOAEntity.SocServiceDetailEntity>
+﻿@model  BackWebAdmin.Models.SelectSocSerModel
 @using MvcContrib.UI.Grid
 @using MvcContrib.Pagination;
 @using MvcContrib.UI.Pager;
@@ -12,16 +12,49 @@
         deleteMethod(id, "Delete");
         //showAjaxResult(url, "删除用户中......", 600, 400);
     }
+    function submitForm() {
+        // var url = "/SocSer/PostNoTakeIn" + '?detailId=' + id + "&state=" + state + "&msg=" + msg;
+        $('#indexFrom').submit();
+    }
+  
+
+  
+    
+  
 </script>
-
-
-<div id="button-bar">
-    <a class="easyui-linkbutton" data-options="iconCls:'icon-add'" title="新增" href="@Url.Action("Add")" >新增</a>
-</div>
+<style>
+    .combo {
+        vertical-align: bottom;
+    }
+</style>
+<form id="indexFrom">
+  
+    <div style="float: left; height: 40px; text-align: center;">
+        <span><a class="easyui-linkbutton" data-options="iconCls:'icon-add'" title="新增" href="@Url.Action("Add")">新增</a></span>
+        <span style="margin-left:70px;">
+            <select id="Type" class="easyui-combobox" data-options="" name="Type" style="width: 120px; ">
+                <option value="" selected="selected">全部</option>
+                <option value="GYFN">法律服务</option>
+                <option value="GYYLFW">医疗服务</option>
+                <option value="GYWH">文化娱乐</option>
+                <option value="GYYL">居家养老</option>
+                <option value="GYBF">社区帮扶</option>
+                <option value="GYWHKT">文化课堂</option>
+                <option value="GYNSD">社区绿丝带</option>
+                <option value="SYJZ">社区家政</option>
+                <option value="SYMY">美食娱乐</option>
+                <option value="SYWX">家居维修</option>
+                <option value="SYJR">金融服务</option>
+                <option value="SYYH">优惠进社区</option>
+            </select>
+            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">查询</a>
+        </span>
+    </div>
+</form>
 <div class="grid_box">
     <div class="grid_top">
     </div>
-    @Html.Grid(Model).Columns(column =>
+    @Html.Grid(Model.SocSerList).Columns(column =>
                                   {
                                       column.CheckBox(x => x.Id);
                                       column.For(x => x.Id).Named("编号").HeaderAttributes(style => "width:50px;align:center;");
@@ -42,6 +75,8 @@
     <div class="grid_foot">
     </div>
 </div>
-<div class="blank5">
-</div>
-@Html.Pager(Model)
+
+@Html.Pager(Model.SocSerList)
+<script>
+    $("#Type").val("@Model.type");
+</script>
