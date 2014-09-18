@@ -109,6 +109,7 @@
     <Compile Include="ValidateImage.cs" />
     <Compile Include="VirtualPathProviderWrapper.cs" />
     <Compile Include="SiteMap\XmlSiteMap.cs" />
+    <Compile Include="WriteLog.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\03.Cache\Cache\Cache.csproj">

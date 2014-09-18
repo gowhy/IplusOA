@@ -8,6 +8,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject.csproj", "{CD5D5BE0-DE4C-423F-A7F7-96DA74720B96}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01.Dll", "01.Dll", "{C64C319E-29E4-4F88-910D-F52BC059A47F}"
+	ProjectSection(SolutionItems) = preProject
+		01.Dll\log4net.dll = 01.Dll\log4net.dll
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02.Common", "02.Common", "{6ADC8E71-3141-434A-A850-BE0C9F444E4E}"
 EndProject

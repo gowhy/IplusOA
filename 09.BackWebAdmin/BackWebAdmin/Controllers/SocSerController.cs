@@ -98,11 +98,19 @@ namespace BackWebAdmin.Controllers
                 SocialOrgEntity soc = db.SocialOrgEntityTable.SingleOrDefault(x => x.Id == AdminUser.SocOrgId);
                 entity.SocialNo = soc.SocialNO;
 
-                entity.SerNum = entity.Type + DateTime.Now.ToString("yyyyMMdd") + (db.SocServiceDetailEntityTable.Max(x => x.Id) + 1).ToString("D2");
+                int number = 0;
+                try
+                {
+                    number = db.SocServiceDetailEntityTable.AsQueryable().Max<SocServiceDetailEntity>(x => x.Id);
+                }
+                catch (Exception)
+                {
+                    number = 0;
+                }
+                entity.SerNum = entity.Type + DateTime.Now.ToString("yyyyMMdd") + (number + 1).ToString("D2");
                 db.Add<SocServiceDetailEntity>(entity);
                 db.SaveChanges();
                 db.Dispose();
-
                 return Success("添加成功");
             }
         }

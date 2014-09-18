@@ -97,7 +97,7 @@ namespace BackWebAdmin.Controllers
 
             filterContext.Result = Error(filterContext.Exception.Message);
 
-          //  Log.Error(filterContext.Exception.Message, filterContext.Exception);
+            //Log.Error(filterContext.Exception.Message, filterContext.Exception);
 
             filterContext.ExceptionHandled = true;
         }

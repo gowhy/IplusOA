@@ -150,7 +150,7 @@ namespace BackWebAdmin.Controllers
             var pageNumber = page ?? 1;
             using (IplusOADBContext db = new IplusOADBContext())
             {
-                var list = db.VolunteerEntityTable.AsQueryable().Where(x => x.State == 0).ToList();
+                var list = db.VolunteerEntityTable.Where(x => x.State == 0).ToList();
                 return View(list.ToPagedList(pageNumber - 1, pageSize));
             }
         }
