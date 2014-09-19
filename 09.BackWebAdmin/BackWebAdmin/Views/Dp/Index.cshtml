@@ -40,6 +40,26 @@
 
     $(function () {
         
+
+        Date.prototype.format = function (format) {
+            var o = {
+                "M+": this.getMonth() + 1, //month
+                "d+": this.getDate(), //day
+                "h+": this.getHours(), //hour
+                "m+": this.getMinutes(), //minute
+                "s+": this.getSeconds(), //second
+                "q+": Math.floor((this.getMonth() + 3) / 3), //quarter
+                "S": this.getMilliseconds() //millisecond
+            }
+            if (/(y+)/.test(format)) format = format.replace(RegExp.$1,
+            (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            for (var k in o) if (new RegExp("(" + k + ")").test(format))
+                format = format.replace(RegExp.$1,
+                RegExp.$1.length == 1 ? o[k] :
+                ("00" + o[k]).substr(("" + o[k]).length));
+            return format;
+        }
+
         ShowData();
         setInterval(ShowData, 5*60*1000)
         function ShowData() {
@@ -95,7 +115,8 @@
             if (data.ser) {
                 var serHtml = "";
                 for (var i = 0; i < data.ser.length; i++) {
-                    serHtml += "<li>服务时间:" + data.ser[i].PubTime - data.ser[i].EndTime + " 项目：" + data.ser[i].Context + "</li>";
+                    //serHtml += "<li>服务时间:" + data.ser[i].PubTimeString + "-" + data.ser[i].EndTimeString + " 项目：" + data.ser[i].Context + "</li>";
+                    serHtml += "<li>服务时间:" + data.ser[i].PubTimeString+ " 项目：" + data.ser[i].Context + "</li>";
                 }
                 if (serHtml.length > 10) {
                     $("#SocSer_ul").html(serHtml);
@@ -116,24 +137,30 @@
 
         }
         
+        setInterval(TimeNow, 1000);
+        function TimeNow()
+        {
+
+            $("#spTimeNow").text((new Date()).format("yyyy-MM-dd hh:mm:ss"));
+        }
     });
 </script>
 
-<div class="dpshow textCenter "><span > 社区1+1-----实时监控大屏 </span>  <span class="right" id="spTimeNow">@DateTime.Now.ToString("yyyy-MM-dd HH:mm")</span> </div>
+<div class="dpshow textCenter "><span > 社区1+1-----实时监控大屏 </span>  <span class="right" id="spTimeNow"></span> </div>
 <div class="left wid80 textCenter">
     <table class="form yahei" id="showForm" style=" font-size: 30px;">
  
       
     </table>
 </div>
-<div class="right wid20" style=" font-family: 'Microsoft YaHei'; margin-top: -5px; font-size: 20px; border: 1px solid #ccc; ">
+<div class="right wid20" style=" font-family: 'Microsoft YaHei'; font-size: 20px; border: 1px solid #ccc; ">
     <div>
         <span>真正进行社区服务:</span><br />
-        <div id="SocSer" style=" height:300px;">
+        <div id="SocSer" style=" height:600px; overflow:auto;">
             <ul id="SocSer_ul">
-                <li>sfa萨芬是的方式sf</li>
+                @*<li>sfa萨芬是的方式sf</li>
                 <li>sfa所发生的sf</li>
-                <li>sfa萨芬是sf</li>
+                <li>sfa萨芬是sf</li>*@
 
             </ul>
         </div>
@@ -143,8 +170,8 @@
         <div id="volSer" style=" height:300px;">
 
             <ul id="volSer_ul">
-                <li>sfa萨芬是的方式sf</li>
-                <li>sfa所发生的sf</li>
+                @*<li>sfa萨芬是的方式sf</li>
+                <li>sfa所发生的sf</li>*@
             </ul>
         </div>
     </div>

@@ -10,6 +10,7 @@ using DataLayer;
 using MySql.Data.MySqlClient;
 using BackWebAdmin.CommService;
 using System.Data.Entity;
+using BackWebAdmin.Models;
 
 
 namespace BackWebAdmin.Controllers
@@ -156,12 +157,19 @@ namespace BackWebAdmin.Controllers
             Dictionary<string, object> dic = new Dictionary<string, object>();
             using (IplusOADBContext db = new IplusOADBContext())
             {
-                var SerList = db.SocServiceDetailEntityTable.AsQueryable()//
-                    .Where(x => x.CoverCommunity.IndexOf(depId) != -1//
-                              && x.PubTime < DateTime.Now //
-                              && x.EndTime > DateTime.Now
-                           )//
-                    .ToList();
+                //var SerList = db.SocServiceDetailEntityTable.AsQueryable()//
+                //    .Where(x => x.CoverCommunity.IndexOf(depId) != -1//
+                //              && x.PubTime < DateTime.Now //
+                //              && x.EndTime > DateTime.Now
+                //           )//
+                //    .ToList();
+
+                var SerList = (from x in db.SocServiceDetailEntityTable
+                              where x.CoverCommunity.IndexOf(depId) != -1
+                                  && x.PubTime < DateTime.Now
+                                  && x.EndTime > DateTime.Now
+
+                               select new ShowSocSerModel { Context = x.Context, PubTime = x.PubTime, EndTime = x.EndTime }).OrderByDescending(x => x.PubTime).Skip(0).Take(10);
              
 
                 DbSet<SocServiceDetailEntity> soc = db.SocServiceDetailEntityTable;
@@ -183,8 +191,8 @@ namespace BackWebAdmin.Controllers
 
                             select new { s.Context, v.RealName, r.BeginTime,d.Name,CDate=DateTime.Now  }).ToList();
 
-                dic.Add("ser", SerList);
-                dic.Add("vol", vlist);
+                dic.Add("ser", SerList.ToList());
+                dic.Add("vol", vlist.ToList());
             }
 
             return Json(dic);

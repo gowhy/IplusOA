@@ -153,17 +153,32 @@ namespace BackWebAdmin.Controllers
             }
         }
 
-        [SecurityNode(Name = "保存修改社区服务内容")]
-        public ActionResult PostEdit(SocServiceDetailEntity entity)
-        {
-            using (IplusOADBContext db = new IplusOADBContext())
-            {
-                db.Update<SocServiceDetailEntity>(entity);
-                db.SaveChanges();
-                db.Dispose();
-                return Success("修改成功");
-            }
-        }
+             [SecurityNode(Name = "保存修改社区服务内容")]
+             public ActionResult PostEdit(SocServiceDetailEntity entity)
+             {
+                 using (IplusOADBContext db = new IplusOADBContext())
+                 {
+                     SocServiceDetailEntity data = db.SocServiceDetailEntityTable.Find(entity.Id);
+
+                     data.Contacts = entity.Contacts;
+                     data.Context = entity.Context;
+                     data.CoverCommunity = entity.CoverCommunity;
+                     data.Desc = entity.Desc;
+                     data.EndTime = entity.EndTime;
+                     data.PubTime = entity.PubTime;
+                     data.Score = entity.Score;
+                     data.Type = entity.Type;
+                     data.PayType = entity.PayType;
+                     data.THSScore = entity.THSScore;
+                     data.Phone = entity.Phone;
+                     data.VHelpDesc = entity.VHelpDesc;
+                     db.Update<SocServiceDetailEntity>(data);
+                     db.SaveChanges();
+                     db.Dispose();
+                     return Success("修改成功");
+                 }
+             }
+
         [SecurityNode(Name = "本社区不参与服务")]
         public ActionResult NoTakeIn(int id)
         {
