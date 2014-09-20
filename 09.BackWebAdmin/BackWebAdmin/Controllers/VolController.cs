@@ -22,7 +22,7 @@ namespace BackWebAdmin.Controllers
             var pageNumber = page ?? 1;
             using (IplusOADBContext db = new IplusOADBContext())
             {
-                var list = db.VolunteerEntityTable.AsQueryable().Where(x => x.State == 1).ToList();
+                var list = db.VolunteerEntityTable.AsQueryable().Where(x => x.State == 1 && x.Type == "志愿者");
                 return View(list.ToPagedList(pageNumber - 1, pageSize));
             }
         }
@@ -150,7 +150,7 @@ namespace BackWebAdmin.Controllers
             var pageNumber = page ?? 1;
             using (IplusOADBContext db = new IplusOADBContext())
             {
-                var list = db.VolunteerEntityTable.Where(x => x.State == 0).ToList();
+                var list = db.VolunteerEntityTable.Where(x => x.State == 0&&x.Type=="志愿者");
                 return View(list.ToPagedList(pageNumber - 1, pageSize));
             }
         }
