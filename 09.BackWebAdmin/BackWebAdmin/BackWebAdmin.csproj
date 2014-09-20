@@ -136,6 +136,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\SOrg\" />
+    <Folder Include="Models\Vol\" />
     <Folder Include="Views\Comm\" />
   </ItemGroup>
   <ItemGroup>
@@ -823,6 +824,10 @@
     <ProjectReference Include="..\..\06.Bll\BusLogic\BusLogic.csproj">
       <Project>{f2f13fed-4287-4764-ae07-a037e16ce5b3}</Project>
       <Name>BusLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\07.Service\ServiceAPI\ServiceAPI.csproj">
+      <Project>{694ae2d8-1ec5-4766-b0b7-7beb35bb00c2}</Project>
+      <Name>ServiceAPI</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\11.SSO\SSO\SSO.csproj">
       <Project>{78bb5d8b-1d16-45b7-9226-a3c3d2483137}</Project>

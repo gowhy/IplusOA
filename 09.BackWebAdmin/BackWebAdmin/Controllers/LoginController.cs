@@ -38,12 +38,12 @@ namespace BackWebAdmin.Controllers
         }
 
         [HttpPost]
-        public ActionResult App(LoginModel model)
+        public ActionResult App(LoginModel model,string type)
         {
             BackAdminUser admin = new BackAdminUser();
             admin.UserName = model.UserName;
             admin.PassWord = model.Password;
-            var res = Login.VLoginApp(admin);
+            var res = Login.VLoginApp(admin, type);
             if (res != null)
             {
                 res.Msg += "登录成功";

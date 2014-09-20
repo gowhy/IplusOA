@@ -52,6 +52,7 @@
     <Compile Include="SocSer\VolunteerEntity.cs" />
     <Compile Include="SOrg\DepartmentEntity.cs" />
     <Compile Include="SOrg\SocialOrgEntity.cs" />
+    <Compile Include="Vol\ReturnModel.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

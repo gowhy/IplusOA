@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using Common;
 using System.IO;
+using ServiceAPI;
 
 namespace BackWebAdmin.Controllers
 {
@@ -14,8 +15,8 @@ namespace BackWebAdmin.Controllers
     {
         const int pageSize = 20;
 
-     
-       
+
+
         public ActionResult AppGetDeptChild(int? id)
         {
             using (IplusOADBContext db = new IplusOADBContext())
@@ -32,67 +33,29 @@ namespace BackWebAdmin.Controllers
                 }
             }
         }
-        //新增自愿者
+        //用户注册
         public ActionResult AppPostAddVol(VolunteerEntity entity)
         {
 
-
-            //string nfname = Request.Files[0].FileName;
-            // string path = AppDomain.CurrentDomain.BaseDirectory + "uploads\\";
-            //if (!System.IO.Directory.Exists(path))
-            //{
-            //    System.IO.Directory.CreateDirectory(path);
-            //}
-            //string nsave = System.IO.Path.Combine(path, nfname);
-            //Request.Files[0].SaveAs(nsave);
-
-
-            entity.State = 0;//待审核
-            entity.Doing = 1;//默认接受任务
-            entity.Score = 0;
-            Stream imgStream = null;
-            try
+            if (entity == null || string.IsNullOrEmpty(entity.Type) || string.IsNullOrEmpty(entity.PassWord) && (string.IsNullOrEmpty(entity.VID) && string.IsNullOrEmpty(entity.Phone)))
             {
-                imgStream = Request.Files[0].InputStream;
-                int length = (int)imgStream.Length;
-                byte[] image = new byte[length];
-                imgStream.Read(image, 0, length);
-                imgStream.Close();
-                entity.VolHeadImg = image;
+                Json("登陆账号、密码和用户类型是必填项");
             }
-            catch (Exception e)
-            {
-
-                return Json("注册出现错误");
-                throw e;
-            }
-            finally
-            {
-                if (imgStream != null)
-                {
-                    imgStream.Close();
-                }
-            }
-            using (IplusOADBContext db = new IplusOADBContext())
-            {
-
-                db.Add<VolunteerEntity>(entity);
-                db.SaveChanges();
-                db.Dispose();
-                return Json("注册成功");
-            }
-          
+            ReturnModel returnModel = VolService.PostAddVol(entity, Request);
+            return Json(returnModel);
         }
 
-
-        public ActionResult AppVolHeadImg(string vid)
+        /// <summary>
+        /// 判断用户是否存在
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public ActionResult AccountExist(VolunteerEntity entity)
         {
-            using (IplusOADBContext db = new IplusOADBContext())
-            {
-                byte[] image = (from c in db.VolunteerEntityTable where c.VID == vid select c.VolHeadImg).First<byte[]>();
-                return new FileContentResult(image, "image/jpeg");
-            }
+            ReturnModel returnModel = VolService.AccountExist(entity);
+            return Json(returnModel);
         }
+
 
     }
 }

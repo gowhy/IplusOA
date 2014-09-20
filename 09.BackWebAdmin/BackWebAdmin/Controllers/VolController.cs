@@ -223,12 +223,37 @@ namespace BackWebAdmin.Controllers
         }
 
 
-        public ActionResult AppVolHeadImg(string vid)
+        public ActionResult AppVolHeadImg(int id)
         {
             using (IplusOADBContext db = new IplusOADBContext())
             {
-                byte[] image = (from c in db.VolunteerEntityTable where c.VID == vid select c.VolHeadImg).FirstOrDefault<byte[]>();
+                byte[] image = (from c in db.VolunteerEntityTable where c.Id == id select c.VolHeadImg).FirstOrDefault<byte[]>();
                 return new FileContentResult(image, "image/jpeg");
+            }
+        }
+
+        //获用户信息
+        public ActionResult AppGetVol(VolunteerEntity volentity)
+        {
+
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                //VolunteerEntity volentity = null;
+                if (volentity.Type == "志愿者")
+                {
+                    volentity = db.VolunteerEntityTable.FirstOrDefault<VolunteerEntity>(x => x.VID == volentity.VID && x.PassWord == volentity.PassWord);
+                }
+                if (volentity.Type == "普通用户")
+                {
+                    volentity = db.VolunteerEntityTable.FirstOrDefault<VolunteerEntity>(x => x.Phone == volentity.Phone && x.PassWord == volentity.PassWord);
+                }
+
+                if (volentity == null)
+                {
+                    return Json("用户不存在");
+                }
+
+                return Json(volentity);
             }
         }
 

@@ -44,7 +44,7 @@ namespace BusLogic.Login
             }
         }
 
-        public static BackAdminUser VLoginApp(BackAdminUser admin)
+        public static BackAdminUser VLoginApp(BackAdminUser admin,string type)
         {
             if (admin==null)
             {
@@ -54,16 +54,20 @@ namespace BusLogic.Login
             try
             {
                 db = new IplusOADBContext();
-
-                //admin = db.BackAdminUserEntityDBSet.FirstOrDefault<BackAdminUser>(x => x.UserName == admin.UserName && x.PassWord == admin.PassWord);
-                VolunteerEntity volentity = db.VolunteerEntityTable.FirstOrDefault<VolunteerEntity>(x => x.VID == admin.UserName && x.PassWord == admin.PassWord);
+                VolunteerEntity volentity = null;
+                if (type == "志愿者")
+                {
+                     volentity = db.VolunteerEntityTable.FirstOrDefault<VolunteerEntity>(x => x.VID == admin.UserName && x.PassWord == admin.PassWord);
+                }
+                if (type == "普通用户")
+                {
+                    volentity = db.VolunteerEntityTable.FirstOrDefault<VolunteerEntity>(x => x.Phone == admin.UserName && x.PassWord == admin.PassWord);
+                }
 
                 if (volentity != null)
                 {
                     admin.DeptId = volentity.DepId;
-                    //admin.SocOrgId = volentity.SocialNO;
-                    //admin.DeptId = volentity.DepId;
-
+  
                     admin.LoginToken = SSO.UserTicketManager.CreateLoginUserTicket(admin);
                     return admin;
                 }
