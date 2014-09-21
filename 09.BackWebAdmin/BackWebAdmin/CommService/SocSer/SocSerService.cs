@@ -5,17 +5,27 @@ using System.Linq;
 using System.Web;
 using IplusOAEntity;
 using DataLayer.IplusOADB;
+using BackWebAdmin.Models;
+using System.Linq.Expressions;
 
 namespace BackWebAdmin.CommService
 {
     public class SocSerService
     {
-        public static IPagedList<SocServiceDetailEntity> CList(int pageNumber, int pageSize, string depId)
+        public static IPagedList<SocServiceDetailEntity> CList(int pageNumber, int pageSize, Expression<Func<SocServiceDetailEntity, bool>> filter)
         {
+            //var filter = PredicateExtensionses.True<SocServiceDetailEntity>();
+
+            //if (!string.IsNullOrWhiteSpace(model.Type)) filter = filter.And(x => x.Type == model.Type);
+            //if (!string.IsNullOrWhiteSpace(model.SocialNo)) filter = filter.And(x => x.SocialNo == model.SocialNo);
+            //if (model.PubTime != default(DateTime)) filter = filter.And(x => x.PubTime >= model.PubTime);
+            //if (model.PubTimeEnd != default(DateTime)) filter = filter.And(x => x.PubTime <= model.PubTimeEnd);
+
+            //filter = filter.And((x => x.CoverCommunity.IndexOf(depId) != -1));
 
             using (IplusOADBContext db = new IplusOADBContext())
             {
-                var list = db.SocServiceDetailEntityTable.AsQueryable().Where(x => x.CoverCommunity.IndexOf(depId) != -1).ToList();
+                var list = db.SocServiceDetailEntityTable.Where(filter);
                 return list.ToPagedList(pageNumber - 1, pageSize);
             }
         }

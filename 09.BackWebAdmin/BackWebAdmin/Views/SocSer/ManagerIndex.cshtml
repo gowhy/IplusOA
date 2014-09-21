@@ -1,25 +1,58 @@
-﻿@model  Common.IPagedList<IplusOAEntity.SocServiceDetailEntity>
+﻿@model  BackWebAdmin.Models.SelectSocSerModel
 @using MvcContrib.UI.Grid
 @using MvcContrib.Pagination;
 @using MvcContrib.UI.Pager;
 @using Common;
 
 
+<style>
+    .combo {
+        vertical-align: bottom;
+    }
+</style>
+<form id="indexFrom">
 
+    <div style="float: left; height: 40px; text-align: center;">
+        <span style="margin-left:20px;">
+            <select id="Type" class="easyui-combobox" data-options="" name="Type" style="width: 120px; ">
+                <option value="" selected="selected">全部</option>
+                <option value="GYFN">法律服务</option>
+                <option value="GYYLFW">医疗服务</option>
+                <option value="GYWH">文化娱乐</option>
+                <option value="GYYL">居家养老</option>
+                <option value="GYBF">社区帮扶</option>
+                <option value="GYWHKT">文化课堂</option>
+                <option value="GYNSD">社区绿丝带</option>
+                <option value="SYJZ">社区家政</option>
+                <option value="SYMY">美食娱乐</option>
+                <option value="SYWX">家居维修</option>
+                <option value="SYJR">金融服务</option>
+                <option value="SYYH">优惠进社区</option>
+            </select>
+            <span class="combo">
+                社组织编号<input type="text" name="SocialNo" value="@Model.SocialNo" />
+                发布时间<input type="text" name="PubTime" value="@(Model.PubTime!=default(DateTime)? Model.PubTime.ToString("yyyy-MM-dd") : "")" onclick="WdatePicker()" />
+                -<input type="text" name="PubTimeEnd" value="@(Model.PubTimeEnd != default(DateTime) ? Model.PubTimeEnd.ToString("yyyy-MM-dd") : "")" onclick="WdatePicker()" />
+            </span>
+
+            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">查询</a>
+        </span>
+    </div>
+</form>
 <div class="grid_box">
     <div class="grid_top">
     </div>
-    @Html.Grid(Model).Columns(column =>
+    @Html.Grid(Model.SocSerList).Columns(column =>
                                   {
-                                      column.CheckBox(x => x.Id);
-                                      column.For(x => x.Id).Named("编号").HeaderAttributes(style => "width:50px;align:center;");
+                                    //  column.CheckBox(x => x.Id);
+                                   //   column.For(x => x.Id).Named("编号").HeaderAttributes(style => "width:50px;align:center;");
                                       column.For(x => x.SerNum).Named("服务内容编号");
-                                      column.For(x => x.Type).Named("服务类型");
+                                      column.For(x =>Html.F().GetSerTypeName(x.Type)).Named("服务类型");
                                       column.For(x => x.SocialNo).Named("社组织编号");
                                       column.For(x => x.Context).Named("服务内容");
-                                      column.For(x => x.PubTime).Named("发布时间");
+                                      column.For(x => x.PubTime.HasValue ? x.PubTime.Value.ToString("yyyy-MM-dd HH:ss") : "").Named("发布时间");
                                       column.For(x => x.Phone).Named("手机号");
-                                      column.For(x => x.EndTime).Named("截止时间");
+                                      column.For(x => x.EndTime.HasValue ? x.EndTime.Value.ToString("yyyy-MM-dd HH:ss") : "").Named("截止时间");
                                       column.For(x => x.Contacts).Named("联系人");
                                       column.For(x => x.Score).Named("服务分值");
 
@@ -32,4 +65,11 @@
 </div>
 <div class="blank5">
 </div>
-@Html.Pager(Model)
+@Html.Pager(Model.SocSerList)
+<script>
+
+    function submitForm() {
+        // var url = "/SocSer/PostNoTakeIn" + '?detailId=' + id + "&state=" + state + "&msg=" + msg;
+        $('#indexFrom').submit();
+    }
+</script>

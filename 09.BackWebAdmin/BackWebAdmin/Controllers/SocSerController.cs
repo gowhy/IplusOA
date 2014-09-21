@@ -25,20 +25,20 @@ namespace BackWebAdmin.Controllers
         public ActionResult Index(int? page, SelectSocSerModel model, GridSortOptions sort)
         {
             var pageNumber = page ?? 1;
-            using (IplusOADBContext db = new IplusOADBContext())
-            {
+         
                 var filter = PredicateExtensionses.True<SocServiceDetailEntity>();
 
-                if (!string.IsNullOrWhiteSpace(model.type)) filter = filter.And(x => x.Type == model.type);
-
-                ViewData["type"] = model.type;
-
-                model.SocSerList = db.SocServiceDetailEntityTable//
-                    .Where(filter.And(x => x.Id > 0))//
-                    .OrderBy(sort.Column, sort.Direction == SortDirection.Descending)//
-                    .ToPagedList(pageNumber - 1, pageSize);
+                if (!string.IsNullOrWhiteSpace(model.Type)) filter = filter.And(x => x.Type == model.Type);
+                if (!string.IsNullOrWhiteSpace(model.SocialNo)) filter = filter.And(x => x.SocialNo == model.SocialNo);
+                if (model.PubTime!=default(DateTime)) filter = filter.And(x => x.PubTime >= model.PubTime);
+                if (model.PubTimeEnd != default(DateTime)) filter = filter.And(x => x.PubTime <=model.PubTimeEnd);
+             
+                //model.SocSerList = db.SocServiceDetailEntityTable//
+                //    .Where(filter.And(x => x.Id > 0))//
+                //    .OrderBy(sort.Column, sort.Direction == SortDirection.Descending)//
+                //    .ToPagedList(pageNumber - 1, pageSize);
+                model.SocSerList = SocSerService.CList(pageNumber, pageSize, filter);
                 return View(model);
-            }
         }
 
         /// <summary>
@@ -47,11 +47,21 @@ namespace BackWebAdmin.Controllers
         /// <param name="page"></param>
         /// <returns></returns>
         [SecurityNode(Name = "社区管理员-本社区服务内容")]
-        public ActionResult ManagerIndex(int? page)
+        public ActionResult ManagerIndex(int? page, SelectSocSerModel model, GridSortOptions sort)
         {
             var pageNumber = page ?? 1;
             string depId = AdminUser.DeptId.ToString();
-            return View(SocSerService.CList(pageNumber, pageSize, depId));
+
+            var filter = PredicateExtensionses.True<SocServiceDetailEntity>();
+
+            if (!string.IsNullOrWhiteSpace(model.Type)) filter = filter.And(x => x.Type == model.Type);
+            if (!string.IsNullOrWhiteSpace(model.SocialNo)) filter = filter.And(x => x.SocialNo == model.SocialNo);
+            if (model.PubTime != default(DateTime)) filter = filter.And(x => x.PubTime >= model.PubTime);
+            if (model.PubTimeEnd != default(DateTime)) filter = filter.And(x => x.PubTime <= model.PubTimeEnd);
+            filter = filter.And((x => x.CoverCommunity.IndexOf(depId) != -1));
+
+            model.SocSerList = SocSerService.CList(pageNumber, pageSize, filter);
+            return View(model);
         }
         [SecurityNode(Name = "App获取用户本社区服务内容")]
         public ActionResult AppIndex(int? page, int? pageSize=20,string type=null)

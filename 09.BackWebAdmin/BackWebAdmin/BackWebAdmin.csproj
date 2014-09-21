@@ -175,6 +175,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Help\FunctionHelper.cs" />
     <Compile Include="Models\Dp\ShowSocSerModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\MsgModel.cs" />
@@ -693,6 +694,29 @@
     <Content Include="Content\JS\left.js" />
     <Content Include="Content\JS\project.js" />
     <Content Include="Content\JS\top.js" />
+    <Content Include="Content\plug-in\My97DatePicker\calendar.js" />
+    <Content Include="Content\plug-in\My97DatePicker\lang\en.js" />
+    <Content Include="Content\plug-in\My97DatePicker\lang\zh-cn.js" />
+    <Content Include="Content\plug-in\My97DatePicker\lang\zh-tw.js" />
+    <Content Include="Content\plug-in\My97DatePicker\skin\datePicker.gif" />
+    <Content Include="Content\plug-in\My97DatePicker\skin\default\datepicker.css" />
+    <Content Include="Content\plug-in\My97DatePicker\skin\default\img.gif" />
+    <Content Include="Content\plug-in\My97DatePicker\skin\WdatePicker.css" />
+    <Content Include="Content\plug-in\My97DatePicker\skin\whyGreen\bg.jpg" />
+    <Content Include="Content\plug-in\My97DatePicker\skin\whyGreen\datepicker.css" />
+    <Content Include="Content\plug-in\My97DatePicker\skin\whyGreen\img.gif" />
+    <Content Include="Content\plug-in\My97DatePicker\WdatePicker.js" />
+    <Content Include="Content\plug-in\My97DatePicker\开发包\lang\en.js" />
+    <Content Include="Content\plug-in\My97DatePicker\开发包\lang\zh-cn.js" />
+    <Content Include="Content\plug-in\My97DatePicker\开发包\lang\zh-tw.js" />
+    <Content Include="Content\plug-in\My97DatePicker\开发包\readme.txt" />
+    <Content Include="Content\plug-in\My97DatePicker\开发包\skin\datePicker.gif" />
+    <Content Include="Content\plug-in\My97DatePicker\开发包\skin\default\datepicker.css" />
+    <Content Include="Content\plug-in\My97DatePicker\开发包\skin\default\img.gif" />
+    <Content Include="Content\plug-in\My97DatePicker\开发包\skin\WdatePicker.css" />
+    <Content Include="Content\plug-in\My97DatePicker\开发包\skin\whyGreen\bg.jpg" />
+    <Content Include="Content\plug-in\My97DatePicker\开发包\skin\whyGreen\datepicker.css" />
+    <Content Include="Content\plug-in\My97DatePicker\开发包\skin\whyGreen\img.gif" />
     <Content Include="Content\plug-in\ztree\css\demo.css" />
     <Content Include="Content\plug-in\ztree\css\zTreeStyle\img\diy\1_close.png" />
     <Content Include="Content\plug-in\ztree\css\zTreeStyle\img\diy\1_open.png" />

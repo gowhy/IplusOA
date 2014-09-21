@@ -9,7 +9,12 @@ namespace BackWebAdmin.Models
 {
     public class SelectSocSerModel   
     {
-        public string type { get; set; }
+        public string Type { get; set; }
+        public DateTime PubTime { get; set; }
+        public DateTime PubTimeEnd { get; set; }
+
+        public string SocialNo { get; set; }
+
         public IPagedList<SocServiceDetailEntity> SocSerList { get; set; }
 
     }
