@@ -38,6 +38,7 @@ namespace BackWebAdmin.Controllers
         //  [OutputCache(Duration = 6000)]
         public ActionResult Index()
         {
+            ViewBag.username = AdminUser.UserName;
             IplusOADBContext db = new IplusOADBContext();
             var list = db.MenuEntityTable.AsQueryable<MenuEntity>().ToList();
 
@@ -73,6 +74,7 @@ namespace BackWebAdmin.Controllers
         public ActionResult Top()
         {
             ViewBag.username = AdminUser.UserName;
+      
             var nav = SiteMapManager.SiteMaps.DefaultSiteMap.RootNode.ChildNodes;
 
             return View(nav);

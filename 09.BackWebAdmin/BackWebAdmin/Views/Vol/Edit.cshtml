@@ -88,7 +88,7 @@
                 <tr>
                     <td class="item_title">证件类型:</td>
                     <td class="item_input">
-                        <select name="CardType">
+                        <select name="CardType" id="CardType">
                             <option value="身份证" @(Model.Type == "身份证" ? "selected" : "")>身份证</option>
                             <option value="学生证" @(Model.Type == "学生证" ? "selected" : "")>学生证</option>
                             <option value="士兵证" @(Model.Type == "士兵证" ? "selected" : "")>士兵证</option>
@@ -140,6 +140,13 @@
                         <td class="item_title">社会组织编号:</td>
                         <td class="item_input"><input type="text" class="textbox require" name="SocialNO" value="@Model.SocialNO" /></td>
                     </tr>*@
+                <tr>
+                    <td class="item_title">权利:</td>
+                    <td class="item_input">
+                        <input type="radio" name="Doing" value="0" />暂停
+                        <input type="radio" name="Doing" value="1" />享有
+                    </td>
+                </tr>
                 <tr>
                     <td class="item_title"></td>
                     <td class="item_input">
@@ -229,6 +236,8 @@
 
          //   <input type="radio" name="RealNameState" value="0" />否
             $("input:radio[name=RealNameState][value=@Model.RealNameState]").attr('checked','true');
+            $("input:radio[name=Doing][value=@Model.Doing]").attr('checked','true');
+            $("#CardType").val("@Model.CardType");
         </script>
     </form>
 </div>
