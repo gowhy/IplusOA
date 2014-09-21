@@ -9,6 +9,7 @@ namespace BackWebAdmin
     public class FunctionHelper
     {
         private Dictionary<string, string> dicSerType = new Dictionary<string, string>();
+        private Dictionary<string, string> dicSorgType = new Dictionary<string, string>();
         public FunctionHelper()
         {
             dicSerType.Add("GYFN", "法律服务");
@@ -23,7 +24,12 @@ namespace BackWebAdmin
             dicSerType.Add("SYWX", "家居维修");
             dicSerType.Add("SYJR", "金融服务");
             dicSerType.Add("SYYH", "优惠进社区");
-      
+
+            dicSorgType.Add("SS", "枢纽型社会组织");
+            dicSorgType.Add("MF", "民非类社会组织");
+            dicSorgType.Add("ST", "社团类社会组织");
+            dicSorgType.Add("SY", "商业类社会组织");
+
         }
         public string GetSerTypeName(string typeCode)
         {
@@ -33,6 +39,15 @@ namespace BackWebAdmin
             }
             return dicSerType[typeCode];
         }
+        public string GetSorgTypeName(string typeCode)
+        {
+            if (string.IsNullOrEmpty(typeCode))
+            {
+                return typeCode;
+            }
+            return dicSorgType[typeCode];
+        }
+    
     }
     public static class FunctionHelperExntensions
     {

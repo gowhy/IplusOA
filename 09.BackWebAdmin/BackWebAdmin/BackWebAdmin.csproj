@@ -135,8 +135,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\SOrg\" />
-    <Folder Include="Models\Vol\" />
     <Folder Include="Views\Comm\" />
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +179,8 @@
     <Compile Include="Models\MsgModel.cs" />
     <Compile Include="Models\Role\RoleModel.cs" />
     <Compile Include="Models\SocSer\SelectSocSerModel.cs" />
+    <Compile Include="Models\SOrg\SelectSorgModel.cs" />
+    <Compile Include="Models\Vol\SelectVolModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

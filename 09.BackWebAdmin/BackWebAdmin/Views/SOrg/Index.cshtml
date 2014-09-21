@@ -1,12 +1,70 @@
-﻿@model  Common.IPagedList<SocialOrgEntity>
+﻿@model  BackWebAdmin.Models.SelectSorgModel
 @using MvcContrib.UI.Grid
 @using MvcContrib.Pagination;
 @using MvcContrib.UI.Pager;
 @using Common;
 @using IplusOAEntity;
 
-@section HeadSection {
-    <script type="text/javascript">
+
+<style>
+    .combo {
+        vertical-align: bottom;
+    }
+</style>
+<form id="indexFrom">
+
+    <div style="float: left; height: 40px; text-align: center;">
+        <span><a class="easyui-linkbutton" data-options="iconCls:'icon-add'" title="新增" href="@Url.Action("Add")">新增</a></span>
+        <span style="margin-left:50px;">
+      
+                <span class="combo">
+                    组织类型
+                    <select id="Type" class="easyui-combobox" data-options="" name="Type" style="width: 120px; ">
+                        <option value="" selected="selected">全部</option>
+                        <option value="SS">枢纽型社会组织</option>
+                        <option value="MF">民非类社会组织</option>
+                        <option value="ST">社团类社会组织</option>
+                        <option value="SY">商业类社会组织</option>
+                    </select>
+                    社会组织内部编号<input type="text" name="SocialNO" value="@Model.SocialNO" />
+                    名称<input type="text" name="Name" value="@Model.Name" />
+                    登记证号<input type="text" name="RegNO" value="@Model.RegNO" />
+                </span>
+
+                <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">查询</a>
+            </span>
+    </div>
+</form>
+
+<div class="grid_box">
+    <div class="grid_top">
+    </div>
+    @Html.Grid(Model.SocOrgList).Columns(column =>
+    {
+      //  column.CheckBox(x => x.Id);
+      //  column.For(x => x.Id).Named("编号");
+        column.For(x =>Html.F().GetSorgTypeName(x.Type)).Named("组织类型");
+        column.For(x => x.SocialNO).Named("社会组织内部编号");
+        column.For(x => x.Name).Named("名称");
+        column.For(x => x.RegNO).Named("登记证号");
+        column.For(x => x.RegType).Named("登记类型");
+
+        column.For(x => x.OrgNo).Named("机构代码证号");
+        column.For(x => x.RegTime.HasValue ? x.RegTime.Value.ToString("yyyy-MM-dd") : "").Named("登记时间");
+        column.For(x => x.EffectiveTime.HasValue ? x.EffectiveTime.Value.ToString("yyyy-MM-dd") : "").Named("有效期");
+      //  column.For(x => x.Department.Name).Named("行政级别");
+        column.Buttons(btn => btn.Add(x => Html.ActionLink("编辑", "Edit", new { id = x.Id }))
+            .Add(x => Html.ScriptLink("删除", "deleteSorg({0})", x.Id))
+
+            );
+    }).Complex(ViewData)
+    <div class="grid_foot">
+    </div>
+</div>
+<div class="blank5">
+</div>
+@Html.Pager(Model.SocOrgList)
+<script type="text/javascript">
         function addSorg() {
 
             var url = '@Url.Action("Add")' + '?id=' +00;
@@ -20,39 +78,11 @@
             deleteMethod(id, "Delete");
            //showAjaxResult(url, "删除用户中......", 600, 400);
         }
-    </script>
-    @Html.IncludeCSS("~/Content/Css/calendar.css")
-    @Html.IncludeScript("~/Content/JS/calendar.js")
-}
 
+    $("#Type").val("@Model.Type");
 
-<div id="button-bar">
-    <a class="easyui-linkbutton" data-options="iconCls:'icon-add'" title="新增" href="@Url.Action("Add")" onclick="addTab()">新增</a>
-</div>
-<div class="grid_box">
- 
-    @Html.Grid(Model).Columns(column =>
-    {
-        column.CheckBox(x => x.Id);
-        column.For(x => x.Id).Named("编号");
-        column.For(x => x.Type).Named("组织类型");
-        column.For(x => x.SocialNO).Named("社会组织内部编号");
-        column.For(x => x.Name).Named("名称");
-        column.For(x => x.RegNO).Named("登记证号");
-        column.For(x => x.RegType).Named("登记类型");
-
-        column.For(x => x.OrgNo).Named("机构代码证号");
-        column.For(x => x.RegTime).Named("登记时间");
-        column.For(x => x.EffectiveTime).Named("有效期");
-      //  column.For(x => x.Department.Name).Named("行政级别");
-        column.Buttons(btn => btn.Add(x => Html.ActionLink("编辑", "Edit", new { id = x.Id }))
-            .Add(x => Html.ScriptLink("删除", "deleteUser({0})", x.Id))
-
-            );
-    }).Complex(ViewData)
-    <div class="grid_foot">
-    </div>
-</div>
-<div class="blank5">
-</div>
-@Html.Pager(Model)
+    function submitForm() {
+        // var url = "/SocSer/PostNoTakeIn" + '?detailId=' + id + "&state=" + state + "&msg=" + msg;
+        $('#indexFrom').submit();
+    }
+</script>

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
+using ServiceAPI;
 
 namespace BackWebAdmin.Controllers
 {
@@ -24,26 +25,42 @@ namespace BackWebAdmin.Controllers
 
 
         [SecurityNode(Name = "首页")]
-        public ActionResult Index(int? page)
+        public ActionResult Index(int? page, SelectSorgModel model)
         {
             var pageNumber = page ?? 1;
-            using (IplusOADBContext db = new IplusOADBContext())
-            {
-                var list = db.SocialOrgEntityTable.AsQueryable<SocialOrgEntity>().ToList();
-                return View(list.ToPagedList(pageNumber - 1, pageSize));
-            }
+
+            var filter = PredicateExtensionses.True<SocialOrgEntity>();
+
+            if (!string.IsNullOrWhiteSpace(model.Type)) filter = filter.And(x => x.Type == model.Type.Trim());
+            if (!string.IsNullOrWhiteSpace(model.Name)) filter = filter.And(x => x.Name.Contains(model.Name.Trim()));
+            if (!string.IsNullOrWhiteSpace(model.RegNO)) filter = filter.And(x => x.RegNO == model.RegNO.Trim());
+            if (!string.IsNullOrWhiteSpace(model.SocialNO)) filter = filter.And(x => x.SocialNO == model.SocialNO.Trim());
+
+            model.SocOrgList = SorgSercice.CList(pageNumber, pageSize, filter);
+
+            return View(model);
         }
 
         [SecurityNode(Name = "APP获取社会组织")]
-        public ActionResult AppGetOrg(int? page, int? pageSize)
+        public ActionResult AppGetOrg(int? page, int? pageSize, SelectSorgModel model)
         {
             var pageNumber = page ?? 1;
             int size = pageSize ?? SOrgController.pageSize;
-            using (IplusOADBContext db = new IplusOADBContext())
-            {
-                var list = db.SocialOrgEntityTable.AsQueryable<SocialOrgEntity>().ToList();
-                return Json(list.ToPagedList(pageNumber - 1, size));
-            }
+            //using (IplusOADBContext db = new IplusOADBContext())
+            //{
+            //    var list = db.SocialOrgEntityTable.AsQueryable<SocialOrgEntity>().ToList();
+            //    return Json(list.ToPagedList(pageNumber - 1, size));
+            //}
+
+            var filter = PredicateExtensionses.True<SocialOrgEntity>();
+
+            if (!string.IsNullOrWhiteSpace(model.Type)) filter = filter.And(x => x.Type == model.Type);
+            if (!string.IsNullOrWhiteSpace(model.Name)) filter = filter.And(x => x.Name.Contains(model.Name));
+            if (!string.IsNullOrWhiteSpace(model.RegNO)) filter = filter.And(x => x.RegNO == model.RegNO);
+            if (!string.IsNullOrWhiteSpace(model.SocialNO)) filter = filter.And(x => x.SocialNO == model.SocialNO);
+
+            model.SocOrgList = SorgSercice.CList(pageNumber - 1, size, filter);
+            return Json(model.SocOrgList);
         }
 
 

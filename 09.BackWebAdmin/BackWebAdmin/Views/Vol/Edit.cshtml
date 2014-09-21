@@ -75,7 +75,11 @@
 
                 <tr>
                     <td class="item_title">实名制状态:</td>
-                    <td class="item_input"><input type="text" class="textbox  " name="RealNameState" value="@Model.RealNameState" /></td>
+                    <td class="item_input">
+                    @*<input type="text" class="textbox  " name="RealNameState" value="@Model.RealNameState" />*@
+                        <input type="radio" name="RealNameState" value="1" />是
+                        <input type="radio" name="RealNameState" value="0" />否
+                    </td>
                 </tr>
                 <tr>
                     <td class="item_title">真实姓名:</td>
@@ -222,6 +226,9 @@
                 // var url = "/SocSer/PostNoTakeIn" + '?detailId=' + id + "&state=" + state + "&msg=" + msg;
                 $('#PostEdit').submit();
             }
+
+         //   <input type="radio" name="RealNameState" value="0" />否
+            $("input:radio[name=RealNameState][value=@Model.RealNameState]").attr('checked','true');
         </script>
     </form>
 </div>

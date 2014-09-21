@@ -28,8 +28,8 @@ namespace BackWebAdmin.Controllers
          
                 var filter = PredicateExtensionses.True<SocServiceDetailEntity>();
 
-                if (!string.IsNullOrWhiteSpace(model.Type)) filter = filter.And(x => x.Type == model.Type);
-                if (!string.IsNullOrWhiteSpace(model.SocialNo)) filter = filter.And(x => x.SocialNo == model.SocialNo);
+                if (!string.IsNullOrWhiteSpace(model.Type)) filter = filter.And(x => x.Type == model.Type.Trim());
+                if (!string.IsNullOrWhiteSpace(model.SocialNo)) filter = filter.And(x => x.SocialNo == model.SocialNo.Trim());
                 if (model.PubTime!=default(DateTime)) filter = filter.And(x => x.PubTime >= model.PubTime);
                 if (model.PubTimeEnd != default(DateTime)) filter = filter.And(x => x.PubTime <=model.PubTimeEnd);
              

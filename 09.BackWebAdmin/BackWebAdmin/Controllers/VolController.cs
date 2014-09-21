@@ -6,6 +6,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Common;
+using BackWebAdmin.Models;
+using ServiceAPI;
 
 namespace BackWebAdmin.Controllers
 {
@@ -17,14 +19,20 @@ namespace BackWebAdmin.Controllers
         /// </summary>
         const int pageSize = 20;
         [SecurityNode(Name = "首页")]
-        public ActionResult Index(int? page)
+        public ActionResult Index(int? page,SelectVolModel model)
         {
             var pageNumber = page ?? 1;
-            using (IplusOADBContext db = new IplusOADBContext())
-            {
-                var list = db.VolunteerEntityTable.AsQueryable().Where(x => x.State == 1 && x.Type == "志愿者");
-                return View(list.ToPagedList(pageNumber - 1, pageSize));
-            }
+
+            var filter = PredicateExtensionses.True<VolunteerEntity>();
+
+            if (!string.IsNullOrWhiteSpace(model.RealName)) filter = filter.And(x => x.RealName.Contains(model.RealName.Trim()));
+            if (!string.IsNullOrWhiteSpace(model.Phone)) filter = filter.And(x => x.Phone == model.Phone.Trim());
+            if (!string.IsNullOrWhiteSpace(model.CardNum)) filter = filter.And(x => x.CardNum == model.CardNum.Trim());
+            if (!string.IsNullOrWhiteSpace(model.Type)) filter = filter.And(x => x.Type == model.Type.Trim());
+      
+            model.VolList = VolService.CList(pageNumber, pageSize, filter);
+            return View(model);
+
         }
         [SecurityNode(Name = "新增页")]
         public ActionResult Add()

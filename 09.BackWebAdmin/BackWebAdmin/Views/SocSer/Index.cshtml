@@ -69,9 +69,9 @@
                                       column.For(x => x.SocialNo).Named("社组织编号");
                                       column.For(x => x.Context).Named("服务内容");
                                       column.For(x => x.PubTime.Value.ToString("yyyy-MM-dd HH:ss")).Named("发布时间");
-                                      column.For(x => x.Phone).Named("手机号");
-                                      column.For(x => x.EndTime.HasValue?x.EndTime.Value.ToString("yyyy-MM-dd HH:ss"):"").Named("截止时间");
+                                      column.For(x => x.EndTime.HasValue ? x.EndTime.Value.ToString("yyyy-MM-dd HH:ss") : "").Named("截止时间");
                                       column.For(x => x.Contacts).Named("联系人");
+                                      column.For(x => x.Phone).Named("手机号");
                                       column.For(x => x.Score).Named("服务分值");
 
                                       column.Buttons(btns => btns.Add(x => Html.ActionLink("编辑", "Edit", new { id = x.Id }))

@@ -1,32 +1,43 @@
-﻿@model  Common.IPagedList<IplusOAEntity.VolunteerEntity>
+﻿@model  BackWebAdmin.Models.SelectVolModel
 @using MvcContrib.UI.Grid
 @using MvcContrib.Pagination;
 @using MvcContrib.UI.Pager;
 @using Common;
 
-<script type="text/javascript">
-
-    function deleteVol(id) {
-
-        var url = '@Url.Action("Delete")' + '?id=' + id;
-        deleteMethod(id, "Delete");
-        //showAjaxResult(url, "删除用户中......", 600, 400);
+<style>
+    .combo {
+        vertical-align: bottom;
     }
+</style>
+<form id="indexFrom">
 
+    <div style="float: left; height: 40px; text-align: center;">
+        <span><a class="easyui-linkbutton" data-options="iconCls:'icon-add'" title="新增" href="@Url.Action("Add")">新增</a></span>
+        <span style="margin-left:70px;">
+            <span class="combo">
 
-</script>
+                <select id="Type" class="easyui-combobox" data-options="" name="Type" style="width: 120px; ">
+                    <option value="" selected="selected">全部</option>
+                    <option value="普通用户">普通用户</option>
+                    <option value="志愿者">志愿者</option>
+                </select>
 
+                证件号<input type="text" name="CardNum" value="@Model.CardNum" />
+                手机号<input type="text" name="Phone" value="@Model.Phone" />
+                姓名<input type="text" name="RealName" value="@Model.RealName" />
+            </span>
 
-<div id="button-bar">
-    <a class="easyui-linkbutton" data-options="iconCls:'icon-add'" title="新增" href="@Url.Action("Add")" >新增</a>
-</div>
+            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">查询</a>
+        </span>
+    </div>
+</form>
 <div class="grid_box">
     <div class="grid_top">
     </div>
-    @Html.Grid(Model).Columns(column =>
+    @Html.Grid(Model.VolList).Columns(column =>
                                   {
-                                      column.CheckBox(x => x.Id);
-                                      column.For(x => x.Id).Named("编号").HeaderAttributes(style => "width:50px;align:center;");
+                                   //   column.CheckBox(x => x.Id);
+                                   //   column.For(x => x.Id).Named("编号").HeaderAttributes(style => "width:50px;align:center;");
                                       column.For(x => x.CardType).Named("证件类型");
                                       column.For(x => x.Type).Named("类型");
                                       column.For(x => x.Address).Named("地址");
@@ -47,4 +58,20 @@
 </div>
 <div class="blank5">
 </div>
-@Html.Pager(Model)
+@Html.Pager(Model.VolList)
+
+
+<script type="text/javascript">
+
+    function deleteVol(id) {
+
+        var url = '@Url.Action("Delete")' + '?id=' + id;
+        deleteMethod(id, "Delete");
+        //showAjaxResult(url, "删除用户中......", 600, 400);
+    }
+    $("#Type").val("@Model.Type");
+    function submitForm() {
+        // var url = "/SocSer/PostNoTakeIn" + '?detailId=' + id + "&state=" + state + "&msg=" + msg;
+        $('#indexFrom').submit();
+    }
+</script>
