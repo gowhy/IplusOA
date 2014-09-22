@@ -48,6 +48,7 @@
                 <option value="SYYH">优惠进社区</option>
             </select>
             <span class="combo">
+                社组织名称<input type="text" name="SocialName" value="@Model.SocialName" />
                 社组织编号<input type="text" name="SocialNo" value="@Model.SocialNo" />
                 发布时间<input type="text" name="PubTime" value="@(Model.PubTime!=default(DateTime)? Model.PubTime.ToString("yyyy-MM-dd") : "")" onclick="WdatePicker()" />
                 -<input type="text" name="PubTimeEnd" value="@(Model.PubTimeEnd != default(DateTime) ? Model.PubTimeEnd.ToString("yyyy-MM-dd") : "")" onclick="WdatePicker()" />
@@ -65,10 +66,11 @@
                                      // column.CheckBox(x => x.Id);
                                    //   column.For(x => x.Id).Named("编号").HeaderAttributes(style => "width:50px;align:center;");
                                       column.For(x => x.SerNum).Named("服务内容编号");
-                                      column.For(x =>Html.F().GetSerTypeName(x.Type)).Named("服务类型");
+                                      column.For(x => Html.F().GetSerTypeName(x.Type)).Named("服务类型");
+                                      column.For(x => x.SocialName).Named("社组织名称");
                                       column.For(x => x.SocialNo).Named("社组织编号");
                                       column.For(x => x.Context).Named("服务内容");
-                                      column.For(x => x.PubTime.Value.ToString("yyyy-MM-dd HH:ss")).Named("发布时间");
+                                      column.For(x => x.PubTime.HasValue ? x.PubTime.Value.ToString("yyyy-MM-dd HH:ss") : "").Named("发布时间");
                                       column.For(x => x.EndTime.HasValue ? x.EndTime.Value.ToString("yyyy-MM-dd HH:ss") : "").Named("截止时间");
                                       column.For(x => x.Contacts).Named("联系人");
                                       column.For(x => x.Phone).Named("手机号");

@@ -7,6 +7,8 @@ using IplusOAEntity;
 using DataLayer.IplusOADB;
 using BackWebAdmin.Models;
 using System.Linq.Expressions;
+using MvcContrib.UI.Grid;
+using MvcContrib.Sorting;
 
 namespace BackWebAdmin.CommService
 {
@@ -32,7 +34,7 @@ namespace BackWebAdmin.CommService
 
         }
 
-        public static dynamic TypeList(int pageNumber, int pageSize, string depId, string type = null)
+        public static IPagedList<SocServiceDetailEntityClone> TypeList(int pageNumber, int pageSize, string depId, SelectSocSerModel model, GridSortOptions sort)
         {
 
             using (IplusOADBContext db = new IplusOADBContext())
@@ -63,11 +65,17 @@ namespace BackWebAdmin.CommService
                               Type = s.Type,
                               VHelpDesc = s.VHelpDesc
                           };
-                res = res.Where(x => x.CoverCommunity.IndexOf(depId) != -1);
-                if (type != null)
-                {
-                    res = res.Where(x => x.Type.Trim().ToUpper() == type.Trim().ToUpper());
-                }
+
+                if (!string.IsNullOrEmpty(depId)) res = res.Where(x => x.CoverCommunity.IndexOf(depId) != -1);
+                if (!string.IsNullOrEmpty(model.Type)) res = res.Where(x => x.Type.Trim().ToUpper() == model.Type.Trim().ToUpper());
+                if (!string.IsNullOrEmpty(model.SocialNo)) res = res.Where(x => x.SocialNo.Trim().ToUpper() == model.SocialNo.Trim().ToUpper());
+                if (model.PubTime != default(DateTime)) res = res.Where(x => x.PubTime >= model.PubTime);
+                if (model.PubTimeEnd != default(DateTime)) res = res.Where(x => x.PubTime <= model.PubTimeEnd);
+                if (!string.IsNullOrEmpty(model.SocialName)) res = res.Where(x => x.SocialName.Contains(model.SocialName));
+
+
+                res = res.OrderBy(sort.Column, sort.Direction == SortDirection.Descending);
+
                 return res.ToPagedList(pageNumber - 1, pageSize);
             }
         }

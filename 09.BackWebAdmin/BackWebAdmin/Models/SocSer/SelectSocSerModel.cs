@@ -14,8 +14,9 @@ namespace BackWebAdmin.Models
         public DateTime PubTimeEnd { get; set; }
 
         public string SocialNo { get; set; }
+        public string SocialName { get; set; }
 
-        public IPagedList<SocServiceDetailEntity> SocSerList { get; set; }
+        public IPagedList<SocServiceDetailEntityClone> SocSerList { get; set; }
 
     }
 }

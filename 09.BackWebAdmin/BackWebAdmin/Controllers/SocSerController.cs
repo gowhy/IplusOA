@@ -25,19 +25,7 @@ namespace BackWebAdmin.Controllers
         public ActionResult Index(int? page, SelectSocSerModel model, GridSortOptions sort)
         {
             var pageNumber = page ?? 1;
-         
-                var filter = PredicateExtensionses.True<SocServiceDetailEntity>();
-
-                if (!string.IsNullOrWhiteSpace(model.Type)) filter = filter.And(x => x.Type == model.Type.Trim());
-                if (!string.IsNullOrWhiteSpace(model.SocialNo)) filter = filter.And(x => x.SocialNo == model.SocialNo.Trim());
-                if (model.PubTime!=default(DateTime)) filter = filter.And(x => x.PubTime >= model.PubTime);
-                if (model.PubTimeEnd != default(DateTime)) filter = filter.And(x => x.PubTime <=model.PubTimeEnd);
-             
-                //model.SocSerList = db.SocServiceDetailEntityTable//
-                //    .Where(filter.And(x => x.Id > 0))//
-                //    .OrderBy(sort.Column, sort.Direction == SortDirection.Descending)//
-                //    .ToPagedList(pageNumber - 1, pageSize);
-                model.SocSerList = SocSerService.CList(pageNumber, pageSize, filter);
+                model.SocSerList = SocSerService.TypeList(pageNumber, pageSize,null, model,sort);
                 return View(model);
         }
 
@@ -52,29 +40,18 @@ namespace BackWebAdmin.Controllers
             var pageNumber = page ?? 1;
             string depId = AdminUser.DeptId.ToString();
 
-            var filter = PredicateExtensionses.True<SocServiceDetailEntity>();
-
-            if (!string.IsNullOrWhiteSpace(model.Type)) filter = filter.And(x => x.Type == model.Type);
-            if (!string.IsNullOrWhiteSpace(model.SocialNo)) filter = filter.And(x => x.SocialNo == model.SocialNo);
-            if (model.PubTime != default(DateTime)) filter = filter.And(x => x.PubTime >= model.PubTime);
-            if (model.PubTimeEnd != default(DateTime)) filter = filter.And(x => x.PubTime <= model.PubTimeEnd);
-            filter = filter.And((x => x.CoverCommunity.IndexOf(depId) != -1));
-
-            model.SocSerList = SocSerService.CList(pageNumber, pageSize, filter);
+            model.SocSerList = SocSerService.TypeList(pageNumber, pageSize, depId, model,sort);
             return View(model);
         }
         [SecurityNode(Name = "App获取用户本社区服务内容")]
-        public ActionResult AppIndex(int? page, int? pageSize=20,string type=null)
+        public ActionResult AppIndex(SelectSocSerModel model, GridSortOptions sort,int? page, int? pageSize = 20)
         {
             var pageNumber = page ?? 1;
             int size = pageSize ?? 20;
             string depId = AdminUser.DeptId.ToString();
 
-            return Json(SocSerService.TypeList(pageNumber, size, depId, type));
+            return Json(SocSerService.TypeList(pageNumber, size, depId, model, sort));
         }
-
-
-     
 
 
         [SecurityNode(Name = "发布社区服务内容")]
