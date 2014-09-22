@@ -44,7 +44,7 @@ namespace BusLogic.Login
             }
         }
 
-        public static BackAdminUser VLoginApp(BackAdminUser admin,string type)
+        public static VolunteerEntity VLoginApp(BackAdminUser admin, string type)
         {
             if (admin==null)
             {
@@ -67,9 +67,9 @@ namespace BusLogic.Login
                 if (volentity != null)
                 {
                     admin.DeptId = volentity.DepId;
-  
+                    volentity.LoginState = 1;//登陆成功
                     admin.LoginToken = SSO.UserTicketManager.CreateLoginUserTicket(admin);
-                    return admin;
+                    return volentity;
                 }
                 else
                 {

@@ -69,6 +69,7 @@ namespace BackWebAdmin.Controllers
             var pageNumber = page ?? 1;
             int size = pageSize ?? 20;
             string depId = AdminUser.DeptId.ToString();
+
             return Json(SocSerService.TypeList(pageNumber, size, depId, type));
         }
 

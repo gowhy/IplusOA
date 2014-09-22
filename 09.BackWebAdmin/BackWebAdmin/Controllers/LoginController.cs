@@ -43,7 +43,8 @@ namespace BackWebAdmin.Controllers
             BackAdminUser admin = new BackAdminUser();
             admin.UserName = model.UserName;
             admin.PassWord = model.Password;
-            var res = Login.VLoginApp(admin, type);
+            VolunteerEntity res = Login.VLoginApp(admin, type);
+            res.PassWord = "";//密码不用返回回来
             if (res != null)
             {
                 res.Msg += "登录成功";

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IplusOAEntity
 {
-  public  class VolunteerEntity
+    public class VolunteerEntity
     {
         #region Model
         private int _id;
@@ -28,7 +28,7 @@ namespace IplusOAEntity
         private int? _thsscore;
         private int? _score;
         private string _vid;
-   
+
         private int? _state;
         /// <summary>
         /// auto_increment
@@ -200,11 +200,13 @@ namespace IplusOAEntity
 
         public string PassWord { get; set; }
 
-      /// <summary>
-      /// 是否接受任务
-      /// </summary>
+        /// <summary>
+        /// 是否接受任务
+        /// </summary>
         public int? Doing { get; set; }
         public byte[] VolHeadImg { get; set; }
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
+        public int LoginState { get; set; }
         #endregion Model
 
     }

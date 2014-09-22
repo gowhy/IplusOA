@@ -265,6 +265,22 @@ namespace BackWebAdmin.Controllers
             }
         }
 
+        //获用户信息通过Id
+        public ActionResult AppGetUserById(VolunteerEntity volentity)
+        {
+
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+          
+                volentity = db.VolunteerEntityTable.FirstOrDefault<VolunteerEntity>(x => x.Id==volentity.Id);
+                if (volentity == null)
+                {
+                    return Json("用户不存在");
+                }
+
+                return Json(volentity);
+            }
+        }
       
     }
 }

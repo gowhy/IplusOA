@@ -28,29 +28,49 @@ namespace BackWebAdmin.CommService
                 var list = db.SocServiceDetailEntityTable.Where(filter);
                 return list.ToPagedList(pageNumber - 1, pageSize);
             }
+
+
         }
 
-        public static IPagedList<SocServiceDetailEntity> TypeList(int pageNumber, int pageSize, string depId,string type=null)
+        public static dynamic TypeList(int pageNumber, int pageSize, string depId, string type = null)
         {
 
             using (IplusOADBContext db = new IplusOADBContext())
             {
-                List<SocServiceDetailEntity> list = null;
-                if (type==null)
+
+                var ser = db.SocServiceDetailEntityTable;
+                var sorg = db.SocialOrgEntityTable;
+                var res = from s in ser
+                          join o in sorg on s.SocialNo equals o.SocialNO
+                          select new SocServiceDetailEntityClone
+                          {
+                              AddTime = s.AddTime,
+                              SocialName = o.Name,
+                              AddUser = s.AddUser,
+                              Contacts = s.Contacts,
+                              SocialNo = s.SocialNo,
+                              Context = s.Context,
+                              CoverCommunity = s.CoverCommunity,
+                              Desc = s.Desc,
+                              EndTime = s.EndTime,
+                              Id = s.Id,
+                              PayType = s.PayType,
+                              Phone = s.Phone,
+                              PubTime = s.PubTime,
+                              Score = s.Score,
+                              SerNum = s.SerNum,
+                              THSScore = s.THSScore,
+                              Type = s.Type,
+                              VHelpDesc = s.VHelpDesc
+                          };
+                res = res.Where(x => x.CoverCommunity.IndexOf(depId) != -1);
+                if (type != null)
                 {
-                    list = db.SocServiceDetailEntityTable.AsQueryable().Where(x => x.CoverCommunity.IndexOf(depId) != -1).ToList();
+                    res = res.Where(x => x.Type.Trim().ToUpper() == type.Trim().ToUpper());
                 }
-                else
-                {
-                    list = db.SocServiceDetailEntityTable.AsQueryable().Where(x => x.CoverCommunity.IndexOf(depId) != -1 && x.Type.Trim().ToUpper() == type.Trim().ToUpper()).ToList();
-                }
-                if (list==null)
-                {
-                    return null;
-                }
-                return list.ToPagedList(pageNumber - 1, pageSize);
+                return res.ToPagedList(pageNumber - 1, pageSize);
             }
         }
-     
+
     }
 }

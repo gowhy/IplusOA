@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IplusOAEntity
 {
-    public class SocServiceDetailEntity
+    public class SocServiceDetailEntityClone
     {
 
         #region Model
