@@ -44,9 +44,9 @@ namespace BusLogic.Login
             }
         }
 
-        public static VolunteerEntity VLoginApp(BackAdminUser admin, string type)
+        public static VolunteerEntityClone VLoginApp(BackAdminUser admin, string type)
         {
-            if (admin==null)
+            if (admin == null)
             {
                 return null;
             }
@@ -54,22 +54,54 @@ namespace BusLogic.Login
             try
             {
                 db = new IplusOADBContext();
-                VolunteerEntity volentity = null;
-                if (type == "志愿者")
-                {
-                     volentity = db.VolunteerEntityTable.FirstOrDefault<VolunteerEntity>(x => x.VID == admin.UserName && x.PassWord == admin.PassWord);
-                }
-                if (type == "普通用户")
-                {
-                    volentity = db.VolunteerEntityTable.FirstOrDefault<VolunteerEntity>(x => x.Phone == admin.UserName && x.PassWord == admin.PassWord);
-                }
 
-                if (volentity != null)
+
+                var vol = db.VolunteerEntityTable;
+                var dep = db.DepartmentTable;
+                var sorg = db.SocialOrgEntityTable;
+
+                var longVol = from v in vol
+                              join d in dep on v.DepId equals d.Id
+                              join s in sorg on v.SocialNO equals s.SocialNO
+                              select new VolunteerEntityClone
+                              {
+                                  DepName = d.Name,
+                                  Address = v.Address,
+                                  CardNum = v.CardNum,
+                                  CardType = v.CardType,
+                                  DepId = v.DepId,
+                                  Doing = v.Doing,
+                                  EMail = v.EMail,
+                                  GroupID = v.GroupID,
+                                  Honor = v.Honor,
+                                  Number = v.Number,
+                                  Id = v.Id,
+                                  Phone = v.Phone,
+                                  QQ = v.QQ,
+                                  RealName = v.RealName,
+                                  RealNameState = v.RealNameState,
+                                  Score = v.Score,
+                                  SocialNO = v.SocialNO,
+                                  State = v.State,
+                                  ThsScore = v.ThsScore,
+                                  UerName = v.UerName,
+                                  Type = v.Type,
+                                  VID = v.VID,
+                                  WeiXin = v.WeiXin,
+                                  SocialName = s.Name
+
+                              };
+
+                if (!string.IsNullOrEmpty(type) && type == "志愿者") longVol = longVol.Where(x => x.VID == admin.UserName && x.PassWord == admin.PassWord);
+                if (!string.IsNullOrEmpty(type) && type == "普通用户") longVol = longVol.Where(x => x.Phone == admin.UserName && x.PassWord == admin.PassWord);
+
+                VolunteerEntityClone resVol = longVol.FirstOrDefault();
+                if (resVol != null)
                 {
-                    admin.DeptId = volentity.DepId;
-                    volentity.LoginState = 1;//登陆成功
+                    admin.DeptId = resVol.DepId;
+                    resVol.LoginState = 1;//登陆成功
                     admin.LoginToken = SSO.UserTicketManager.CreateLoginUserTicket(admin);
-                    return volentity;
+                    return resVol;
                 }
                 else
                 {
