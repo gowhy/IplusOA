@@ -61,11 +61,14 @@ namespace BusLogic.Login
                 var sorg = db.SocialOrgEntityTable;
 
                 var longVol = from v in vol
-                              join d in dep on v.DepId equals d.Id
-                              join s in sorg on v.SocialNO equals s.SocialNO
+                              join d in dep on v.DepId equals d.Id into gd
+                              join s in sorg on v.SocialNO equals s.SocialNO into gs
+                              
                               select new VolunteerEntityClone
                               {
-                                  DepName = d.Name,
+                                  
+                                  
+                                  DepName = gd.FirstOrDefault().Name,
                                   Address = v.Address,
                                   CardNum = v.CardNum,
                                   CardType = v.CardType,
@@ -88,7 +91,8 @@ namespace BusLogic.Login
                                   Type = v.Type,
                                   VID = v.VID,
                                   WeiXin = v.WeiXin,
-                                  SocialName = s.Name
+                                  SocialName = gs.FirstOrDefault().Name,
+                                  PassWord=v.PassWord
 
                               };
 

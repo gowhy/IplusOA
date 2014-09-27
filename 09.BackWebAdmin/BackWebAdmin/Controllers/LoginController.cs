@@ -44,7 +44,7 @@ namespace BackWebAdmin.Controllers
             admin.UserName = model.UserName;
             admin.PassWord = model.Password;
             VolunteerEntityClone res = Login.VLoginApp(admin, type);
-          
+            res.PassWord = null;
             if (res != null)
             {
                 res.Msg += "登录成功";
