@@ -36,14 +36,14 @@
 
     @Html.Grid(Model).Columns(column =>
     {
-        column.CheckBox(x => x.Id);
+        //column.CheckBox(x => x.Id);
         column.For(x => x.Id).Named("用户编号");
-        column.For(x => x.UserName).Named("用户名");
-        column.For(x => x.RealName).Named("真实姓名");
-        column.For(x => x.Role.Name).Named("用户角色");
+        column.For(x => x.UserName??"").Named("用户名");
+        column.For(x => x.RealName??"").Named("真实姓名");
+        column.For(x => x.Role.Name??"").Named("用户角色");
 
-        column.For(x => x.Department.Name).Named("行政组织");
-        column.For(x => x.SocialOrg.Name).Named("社会组织"); 
+        column.For(x => (x.Department ?? new IplusOAEntity.DepartmentEntity()).Name ?? "").Named("行政组织");
+        column.For(x => (x.SocialOrg??new IplusOAEntity.SocialOrgEntity()).Name??"").Named("社会组织"); 
        
         column.Buttons(btn => btn.Add(x => Html.ScriptLink("编辑", "editUser({0})", x.Id))
                                  .Add(x => Html.ScriptLink("删除", "deleteUser({0})", x.Id))
