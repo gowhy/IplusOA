@@ -10,7 +10,7 @@ namespace IplusOAEntity
     {
         private int _id;
         private int? _ssdetailid;
-        private long? _depid;
+        private string _depid;
         private int? _state;
         private string _msg;
         /// <summary>
@@ -32,7 +32,7 @@ namespace IplusOAEntity
         /// <summary>
         /// 
         /// </summary>
-        public long? DepId
+        public string DepId
         {
             set { _depid = value; }
             get { return _depid; }

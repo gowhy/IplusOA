@@ -22,7 +22,7 @@ namespace IplusOAEntity
         private string _password;
         private DateTime _addtime =DateTime.Now;
         private int? _roleid;
-        private long? _deptid;
+        private string _deptid;
         private string _realname;
         private int? _state;
         private int? _socorgid;
@@ -70,7 +70,7 @@ namespace IplusOAEntity
         /// 
         /// </summary>
         [ForeignKey("Department")]
-        public long? DeptId
+        public string DeptId
         {
             set { _deptid = value; }
             get { return _deptid; }

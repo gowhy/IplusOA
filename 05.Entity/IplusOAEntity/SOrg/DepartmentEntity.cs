@@ -9,8 +9,8 @@ namespace IplusOAEntity
 
     public class DepartmentEntity
     {
-        private long? _id;
-        private long? _pid;
+        private string _id;
+        private string _pid;
         private string _name;
         private DateTime _addtime = DateTime.Now;
         private int? _state = 1;
@@ -18,7 +18,7 @@ namespace IplusOAEntity
         /// <summary>
         /// auto_increment
         /// </summary>
-        public long? Id
+        public string Id
         {
             set { _id = value; }
             get { return _id; }
@@ -26,7 +26,7 @@ namespace IplusOAEntity
         /// <summary>
         /// 
         /// </summary>
-        public long? PId
+        public string PId
         {
             set { _pid = value; }
             get { return _pid; }

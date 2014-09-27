@@ -12,7 +12,7 @@ namespace IplusOAEntity
         private int _id;
         private string _number;
         private string _type;
-        private int? _depid;
+        private string _depid;
         private string _address;
         private int? _realnamestate;
         private string _realname;
@@ -57,7 +57,7 @@ namespace IplusOAEntity
         /// <summary>
         /// 
         /// </summary>
-        public int? DepId
+        public string DepId
         {
             set { _depid = value; }
             get { return _depid; }

@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Common;
 using BackWebAdmin.Models;
 using ServiceAPI;
+using System.IO;
 
 namespace BackWebAdmin.Controllers
 {
@@ -23,13 +24,17 @@ namespace BackWebAdmin.Controllers
         {
             var pageNumber = page ?? 1;
 
+            string depId = AdminUser.DeptId.ToString();
+
             var filter = PredicateExtensionses.True<VolunteerEntity>();
 
             if (!string.IsNullOrWhiteSpace(model.RealName)) filter = filter.And(x => x.RealName.Contains(model.RealName.Trim()));
             if (!string.IsNullOrWhiteSpace(model.Phone)) filter = filter.And(x => x.Phone == model.Phone.Trim());
             if (!string.IsNullOrWhiteSpace(model.CardNum)) filter = filter.And(x => x.CardNum == model.CardNum.Trim());
             if (!string.IsNullOrWhiteSpace(model.Type)) filter = filter.And(x => x.Type == model.Type.Trim());
-      
+
+            if (!string.IsNullOrEmpty(depId)) filter = filter.And(x => x.DepId.StartsWith(depId));
+         
             model.VolList = VolService.CList(pageNumber, pageSize, filter);
             return View(model);
 
@@ -150,6 +155,119 @@ namespace BackWebAdmin.Controllers
             db.SaveChanges();
             db.Dispose();
             return Success("修改成功");
+        }
+
+
+        public ActionResult AppPostEdit(VolunteerEntity entity)
+        {
+            AppReturnModel ret = new AppReturnModel();
+            if (entity==null||entity.Id==0)
+            {
+                ret.State = 0;
+                ret.Msg = "用户Id必填";
+           
+                   return Json(ret);
+            }
+            IplusOADBContext db = null;
+            try
+            {
+                db = new IplusOADBContext();
+                VolunteerEntity model = db.VolunteerEntityTable.FirstOrDefault(x => x.Id == entity.Id);
+
+                if (entity.Address != null) model.Address = entity.Address;
+                if (entity.Address != null) model.CardNum = entity.CardNum;
+                if (entity.CardType != null) model.CardType = entity.CardType;
+                if (entity.DepId!= null) model.DepId = entity.DepId;
+                if (entity.EMail != null) model.EMail = entity.EMail;
+                if (entity.GroupID != null) model.GroupID = entity.GroupID;
+                if (entity.Honor != null) model.Honor = entity.Honor;
+                if (entity.Number != null) model.Number = entity.Number;
+                if (entity.QQ != null) model.QQ = entity.QQ;
+                if (entity.RealName != null) model.RealName = entity.RealName;
+                if (entity.RealNameState != null) model.RealNameState = entity.RealNameState;
+               // if (entity.Score != null) model.Score = 0;
+                if (entity.SocialNO != null) model.SocialNO = entity.SocialNO;
+                if (entity.ThsScore != null) model.ThsScore = entity.ThsScore;
+                if (entity.Type != null) model.Type = entity.Type;
+                if (entity.UerName != null) model.UerName = entity.UerName;
+                if (entity.VID != null) model.VID = entity.VID;
+                if (entity.WeiXin != null) model.WeiXin = entity.WeiXin;
+
+                db.Update<VolunteerEntity>(model);
+                db.SaveChanges();
+
+                ret.State = 1;
+                ret.Msg = "修改成功";
+              
+                db.Dispose();
+            }
+            catch (Exception e)
+            {
+                ret.State = 0;
+                ret.Msg = "修改失败," + e.Message;
+              
+            }
+            finally
+            {
+                if (db != null)
+                {
+                    db.Dispose();
+                }
+
+            }
+            return Json(ret);
+        }
+
+
+        public ActionResult AppPostEditHeader(VolunteerEntity entity)
+        {
+            AppReturnModel ret = new AppReturnModel();
+            if (entity == null || entity.Id == 0)
+            {
+                ret.State = 0;
+                ret.Msg = "用户Id必填";
+
+                return Json(ret);
+            }
+            IplusOADBContext db = null;
+          
+            HttpRequestBase request = Request;
+            Stream imgStream = null;
+            if (request.Files.Count > 0)
+            {
+                try
+                {
+                    db = new IplusOADBContext();
+                    VolunteerEntity model = db.VolunteerEntityTable.FirstOrDefault(x => x.Id == entity.Id);
+
+                    imgStream = request.Files[0].InputStream;
+                    int length = (int)imgStream.Length;
+                    byte[] image = new byte[length];
+                    imgStream.Read(image, 0, length);
+                    imgStream.Close();
+
+                    model.VolHeadImg = image;
+                    db.Update<VolunteerEntity>(model);
+                    db.SaveChanges();
+                    ret.State = 1;
+                    ret.Msg = "修改成功";
+                }
+                catch (Exception e)
+                {
+                    ret.State = 0;
+                    ret.Msg = "修改失败," + e.Message;
+                    throw e;
+                }
+                finally
+                {
+                    if (imgStream != null)
+                    {
+                        imgStream.Close();
+                    }
+                }
+            }
+
+            return Json(ret);
         }
 
         [SecurityNode(Name = "待审核列表")]

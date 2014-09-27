@@ -28,7 +28,7 @@ namespace BackWebAdmin.Controllers
         //[HttpPost]
         public ActionResult AjaxCount()
         {
-            long? udepId = AdminUser.DeptId;
+            string udepId = AdminUser.DeptId;
 
             List<DpEntity> resList = new List<DpEntity>();
             IplusOADBContext db = new IplusOADBContext();
@@ -50,7 +50,7 @@ namespace BackWebAdmin.Controllers
         public DpEntity CountSer(BaseContext db)
         {
             DpEntity res = new DpEntity();
-            long? udepId = AdminUser.DeptId;
+            string udepId = AdminUser.DeptId;
 
             string sql = string.Format(@" SELECT  COUNT(S.`Id`) `count`,T.`Name`,T.`Code`
                                             ,COUNT(CASE  WHEN s.`EndTime` <NOW()   THEN s.`Id`  ELSE NULL END) OLD
@@ -81,7 +81,7 @@ namespace BackWebAdmin.Controllers
 
         public DpEntity CountOrg(BaseContext db)
         {
-            long? udepId = AdminUser.DeptId;
+            string udepId = AdminUser.DeptId;
 
             string sql = string.Format(@"SELECT  COUNT( s.`SocialNo`)  COUNT 
 
@@ -108,7 +108,7 @@ namespace BackWebAdmin.Controllers
         {
             DpEntity res = new DpEntity();
             res.Name = "辖区服务志愿者总计";
-            long? udepId = AdminUser.DeptId;
+            string udepId = AdminUser.DeptId;
 
             string sql = string.Format(@"  SELECT  COUNT(r.`Id`) `count`,T.`Name`,T.`Code`
 
@@ -136,7 +136,7 @@ namespace BackWebAdmin.Controllers
 
         public DpEntity CountSheQuvol(BaseContext db)
         {
-            long? udepId = AdminUser.DeptId;
+            string udepId = AdminUser.DeptId;
 
             string sql = string.Format(@"SELECT COUNT(*) `count`
                                                 ,COUNT(CASE  WHEN  v.`AddTime` <CURDATE()   THEN v.`Id`  ELSE NULL END) `old`

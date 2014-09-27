@@ -17,11 +17,11 @@ namespace BackWebAdmin.Controllers
 
 
 
-        public ActionResult AppGetDeptChild(int? id)
+        public ActionResult AppGetDeptChild(string id)
         {
             using (IplusOADBContext db = new IplusOADBContext())
             {
-                if (id != null && id.HasValue)
+                if (id != null )
                 {
                     var list = db.DepartmentTable.AsQueryable<DepartmentEntity>().Where(x => x.PId == id).ToList();
                     return Json(list);

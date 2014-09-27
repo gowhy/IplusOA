@@ -19,7 +19,7 @@ namespace IplusOAEntity
         public string Pos { get; set; }
         public string SerId { get; set; }
         public string City { get; set; }
-        public long? SocID { get; set; }
+        public string SocID { get; set; }
         public Nullable<int> Socre { get; set; }
         public string Comment { get; set; }
         public System.DateTime AddTime { get; set; }

@@ -117,7 +117,7 @@ namespace BackWebAdmin.Controllers
                 IList<string> clit = entity.CoverCommunity.Trim().Split(',');
                 for (int i = 0; i < list.Count; i++)
                 {
-                    if (clit.Contains(list[i].Id.ToString()) && (joinList.FirstOrDefault(x => x.Id == list[i].Id) == null))
+                    if (clit.Contains(list[i].Id) && (joinList.FirstOrDefault(x => x.DepId == list[i].Id) == null))
                     {
                         list[i].IsCheck = true;
                         CoverCommunityNames += list[i].Name + ",";
