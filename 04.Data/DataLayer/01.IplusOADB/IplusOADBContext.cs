@@ -3,6 +3,7 @@ using DataLayer.EntityMap;
 using IplusOAEntity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
@@ -33,6 +34,8 @@ namespace DataLayer.IplusOADB
             modelBuilder.Configurations.Add(new MenuEntityToMenuMap());
             modelBuilder.Configurations.Add(new SocSerDetailJoinEntityToSocSerDetailJoinMap());
             modelBuilder.Configurations.Add(new SerRecordMap());
+
+           // modelBuilder.Entity<VolunteerEntity>().Property(p => p.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
            
             
         }

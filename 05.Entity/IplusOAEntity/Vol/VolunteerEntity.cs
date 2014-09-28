@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ namespace IplusOAEntity
     public class VolunteerEntity
     {
         #region Model
-        private int _id;
+    
         private string _number;
         private string _type;
         private string _depid;
@@ -33,11 +34,8 @@ namespace IplusOAEntity
         /// <summary>
         /// auto_increment
         /// </summary>
-        public int Id
-        {
-            set { _id = value; }
-            get { return _id; }
-        }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
         /// <summary>
         /// 
         /// </summary>
