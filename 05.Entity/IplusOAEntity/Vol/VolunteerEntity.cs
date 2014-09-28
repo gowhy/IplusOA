@@ -205,6 +205,12 @@ namespace IplusOAEntity
         public byte[] VolHeadImg { get; set; }
         [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public int LoginState { get; set; }
+
+        public int Age { get; set; }
+
+        public string Sex { get; set; }
+
+
         #endregion Model
 
     }

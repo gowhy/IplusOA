@@ -92,7 +92,9 @@ namespace BusLogic.Login
                                   VID = v.VID,
                                   WeiXin = v.WeiXin,
                                   SocialName = gs.FirstOrDefault().Name,
-                                  PassWord=v.PassWord
+                                  PassWord=v.PassWord,
+                                  Sex=v.Sex,
+                                  Age=v.Age
 
                               };
 

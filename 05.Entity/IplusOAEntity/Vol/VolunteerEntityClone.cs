@@ -210,7 +210,9 @@ namespace IplusOAEntity
 
         public string DepName { get; set; }
         public string SocialName { get; set; }
+        public int Age { get; set; }
 
+        public string Sex { get; set; }
       
         #endregion Model
     }
