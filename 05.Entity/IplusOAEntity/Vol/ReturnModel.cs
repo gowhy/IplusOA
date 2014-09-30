@@ -9,7 +9,7 @@ namespace IplusOAEntity
     public class ReturnModel
     {
         public int Id { get; set; }
-        public bool State { get; set; }
+        public int State { get; set; }
         public string Msg { get; set; }
     }
 }
