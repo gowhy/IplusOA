@@ -344,7 +344,7 @@ namespace BackWebAdmin.Controllers
                 db.Delete<VolunteerEntity>(vol);
                 db.SaveChanges();
                 db.Dispose();
-                return View();
+                return Success("操作成功");
             }
         }
 
