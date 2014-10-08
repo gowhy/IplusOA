@@ -56,6 +56,14 @@ namespace BackWebAdmin.Controllers
             return Json(returnModel);
         }
 
+        public ActionResult AppVolHeadImg(int id)
+        {
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                byte[] image = (from c in db.VolunteerEntityTable where c.Id == id select c.VolHeadImg).FirstOrDefault<byte[]>();
+                return new FileContentResult(image, "image/jpeg");
+            }
+        }
 
     }
 }
