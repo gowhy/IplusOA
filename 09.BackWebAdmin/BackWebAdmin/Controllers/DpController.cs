@@ -15,10 +15,13 @@ using BackWebAdmin.Models;
 
 namespace BackWebAdmin.Controllers
 {
+      [SecurityModule(Name = "大屏")]
     public class DpController : BaseController
     {
-        //
+        
+
         // GET: /Dp/
+        [SecurityNode(Name = "首页")]
         public ActionResult Index()
         {
             return View();

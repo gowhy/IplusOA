@@ -59,6 +59,8 @@ namespace IplusOAEntity
             get { return _open; }
         }
 
+        public string AText { get; set; }
+
         public string Module { get; set; }
         [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public List<MenuEntity> ChildList;
