@@ -59,7 +59,7 @@ namespace BackWebAdmin.Controllers
             if (!string.IsNullOrWhiteSpace(model.RegNO)) filter = filter.And(x => x.RegNO == model.RegNO);
             if (!string.IsNullOrWhiteSpace(model.SocialNO)) filter = filter.And(x => x.SocialNO == model.SocialNO);
 
-            model.SocOrgList = SorgSercice.CList(pageNumber - 1, size, filter);
+            model.SocOrgList = SorgSercice.CList(pageNumber, size, filter);
             return Json(model.SocOrgList);
         }
 

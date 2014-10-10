@@ -276,7 +276,7 @@ namespace BackWebAdmin.Controllers
             var pageNumber = page ?? 1;
             using (IplusOADBContext db = new IplusOADBContext())
             {
-                var list = db.VolunteerEntityTable.Where(x => x.State == 0&&x.Type=="志愿者");
+                var list = db.VolunteerEntityTable.Where(x => x.State == 0);
                 return View(list.ToPagedList(pageNumber - 1, pageSize));
             }
         }
@@ -316,6 +316,12 @@ namespace BackWebAdmin.Controllers
 
                 model.State = entity.State;
                 model.Msg = entity.Msg;
+                if ( entity.State.HasValue&& entity.State.Value==1)
+                {
+                    if (!string.IsNullOrEmpty(entity.VID)) model.VID = entity.VID;
+                    if (!string.IsNullOrEmpty(entity.SocialNO)) model.SocialNO = entity.SocialNO;
+                    model.Type = "志愿者";
+                }
 
                 db.Update<VolunteerEntity>(model);
                 db.SaveChanges();

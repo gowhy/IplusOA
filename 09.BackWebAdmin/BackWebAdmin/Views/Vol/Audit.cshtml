@@ -108,12 +108,16 @@
                     <td class="item_input"><input type="text" class="textbox require" name="Number" value="@Model.Number" /></td>
                 </tr>
                 <tr>
-                    <td class="item_title">类型:</td>
+                    @*<td class="item_title">类型:</td>
                     <td class="item_input">
                         <select name="Type">
                             <option value="普通用户" @(Model.Type == "普通用户" ? "selected" : "")>普通用户</option>
                             <option value="志愿者" @(Model.Type == "志愿者" ? "selected" : "")>志愿者</option>
                         </select>
+                    </td>*@
+                    <td class="item_title">当前类型:</td>
+                    <td class="item_input">
+                        <input type="text" class="textbox require" name="Type" disabled="disabled" value="@Model.Type" />
                     </td>
                 </tr>
                 <tr>
