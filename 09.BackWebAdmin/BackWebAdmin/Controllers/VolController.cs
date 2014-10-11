@@ -192,6 +192,7 @@ namespace BackWebAdmin.Controllers
                 if (entity.UerName != null) model.UerName = entity.UerName;
                 if (entity.VID != null) model.VID = entity.VID;
                 if (entity.WeiXin != null) model.WeiXin = entity.WeiXin;
+                if (entity.State.HasValue) model.State = entity.State;
 
                 db.Update<VolunteerEntity>(model);
                 db.SaveChanges();
