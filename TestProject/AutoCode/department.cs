@@ -14,8 +14,8 @@ namespace TestProject.AutoCode
     
     public partial class department
     {
-        public long Id { get; set; }
-        public long PId { get; set; }
+        public string Id { get; set; }
+        public string PId { get; set; }
         public string Name { get; set; }
         public System.DateTime AddTime { get; set; }
         public Nullable<int> State { get; set; }

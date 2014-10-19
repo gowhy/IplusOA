@@ -53,6 +53,7 @@
     <Compile Include="EntityMap\SerRecordMap.cs" />
     <Compile Include="EntityMap\SocialOrgEntityToSocialOrgMap.cs" />
     <Compile Include="EntityMap\SocSerDetailJoinEntityToSocSerDetailJoinMap.cs" />
+    <Compile Include="EntityMap\SocSerImgMap.cs" />
     <Compile Include="EntityMap\SocServiceDetailEntityToSocServiceDetailMap.cs" />
     <Compile Include="EntityMap\VolunteerEntityToVolunteerMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

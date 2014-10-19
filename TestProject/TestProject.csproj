@@ -200,6 +200,9 @@
     <Compile Include="AutoCode\socserdetailjoin.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="AutoCode\socserimg.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="AutoCode\socservicedetail.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

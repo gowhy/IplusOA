@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="iplusoa_dbModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.6" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="oa2Model.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.6" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="adminuser">
           <Key>
             <PropertyRef Name="UserName" />
@@ -14,7 +14,7 @@
           <Property Name="PassWord" Type="varchar" MaxLength="200" />
           <Property Name="AddTime" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="RoleId" Type="int" />
-          <Property Name="DeptId" Type="bigint" />
+          <Property Name="DeptId" Type="varchar" MaxLength="50" />
           <Property Name="RealName" Type="varchar" MaxLength="50" />
           <Property Name="State" Type="int" />
           <Property Name="SocOrgId" Type="int" />
@@ -23,8 +23,8 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="bigint" Nullable="false" />
-          <Property Name="PId" Type="bigint" Nullable="false" />
+          <Property Name="Id" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="PId" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="100" />
           <Property Name="AddTime" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="State" Type="int" />
@@ -43,6 +43,7 @@
           <Property Name="file" Type="varchar" MaxLength="500" />
           <Property Name="open" Type="bool" />
           <Property Name="Module" Type="varchar" MaxLength="500" />
+          <Property Name="AText" Type="varchar" MaxLength="1000" />
         </EntityType>
         <EntityType Name="role">
           <Key>
@@ -64,7 +65,7 @@
           <Property Name="AddTime" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <!--生成过程中发现错误:
-警告 6002: 表/视图“def.iplusoa_db.serrecord”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+警告 6002: 表/视图“def.oa2.serrecord”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="serrecord">
           <Key>
             <PropertyRef Name="Id" />
@@ -81,7 +82,7 @@
           <Property Name="Pos" Type="varchar" MaxLength="100" />
           <Property Name="SerId" Type="varchar" MaxLength="50" />
           <Property Name="City" Type="varchar" MaxLength="100" />
-          <Property Name="SocID" Type="bigint" />
+          <Property Name="SocID" Type="varchar" MaxLength="50" />
           <Property Name="Socre" Type="int" />
           <Property Name="Comment" Type="text" />
           <Property Name="AddTime" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
@@ -126,6 +127,18 @@
           <Property Name="State" Type="int" />
           <Property Name="Msg" Type="text" />
         </EntityType>
+        <EntityType Name="socserimg">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" />
+          <Property Name="FTPUrl" Type="varchar" MaxLength="1000" />
+          <Property Name="AddTime" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Module" Type="varchar" MaxLength="50" />
+          <Property Name="HttpUrl" Type="varchar" MaxLength="1000" />
+          <Property Name="SocSerId" Type="int" />
+        </EntityType>
         <EntityType Name="socservicedetail">
           <Key>
             <PropertyRef Name="Id" />
@@ -151,11 +164,12 @@
         <EntityType Name="volunteer">
           <Key>
             <PropertyRef Name="Id" />
+            <PropertyRef Name="Age" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Number" Type="varchar" MaxLength="50" />
           <Property Name="Type" Type="varchar" MaxLength="50" />
-          <Property Name="DepId" Type="int" />
+          <Property Name="DepId" Type="varchar" MaxLength="50" />
           <Property Name="Address" Type="varchar" MaxLength="500" />
           <Property Name="RealNameState" Type="int" />
           <Property Name="RealName" Type="varchar" MaxLength="50" />
@@ -178,19 +192,22 @@
           <Property Name="Doing" Type="int" />
           <Property Name="AddTime" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="VolHeadImg" Type="longblob" />
+          <Property Name="Age" Type="int" Nullable="false" />
+          <Property Name="Sex" Type="varchar" MaxLength="5" />
         </EntityType>
-        <EntityContainer Name="iplusoa_dbModelStoreContainer">
-          <EntitySet Name="adminuser" EntityType="Self.adminuser" Schema="iplusoa_db" store:Type="Tables" />
-          <EntitySet Name="department" EntityType="Self.department" Schema="iplusoa_db" store:Type="Tables" />
-          <EntitySet Name="menu" EntityType="Self.menu" Schema="iplusoa_db" store:Type="Tables" />
-          <EntitySet Name="role" EntityType="Self.role" Schema="iplusoa_db" store:Type="Tables" />
-          <EntitySet Name="rolepermission" EntityType="Self.rolepermission" Schema="iplusoa_db" store:Type="Tables" />
-          <EntitySet Name="sertype" EntityType="Self.sertype" Schema="iplusoa_db" store:Type="Tables" />
-          <EntitySet Name="socialorg" EntityType="Self.socialorg" Schema="iplusoa_db" store:Type="Tables" />
-          <EntitySet Name="socserdetailjoin" EntityType="Self.socserdetailjoin" Schema="iplusoa_db" store:Type="Tables" />
-          <EntitySet Name="socservicedetail" EntityType="Self.socservicedetail" Schema="iplusoa_db" store:Type="Tables" />
-          <EntitySet Name="volunteer" EntityType="Self.volunteer" Schema="iplusoa_db" store:Type="Tables" />
-          <EntitySet Name="serrecord" EntityType="Self.serrecord" store:Type="Tables" store:Schema="iplusoa_db">
+        <EntityContainer Name="oa2ModelStoreContainer">
+          <EntitySet Name="adminuser" EntityType="Self.adminuser" Schema="oa2" store:Type="Tables" />
+          <EntitySet Name="department" EntityType="Self.department" Schema="oa2" store:Type="Tables" />
+          <EntitySet Name="menu" EntityType="Self.menu" Schema="oa2" store:Type="Tables" />
+          <EntitySet Name="role" EntityType="Self.role" Schema="oa2" store:Type="Tables" />
+          <EntitySet Name="rolepermission" EntityType="Self.rolepermission" Schema="oa2" store:Type="Tables" />
+          <EntitySet Name="sertype" EntityType="Self.sertype" Schema="oa2" store:Type="Tables" />
+          <EntitySet Name="socialorg" EntityType="Self.socialorg" Schema="oa2" store:Type="Tables" />
+          <EntitySet Name="socserdetailjoin" EntityType="Self.socserdetailjoin" Schema="oa2" store:Type="Tables" />
+          <EntitySet Name="socserimg" EntityType="Self.socserimg" Schema="oa2" store:Type="Tables" />
+          <EntitySet Name="socservicedetail" EntityType="Self.socservicedetail" Schema="oa2" store:Type="Tables" />
+          <EntitySet Name="volunteer" EntityType="Self.volunteer" Schema="oa2" store:Type="Tables" />
+          <EntitySet Name="serrecord" EntityType="Self.serrecord" store:Type="Tables" store:Schema="oa2">
             <DefiningQuery>SELECT
 `serrecord`.`Id`, 
 `serrecord`.`No`, 
@@ -211,10 +228,11 @@
 FROM `serrecord` AS `serrecord`</DefiningQuery>
           </EntitySet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="iplusoa_dbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="oa2Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="adminuser">
           <Key>
             <PropertyRef Name="UserName" />
@@ -224,7 +242,7 @@ FROM `serrecord` AS `serrecord`</DefiningQuery>
           <Property Name="PassWord" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="AddTime" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="RoleId" Type="Int32" />
-          <Property Name="DeptId" Type="Int64" />
+          <Property Name="DeptId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="RealName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="State" Type="Int32" />
           <Property Name="SocOrgId" Type="Int32" />
@@ -233,8 +251,8 @@ FROM `serrecord` AS `serrecord`</DefiningQuery>
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" />
-          <Property Name="PId" Type="Int64" Nullable="false" />
+          <Property Name="Id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="AddTime" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="State" Type="Int32" />
@@ -253,6 +271,7 @@ FROM `serrecord` AS `serrecord`</DefiningQuery>
           <Property Name="file" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="open" Type="Boolean" />
           <Property Name="Module" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="AText" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="role">
           <Key>
@@ -312,6 +331,19 @@ FROM `serrecord` AS `serrecord`</DefiningQuery>
           <Property Name="State" Type="Int32" />
           <Property Name="Msg" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="socserimg">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="FTPUrl" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="AddTime" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Module" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="HttpUrl" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="SocSerId" Type="Int32" />
+          <NavigationProperty Name="socservicedetail" Relationship="oa2Model.socserimgsocservicedetail" FromRole="socserimg" ToRole="socservicedetail" />
+        </EntityType>
         <EntityType Name="socservicedetail">
           <Key>
             <PropertyRef Name="Id" />
@@ -333,15 +365,17 @@ FROM `serrecord` AS `serrecord`</DefiningQuery>
           <Property Name="AddTime" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="AddUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="PayType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="socserimg" Relationship="oa2Model.socserimgsocservicedetail" FromRole="socservicedetail" ToRole="socserimg" />
         </EntityType>
         <EntityType Name="volunteer">
           <Key>
             <PropertyRef Name="Id" />
+            <PropertyRef Name="Age" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="DepId" Type="Int32" />
+          <Property Name="DepId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="RealNameState" Type="Int32" />
           <Property Name="RealName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -364,6 +398,8 @@ FROM `serrecord` AS `serrecord`</DefiningQuery>
           <Property Name="Doing" Type="Int32" />
           <Property Name="AddTime" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="VolHeadImg" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Age" Type="Int32" Nullable="false" />
+          <Property Name="Sex" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="serrecord">
           <Key>
@@ -387,7 +423,7 @@ FROM `serrecord` AS `serrecord`</DefiningQuery>
           <Property Name="AddTime" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Source" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityContainer Name="iplusoa_dbEntities2" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="oa2Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="adminuser" EntityType="Self.adminuser" />
           <EntitySet Name="department" EntityType="Self.department" />
           <EntitySet Name="menu" EntityType="Self.menu" />
@@ -396,18 +432,27 @@ FROM `serrecord` AS `serrecord`</DefiningQuery>
           <EntitySet Name="sertype" EntityType="Self.sertype" />
           <EntitySet Name="socialorg" EntityType="Self.socialorg" />
           <EntitySet Name="socserdetailjoin" EntityType="Self.socserdetailjoin" />
+          <EntitySet Name="socserimg" EntityType="Self.socserimg" />
           <EntitySet Name="socservicedetail" EntityType="Self.socservicedetail" />
           <EntitySet Name="volunteer" EntityType="Self.volunteer" />
           <EntitySet Name="serrecord" EntityType="Self.serrecord" />
+          <AssociationSet Name="socserimgsocservicedetail" Association="oa2Model.socserimgsocservicedetail">
+            <End Role="socserimg" EntitySet="socserimg" />
+            <End Role="socservicedetail" EntitySet="socservicedetail" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="socserimgsocservicedetail">
+          <End Type="oa2Model.socserimg" Role="socserimg" Multiplicity="*" />
+          <End Type="oa2Model.socservicedetail" Role="socservicedetail" Multiplicity="1" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="iplusoa_dbModelStoreContainer" CdmEntityContainer="iplusoa_dbEntities2">
+        <EntityContainerMapping StorageEntityContainer="oa2ModelStoreContainer" CdmEntityContainer="oa2Entities">
           <EntitySetMapping Name="adminuser">
-            <EntityTypeMapping TypeName="iplusoa_dbModel.adminuser">
+            <EntityTypeMapping TypeName="oa2Model.adminuser">
               <MappingFragment StoreEntitySet="adminuser">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
@@ -422,10 +467,8 @@ FROM `serrecord` AS `serrecord`</DefiningQuery>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="department">
-            <EntityTypeMapping TypeName="iplusoa_dbModel.department">
+            <EntityTypeMapping TypeName="oa2Model.department">
               <MappingFragment StoreEntitySet="department">
-                <ScalarProperty Name="Lng" ColumnName="Lng" />
-                <ScalarProperty Name="Lat" ColumnName="Lat" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PId" ColumnName="PId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -433,11 +476,13 @@ FROM `serrecord` AS `serrecord`</DefiningQuery>
                 <ScalarProperty Name="State" ColumnName="State" />
                 <ScalarProperty Name="Desc" ColumnName="Desc" />
                 <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="Lat" ColumnName="Lat" />
+                <ScalarProperty Name="Lng" ColumnName="Lng" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="menu">
-            <EntityTypeMapping TypeName="iplusoa_dbModel.menu">
+            <EntityTypeMapping TypeName="oa2Model.menu">
               <MappingFragment StoreEntitySet="menu">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="pId" ColumnName="pId" />
@@ -445,11 +490,12 @@ FROM `serrecord` AS `serrecord`</DefiningQuery>
                 <ScalarProperty Name="file" ColumnName="file" />
                 <ScalarProperty Name="open" ColumnName="open" />
                 <ScalarProperty Name="Module" ColumnName="Module" />
+                <ScalarProperty Name="AText" ColumnName="AText" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="role">
-            <EntityTypeMapping TypeName="iplusoa_dbModel.role">
+            <EntityTypeMapping TypeName="oa2Model.role">
               <MappingFragment StoreEntitySet="role">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -459,7 +505,7 @@ FROM `serrecord` AS `serrecord`</DefiningQuery>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="rolepermission">
-            <EntityTypeMapping TypeName="iplusoa_dbModel.rolepermission">
+            <EntityTypeMapping TypeName="oa2Model.rolepermission">
               <MappingFragment StoreEntitySet="rolepermission">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="RoleId" ColumnName="RoleId" />
@@ -470,7 +516,7 @@ FROM `serrecord` AS `serrecord`</DefiningQuery>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="sertype">
-            <EntityTypeMapping TypeName="iplusoa_dbModel.sertype">
+            <EntityTypeMapping TypeName="oa2Model.sertype">
               <MappingFragment StoreEntitySet="sertype">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
@@ -480,7 +526,7 @@ FROM `serrecord` AS `serrecord`</DefiningQuery>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="socialorg">
-            <EntityTypeMapping TypeName="iplusoa_dbModel.socialorg">
+            <EntityTypeMapping TypeName="oa2Model.socialorg">
               <MappingFragment StoreEntitySet="socialorg">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PId" ColumnName="PId" />
@@ -501,7 +547,7 @@ FROM `serrecord` AS `serrecord`</DefiningQuery>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="socserdetailjoin">
-            <EntityTypeMapping TypeName="iplusoa_dbModel.socserdetailjoin">
+            <EntityTypeMapping TypeName="oa2Model.socserdetailjoin">
               <MappingFragment StoreEntitySet="socserdetailjoin">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="SSDetailId" ColumnName="SSDetailId" />
@@ -511,8 +557,21 @@ FROM `serrecord` AS `serrecord`</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="socserimg">
+            <EntityTypeMapping TypeName="oa2Model.socserimg">
+              <MappingFragment StoreEntitySet="socserimg">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="FTPUrl" ColumnName="FTPUrl" />
+                <ScalarProperty Name="AddTime" ColumnName="AddTime" />
+                <ScalarProperty Name="Module" ColumnName="Module" />
+                <ScalarProperty Name="HttpUrl" ColumnName="HttpUrl" />
+                <ScalarProperty Name="SocSerId" ColumnName="SocSerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="socservicedetail">
-            <EntityTypeMapping TypeName="iplusoa_dbModel.socservicedetail">
+            <EntityTypeMapping TypeName="oa2Model.socservicedetail">
               <MappingFragment StoreEntitySet="socservicedetail">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="SerNum" ColumnName="SerNum" />
@@ -535,9 +594,8 @@ FROM `serrecord` AS `serrecord`</DefiningQuery>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="volunteer">
-            <EntityTypeMapping TypeName="iplusoa_dbModel.volunteer">
+            <EntityTypeMapping TypeName="oa2Model.volunteer">
               <MappingFragment StoreEntitySet="volunteer">
-                <ScalarProperty Name="VolHeadImg" ColumnName="VolHeadImg" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Number" ColumnName="Number" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
@@ -563,11 +621,14 @@ FROM `serrecord` AS `serrecord`</DefiningQuery>
                 <ScalarProperty Name="PassWord" ColumnName="PassWord" />
                 <ScalarProperty Name="Doing" ColumnName="Doing" />
                 <ScalarProperty Name="AddTime" ColumnName="AddTime" />
+                <ScalarProperty Name="VolHeadImg" ColumnName="VolHeadImg" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="serrecord">
-            <EntityTypeMapping TypeName="iplusoa_dbModel.serrecord">
+            <EntityTypeMapping TypeName="oa2Model.serrecord">
               <MappingFragment StoreEntitySet="serrecord">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="No" ColumnName="No" />

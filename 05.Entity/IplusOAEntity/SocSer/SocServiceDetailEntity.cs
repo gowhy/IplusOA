@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace IplusOAEntity
     {
 
         #region Model
-        private int _id;
+      
         private string _sernum;
         private string _type;
         private string _socialno;
@@ -29,14 +30,9 @@ namespace IplusOAEntity
 
         public string PayType { get; set; }
 
-        /// <summary>
-        /// auto_increment
-        /// </summary>
-        public int Id
-        {
-            set { _id = value; }
-            get { return _id; }
-        }
+   
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
         /// <summary>
         /// 
         /// </summary>

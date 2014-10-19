@@ -283,7 +283,7 @@ namespace BackWebAdmin.Controllers
         }
         [SecurityNode(Name = "审核页")]
         /// <summary>
-        /// 自愿者审核
+        /// 自愿者审
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>

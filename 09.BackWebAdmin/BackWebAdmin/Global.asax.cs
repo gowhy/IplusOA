@@ -12,7 +12,7 @@ namespace BackWebAdmin
 {
     public class WebApiApplication : System.Web.HttpApplication
     {
-        CommonAction sb = new CommonAction();
+
        
         protected void Application_Start()
         {
@@ -23,7 +23,7 @@ namespace BackWebAdmin
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
              
-            CommonAction s = new CommonAction();
+            //CommonAction s = new CommonAction();
            
             
             ////配置基于MVC的相关配置

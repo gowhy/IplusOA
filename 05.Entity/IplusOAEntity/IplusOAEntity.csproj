@@ -48,6 +48,7 @@
     <Compile Include="Role\RolePermissionEntity.cs" />
     <Compile Include="SocSer\SerRecordEntity.cs" />
     <Compile Include="SocSer\SocSerDetailJoinEntity.cs" />
+    <Compile Include="SocSer\SocSerImgEntity.cs" />
     <Compile Include="SocSer\SocServiceDetailEntityClone.cs" />
     <Compile Include="SocSer\SocServiceDetailEntity.cs" />
     <Compile Include="Vol\VolunteerEntity.cs" />

@@ -14,6 +14,11 @@ namespace TestProject.AutoCode
     
     public partial class socservicedetail
     {
+        public socservicedetail()
+        {
+            this.socserimg = new HashSet<socserimg>();
+        }
+    
         public int Id { get; set; }
         public string SerNum { get; set; }
         public string Type { get; set; }
@@ -31,5 +36,7 @@ namespace TestProject.AutoCode
         public System.DateTime AddTime { get; set; }
         public string AddUser { get; set; }
         public string PayType { get; set; }
+    
+        public virtual ICollection<socserimg> socserimg { get; set; }
     }
 }

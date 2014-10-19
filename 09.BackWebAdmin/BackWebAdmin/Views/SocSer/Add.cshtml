@@ -1,16 +1,23 @@
 ﻿@using Common;
+@{
+    Layout = null;
+}
 
-<script type="text/javascript">
-    function check_incharge_form() {
-
-        return true;
-    }
-</script>
-
+@Html.IncludeCSS("~/Content/Css/style.css")
 @Html.IncludeCSS("~/Content/plug-in/ztree/css/zTreeStyle/zTreeStyle.css")
 @Html.IncludeCSS("~/Content/Css/demo.css")
-@Html.IncludeScript("~/Content/plug-in/ztree/js/jquery.ztree.core-3.5.js")
-@Html.IncludeScript("~/Content/plug-in/ztree/js/jquery.ztree.excheck-3.5.js")
+@Html.IncludeCSS("~/Content/plug-in/uploadify/uploadify.css")
+
+<script>
+    //window.UEDITOR_HOME_URL = "/xxxx/xxxx/";
+   // window.UEDITOR_HOME_serverPath="../../../socser/UeditConfig";
+    window.UEDITOR_HOME_serverPath="@Url.Content( "../../../socser/UeditConfig")";
+   
+   
+</script>
+
+
+
 <style>
     .panel-tool {
         width: 95%;
@@ -24,9 +31,149 @@
 
 
 
-<script type="text/javascript">
+    <div id="tt">
+        <a href="@Url.Action("Index", "SocSer")" style=" width:100px;">返回列表</a>
+    </div>
+    <div id="p" class="easyui-panel" title="新增" style="height:530px;padding:10px;"
+         data-options="iconCls:'icon-add',closable:false,tools:'#tt'">
 
+        <form name="postadd" action="@Url.Action("PostAdd")" id="postadd" method="post" enctype="multipart/form-data" >
+            <table class="form" cellpadding="0" cellspacing="0">
+                <tbody>
+                 
+                    <tr>
+                        <td class="item_title">收费类型:</td>
+                        <td class="item_input">
+                            <select id="PayType" name="PayType">
+                                <option value="无偿">无偿</option>
+                                <option value="无偿">低偿</option>
 
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="item_title">
+                            服务类型:
+                        </td>
+                        <td class="item_input">
+                            <select name="Type">
+                                <option value="GYFN">法律服务</option>
+                                <option value="GYYLFW">医疗服务</option>
+                                <option value="GYWH">文化娱乐</option>
+                                <option value="GYYL">居家养老</option>
+                                <option value="GYBF">社区帮扶</option>
+                                <option value="GYWHKT">文化课堂</option>
+                                <option value="GYNSD">社区绿丝带</option>
+                                <option value="SYJZ">社区家政</option>
+                                <option value="SYMY">美食娱乐</option>
+                                <option value="SYWX">家居维修</option>
+                                <option value="SYJR">金融服务</option>
+                                <option value="SYYH">优惠进社区</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="item_title">服务内容标题:</td>
+                        <td class="item_input"><input type="text" class="textbox require easyui-validatebox" missingmessage="必须填写" data-options="required:true" name="Context" /></td>
+                    </tr>
+                    <tr>
+                        <td class="item_title">发布时间:</td>
+                        <td class="item_input"><input type="text" class="textbox require easyui-validatebox" name="PubTime" missingmessage="必须填写" data-options="required:true" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" /></td>
+                    </tr>
+                    <tr>
+                        <td class="item_title">截止时间:</td>
+                        <td class="item_input"><input type="text" class="textbox require easyui-validatebox" name="EndTime" missingmessage="必须填写" data-options="required:true" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" /></td>
+                    </tr>
+                    <tr>
+                        <td class="item_title">服务描述:</td>
+                        <td class="item_input">
+                        <textarea class="textbox require" name="Desc" rows="5" cols="70" ></textarea>
+                            @*<input type="hidden" name="Desc" id="Desc" />
+                            <div>
+                                <script id="editor" type="text/plain" style="width:800px;height:400px;">
+                                </script>
+                            </div>*@
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="item_title">服务图片:</td>
+                        <td class="item_input"> 
+                            @*用来作为文件队列区域*@
+                            <div id="fileQueue">
+                            </div>
+                            <input type="file" name="uploadify" id="uploadify" multiple="true" />
+                            <input type="hidden" name="SocSerImgId" id="SocSerImgId" value="" />
+                            <div id="imgQueue">
+                                @*<a href="javascript:$('#uploadify').uploadify('upload')">上传</a>*@
+                              
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="item_title">自愿者帮助说明:</td>
+                        <td class="item_input"><textarea class="textbox require" name="VHelpDesc" rows="5" cols="70"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td class="item_title">覆盖社区:</td>
+                        <td class="">
+                            <input type="hidden" name="CoverCommunity" id="CoverCommunityIds" />
+                            @*<input type="text" class="button" value="选择社区" name="CoverCommunity" onclick="showMenu(); return false;" />*@
+                            <a id="menuBtn" href="#" onclick="showMenu(); return false;">请选择 &nbsp; &nbsp;</a>
+                            <div id="menuContent" class="menuContent" style="display: none; z-index: 10000; position: absolute;">
+                                <ul id="ztree" class="ztree" style="margin-top:0;   overflow:scroll; height:270px;"></ul>
+                            </div>
+                            <span class="textbox" id="CoverCommunityNames"></span>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td class="item_title">感谢分值:</td>
+                        <td class="item_input"><input type="text" class="easyui-numberbox" name="THSScore" required="false" missingmessage="必须填写整数" /></td>
+                    </tr>
+                    <tr>
+                        <td class="item_title">服务分值:</td>
+                        <td class="item_input"><input type="text" class="easyui-numberbox" name="Score" required="false" missingmessage="必须填写整数" /></td>
+                    </tr>
+                    <tr>
+                        <td class="item_title">联系电话:</td>
+                        <td class="item_input"><input type="text" class="textbox require" name="Phone" /></td>
+                    </tr>
+                    <tr>
+                        <td class="item_title">联系人:</td>
+                        <td class="item_input"><input type="text" class="textbox require" name="Contacts" /></td>
+                    </tr>
+                    <tr>
+                        <td class="item_title"></td>
+                        <td class="item_input">
+                            @*<input type="submit" class="button" value="新增">
+                            <input type="reset" class="button" value="重置">*@
+                            <a href="javascript:void(0)" id="btnsubmitForm" class="easyui-linkbutton">新增</a>
+                            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">重置</a>
+                        </td>
+                    </tr>
+                
+                </tbody>
+            </table>
+        </form>
+    </div>
+@Html.IncludeScript("~/Content/EasyUI/jquery-1.8.0.min.js")
+@Html.IncludeScript("~/Content/Js/jquery.timer.js")
+@Html.IncludeScript("~/Content/Js/common.js")
+@Html.IncludeCSS("~/Content/EasyUI/themes/gray/easyui.css")
+@Html.IncludeCSS("~/Content/EasyUI/themes/icon.css")
+@Html.IncludeScript("~/Content/EasyUI/jquery.easyui.min.js")
+@Html.IncludeScript("~/Content/plug-in/My97DatePicker/WdatePicker.js")
+
+@Html.IncludeScript("~/Content/plug-in/ztree/js/jquery.ztree.core-3.5.js")
+@Html.IncludeScript("~/Content/plug-in/ztree/js/jquery.ztree.excheck-3.5.js")
+@Html.IncludeScript("~/Content/plug-in/uploadify/jquery.uploadify-3.1.js")
+
+@Html.IncludeScript("~/Content/plug-in/ueditor/ueditor.config.js")
+@Html.IncludeScript("~/Content/plug-in/ueditor/ueditor.all.js")
+@Html.IncludeScript("~/Content/plug-in/ueditor/lang/zh-cn/zh-cn.js")
+<script>
+
+ 
     var setting = {
         view: {
             dblClickExpand: false,
@@ -89,124 +236,76 @@
         }
     }
 
-    $(document).ready(function () {
-        $.fn.zTree.init($("#ztree"), setting, zNodes);
-    });
-
-
-</script>
-
-    <div id="tt">
-        <a href="@Url.Action("Index", "SocSer")" style=" width:100px;">返回列表</a>
-    </div>
-    <div id="p" class="easyui-panel" title="新增" style="height:530px;padding:10px;"
-         data-options="iconCls:'icon-add',closable:false,tools:'#tt'">
-
-        <form name="postadd" action="@Url.Action("PostAdd")" id="postadd" method="post" enctype="multipart/form-data" onsubmit="return check_incharge_form();">
-            <table class="form" cellpadding="0" cellspacing="0">
-                <tbody>
-                 
-                    <tr>
-                        <td class="item_title">收费类型:</td>
-                        <td class="item_input">
-                            <select id="PayType" name="PayType">
-                                <option value="无偿">无偿</option>
-                                <option value="无偿">低偿</option>
-
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="item_title">
-                            服务类型:
-                        </td>
-                        <td class="item_input">
-                            <select name="Type">
-                                <option value="GYFN">法律服务</option>
-                                <option value="GYYLFW">医疗服务</option>
-                                <option value="GYWH">文化娱乐</option>
-                                <option value="GYYL">居家养老</option>
-                                <option value="GYBF">社区帮扶</option>
-                                <option value="GYWHKT">文化课堂</option>
-                                <option value="GYNSD">社区绿丝带</option>
-                                <option value="SYJZ">社区家政</option>
-                                <option value="SYMY">美食娱乐</option>
-                                <option value="SYWX">家居维修</option>
-                                <option value="SYJR">金融服务</option>
-                                <option value="SYYH">优惠进社区</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="item_title">服务内容标题:</td>
-                        <td class="item_input"><input type="text" class="textbox require easyui-validatebox" missingmessage="必须填写" data-options="required:true" name="Context" /></td>
-                    </tr>
-                    <tr>
-                        <td class="item_title">发布时间:</td>
-                        <td class="item_input"><input type="text" class="textbox require easyui-validatebox" name="PubTime" missingmessage="必须填写" data-options="required:true" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" /></td>
-                    </tr>
-                    <tr>
-                        <td class="item_title">截止时间:</td>
-                        <td class="item_input"><input type="text" class="textbox require easyui-validatebox" name="EndTime" missingmessage="必须填写" data-options="required:true" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" /></td>
-                    </tr>
-                    <tr>
-                        <td class="item_title">服务描述:</td>
-                        <td class="item_input"><textarea class="textbox require" name="Desc" rows="5" cols="70"></textarea></td>
-                    </tr>
-                    <tr>
-                        <td class="item_title">自愿者帮助说明:</td>
-                        <td class="item_input"><textarea class="textbox require" name="VHelpDesc" rows="5" cols="70"></textarea></td>
-                    </tr>
-                    <tr>
-                        <td class="item_title">覆盖社区:</td>
-                        <td class="">
-                            <input type="hidden" name="CoverCommunity" id="CoverCommunityIds" />
-                            @*<input type="text" class="button" value="选择社区" name="CoverCommunity" onclick="showMenu(); return false;" />*@
-                            <a id="menuBtn" href="#" onclick="showMenu(); return false;">请选择 &nbsp; &nbsp;</a>
-                            <div id="menuContent" class="menuContent" style="display: none; z-index: 10000; position: absolute;">
-                                <ul id="ztree" class="ztree" style="margin-top:0;   overflow:scroll; height:270px;"></ul>
-                            </div>
-                            <span class="textbox" id="CoverCommunityNames"></span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td class="item_title">感谢分值:</td>
-                        <td class="item_input"><input type="text" class="easyui-numberbox" name="THSScore" required="false" missingmessage="必须填写整数" /></td>
-                    </tr>
-                    <tr>
-                        <td class="item_title">服务分值:</td>
-                        <td class="item_input"><input type="text" class="easyui-numberbox" name="Score" required="false" missingmessage="必须填写整数" /></td>
-                    </tr>
-                    <tr>
-                        <td class="item_title">联系电话:</td>
-                        <td class="item_input"><input type="text" class="textbox require" name="Phone" /></td>
-                    </tr>
-                    <tr>
-                        <td class="item_title">联系人:</td>
-                        <td class="item_input"><input type="text" class="textbox require" name="Contacts" /></td>
-                    </tr>
-                    <tr>
-                        <td class="item_title"></td>
-                        <td class="item_input">
-                            @*<input type="submit" class="button" value="新增">
-                            <input type="reset" class="button" value="重置">*@
-                            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">新增</a>
-                            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">重置</a>
-                        </td>
-                    </tr>
-                
-                </tbody>
-            </table>
-        </form>
-    </div>
-
-<script>
-    function submitForm() {
-        // var url = "/SocSer/PostNoTakeIn" + '?detailId=' + id + "&state=" + state + "&msg=" + msg;
-        $('#postadd').submit();
-    }
+    
     function clearForm() {
         $('#postadd').form('clear');
     }
+    function delImgSocSer(e)
+    {
+     
+        $(e).remove();
+    }
+    $(function(){
+    
+       // $.fn.zTree.init($("#ztree"), setting, zNodes);
+        var ue = UE.getEditor('editor');
+
+        function submitForm() {
+            // var url = "/SocSer/PostNoTakeIn" + '?detailId=' + id + "&state=" + state + "&msg=" + msg;
+
+           // $("#Desc").val(UE.getEditor('editor').getAllHtml());
+
+            //$('#uploadify').uploadify('upload'); SocSerImgId
+            
+            $("#imgQueue img").each(function(){
+                $("#SocSerImgId").val( $("#SocSerImgId").val()+","+$(this).attr("socserimgId"));
+            });
+
+             $('#postadd').submit();
+        }
+
+        $("#btnsubmitForm").click(function(){
+            submitForm();
+        });
+
+      
+        $("#uploadify").uploadify({
+            //指定swf文件
+            'swf':"@Url.Content("~/Content/plug-in/uploadify/uploadify.swf")",
+            //后台处理的页面
+            'uploader': '/socser/SaveImg',
+            //按钮显示的文字
+            'buttonText': '上传图片',
+            //显示的高度和宽度，默认 height 30；width 120
+            //'height': 15,
+            //'width': 80,
+            //上传文件的类型  默认为所有文件    'All Files'  ;  '*.*'
+            //在浏览窗口底部的文件类型下拉菜单中显示的文本
+            // 'fileTypeDesc': 'Image Files',
+            //允许上传的文件后缀
+            'fileTypeExts': '*.gif; *.jpg; *.png',
+            //发送给后台的其他参数通过formData指定
+            //'formData': $("#postadd").serialize(),
+            //上传文件页面中，你想要用来作为文件队列的元素的id, 默认为false  自动生成,  不带#
+            'cancelImg':"@Url.Content("~/Content/plug-in/uploadify/cancel.jpg")",
+          //  'formData' :  JSON.stringify($('#postadd').serializeArray()),   
+            //"removeCompleted":false,
+           //  'queueID': 'fileQueue',
+            //选择文件后自动上传
+            'auto': true,
+            //设置为true将允许多文件上传
+            'multi': true,
+            onUploadSuccess : function(file,data,response) {//上传完成时触发（每个文件触发一次）
+              
+                data= eval("("+data+")");
+                
+                var imgStr=' <img id="imgSocser'+data.Id+'" socserimgId="'+data.Id+'"  ondblclick="delImgSocSer(this)" src="'+data.HttpUrl+'" title="双击删除图片" alt="" width="160" height="140"  />';
+                 
+                $("#imgQueue").append(imgStr);
+            } 
+
+        });
+
+      
+    });
 </script>

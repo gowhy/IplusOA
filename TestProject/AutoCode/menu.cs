@@ -20,5 +20,6 @@ namespace TestProject.AutoCode
         public string file { get; set; }
         public Nullable<bool> open { get; set; }
         public string Module { get; set; }
+        public string AText { get; set; }
     }
 }

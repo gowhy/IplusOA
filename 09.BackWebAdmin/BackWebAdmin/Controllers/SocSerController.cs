@@ -10,6 +10,7 @@ using BackWebAdmin.CommService;
 using MvcContrib.UI.Grid;
 using MvcContrib.Sorting;
 using BackWebAdmin.Models;
+using System.IO;
 
 namespace BackWebAdmin.Controllers
 {
@@ -50,7 +51,7 @@ namespace BackWebAdmin.Controllers
             int size = pageSize ?? 20;
             string depId = AdminUser.DeptId.ToString();
 
-            return Json(SocSerService.TypeList(pageNumber, size, depId, model, sort));
+            return Json(SocSerService.TypeList(pageNumber, size, depId, model, sort),JsonRequestBehavior.AllowGet);
         }
 
 
@@ -65,13 +66,14 @@ namespace BackWebAdmin.Controllers
             }
         }
 
+        [ValidateInput(false)]
         [SecurityNode(Name = "保存社区服务内容")]
         /// <summary>
         /// 发布社会服务内容详细
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public ActionResult PostAdd(SocServiceDetailEntity entity)
+        public ActionResult PostAdd(SocServiceDetailEntity entity, string SocSerImgId)
         {
             entity.AddTime = DateTime.Now;
             entity.AddUser = AdminUser.UserName;
@@ -97,6 +99,26 @@ namespace BackWebAdmin.Controllers
                 }
                 entity.SerNum = entity.Type + DateTime.Now.ToString("yyyyMMdd") + (number + 1).ToString("D2");
                 db.Add<SocServiceDetailEntity>(entity);
+                db.SaveChanges();
+
+                var idimgs = SocSerImgId.Split(',');
+                List<int> listIdImg = new List<int>();
+                foreach (var item in idimgs)
+                {
+                    if (!string.IsNullOrEmpty(item))
+                    {
+                        listIdImg.Add(int.Parse(item));
+                    }
+                  
+                }
+
+                //List<SocSerImgEntity> simg = db.SocSerImgTable.Where(x => SocSerImgId.Split(',').Contains(x.Id.ToString())).ToList<SocSerImgEntity>();
+                List<SocSerImgEntity> simg = db.SocSerImgTable.Where(x => listIdImg.Contains(x.Id)).ToList<SocSerImgEntity>();
+                foreach (var item in simg)
+                {
+                    item.SocSerId = entity.Id;
+                    db.Update(item);
+                }
                 db.SaveChanges();
                 db.Dispose();
                 return Success("添加成功");
@@ -233,6 +255,97 @@ namespace BackWebAdmin.Controllers
                 db.SaveChanges();
                 return Success("操作成功");
             }
+        }
+
+        public ActionResult UeditConfig()
+        {
+            string action = Request["action"];
+            if (action == "config")
+            {
+                string json = System.IO.File.ReadAllText(HttpContext.Server.MapPath("../config.json"));
+                return Content(json);
+            }
+            var file = Request.Files[0];
+            if (action == "uploadimage")
+            {
+                string uploadPath =
+                   HttpContext.Server.MapPath("UploadImages" + "\\");
+               
+                if (file != null)
+                {
+                    if (!Directory.Exists(uploadPath))
+                    {
+                        Directory.CreateDirectory(uploadPath);
+                    }
+                    //保存文件
+                    file.SaveAs(uploadPath + file.FileName);
+
+                }
+                else
+                {
+
+                }
+            }
+            //return Content("");
+            return Json(new
+        {
+            state = "SUCCESS",
+            url = "http://localhost:6055/socser/UploadImages/" + file.FileName,
+            title = "title-why",
+            original = "original-why",
+            error = ""
+        }, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult SaveImg()
+        {
+           
+            //接收上传后的文件
+            System.Web.HttpPostedFileBase file = Request.Files["Filedata"];
+
+            FTPHelper ftp = new FTPHelper("192.168.1.106", "SocImg", "weihongyou", "123456");
+            FileInfo file2 = new FileInfo(file.FileName);
+            string fileName = DateTime.Now.ToString("yyyyMMddHHmmss") +AdminUser.Id.ToString()+file2.Extension;
+         
+         
+            ftp.Upload(file, fileName);
+
+            SocSerImgEntity img = new SocSerImgEntity();
+
+            img.FTPUrl = ftp.FtpURI;
+            img.HttpUrl = "http://localhost:8088/" + ftp.FtpRemotePath + "/" + fileName;
+            img.Name = file.FileName;
+            img.Module = "保存服务";
+            img.AddTime = DateTime.Now;
+
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+
+                db.SocSerImgTable.Add(img);
+                db.SaveChanges();
+            }
+
+
+            //string uploadPath =
+            //    HttpContext.Server.MapPath("UploadImages" + "\\");
+
+            //if (file != null)
+            //{
+            //    if (!Directory.Exists(uploadPath))
+            //    {
+            //        Directory.CreateDirectory(uploadPath);
+            //    }
+            //    //保存文件
+            //    file.SaveAs(uploadPath + file.FileName);
+
+            //}
+            //else
+            //{
+
+            //}  
+
+
+
+            return Json(img);
         }
     }
 }

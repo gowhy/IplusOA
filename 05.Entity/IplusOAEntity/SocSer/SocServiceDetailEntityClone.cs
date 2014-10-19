@@ -162,6 +162,8 @@ namespace IplusOAEntity
         }
         [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public string SocialName { get; set; }
+
+        public List<SocSerImgEntity> SocSerImgs { get; set; }
         #endregion Model
     }
 }

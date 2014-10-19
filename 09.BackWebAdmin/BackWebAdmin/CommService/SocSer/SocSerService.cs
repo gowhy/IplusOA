@@ -42,8 +42,10 @@ namespace BackWebAdmin.CommService
 
                 var ser = db.SocServiceDetailEntityTable;
                 var sorg = db.SocialOrgEntityTable;
+                var img = db.SocSerImgTable;
                 var res = from s in ser
                           join o in sorg on s.SocialNo equals o.SocialNO
+                          //join i in img on s.Id equals i.SocSerId
                           select new SocServiceDetailEntityClone
                           {
                               AddTime = s.AddTime,
@@ -63,7 +65,9 @@ namespace BackWebAdmin.CommService
                               SerNum = s.SerNum,
                               THSScore = s.THSScore,
                               Type = s.Type,
-                              VHelpDesc = s.VHelpDesc
+                              VHelpDesc = s.VHelpDesc,
+                              SocSerImgs =img.Where(x=>x.SocSerId==s.Id).ToList()
+
                           };
 
                 if (!string.IsNullOrEmpty(depId)) res = res.Where(x => x.CoverCommunity.IndexOf(depId) != -1);

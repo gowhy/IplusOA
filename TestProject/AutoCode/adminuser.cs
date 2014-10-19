@@ -19,7 +19,7 @@ namespace TestProject.AutoCode
         public string PassWord { get; set; }
         public System.DateTime AddTime { get; set; }
         public Nullable<int> RoleId { get; set; }
-        public Nullable<long> DeptId { get; set; }
+        public string DeptId { get; set; }
         public string RealName { get; set; }
         public Nullable<int> State { get; set; }
         public Nullable<int> SocOrgId { get; set; }

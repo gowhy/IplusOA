@@ -13,10 +13,10 @@ namespace TestProject.AutoCode
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class iplusoa_dbEntities2 : DbContext
+    public partial class oa2Entities : DbContext
     {
-        public iplusoa_dbEntities2()
-            : base("name=iplusoa_dbEntities2")
+        public oa2Entities()
+            : base("name=oa2Entities")
         {
         }
     
@@ -33,6 +33,7 @@ namespace TestProject.AutoCode
         public virtual DbSet<sertype> sertype { get; set; }
         public virtual DbSet<socialorg> socialorg { get; set; }
         public virtual DbSet<socserdetailjoin> socserdetailjoin { get; set; }
+        public virtual DbSet<socserimg> socserimg { get; set; }
         public virtual DbSet<socservicedetail> socservicedetail { get; set; }
         public virtual DbSet<volunteer> volunteer { get; set; }
         public virtual DbSet<serrecord> serrecord { get; set; }

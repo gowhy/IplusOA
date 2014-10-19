@@ -34,7 +34,8 @@ namespace DataLayer.IplusOADB
             modelBuilder.Configurations.Add(new MenuEntityToMenuMap());
             modelBuilder.Configurations.Add(new SocSerDetailJoinEntityToSocSerDetailJoinMap());
             modelBuilder.Configurations.Add(new SerRecordMap());
-
+            modelBuilder.Configurations.Add(new SocSerImgMap());
+            
            // modelBuilder.Entity<VolunteerEntity>().Property(p => p.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
            
             
@@ -60,6 +61,8 @@ namespace DataLayer.IplusOADB
         public virtual DbSet<SocSerDetailJoinEntity> SocSerDetailJoinEntityTable { get; set; }
 
         public virtual DbSet<SerRecordEntity> SerRecordTable { get; set; }
+
+        public virtual DbSet<SocSerImgEntity> SocSerImgTable { get; set; }
         
     }
 }

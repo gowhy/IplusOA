@@ -17,7 +17,7 @@ namespace TestProject.AutoCode
         public int Id { get; set; }
         public string Number { get; set; }
         public string Type { get; set; }
-        public Nullable<int> DepId { get; set; }
+        public string DepId { get; set; }
         public string Address { get; set; }
         public Nullable<int> RealNameState { get; set; }
         public string RealName { get; set; }
@@ -40,5 +40,7 @@ namespace TestProject.AutoCode
         public Nullable<int> Doing { get; set; }
         public System.DateTime AddTime { get; set; }
         public byte[] VolHeadImg { get; set; }
+        public int Age { get; set; }
+        public string Sex { get; set; }
     }
 }
