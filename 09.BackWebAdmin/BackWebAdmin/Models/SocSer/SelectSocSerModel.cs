@@ -9,6 +9,7 @@ namespace BackWebAdmin.Models
 {
     public class SelectSocSerModel   
     {
+        public int Id { get; set; }
         public string Type { get; set; }
         public DateTime PubTime { get; set; }
         public DateTime PubTimeEnd { get; set; }

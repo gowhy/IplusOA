@@ -76,6 +76,7 @@ namespace BackWebAdmin.CommService
                 if (model.PubTime != default(DateTime)) res = res.Where(x => x.PubTime >= model.PubTime);
                 if (model.PubTimeEnd != default(DateTime)) res = res.Where(x => x.PubTime <= model.PubTimeEnd);
                 if (!string.IsNullOrEmpty(model.SocialName)) res = res.Where(x => x.SocialName.Contains(model.SocialName));
+                if (model.Id>0) res = res.Where(x => x.Id==model.Id);
 
 
                 res = res.OrderBy(sort.Column, sort.Direction == SortDirection.Descending);

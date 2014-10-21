@@ -37,5 +37,6 @@ namespace TestProject.AutoCode
         public virtual DbSet<socservicedetail> socservicedetail { get; set; }
         public virtual DbSet<volunteer> volunteer { get; set; }
         public virtual DbSet<serrecord> serrecord { get; set; }
+        public virtual DbSet<startadimg> startadimg { get; set; }
     }
 }

@@ -7,6 +7,8 @@
 @Html.IncludeCSS("~/Content/plug-in/ztree/css/zTreeStyle/zTreeStyle.css")
 @Html.IncludeCSS("~/Content/Css/demo.css")
 @Html.IncludeCSS("~/Content/plug-in/uploadify/uploadify.css")
+@Html.IncludeCSS("~/Content/EasyUI/themes/gray/easyui.css")
+@Html.IncludeCSS("~/Content/EasyUI/themes/icon.css")
 
 <script>
     //window.UEDITOR_HOME_URL = "/xxxx/xxxx/";
@@ -103,6 +105,7 @@
                             </div>
                             <input type="file" name="uploadify" id="uploadify" multiple="true" />
                             <input type="hidden" name="SocSerImgId" id="SocSerImgId" value="" />
+                            双击删除图片
                             <div id="imgQueue">
                                 @*<a href="javascript:$('#uploadify').uploadify('upload')">上传</a>*@
                               
@@ -159,8 +162,7 @@
 @Html.IncludeScript("~/Content/EasyUI/jquery-1.8.0.min.js")
 @Html.IncludeScript("~/Content/Js/jquery.timer.js")
 @Html.IncludeScript("~/Content/Js/common.js")
-@Html.IncludeCSS("~/Content/EasyUI/themes/gray/easyui.css")
-@Html.IncludeCSS("~/Content/EasyUI/themes/icon.css")
+
 @Html.IncludeScript("~/Content/EasyUI/jquery.easyui.min.js")
 @Html.IncludeScript("~/Content/plug-in/My97DatePicker/WdatePicker.js")
 
@@ -242,13 +244,15 @@
     }
     function delImgSocSer(e)
     {
-     
+        if (!confirm("确认要删除该图片吗？")) {
+            return false;
+        }
         $(e).remove();
     }
     $(function(){
     
-       // $.fn.zTree.init($("#ztree"), setting, zNodes);
-        var ue = UE.getEditor('editor');
+        $.fn.zTree.init($("#ztree"), setting, zNodes);
+      //  var ue = UE.getEditor('editor');
 
         function submitForm() {
             // var url = "/SocSer/PostNoTakeIn" + '?detailId=' + id + "&state=" + state + "&msg=" + msg;
@@ -267,6 +271,7 @@
         $("#btnsubmitForm").click(function(){
             submitForm();
         });
+
 
       
         $("#uploadify").uploadify({

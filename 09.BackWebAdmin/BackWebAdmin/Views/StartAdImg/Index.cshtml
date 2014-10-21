@@ -1,0 +1,51 @@
+﻿@model  IPagedList<IplusOAEntity.StartAdImgEntityClone>
+@using MvcContrib.UI.Grid
+@using MvcContrib.Pagination;
+@using MvcContrib.UI.Pager;
+@using Common;
+
+<script type="text/javascript">
+
+    function deleteAdImg(id) {
+
+        var url = '@Url.Action("Delete")' + '?id=' + id;
+        deleteMethod(id, "Delete");
+        //showAjaxResult(url, "删除用户中......", 600, 400);
+    }
+
+</script>
+<style>
+    .combo {
+        vertical-align: bottom;
+    }
+</style>
+
+<div class="grid_box">
+    <div class="grid_top">
+    </div>
+    @foreach (var item in Model)
+    {
+        <table class="grid">
+            <thead><tr><th style="width:10px;align:center;">编号</th><th style="width:110px;align:center;">社区编号</th><th style="width:150px;align:center;">社区名称</th><th style="width:140px;align:center;">添加时间</th><th>社区广告滚动图片</th><th style="width:50px;align:center;">操作</th></tr></thead>
+            <tbody>
+                <tr class="gridrow_alternate">
+                    <td>@item.Id</td>
+                    <td>@item.DepId</td>
+                    <td>@item.DepName</td>
+                    <td>@item.AddTime.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>
+                        @foreach (var i in item.HttpUrlList)
+                        {
+                            <img width="160" height="140" alt="" title="社区广告图片" src="@i">
+                        }
+                    </td>
+                    <td class="grid_btn"><a href="javascript: deleteAdImg(@item.Id)">删除</a></td>
+                </tr>
+            </tbody>
+        </table>
+    }
+    <div class="grid_foot">
+    </div>
+</div>
+
+@Html.Pager(Model)

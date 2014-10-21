@@ -175,6 +175,7 @@
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SocSerController.cs" />
     <Compile Include="Controllers\SOrgController.cs" />
+    <Compile Include="Controllers\StartAdImgController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Controllers\VolController.cs" />
@@ -1068,6 +1069,8 @@
     <Content Include="Content\plug-in\ueditor\third-party\video-js\font\vjs.ttf" />
     <Content Include="Content\plug-in\ueditor\third-party\video-js\font\vjs.woff" />
     <Content Include="config.json" />
+    <Content Include="Config\App.config" />
+    <Content Include="Config\DataBase.config" />
     <None Include="Properties\PublishProfiles\IplusOAConfig.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -1134,6 +1137,8 @@
     <Content Include="Views\Dp\Index.cshtml" />
     <Content Include="Views\Dp\Index - 复制.cshtml" />
     <Content Include="Views\Home\Index - 复制.cshtml" />
+    <Content Include="Views\StartAdImg\Add.cshtml" />
+    <Content Include="Views\StartAdImg\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\02.Common\Common\Common.csproj">

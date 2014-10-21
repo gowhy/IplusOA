@@ -1,16 +1,28 @@
 ﻿@using Common;
-@model IplusOAEntity.SocServiceDetailEntity
-<script type="text/javascript">
-    function check_incharge_form() {
+@model IplusOAEntity.SocServiceDetailEntityClone
 
-        return true;
-    }
-</script>
+@{
+    Layout = null;
+}
 
+@Html.IncludeCSS("~/Content/Css/style.css")
 @Html.IncludeCSS("~/Content/plug-in/ztree/css/zTreeStyle/zTreeStyle.css")
 @Html.IncludeCSS("~/Content/Css/demo.css")
-@Html.IncludeScript("~/Content/plug-in/ztree/js/jquery.ztree.core-3.5.js")
-@Html.IncludeScript("~/Content/plug-in/ztree/js/jquery.ztree.excheck-3.5.js")
+@Html.IncludeCSS("~/Content/plug-in/uploadify/uploadify.css")
+@Html.IncludeCSS("~/Content/EasyUI/themes/gray/easyui.css")
+@Html.IncludeCSS("~/Content/EasyUI/themes/icon.css")
+
+
+
+
+<script>
+    //window.UEDITOR_HOME_URL = "/xxxx/xxxx/";
+   // window.UEDITOR_HOME_serverPath="../../../socser/UeditConfig";
+    window.UEDITOR_HOME_serverPath="@Url.Content( "../../../socser/UeditConfig")";
+
+
+</script>
+
 <style>
     .panel-tool {
         width: 95%;
@@ -28,7 +40,7 @@
 </div>
 <div id="p" class="easyui-panel" title="新增" style="height:530px;padding:10px;"
      data-options="iconCls:'icon-add',closable:false,tools:'#tt'">
-    <form name="PostEdit" id="PostEdit" action="@Url.Action("PostEdit")" method="post" enctype="multipart/form-data" onsubmit="return check_incharge_form();">
+    <form name="PostEdit" id="PostEdit" action="@Url.Action("PostEdit")" method="post" enctype="multipart/form-data" >
         <table class="form" cellpadding="0" cellspacing="0">
             <tbody>
               
@@ -81,6 +93,25 @@
                     <td class="item_input"><textarea class="textbox require" name="Desc" rows="5" cols="70">@Model.Desc</textarea></td>
                 </tr>
                 <tr>
+                    <td class="item_title">服务图片:</td>
+                    <td class="item_input">
+                        @*用来作为文件队列区域*@
+                        <div id="fileQueue">
+                        </div>
+                        <input type="file" name="uploadify" id="uploadify" multiple="true" />
+                        <input type="hidden" name="SocSerImgId" id="SocSerImgId" value="" />
+                        <div id="imgQueue">
+                            @*<a href="javascript:$('#uploadify').uploadify('upload')">上传</a>*@
+                           
+                           @foreach (var item in @Model.SocSerImgs)
+                           {
+                                <img   socserimgid="@item.Id" ondblclick="delImgSocSer(this)" src="@item.HttpUrl" title="双击删除图片" alt="" width="160" height="140" />
+                           }
+                           
+                        </div>
+                    </td>
+                </tr>
+                <tr>
                     <td class="item_title">自愿者帮助说明:</td>
                     <td class="item_input"><textarea class="textbox require" name="VHelpDesc" rows="5" cols="70">@Model.VHelpDesc</textarea></td>
                 </tr>
@@ -119,13 +150,31 @@
                         <input type="hidden" name="Id" value="@Model.Id" />
                         @*<input type="submit" class="button" value="保存修改">
                         <input type="reset" class="button" value="重置">*@
-                        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">保存修改</a>
+                        @*<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">保存修改</a>*@
+                        <a href="javascript:void(0)" id="btnsubmitForm" class="easyui-linkbutton">保存修改</a>
                     
                     </td>
                 </tr>
               
             </tbody>
         </table>
+     
+
+        @Html.IncludeScript("~/Content/EasyUI/jquery-1.8.0.min.js")
+        @Html.IncludeScript("~/Content/Js/jquery.timer.js")
+        @Html.IncludeScript("~/Content/Js/common.js")
+
+        @Html.IncludeScript("~/Content/EasyUI/jquery.easyui.min.js")
+        @Html.IncludeScript("~/Content/plug-in/My97DatePicker/WdatePicker.js")
+
+        @Html.IncludeScript("~/Content/plug-in/ztree/js/jquery.ztree.core-3.5.js")
+        @Html.IncludeScript("~/Content/plug-in/ztree/js/jquery.ztree.excheck-3.5.js")
+        @Html.IncludeScript("~/Content/plug-in/uploadify/jquery.uploadify-3.1.js")
+
+        @Html.IncludeScript("~/Content/plug-in/ueditor/ueditor.config.js")
+        @Html.IncludeScript("~/Content/plug-in/ueditor/ueditor.all.js")
+        @Html.IncludeScript("~/Content/plug-in/ueditor/lang/zh-cn/zh-cn.js")
+
         <script type="text/javascript">
 
 
@@ -193,25 +242,79 @@
                 }
             }
 
-            $(document).ready(function () {
-                $.fn.zTree.init($("#ztree"), setting, zNodes);
-
-                $("#Type").val("@Model.Type");
-                $("#PayType").val("@Model.PayType");
-
-               
-            });
-
-
-  
-            function submitForm() {
-             
-                $('#PostEdit').submit();
-            }
+   
                 function clearForm() {
                     $('#PostEdit').form('clear');
                 }
- 
+                function delImgSocSer(e)
+                {
+                    if (!confirm("确认要删除该图片吗？")) {
+                        return false;
+                    }
+                    $(e).remove();
+                }
+                $(function(){
+    
+                    $.fn.zTree.init($("#ztree"), setting, zNodes);
+                    $("#Type").val("@Model.Type");
+                    $("#PayType").val("@Model.PayType");
+
+                    //  var ue = UE.getEditor('editor');
+
+                    function submitForm() {
+                        
+            
+                        $("#imgQueue img").each(function(){
+                            $("#SocSerImgId").val( $("#SocSerImgId").val()+","+$(this).attr("socserimgId"));
+                        });
+
+                        $('#PostEdit').submit();
+                    }
+
+                    $("#btnsubmitForm").click(function(){
+                        submitForm();
+                    });
+
+      
+                    $("#uploadify").uploadify({
+                        //指定swf文件
+                        'swf':"@Url.Content("~/Content/plug-in/uploadify/uploadify.swf")",
+                    //后台处理的页面
+                        'uploader': '/socser/SaveImg',
+                    //按钮显示的文字
+                        'buttonText': '上传图片',
+                    //显示的高度和宽度，默认 height 30；width 120
+                    //'height': 15,
+                    //'width': 80,
+                    //上传文件的类型  默认为所有文件    'All Files'  ;  '*.*'
+                    //在浏览窗口底部的文件类型下拉菜单中显示的文本
+                    // 'fileTypeDesc': 'Image Files',
+                    //允许上传的文件后缀
+                        'fileTypeExts': '*.gif; *.jpg; *.png',
+                    //发送给后台的其他参数通过formData指定
+                    //'formData': $("#postadd").serialize(),
+                    //上传文件页面中，你想要用来作为文件队列的元素的id, 默认为false  自动生成,  不带#
+                        'cancelImg':"@Url.Content("~/Content/plug-in/uploadify/cancel.jpg")",
+                    //  'formData' :  JSON.stringify($('#postadd').serializeArray()),   
+                    //"removeCompleted":false,
+                    //  'queueID': 'fileQueue',
+                    //选择文件后自动上传
+                        'auto': true,
+                    //设置为true将允许多文件上传
+                        'multi': true,
+                    onUploadSuccess : function(file,data,response) {//上传完成时触发（每个文件触发一次）
+              
+                        data= eval("("+data+")");
+                
+                        var imgStr=' <img id="imgSocser'+data.Id+'" socserimgId="'+data.Id+'"  ondblclick="delImgSocSer(this)" src="'+data.HttpUrl+'" title="双击删除图片" alt="" width="160" height="140"  />';
+                 
+                        $("#imgQueue").append(imgStr);
+                    } 
+
+                });
+
+      
+                });
         </script>
     </form>
 </div>
