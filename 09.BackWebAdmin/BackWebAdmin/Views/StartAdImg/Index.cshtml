@@ -19,14 +19,17 @@
         vertical-align: bottom;
     }
 </style>
-
+<div id="button-bar">
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-add'" title="新增" href="@Url.Action("Add")">新增</a>
+</div>
 <div class="grid_box">
     <div class="grid_top">
     </div>
-    @foreach (var item in Model)
-    {
-        <table class="grid">
-            <thead><tr><th style="width:10px;align:center;">编号</th><th style="width:110px;align:center;">社区编号</th><th style="width:150px;align:center;">社区名称</th><th style="width:140px;align:center;">添加时间</th><th>社区广告滚动图片</th><th style="width:50px;align:center;">操作</th></tr></thead>
+ 
+    <table class="grid">
+        <thead><tr><th style="width:10px;align:center;">编号</th><th style="width:110px;align:center;">社区编号</th><th style="width:150px;align:center;">社区名称</th><th style="width:140px;align:center;">添加时间</th><th>社区广告滚动图片</th><th style="width:50px;align:center;">操作</th></tr></thead>
+        @foreach (var item in Model)
+        {
             <tbody>
                 <tr class="gridrow_alternate">
                     <td>@item.Id</td>
@@ -42,8 +45,11 @@
                     <td class="grid_btn"><a href="javascript: deleteAdImg(@item.Id)">删除</a></td>
                 </tr>
             </tbody>
-        </table>
-    }
+        }
+    </table>
+
+
+   
     <div class="grid_foot">
     </div>
 </div>

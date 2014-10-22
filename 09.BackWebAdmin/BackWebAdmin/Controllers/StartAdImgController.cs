@@ -14,11 +14,13 @@ using IplusOAEntity;
 
 namespace BackWebAdmin.Controllers
 {
+      [SecurityModule(Name = "社区广告")]
     public class StartAdImgController : BaseController
     {
         private static int PageSize = 20;
         //
         // GET: /StartAdImg/
+        [SecurityNode(Name = "首页")]
         public ActionResult Index( int? page, int? pageSize)
         {
             var pageNumber = page ?? 1;
@@ -72,7 +74,7 @@ namespace BackWebAdmin.Controllers
                 return Json(list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size));
             }
         }
-
+        [SecurityNode(Name = "新增")]
         public ActionResult Add()
         {
             using (IplusOADBContext db = new IplusOADBContext())
