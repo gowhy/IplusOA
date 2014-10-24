@@ -326,7 +326,7 @@ namespace BackWebAdmin.Controllers
 
                 }
             }
-            //return Content("");
+
             return Json(new
         {
             state = "SUCCESS",
@@ -334,7 +334,8 @@ namespace BackWebAdmin.Controllers
             title = "title-why",
             original = "original-why",
             error = ""
-        }, JsonRequestBehavior.AllowGet);
+        }, "text/html");
+            
         }
         public ActionResult SaveImg()
         {

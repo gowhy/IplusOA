@@ -52,20 +52,11 @@ namespace BackWebAdmin.Controllers
             var size = pageSize ?? 1;
             using (IplusOADBContext db = new IplusOADBContext())
             {
-                var dep = db.DepartmentTable;
+              
                 var adimg = db.StartAdImgTable;
 
-                var list = from a in adimg
-                           join d in dep on a.DepId equals d.Id
-                           select new StartAdImgEntityClone
-                           {
-                               DepName = d.Name,
-                               DepId = a.DepId,
-                               HttpUrl = a.HttpUrl,
-                               Id = a.Id,
-                               Des = a.Des,
-                               AddTime = a.AddTime,
-                           };
+                var list = from a in adimg select a;
+                          
                 if (!string.IsNullOrEmpty(depId))
                 {
                     list = list.Where(x => x.DepId == depId);

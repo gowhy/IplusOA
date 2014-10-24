@@ -172,6 +172,7 @@
     <Compile Include="Controllers\DpController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\NoticeController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SocSerController.cs" />
     <Compile Include="Controllers\SOrgController.cs" />
@@ -190,6 +191,7 @@
     <Compile Include="Models\Role\RoleModel.cs" />
     <Compile Include="Models\SocSer\SelectSocSerModel.cs" />
     <Compile Include="Models\SOrg\SelectSorgModel.cs" />
+    <Compile Include="Models\UEditorModel.cs" />
     <Compile Include="Models\Vol\SelectVolModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -1139,6 +1141,9 @@
     <Content Include="Views\Home\Index - 复制.cshtml" />
     <Content Include="Views\StartAdImg\Add.cshtml" />
     <Content Include="Views\StartAdImg\Index.cshtml" />
+    <Content Include="Views\Notice\Add.cshtml" />
+    <Content Include="Views\Notice\Index.cshtml" />
+    <Content Include="Views\Notice\View.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\02.Common\Common\Common.csproj">

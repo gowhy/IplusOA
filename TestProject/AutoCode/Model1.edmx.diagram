@@ -19,6 +19,7 @@
         <EntityTypeShape EntityType="oa2Model.serrecord" Width="1.5" PointX="7.125" PointY="8.25" IsExpanded="true" />
         <AssociationConnector Association="oa2Model.socserimgsocservicedetail" />
         <EntityTypeShape EntityType="oa2Model.startadimg" Width="1.5" PointX="9.375" PointY="8.75" />
+        <EntityTypeShape EntityType="oa2Model.notice" Width="1.5" PointX="11.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

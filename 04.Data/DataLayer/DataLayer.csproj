@@ -55,6 +55,7 @@
     <Compile Include="EntityMap\SocSerDetailJoinEntityToSocSerDetailJoinMap.cs" />
     <Compile Include="EntityMap\SocSerImgMap.cs" />
     <Compile Include="EntityMap\SocServiceDetailEntityToSocServiceDetailMap.cs" />
+    <Compile Include="EntityMap\NoticeMap.cs" />
     <Compile Include="EntityMap\StartAdImgMap.cs" />
     <Compile Include="EntityMap\VolunteerEntityToVolunteerMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -45,6 +45,18 @@
           <Property Name="Module" Type="varchar" MaxLength="500" />
           <Property Name="AText" Type="varchar" MaxLength="1000" />
         </EntityType>
+        <EntityType Name="notice">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddTime" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DepId" Type="varchar" MaxLength="50" />
+          <Property Name="ImgUrl" Type="varchar" MaxLength="1000" />
+          <Property Name="Des" Type="text" />
+          <Property Name="Title" Type="varchar" MaxLength="100" />
+          <Property Name="AddUser" Type="varchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="role">
           <Key>
             <PropertyRef Name="Id" />
@@ -165,7 +177,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AddTime" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="HttpUrl" Type="varchar" MaxLength="4000" />
           <Property Name="DepId" Type="varchar" MaxLength="50" />
@@ -209,6 +221,7 @@
           <EntitySet Name="adminuser" EntityType="Self.adminuser" Schema="oa2" store:Type="Tables" />
           <EntitySet Name="department" EntityType="Self.department" Schema="oa2" store:Type="Tables" />
           <EntitySet Name="menu" EntityType="Self.menu" Schema="oa2" store:Type="Tables" />
+          <EntitySet Name="notice" EntityType="Self.notice" Schema="oa2" store:Type="Tables" />
           <EntitySet Name="role" EntityType="Self.role" Schema="oa2" store:Type="Tables" />
           <EntitySet Name="rolepermission" EntityType="Self.rolepermission" Schema="oa2" store:Type="Tables" />
           <EntitySet Name="sertype" EntityType="Self.sertype" Schema="oa2" store:Type="Tables" />
@@ -451,6 +464,7 @@ FROM `serrecord` AS `serrecord`</DefiningQuery>
             <End Role="socservicedetail" EntitySet="socservicedetail" />
           </AssociationSet>
           <EntitySet Name="startadimg" EntityType="oa2Model.startadimg" />
+          <EntitySet Name="notice" EntityType="oa2Model.notice" />
         </EntityContainer>
         <Association Name="socserimgsocservicedetail">
           <End Type="oa2Model.socserimg" Role="socserimg" Multiplicity="*" />
@@ -465,6 +479,18 @@ FROM `serrecord` AS `serrecord`</DefiningQuery>
           <Property Name="HttpUrl" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
           <Property Name="DepId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Des" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="notice">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddTime" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DepId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ImgUrl" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="Des" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="AddUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -676,6 +702,19 @@ FROM `serrecord` AS `serrecord`</DefiningQuery>
                 <ScalarProperty Name="Des" ColumnName="Des" />
                 <ScalarProperty Name="DepId" ColumnName="DepId" />
                 <ScalarProperty Name="HttpUrl" ColumnName="HttpUrl" />
+                <ScalarProperty Name="AddTime" ColumnName="AddTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="notice">
+            <EntityTypeMapping TypeName="oa2Model.notice">
+              <MappingFragment StoreEntitySet="notice">
+                <ScalarProperty Name="AddUser" ColumnName="AddUser" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Des" ColumnName="Des" />
+                <ScalarProperty Name="ImgUrl" ColumnName="ImgUrl" />
+                <ScalarProperty Name="DepId" ColumnName="DepId" />
                 <ScalarProperty Name="AddTime" ColumnName="AddTime" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
