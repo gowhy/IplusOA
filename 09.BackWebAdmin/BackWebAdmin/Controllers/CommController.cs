@@ -64,6 +64,25 @@ namespace BackWebAdmin.Controllers
                 return new FileContentResult(image, "image/jpeg");
             }
         }
+        //开机广告
+        public ActionResult StartAdImgAppIndex(string depId, int? page, int? pageSize)
+        {
+            var pageNumber = page ?? 1;
+            var size = pageSize ?? 1;
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
 
+                var adimg = db.StartAdImgTable;
+
+                var list = from a in adimg select a;
+
+                if (!string.IsNullOrEmpty(depId))
+                {
+                    list = list.Where(x => x.DepId == depId);
+                }
+
+                return Json(list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size));
+            }
+        }
     }
 }

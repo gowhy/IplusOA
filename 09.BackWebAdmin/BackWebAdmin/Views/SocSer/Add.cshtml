@@ -1,24 +1,9 @@
 ﻿@using Common;
-@{
-    Layout = null;
-}
 
-@Html.IncludeCSS("~/Content/Css/style.css")
+
 @Html.IncludeCSS("~/Content/plug-in/ztree/css/zTreeStyle/zTreeStyle.css")
 @Html.IncludeCSS("~/Content/Css/demo.css")
 @Html.IncludeCSS("~/Content/plug-in/uploadify/uploadify.css")
-@Html.IncludeCSS("~/Content/EasyUI/themes/gray/easyui.css")
-@Html.IncludeCSS("~/Content/EasyUI/themes/icon.css")
-
-<script>
-    //window.UEDITOR_HOME_URL = "/xxxx/xxxx/";
-   // window.UEDITOR_HOME_serverPath="../../../socser/UeditConfig";
-    window.UEDITOR_HOME_serverPath="@Url.Content( "../../../socser/UeditConfig")";
-   
-   
-</script>
-
-
 
 <style>
     .panel-tool {
@@ -118,14 +103,17 @@
                     </tr>
                     <tr>
                         <td class="item_title">覆盖社区:</td>
-                        <td class="">
+                        <td class="item_input">
                             <input type="hidden" name="CoverCommunity" id="CoverCommunityIds" />
-                            @*<input type="text" class="button" value="选择社区" name="CoverCommunity" onclick="showMenu(); return false;" />*@
-                            <a id="menuBtn" href="#" onclick="showMenu(); return false;">请选择 &nbsp; &nbsp;</a>
-                            <div id="menuContent" class="menuContent" style="display: none; z-index: 10000; position: absolute;">
+                          
+                            <a id="menuBtn" href="#" onclick="showMenu(this)">请选择 &nbsp; &nbsp;</a>
+                           
+                            <div id="menuContent" class="menuContent" style="display: none; z-index: 10000; position:absolute;">
                                 <ul id="ztree" class="ztree" style="margin-top:0;   overflow:scroll; height:270px;"></ul>
                             </div>
+                           
                             <span class="textbox" id="CoverCommunityNames"></span>
+
                         </td>
 
                     </tr>
@@ -157,22 +145,18 @@
                 
                 </tbody>
             </table>
+
         </form>
     </div>
-@Html.IncludeScript("~/Content/EasyUI/jquery-1.8.0.min.js")
-@Html.IncludeScript("~/Content/Js/jquery.timer.js")
-@Html.IncludeScript("~/Content/Js/common.js")
 
-@Html.IncludeScript("~/Content/EasyUI/jquery.easyui.min.js")
-@Html.IncludeScript("~/Content/plug-in/My97DatePicker/WdatePicker.js")
 
 @Html.IncludeScript("~/Content/plug-in/ztree/js/jquery.ztree.core-3.5.js")
 @Html.IncludeScript("~/Content/plug-in/ztree/js/jquery.ztree.excheck-3.5.js")
 @Html.IncludeScript("~/Content/plug-in/uploadify/jquery.uploadify-3.1.js")
 
-@Html.IncludeScript("~/Content/plug-in/ueditor/ueditor.config.js")
+@*@Html.IncludeScript("~/Content/plug-in/ueditor/ueditor.config.js")
 @Html.IncludeScript("~/Content/plug-in/ueditor/ueditor.all.js")
-@Html.IncludeScript("~/Content/plug-in/ueditor/lang/zh-cn/zh-cn.js")
+@Html.IncludeScript("~/Content/plug-in/ueditor/lang/zh-cn/zh-cn.js")*@
 <script>
 
  
@@ -203,7 +187,7 @@
         }
     };
 
-    var zNodes =@(Html.Raw(ViewData["Department_List"].ToString()));
+    var zNodes =@(Html.Raw(ViewData["Department_List"].ToString()))
 
     function onCheck(e, treeId, treeNode) {
         var checkString="";
@@ -224,21 +208,22 @@
     function beforeCheck(treeId, treeNode) {
 
     }
-    function showMenu() {
-        $("#menuContent").slideDown("fast");
-        $("body").bind("mousedown", onBodyDown);
-    }
-    function hideMenu() {
-        $("#menuContent").fadeOut("fast");
-        $("body").unbind("mousedown", onBodyDown);
-    }
+
     function onBodyDown(event) {
         if (!(event.target.id == "menuBtn" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length>0)) {
             hideMenu();
         }
     }
 
-    
+    function showMenu(e) {
+ 
+        $("#menuContent").css("top", $(e).offset().top+15).slideDown("fast");
+        $("body").bind("mousedown", onBodyDown);
+    }
+    function hideMenu() {
+        $("#menuContent").fadeOut("fast");
+        $("body").unbind("mousedown", onBodyDown);
+    }
     function clearForm() {
         $('#postadd').form('clear');
     }
@@ -249,8 +234,11 @@
         }
         $(e).remove();
     }
+
+
+  
     $(function(){
-    
+      
         $.fn.zTree.init($("#ztree"), setting, zNodes);
       //  var ue = UE.getEditor('editor');
 

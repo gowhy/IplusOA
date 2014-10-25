@@ -1073,6 +1073,7 @@
     <Content Include="config.json" />
     <Content Include="Config\App.config" />
     <Content Include="Config\DataBase.config" />
+    <None Include="OA.pubxml" />
     <None Include="Properties\PublishProfiles\IplusOAConfig.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
