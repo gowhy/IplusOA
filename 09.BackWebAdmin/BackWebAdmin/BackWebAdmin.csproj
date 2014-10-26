@@ -172,6 +172,7 @@
     <Compile Include="Controllers\DpController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\SuggestionController.cs" />
     <Compile Include="Controllers\WorkGuideController.cs" />
     <Compile Include="Controllers\NoticeController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
@@ -1149,6 +1150,7 @@
     <Content Include="Views\WorkGuide\Index.cshtml" />
     <Content Include="Views\WorkGuide\Add.cshtml" />
     <Content Include="Views\WorkGuide\View.cshtml" />
+    <Content Include="Views\Suggestion\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\02.Common\Common\Common.csproj">

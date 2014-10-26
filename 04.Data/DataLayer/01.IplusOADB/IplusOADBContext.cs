@@ -72,7 +72,7 @@ namespace DataLayer.IplusOADB
 
         public virtual DbSet<WorkGuideEntity> WorkGuideTable { get; set; }
 
-        public virtual DbSet<SuggestionEntity> SugestionTable { get; set; }
+        public virtual DbSet<SuggestionEntity> SuggestionTable { get; set; }
         
     }
 }
