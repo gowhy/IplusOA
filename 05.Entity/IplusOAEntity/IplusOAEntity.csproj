@@ -53,11 +53,13 @@
     <Compile Include="SocSer\SocServiceDetailEntityClone.cs" />
     <Compile Include="SocSer\SocServiceDetailEntity.cs" />
     <Compile Include="SocSer\StartAdImgEntity.cs" />
+    <Compile Include="SuggestionEntity.cs" />
     <Compile Include="Vol\VolunteerEntity.cs" />
     <Compile Include="SOrg\DepartmentEntity.cs" />
     <Compile Include="SOrg\SocialOrgEntity.cs" />
     <Compile Include="Vol\ReturnModel.cs" />
     <Compile Include="Vol\VolunteerEntityClone.cs" />
+    <Compile Include="WorkGuideEntity.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

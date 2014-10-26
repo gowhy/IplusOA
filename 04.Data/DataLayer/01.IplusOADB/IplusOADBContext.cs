@@ -37,7 +37,8 @@ namespace DataLayer.IplusOADB
             modelBuilder.Configurations.Add(new SocSerImgMap());
             modelBuilder.Configurations.Add(new StartAdImgMap());
             modelBuilder.Configurations.Add(new NoticeMap());
-            
+            modelBuilder.Configurations.Add(new WorkGuideEntityMap());
+            modelBuilder.Configurations.Add(new SuggestionEntityMap());
            // modelBuilder.Entity<VolunteerEntity>().Property(p => p.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
            
             
@@ -68,6 +69,10 @@ namespace DataLayer.IplusOADB
         public virtual DbSet<StartAdImgEntity> StartAdImgTable { get; set; }
 
         public virtual DbSet<NoticeEntity> NoticeTable { get; set; }
+
+        public virtual DbSet<WorkGuideEntity> WorkGuideTable { get; set; }
+
+        public virtual DbSet<SuggestionEntity> SugestionTable { get; set; }
         
     }
 }

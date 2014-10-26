@@ -5,21 +5,23 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="3b6913e20f3140d0925e936f25a68f6c" Name="Diagram1">
-        <EntityTypeShape EntityType="oa2Model.adminuser" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="oa2Model.department" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="oa2Model.menu" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="oa2Model.role" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="oa2Model.rolepermission" Width="1.5" PointX="2.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="oa2Model.sertype" Width="1.5" PointX="4.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="oa2Model.socialorg" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="oa2Model.socserdetailjoin" Width="1.5" PointX="6.75" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="oa2Model.socserimg" Width="1.5" PointX="0.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="oa2Model.socservicedetail" Width="2.875" PointX="2.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="oa2Model.volunteer" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="oa2Model.serrecord" Width="1.5" PointX="7.125" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="oa2Model.adminuser" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="oa2Model.department" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="oa2Model.menu" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="oa2Model.role" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="oa2Model.rolepermission" Width="1.5" PointX="2.75" PointY="4.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="oa2Model.sertype" Width="1.5" PointX="4.75" PointY="4.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="oa2Model.socialorg" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="oa2Model.socserdetailjoin" Width="1.5" PointX="6.75" PointY="5.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="oa2Model.socserimg" Width="1.5" PointX="0.75" PointY="7.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="oa2Model.socservicedetail" Width="2.875" PointX="2.75" PointY="7.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="oa2Model.volunteer" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="oa2Model.serrecord" Width="1.5" PointX="7.125" PointY="8.25" IsExpanded="false" />
         <AssociationConnector Association="oa2Model.socserimgsocservicedetail" />
-        <EntityTypeShape EntityType="oa2Model.startadimg" Width="1.5" PointX="9.375" PointY="8.75" />
+        <EntityTypeShape EntityType="oa2Model.startadimg" Width="1.5" PointX="9.375" PointY="8.75" IsExpanded="false" />
         <EntityTypeShape EntityType="oa2Model.notice" Width="1.5" PointX="11.375" PointY="0.75" />
+        <EntityTypeShape EntityType="oa2Model.suggestion" Width="1.5" PointX="11.375" PointY="4.75" />
+        <EntityTypeShape EntityType="oa2Model.workguide" Width="1.5" PointX="11.375" PointY="7.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
