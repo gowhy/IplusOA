@@ -23,10 +23,13 @@ namespace BackWebAdmin.Controllers
             var size = pageSize ?? PageSize;
             using (IplusOADBContext db = new IplusOADBContext())
             {
-              
+
                 var work = db.WorkGuideTable;
 
                 var list = from w in work select w;
+
+                list = list.Where(x => x.DepId == AdminUser.DeptId);
+
                 return View(list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size));
             }
         }

@@ -39,6 +39,7 @@ namespace BackWebAdmin.Controllers
                                AddTime = a.AddTime,
                                Title=a.Title
                            };
+                list = list.Where(x => x.DepId == AdminUser.DeptId);
                 return View(list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size));
             }
         }

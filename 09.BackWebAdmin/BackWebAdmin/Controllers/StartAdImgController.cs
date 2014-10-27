@@ -14,7 +14,7 @@ using IplusOAEntity;
 
 namespace BackWebAdmin.Controllers
 {
-      [SecurityModule(Name = "社区广告")]
+      [SecurityModule(Name = "App开机广告")]
     public class StartAdImgController : BaseController
     {
         private static int PageSize = 20;
