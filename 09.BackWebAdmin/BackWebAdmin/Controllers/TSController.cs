@@ -12,6 +12,7 @@ using System.IO;
 
 namespace BackWebAdmin.Controllers
 {
+    [SecurityModule(Name = "投诉")]
     public class TSController : BaseController
     {
         private static int PageSize = 20;

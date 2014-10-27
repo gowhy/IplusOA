@@ -1,0 +1,83 @@
+﻿@using Common;
+@model  IplusOAEntity.SuperviseEntityClone
+
+
+<style>
+    .panel-tool {
+        width: 95%;
+        float: left;
+    }
+
+    .item_title {
+        background: none;
+    }
+</style>
+
+
+
+<div id="tt">
+    <a href="@Url.Action("Index", "ts")" style=" width:100px;">返回列表</a>
+</div>
+<div id="p" class="easyui-panel" title="新增" style="height:530px;padding:10px;"
+     data-options="iconCls:'icon-add',closable:false,tools:'#tt'">
+
+    <form name="postedit" action="@Url.Action("PostEdit")" id="postedit" method="post" enctype="multipart/form-data">
+        <table class="form" cellpadding="0" cellspacing="0">
+            <tbody>
+                <tr>
+                    <td class="item_title">投诉用户电话:</td>
+                    <td class="item_input">
+                     <div>@Model.volEntity.Phone</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="item_title">投诉用户社区:</td>
+                    <td class="item_input">
+                        <div>@Model.DepName</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="item_title">投诉用户地址:</td>
+                    <td class="item_input">
+                        <div>@Model.volEntity.Address</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="item_title">投诉用户真实姓名:</td>
+                    <td class="item_input">
+                        <div>@Model.volEntity.RealName</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="item_title">投诉照片:</td>
+                    <td class="item_input">
+                        <div id="imgQueue">
+                            @if (!string.IsNullOrEmpty(Model.ImgUrl))
+                            {
+                                foreach (var item in Model.ImgUrl.Split('#'))
+                                {
+                                    if (!string.IsNullOrEmpty(item))
+                                    {
+                                        <img ondblclick="delImgSocSer(this)" src="@item" alt="" width="160" height="140" />
+                                    }
+
+                                }
+                            }
+                      
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="item_title">投诉内容:</td>
+                    <td class="item_input">
+                        <div>
+                         @Html.Raw(Model.Content)
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+
+</div>
+
