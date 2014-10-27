@@ -1,0 +1,66 @@
+﻿@model  IPagedList<IplusOAEntity.SuperviseEntityClone>
+@using MvcContrib.UI.Grid
+@using MvcContrib.Pagination;
+@using MvcContrib.UI.Pager;
+@using Common;
+
+<script type="text/javascript">
+
+    function del(id) {
+
+        var url = '@Url.Action("Delete")' + '?id=' + id;
+        deleteMethod(id, "Delete");
+        //showAjaxResult(url, "删除用户中......", 600, 400);
+    }
+    function submitForm() {
+        // var url = "/SocSer/PostNoTakeIn" + '?detailId=' + id + "&state=" + state + "&msg=" + msg;
+        $('#indexFrom').submit();
+    }
+
+
+
+
+
+</script>
+<style>
+    .combo {
+        vertical-align: bottom;
+    }
+</style>
+<form id="indexFrom">
+
+    <div style="float: left; height: 40px; text-align: center;">
+        @*<span><a class="easyui-linkbutton" data-options="iconCls:'icon-add'" title="新增" href="@Url.Action("Add")">新增</a></span>*@
+        <span style="margin-left:70px;">
+
+            <span class="combo">
+                投诉内容<input type="text" name="SocialName" value="" />
+                @*社组织编号<input type="text" name="SocialNo" value="@Model.SocialNo" />
+                    发布时间<input type="text" name="PubTime" value="@(Model.PubTime!=default(DateTime)? Model.PubTime.ToString("yyyy-MM-dd") : "")" onclick="WdatePicker()" />
+                    -<input type="text" name="PubTimeEnd" value="@(Model.PubTimeEnd != default(DateTime) ? Model.PubTimeEnd.ToString("yyyy-MM-dd") : "")" onclick="WdatePicker()" />*@
+            </span>
+
+            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">查询</a>
+        </span>
+    </div>
+</form>
+<div class="grid_box">
+    <div class="grid_top">
+    </div>
+    @Html.Grid(Model).Columns(column =>
+                                  {
+                                      // column.CheckBox(x => x.Id);
+                                      //   column.For(x => x.Id).Named("编号").HeaderAttributes(style => "width:50px;align:center;");
+                                      column.For(x => x.Content).Named("投诉类容").HeaderAttributes(style => "width:450px;align:center;");
+                                      column.For(x => x.AddTime.ToString("yyyy-MM-dd HH:ss")).Named("投诉时间").HeaderAttributes(style => "width:140px;align:center;");
+                                      column.For(x => x.DepName).Named("社区");
+                                      column.For(x => x.volEntity.RealName).Named("真实姓名");
+                                      column.For(x => x.volEntity.Phone).Named("联系电话");
+                                      column.For(x => x.volEntity.Address).Named("地址");
+                                      column.Buttons(btns => btns.Add(x => Html.ActionLink("查看", "view", new { id = x.Id })));
+                                  }).Complex(ViewData)
+    <div class="grid_foot">
+    </div>
+</div>
+
+@Html.Pager(Model)

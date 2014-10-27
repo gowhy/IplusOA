@@ -48,6 +48,7 @@
     <Compile Include="EntityMap\BackAdminUserToAdminUserMap.cs" />
     <Compile Include="EntityMap\DepartmentEntityToDepartmentMap.cs" />
     <Compile Include="EntityMap\MenuEntityToMenuMap.cs" />
+    <Compile Include="EntityMap\SuperviseEntityMap.cs" />
     <Compile Include="EntityMap\WorkGuideEntityMap.cs" />
     <Compile Include="EntityMap\SuggestionEntityMap.cs" />
     <Compile Include="EntityMap\RoleEntityToRoleMap.cs" />

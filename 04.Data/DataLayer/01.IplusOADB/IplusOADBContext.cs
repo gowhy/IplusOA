@@ -39,6 +39,9 @@ namespace DataLayer.IplusOADB
             modelBuilder.Configurations.Add(new NoticeMap());
             modelBuilder.Configurations.Add(new WorkGuideEntityMap());
             modelBuilder.Configurations.Add(new SuggestionEntityMap());
+            modelBuilder.Configurations.Add(new SuperviseEntityMap());
+
+            
            // modelBuilder.Entity<VolunteerEntity>().Property(p => p.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
            
             
@@ -73,6 +76,8 @@ namespace DataLayer.IplusOADB
         public virtual DbSet<WorkGuideEntity> WorkGuideTable { get; set; }
 
         public virtual DbSet<SuggestionEntity> SuggestionTable { get; set; }
+
+        public virtual DbSet<SuperviseEntity> SuperviseTable { get; set; }
         
     }
 }
