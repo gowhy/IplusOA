@@ -52,7 +52,7 @@
                                       // column.CheckBox(x => x.Id);
                                       //   column.For(x => x.Id).Named("编号").HeaderAttributes(style => "width:50px;align:center;");
                                       column.For(x => x.Title).Named("标题");
-                                      column.For(x => x.AddTime.ToString("yyyy-MM-dd HH:ss")).Named("发布时间");
+                                      column.For(x => x.AddTime.ToString("yyyy-MM-dd HH:mm")).Named("发布时间");
                                      // column.For(x => x.DepName).Named("社区");
                                       column.Buttons(btns => btns
                                           .Add(x => Html.ActionLink("编辑", "view", new { id = x.Id }))

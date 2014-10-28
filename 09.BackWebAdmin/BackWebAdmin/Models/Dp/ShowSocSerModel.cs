@@ -11,13 +11,13 @@ namespace BackWebAdmin.Models
         public string PubTimeString
         {
 
-            get { return PubTime.Value.ToString("yyyy-MM-dd HH"); }
+            get { return PubTime.Value.ToString("yyyy-MM-dd"); }
             set { pubTimeString = value; }
         }
         private string endTimeString;
         public string EndTimeString
         {
-            get { return EndTime.Value.ToString("yyyy-MM-dd HH"); }
+            get { return EndTime.Value.ToString("yyyy-MM-dd"); }
            
              set { endTimeString = value; }
         }

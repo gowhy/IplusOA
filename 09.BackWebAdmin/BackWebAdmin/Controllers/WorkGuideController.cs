@@ -48,7 +48,7 @@ namespace BackWebAdmin.Controllers
                     list = list.Where(x => x.DepId == depId);
                 }
 
-                return Json(list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size));
+                return Json(list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size),JsonRequestBehavior.AllowGet);
             }
         }
         [SecurityNode(Name = "新增")]

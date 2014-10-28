@@ -34,23 +34,25 @@ namespace BackWebAdmin.Controllers
             string udepId = AdminUser.DeptId;
 
             List<DpEntity> resList = new List<DpEntity>();
-            IplusOADBContext db = new IplusOADBContext();
-            //社会组织
-            resList.Add(CountOrg(db));
-            //社会服务
-            resList.Add(CountSer(db));
-            //社会服务自愿者
-            resList.Add(CountSerVol(db));
-            //辖区自愿者
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                //社会组织
+                resList.Add(CountOrg(db));
+                //社会服务
+                resList.Add(CountSer(db));
+                //社会服务自愿者
+                resList.Add(CountSerVol(db));
+                //辖区自愿者
 
-            resList.Add(CountSheQuvol(db));
+                resList.Add(CountSheQuvol(db));
 
-            DepartmentEntity dep=db.DepartmentTable.SingleOrDefault(x=>x.Id==udepId);
+                DepartmentEntity dep = db.DepartmentTable.SingleOrDefault(x => x.Id == udepId);
 
-            db.Dispose();
-            resList.OrderBy(x => x.OderBy);
+                db.Dispose();
+                resList.OrderBy(x => x.OderBy);
+                return Json(new { resList, dep.Name }, JsonRequestBehavior.AllowGet);
+            }
 
-            return Json(new { resList ,dep.Name}, JsonRequestBehavior.AllowGet);
         }
 
         public DpEntity CountSer(BaseContext db)

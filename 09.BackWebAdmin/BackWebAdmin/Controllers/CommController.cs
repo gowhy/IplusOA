@@ -84,5 +84,55 @@ namespace BackWebAdmin.Controllers
                 return Json(list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size));
             }
         }
+
+        //社区通知
+        public ActionResult NoticeAppIndex(string depId, int? page, int? pageSize)
+        {
+            var pageNumber = page ?? 1;
+            var size = pageSize ?? 20;
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                var dep = db.DepartmentTable;
+                var notice = db.NoticeTable;
+
+                var list = from a in notice
+                           join d in dep on a.DepId equals d.Id
+                           select new NoticeEntityClone
+                           {
+
+                               DepName = d.Name,
+                               DepId = a.DepId,
+                               ImgUrl = a.ImgUrl,
+                               Id = a.Id,
+                               Des = a.Des,
+                               AddTime = a.AddTime,
+                               Title = a.Title
+                           };
+                if (!string.IsNullOrEmpty(depId))
+                {
+                    list = list.Where(x => x.DepId == depId);
+                }
+
+                return Json(list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult WorkGuideAppIndex(string depId, int? page, int? pageSize)
+        {
+            var pageNumber = page ?? 1;
+            var size = pageSize ?? 20;
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                var work = db.WorkGuideTable;
+
+                var list = from w in work select w;
+                if (!string.IsNullOrEmpty(depId))
+                {
+                    list = list.Where(x => x.DepId == depId);
+                }
+
+                return Json(list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size), JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }
