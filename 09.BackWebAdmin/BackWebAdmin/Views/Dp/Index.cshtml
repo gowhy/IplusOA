@@ -31,6 +31,13 @@
         font-family: 'Microsoft YaHei';
         font-size: 60px;
     }
+     .dpshow2 {
+       
+        width: 100%;
+        font-family: 'Microsoft YaHei';
+        font-size: 30px;
+        font-weight:bold;
+    }
 
     .yahei {
         font-family: 'Microsoft YaHei';
@@ -74,7 +81,9 @@
                 }
             });
         }
-        function BindShowCount(item) {
+        function BindShowCount(data) {
+            var item = data.resList
+            $("#ShequName").html(data.Name);
             var tHtml = " <thead>  <tr> <td colspan=\"2\"></td> <td>累计</td> <td>实时</td> </tr> </thead>";
            
             //item[0].Name
@@ -146,7 +155,8 @@
     });
 </script>
 
-<div class="dpshow textCenter "><span > 社区1+1-----实时监控大屏 </span>  <span class="right" id="spTimeNow"></span> </div>
+<div class="dpshow textCenter "><span > <span id="ShequName"></span> —社会服务实时监控大屏 </span>   </div>
+<div class="dpshow2 textCenter "><span class="left"> <B > 技术支持:贵阳市和谐社区公益信息服务中心 </B></span>  <span class="right" id="spTimeNow"></span> </div>
 <div class="left wid80 textCenter">
     <table class="form yahei" id="showForm" style=" font-size: 30px;">
  

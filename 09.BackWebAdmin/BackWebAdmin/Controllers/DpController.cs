@@ -44,10 +44,13 @@ namespace BackWebAdmin.Controllers
             //辖区自愿者
 
             resList.Add(CountSheQuvol(db));
+
+            DepartmentEntity dep=db.DepartmentTable.SingleOrDefault(x=>x.Id==udepId);
+
             db.Dispose();
             resList.OrderBy(x => x.OderBy);
 
-            return Json(resList, JsonRequestBehavior.AllowGet);
+            return Json(new { resList ,dep.Name}, JsonRequestBehavior.AllowGet);
         }
 
         public DpEntity CountSer(BaseContext db)
