@@ -113,7 +113,7 @@ namespace BackWebAdmin.Controllers
                     list = list.Where(x => x.DepId == depId);
                 }
 
-                return Json(list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size), JsonRequestBehavior.AllowGet);
+                return Json(list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size));
             }
         }
 
@@ -131,7 +131,7 @@ namespace BackWebAdmin.Controllers
                     list = list.Where(x => x.DepId == depId);
                 }
 
-                return Json(list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size), JsonRequestBehavior.AllowGet);
+                return Json(list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size));
             }
         }
     }
