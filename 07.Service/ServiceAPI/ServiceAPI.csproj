@@ -58,6 +58,7 @@
     <Compile Include="FtpServer\FtpServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sorg\SorgSercice.cs" />
+    <Compile Include="StartAdImg\StartAdImgService.cs" />
     <Compile Include="Vol\VolService.cs" />
   </ItemGroup>
   <ItemGroup>

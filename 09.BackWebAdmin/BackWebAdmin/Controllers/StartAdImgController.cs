@@ -41,6 +41,7 @@ namespace BackWebAdmin.Controllers
                                Id = a.Id,
                                Des = a.Des,
                                AddTime = a.AddTime,
+                               State=a.State
                            };
                 return View(list.OrderByDescending(x=>x.Id).ToPagedList(pageNumber - 1, size));
             }
@@ -65,6 +66,25 @@ namespace BackWebAdmin.Controllers
                 return Json(list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size));
             }
         }
+        //public ActionResult AppStateIndex(string depId)
+        //{
+
+        //    using (IplusOADBContext db = new IplusOADBContext())
+        //    {
+        //        var dep = db.DepartmentTable;
+        //        var adimg = db.StartAdImgTable;
+
+        //        var depList = dep.ToList();
+        //        //List<StartAdImgEntity> list = adimg.Where(x => x.State == 0).ToList();
+        //        List<StartAdImgEntity> list = adimg.ToList();
+        //        StartAdImgEntity resultEntity = GetAppStateIndex(depId, depList, list);
+
+
+        //        return Json(resultEntity,JsonRequestBehavior.AllowGet);
+        //    }
+        //}
+
+
         [SecurityNode(Name = "新增")]
         public ActionResult Add()
         {
@@ -126,6 +146,21 @@ namespace BackWebAdmin.Controllers
             {
                 StartAdImgEntity img = db.StartAdImgTable.Find(id);
                 db.Delete<StartAdImgEntity>(img);
+                db.SaveChanges();
+                db.Dispose();
+                return Success("操作成功");
+            }
+        }
+
+        public ActionResult ChangeStateAdImg(int id,int state)
+        {
+
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                StartAdImgEntity img = db.StartAdImgTable.Find(id);
+
+                img.State = state;
+                db.Update<StartAdImgEntity>(img);
                 db.SaveChanges();
                 db.Dispose();
                 return Success("操作成功");

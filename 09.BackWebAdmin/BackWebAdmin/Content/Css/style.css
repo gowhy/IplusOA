@@ -162,3 +162,4 @@ table.no_border td{ border: 0px; }
 .ct_footer_tip{ background: #fff; height: 32px; line-height: 30px; padding-left: 15px; padding-right: 30px; position: absolute; right: 1px; top: 1px }
 
 .ct_footer_tip .close{ background: #fff; border: 1px solid #ccc; display: inline-block; font-family: Tahoma; font-size: 12px; height: 12px; line-height: 12px; position: absolute; right: 5px; text-align: center; text-decoration: none; top: 8px; width: 12px; }
+.Center-Main { overflow-x:auto; } 

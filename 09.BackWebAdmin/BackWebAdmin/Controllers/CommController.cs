@@ -84,6 +84,21 @@ namespace BackWebAdmin.Controllers
                 return Json(list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size));
             }
         }
+        //寻找最上级辖区开机广告
+        public ActionResult StartAdImgAppStateIndex(string depId)
+        {
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                var dep = db.DepartmentTable;
+                var adimg = db.StartAdImgTable;
+
+                var depList = dep.ToList();
+                List<StartAdImgEntity> list = adimg.ToList();
+                StartAdImgEntity resultEntity = StartAdImgService.GetAppStateIndex(depId, depList, list);
+                return Json(resultEntity, JsonRequestBehavior.AllowGet);
+            }
+
+        }
 
         //社区通知
         public ActionResult NoticeAppIndex(string depId, int? page, int? pageSize)
