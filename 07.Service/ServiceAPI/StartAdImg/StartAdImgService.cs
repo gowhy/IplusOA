@@ -19,9 +19,18 @@ namespace ServiceAPI
            resStartAdImgEntity = startAdImgEntity;
     
 
-           while (depEntity != null && startAdImgEntity != null)
+           while (depEntity != null)
            {
-               depEntity = depList.FirstOrDefault(x => x.Id == startAdImgEntity.DepId);
+               string tmpDepId;
+               if (startAdImgEntity==null)
+               {
+                   tmpDepId = depId;
+               }
+               else
+               {
+                   tmpDepId = startAdImgEntity.DepId;
+               }
+               depEntity = depList.FirstOrDefault(x => x.Id == tmpDepId);
 
                StartAdImgEntity tmp = imgList.FirstOrDefault(x => x.DepId == depEntity.PId);
 

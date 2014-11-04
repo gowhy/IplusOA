@@ -1,0 +1,106 @@
+﻿@model  IPagedList<IplusOAEntity.ServiceAdImgEntityClone>
+@using MvcContrib.UI.Grid
+@using MvcContrib.Pagination;
+@using MvcContrib.UI.Pager;
+@using Common;
+
+<script type="text/javascript">
+
+    function deleteAdImg(id) {
+
+        var url = '@Url.Action("Delete")' + '?id=' + id;
+        deleteMethod(id, "Delete");
+        //showAjaxResult(url, "删除用户中......", 600, 400);
+    }
+
+    function ChangeStateAdImg(id, state) {
+
+        var url = '@Url.Action("ChangeStateAdImg")' + '?id=' + id + "&state=" + state;
+        url = encodeURI(url);
+        $.ajax({
+            url: url,
+            //data: { id: id },
+            type: 'POST',
+            dataType: "json",
+            success: function (obj) {
+                $("#info").html(obj.Info);
+                if (obj.Status == true)
+                    location.href = location.href;
+            }
+        });
+    }
+
+</script>
+<style>
+    .combo {
+        vertical-align: bottom;
+    }
+</style>
+<div id="button-bar">
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-add'" title="新增" href="@Url.Action("Add")">新增</a>
+</div>
+<div class="grid_box">
+    <div class="grid_top">
+    </div>
+
+    <table class="grid">
+        <thead>
+            <tr>
+                <th style="width:10px;align:center;">编号</th>
+                <th style="width:50px;align:center;">状态</th>
+                <th style="width:110px;align:center;">社区编号</th>
+                <th style="width:150px;align:center;">社区名称</th>
+                <th style="width:140px;align:center;">添加时间</th>
+                <th>社区广告滚动图片</th>
+                <th style="width:120px;align:center;">操作</th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            <tbody>
+                <tr class="gridrow_alternate">
+                    <td>@item.Id</td>
+                    <td>
+                        @if (item.State == 0)
+                        {
+                            @Html.Raw("启用")
+                        }
+                        else
+                        {
+                            @Html.Raw("暂停")
+                        }
+                    </td>
+                    <td>@item.SNo</td>
+                    <td>@item.DepName</td>
+                    <td>@item.AddTime.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>
+                        @foreach (var i in item.HttpUrlList)
+                        {
+                            <img width="160" height="140" alt="" title="社区广告图片" src="@i">
+                        }
+                    </td>
+                    <td class="grid_btn">
+                        <a href="javascript: deleteAdImg(@item.Id)">删除</a>
+                        @if (item.State == 0)
+                        {
+                            <a href="javascript: ChangeStateAdImg(@item.Id,1)">暂停</a>
+                        }
+                        else
+                        {
+                            <a href="javascript: ChangeStateAdImg(@item.Id,0)">启用</a>
+                        }
+
+
+                    </td>
+                </tr>
+            </tbody>
+        }
+    </table>
+
+
+
+    <div class="grid_foot">
+    </div>
+</div>
+
+@Html.Pager(Model)

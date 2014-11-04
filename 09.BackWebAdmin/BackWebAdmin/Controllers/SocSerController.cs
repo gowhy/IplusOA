@@ -54,6 +54,14 @@ namespace BackWebAdmin.Controllers
             return Json(SocSerService.TypeList(pageNumber, size, depId, model, sort), JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult AppAdImgServiceIndex(SelectSocSerModel model, GridSortOptions sort, int? page, int? pageSize = 20)
+        {
+            var pageNumber = page ?? 1;
+            int size = pageSize ?? 20;
+             string depId =null;
+
+            return Json(SocSerService.TypeList(pageNumber, size, depId, model, sort), JsonRequestBehavior.AllowGet);
+        }
 
         [SecurityNode(Name = "发布社区服务内容")]
         public ActionResult Add()

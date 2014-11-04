@@ -180,9 +180,15 @@ namespace BackWebAdmin.Controllers
         {
             using (IplusOADBContext db = new IplusOADBContext())
             {
+                WorkGuideEntity work = db.WorkGuideTable.Find(entity.Id);
 
                 entity.AddTime = DateTime.Now;
-                db.Update(entity);
+                work.Des = entity.Des;
+                work.AddUser = entity.AddUser;
+                work.ImgUrl = entity.ImgUrl;
+                work.Title = entity.Title;
+           
+                db.Update(work);
                 db.SaveChanges();
 
             }

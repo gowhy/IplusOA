@@ -52,6 +52,7 @@
     <Compile Include="SocSer\SocSerImgEntity.cs" />
     <Compile Include="SocSer\SocServiceDetailEntityClone.cs" />
     <Compile Include="SocSer\SocServiceDetailEntity.cs" />
+    <Compile Include="SocSer\ServiceAdImgEntity.cs" />
     <Compile Include="SocSer\StartAdImgEntity.cs" />
     <Compile Include="SuperviseEntity.cs" />
     <Compile Include="SuggestionEntity.cs" />
