@@ -149,5 +149,25 @@ namespace BackWebAdmin.Controllers
                 return Json(list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size));
             }
         }
+        /// <summary>
+        /// App版本检查接口
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult AppVerAppIndex()
+        {
+            var pageNumber = 1;
+            var size = 1;
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+
+                var adimg = db.AppVerTable;
+
+                var list = from a in adimg select a;
+
+                list = list.Where(x => x.State == 0);
+
+                return Json(list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size), JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

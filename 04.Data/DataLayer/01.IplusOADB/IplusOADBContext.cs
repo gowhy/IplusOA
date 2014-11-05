@@ -41,7 +41,7 @@ namespace DataLayer.IplusOADB
             modelBuilder.Configurations.Add(new SuggestionEntityMap());
             modelBuilder.Configurations.Add(new SuperviseEntityMap());
             modelBuilder.Configurations.Add(new ServiceAdImgMap());
-
+            modelBuilder.Configurations.Add(new AppVerMap());
             
 
             
@@ -84,7 +84,7 @@ namespace DataLayer.IplusOADB
 
         public virtual DbSet<ServiceAdImgEntity> ServiceAdImgTable { get; set; }
 
-        
+        public virtual DbSet<AppVerEntity> AppVerTable { get; set; }
         
     }
 }

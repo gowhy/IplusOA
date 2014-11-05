@@ -1,0 +1,220 @@
+﻿@using Common;
+@{
+    Layout = null;
+}
+
+@Html.IncludeCSS("~/Content/Css/style.css")
+@Html.IncludeCSS("~/Content/plug-in/ztree/css/zTreeStyle/zTreeStyle.css")
+@Html.IncludeCSS("~/Content/Css/demo.css")
+@Html.IncludeCSS("~/Content/plug-in/uploadify/uploadify.css")
+@Html.IncludeCSS("~/Content/EasyUI/themes/gray/easyui.css")
+@Html.IncludeCSS("~/Content/EasyUI/themes/icon.css")
+
+<script>
+    window.UEDITOR_HOME_serverPath="@Url.Content( "../../../socser/UeditConfig")";
+</script>
+
+
+
+<style>
+    .panel-tool {
+        width: 95%;
+        float: left;
+    }
+
+    .item_title {
+        background: none;
+    }
+</style>
+
+
+
+<div id="tt">
+    <a href="@Url.Action("Index", "appver")" style=" width:100px;">返回列表</a>
+</div>
+<div id="p" class="easyui-panel" title="新增" style="height:530px;padding:10px;"
+     data-options="iconCls:'icon-add',closable:false,tools:'#tt'">
+
+    <form name="postadd" action="@Url.Action("PostAdd")" id="postadd" method="post" enctype="multipart/form-data">
+        <table class="form" cellpadding="0" cellspacing="0">
+            <tbody>
+                <tr>
+                    <td class="item_title">APK文件:</td>
+                    <td class="item_input">
+                        @*用来作为文件队列区域*@
+                        <div id="fileQueue">
+                        </div>
+                        <input type="file" name="uploadify" id="uploadify" multiple="true" />
+                        <input type="hidden" name="HttpUrl" id="HttpUrl" value="" />
+                        双击删除文件
+                        <div id="imgQueue">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="item_title">说明:</td>
+                    <td class="item_input"><textarea class="textbox require" name="Des" rows="5" cols="70"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="item_title">Android版本号:</td>
+                    <td class="">
+                        <input type="text" class="textbox require" name="Ver" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="item_title"></td>
+                    <td class="item_input">
+                        <a href="javascript:void(0)" id="btnsubmitForm" class="easyui-linkbutton">新增</a>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </form>
+</div>
+@Html.IncludeScript("~/Content/EasyUI/jquery-1.8.0.min.js")
+@Html.IncludeScript("~/Content/Js/jquery.timer.js")
+@Html.IncludeScript("~/Content/Js/common.js")
+
+@Html.IncludeScript("~/Content/EasyUI/jquery.easyui.min.js")
+@Html.IncludeScript("~/Content/plug-in/My97DatePicker/WdatePicker.js")
+
+@Html.IncludeScript("~/Content/plug-in/ztree/js/jquery.ztree.core-3.5.js")
+@Html.IncludeScript("~/Content/plug-in/ztree/js/jquery.ztree.excheck-3.5.js")
+@Html.IncludeScript("~/Content/plug-in/uploadify/jquery.uploadify-3.1.js")
+
+@Html.IncludeScript("~/Content/plug-in/ueditor/ueditor.config.js")
+@Html.IncludeScript("~/Content/plug-in/ueditor/ueditor.all.js")
+@Html.IncludeScript("~/Content/plug-in/ueditor/lang/zh-cn/zh-cn.js")
+<script>
+
+
+  var setting = {
+        view: {
+            dblClickExpand: false,
+            showLine: true,
+            selectedMulti: false
+
+        },
+        check: {
+            enable: true ,
+            chkStyle: "radio",
+            radioType: "all"
+        },
+        data: {
+            simpleData: {
+                enable: true,
+                idKey: "Id",
+                pIdKey: "PId",
+                rootPId: ""
+            },
+            key: {
+                name: "Name"
+            }
+
+        },
+        callback: {
+            beforeCheck: beforeCheck,
+            onCheck: onCheck
+        }
+    };
+
+    var zNodes =@(Html.Raw(ViewData["Department_List"].ToString()));
+
+
+    function beforeCheck(treeId, treeNode) {
+
+    }
+    function onCheck(e, treeId, treeNode) {
+        $("#DepId").val(treeNode.Id);
+        $("#CoverCommunity").val(treeNode.Name);
+    }
+
+    function showMenu() {
+        $("#menuContent").slideDown("fast");
+        $("body").bind("mousedown", onBodyDown);
+    }
+    function hideMenu() {
+        $("#menuContent").fadeOut("fast");
+        $("body").unbind("mousedown", onBodyDown);
+    }
+    function onBodyDown(event) {
+        if (!(event.target.id == "menuBtn" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length>0)) {
+            hideMenu();
+        }
+    }
+
+
+    $(document).ready(function () {
+        $.fn.zTree.init($("#ztree"), setting, zNodes);
+    });
+
+    function clearForm() {
+        $('#postadd').form('clear');
+    }
+    function delImgSocSer(e)
+    {
+        if (!confirm("确认要删除该文件吗？")) {
+            return false;
+        }
+        $(e).remove();
+    }
+    $(function(){
+
+        $.fn.zTree.init($("#ztree"), setting, zNodes);
+        function submitForm() {
+            $("#imgQueue a").each(function(){
+                $("#HttpUrl").val($(this).attr("downhref"));
+            });
+
+             $('#postadd').submit();
+        }
+
+        $("#btnsubmitForm").click(function(){
+            submitForm();
+        });
+
+
+
+        $("#uploadify").uploadify({
+            //指定swf文件
+            'swf':"@Url.Content("~/Content/plug-in/uploadify/uploadify.swf")",
+            //后台处理的页面
+            'uploader': '/appver/SaveImg',
+            //按钮显示的文字
+            'buttonText': '上传APK文件',
+            "queueSizeLimit":1,//队列中允许的最大文件数目
+            //显示的高度和宽度，默认 height 30；width 120
+            //'height': 15,
+            //'width': 80,
+            //上传文件的类型  默认为所有文件    'All Files'  ;  '*.*'
+            //在浏览窗口底部的文件类型下拉菜单中显示的文本
+            // 'fileTypeDesc': 'Image Files',
+            //允许上传的文件后缀
+            'fileTypeExts': '*.apk; *.APK',
+            //发送给后台的其他参数通过formData指定
+            //'formData': $("#postadd").serialize(),
+            //上传文件页面中，你想要用来作为文件队列的元素的id, 默认为false  自动生成,  不带#
+            'cancelImg':"@Url.Content("~/Content/plug-in/uploadify/cancel.jpg")",
+            //  'formData' :  JSON.stringify($('#postadd').serializeArray()),
+            //"removeCompleted":false,
+            //  'queueID': 'fileQueue',
+            //选择文件后自动上传
+            'auto': true,
+            //设置为true将允许多文件上传
+            'multi': true,
+            onUploadSuccess : function(file,data,response) {//上传完成时触发（每个文件触发一次）
+
+                data= eval("("+data+")");
+
+                var imgStr=' <a   ondblclick="delImgSocSer(this)" href="javascript:void(0)" downhref="'+data.HttpUrl+'" title="双击删除文件"  >'+data.Name+'</a>';
+
+                $("#imgQueue").append(imgStr);
+            }
+
+        });
+
+
+    });
+</script>

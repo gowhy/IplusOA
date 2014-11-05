@@ -173,6 +173,7 @@
     <Compile Include="Controllers\DpController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\AppVerController.cs" />
     <Compile Include="Controllers\ServiceAdImgController.cs" />
     <Compile Include="Controllers\SuggestionController.cs" />
     <Compile Include="Controllers\TSController.cs" />
@@ -1158,6 +1159,8 @@
     <Content Include="Views\TS\View.cshtml" />
     <Content Include="Views\ServiceAdImg\Index.cshtml" />
     <Content Include="Views\ServiceAdImg\Add.cshtml" />
+    <Content Include="Views\AppVer\Index.cshtml" />
+    <Content Include="Views\AppVer\Add.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\02.Common\Common\Common.csproj">
