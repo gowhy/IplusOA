@@ -215,6 +215,9 @@
     <Compile Include="AutoCode\suggestion.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="AutoCode\userapplyservice.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="AutoCode\volunteer.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

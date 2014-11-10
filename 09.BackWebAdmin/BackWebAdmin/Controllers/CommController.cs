@@ -169,5 +169,23 @@ namespace BackWebAdmin.Controllers
                 return Json(list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size), JsonRequestBehavior.AllowGet);
             }
         }
+
+
+        public ActionResult ServiceAdImgAppIndex(int? page, int? pageSize)
+        {
+            var pageNumber = page ?? 1;
+            var size = pageSize ?? 1;
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+
+                var adimg = db.ServiceAdImgTable;
+
+                var list = from a in adimg select a;
+
+                list = list.Where(x => x.State == 0);
+
+                return Json(list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size), JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

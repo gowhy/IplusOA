@@ -381,5 +381,37 @@ namespace BackWebAdmin.Controllers
 
             return Json(img);
         }
+
+        public ActionResult UserApplyService(UserApplyServiceEntity entity)
+        {
+
+            try
+            {
+                entity.AddTime = DateTime.Now;
+                using (IplusOADBContext db = new IplusOADBContext())
+                {
+                    var table = db.UserApplyServiceTable;
+
+                    if (table.Count(x => x.VolId == entity.VolId && x.SDId == entity.SDId)>0)
+                    {
+                        return Json(new { state = 0, msg = "失败,已经申请该服务" });
+                    }
+                    else
+                    {
+                        entity.AddTime = DateTime.Now;
+                        db.Add(entity);
+                        db.SaveChanges();
+                        return Json(new { state = 1, msg = "成功" });
+                    }
+                  
+                }
+               
+            }
+            catch (Exception ex)
+            {
+                return Json(new { state = -1, msg ="接口执行异常："+ ex.Message + ex.TargetSite });
+                throw;
+            }
+        }
     }
 }

@@ -22,6 +22,7 @@
         <EntityTypeShape EntityType="oa2Model.notice" Width="1.5" PointX="11.375" PointY="0.75" />
         <EntityTypeShape EntityType="oa2Model.suggestion" Width="1.5" PointX="11.375" PointY="4.75" />
         <EntityTypeShape EntityType="oa2Model.workguide" Width="1.5" PointX="11.375" PointY="7.75" />
+        <EntityTypeShape EntityType="oa2Model.userapplyservice" Width="1.5" PointX="7.375" PointY="2.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -41,5 +41,6 @@ namespace TestProject.AutoCode
         public virtual DbSet<notice> notice { get; set; }
         public virtual DbSet<suggestion> suggestion { get; set; }
         public virtual DbSet<workguide> workguide { get; set; }
+        public virtual DbSet<userapplyservice> userapplyservice { get; set; }
     }
 }

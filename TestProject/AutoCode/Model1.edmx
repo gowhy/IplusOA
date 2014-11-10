@@ -182,6 +182,7 @@
           <Property Name="HttpUrl" Type="varchar" MaxLength="4000" />
           <Property Name="DepId" Type="varchar" MaxLength="50" />
           <Property Name="Des" Type="varchar" MaxLength="4000" />
+          <Property Name="State" Type="int" />
         </EntityType>
         <EntityType Name="suggestion">
           <Key>
@@ -192,6 +193,17 @@
           <Property Name="Content" Type="text" Nullable="false" />
           <Property Name="AddUser" Type="int" Nullable="false" />
           <Property Name="AddTime" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="userapplyservice">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VolId" Type="int" Nullable="false" />
+          <Property Name="AddTime" Type="timestamp" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SDId" Type="int" Nullable="false" />
+          <Property Name="State" Type="int" Nullable="false" />
+          <Property Name="Num" Type="int" />
         </EntityType>
         <EntityType Name="volunteer">
           <Key>
@@ -237,6 +249,7 @@
           <Property Name="ImgUrl" Type="varchar" MaxLength="1000" />
           <Property Name="Des" Type="text" />
           <Property Name="Title" Type="varchar" MaxLength="100" />
+          <Property Name="AddUser" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityContainer Name="oa2ModelStoreContainer">
           <EntitySet Name="adminuser" EntityType="Self.adminuser" Schema="oa2" store:Type="Tables" />
@@ -252,6 +265,7 @@
           <EntitySet Name="socservicedetail" EntityType="Self.socservicedetail" Schema="oa2" store:Type="Tables" />
           <EntitySet Name="startadimg" EntityType="Self.startadimg" Schema="oa2" store:Type="Tables" />
           <EntitySet Name="suggestion" EntityType="Self.suggestion" Schema="oa2" store:Type="Tables" />
+          <EntitySet Name="userapplyservice" EntityType="Self.userapplyservice" Schema="oa2" store:Type="Tables" />
           <EntitySet Name="volunteer" EntityType="Self.volunteer" Schema="oa2" store:Type="Tables" />
           <EntitySet Name="workguide" EntityType="Self.workguide" Schema="oa2" store:Type="Tables" />
           <EntitySet Name="serrecord" EntityType="Self.serrecord" store:Type="Tables" store:Schema="oa2">
@@ -490,6 +504,7 @@ FROM `serrecord` AS `serrecord`</DefiningQuery>
           <EntitySet Name="notice" EntityType="oa2Model.notice" />
           <EntitySet Name="suggestion" EntityType="oa2Model.suggestion" />
           <EntitySet Name="workguide" EntityType="oa2Model.workguide" />
+          <EntitySet Name="userapplyservice" EntityType="oa2Model.userapplyservice" />
         </EntityContainer>
         <Association Name="socserimgsocservicedetail">
           <End Type="oa2Model.socserimg" Role="socserimg" Multiplicity="*" />
@@ -504,6 +519,7 @@ FROM `serrecord` AS `serrecord`</DefiningQuery>
           <Property Name="HttpUrl" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
           <Property Name="DepId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Des" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="Int32" />
         </EntityType>
         <EntityType Name="notice">
           <Key>
@@ -537,6 +553,18 @@ FROM `serrecord` AS `serrecord`</DefiningQuery>
           <Property Name="ImgUrl" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
           <Property Name="Des" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
           <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="AddUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="userapplyservice">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VolId" Type="Int32" />
+          <Property Name="AddTime" Type="DateTime" />
+          <Property Name="SDId" Type="Int32" />
+          <Property Name="State" Type="Int32" />
+          <Property Name="Num" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -745,6 +773,7 @@ FROM `serrecord` AS `serrecord`</DefiningQuery>
           <EntitySetMapping Name="startadimg">
             <EntityTypeMapping TypeName="oa2Model.startadimg">
               <MappingFragment StoreEntitySet="startadimg">
+                <ScalarProperty Name="State" ColumnName="State" />
                 <ScalarProperty Name="Des" ColumnName="Des" />
                 <ScalarProperty Name="DepId" ColumnName="DepId" />
                 <ScalarProperty Name="HttpUrl" ColumnName="HttpUrl" />
@@ -780,11 +809,24 @@ FROM `serrecord` AS `serrecord`</DefiningQuery>
           <EntitySetMapping Name="workguide">
             <EntityTypeMapping TypeName="oa2Model.workguide">
               <MappingFragment StoreEntitySet="workguide">
+                <ScalarProperty Name="AddUser" ColumnName="AddUser" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="Des" ColumnName="Des" />
                 <ScalarProperty Name="ImgUrl" ColumnName="ImgUrl" />
                 <ScalarProperty Name="DepId" ColumnName="DepId" />
                 <ScalarProperty Name="AddTime" ColumnName="AddTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="userapplyservice">
+            <EntityTypeMapping TypeName="oa2Model.userapplyservice">
+              <MappingFragment StoreEntitySet="userapplyservice">
+                <ScalarProperty Name="Num" ColumnName="Num" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="SDId" ColumnName="SDId" />
+                <ScalarProperty Name="AddTime" ColumnName="AddTime" />
+                <ScalarProperty Name="VolId" ColumnName="VolId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

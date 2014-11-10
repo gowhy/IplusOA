@@ -12,13 +12,13 @@ namespace TestProject.AutoCode
     using System;
     using System.Collections.Generic;
     
-    public partial class startadimg
+    public partial class userapplyservice
     {
         public int Id { get; set; }
+        public int VolId { get; set; }
         public System.DateTime AddTime { get; set; }
-        public string HttpUrl { get; set; }
-        public string DepId { get; set; }
-        public string Des { get; set; }
-        public Nullable<int> State { get; set; }
+        public int SDId { get; set; }
+        public int State { get; set; }
+        public int Num { get; set; }
     }
 }

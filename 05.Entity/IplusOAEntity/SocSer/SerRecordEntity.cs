@@ -24,5 +24,7 @@ namespace IplusOAEntity
         public string Comment { get; set; }
         public System.DateTime AddTime { get; set; }
         public string Source { get; set; }
+
+        public int UASId { get; set; }
     }
 }
