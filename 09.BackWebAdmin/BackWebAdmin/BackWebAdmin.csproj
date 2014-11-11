@@ -1163,6 +1163,7 @@
     <Content Include="Views\AppVer\Index.cshtml" />
     <Content Include="Views\AppVer\Add.cshtml" />
     <Content Include="Views\SocSer\UserApplyServiceIndex.cshtml" />
+    <Content Include="Views\SocSer\UserApplyServiceAuditing.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\02.Common\Common\Common.csproj">

@@ -415,7 +415,7 @@ namespace BackWebAdmin.Controllers
         }
 
 
-        public ActionResult UserApplyServiceAuditing(int id, int state, int num, string msg)
+        public ActionResult PostUserApplyServiceAuditing(int id, int state, int num, string msg)
         {
 
             using (IplusOADBContext db = new IplusOADBContext())
@@ -456,11 +456,58 @@ namespace BackWebAdmin.Controllers
                            select new ShowApplyEntity { ApplyEntiy = a, UserEntiy = v, Vol = vol.Where(x => x.Id == r.VId), Detail = d, Record = r, Org = sorg.Where(x => x.SocialNO == d.SocialNo) };
               
                 list = list.Where(x => x.Org.FirstOrDefault().Id == user.SocOrgId);
+                if (selectModel.Id>0)list = list.Where(x => x.ApplyEntiy.Id ==selectModel.Id);
+
+               
                 SelectUserApplySerModel model = new SelectUserApplySerModel();
                 model.ApplySerList =list.OrderByDescending(x => x.ApplyEntiy.Id).ToPagedList(pageNumber - 1, pageSize);
 
                 return View(model);
 
+            }
+        }
+
+        [SecurityNode(Name = "添加页")]
+        public PartialViewResult UserApplyServiceAuditing(int id)
+        {
+            if (id<=0)
+            {
+                return PartialView();
+            }
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+
+                IList<RoleEntity> role = db.RoleTable.AsQueryable<RoleEntity>().ToList();
+
+                ViewData["UserRole"] = role;
+
+                //部门组织
+                var list2 = db.DepartmentTable.AsQueryable<DepartmentEntity>().ToList();
+                ViewData["Department_List"] = HelpSerializer.JSONSerialize<List<DepartmentEntity>>(list2);
+
+
+                IList<SocialOrgEntity> Slist = db.SocialOrgEntityTable.AsQueryable<SocialOrgEntity>().ToList();
+                ViewData["SocialOrg_List"] = Slist;
+
+             //   db.Dispose();
+
+
+                var user = db.BackAdminUserEntityDBSet.FirstOrDefault(x => x.UserName == AdminUser.UserName);
+                var apply = db.UserApplyServiceTable;
+                var vol = db.VolunteerEntityTable;
+                var detail = db.SocServiceDetailEntityTable;
+                var record = db.SerRecordTable;
+                var sorg = db.SocialOrgEntityTable;
+
+                var list = from a in apply
+                           join v in vol on a.VolId equals v.Id
+                           join d in detail on a.SDId equals d.Id
+                           join r in record on a.Id equals r.UASId
+                        
+                           select new ShowApplyEntity { ApplyEntiy = a, UserEntiy = v, Vol = vol.Where(x => x.Id == r.VId), Detail = d, Record = r, Org = sorg.Where(x => x.SocialNO == d.SocialNo) };
+                list = list.Where(x => x.Org.FirstOrDefault().Id == user.SocOrgId);
+                if (id > 0) list = list.Where(x => x.ApplyEntiy.Id == id);
+                return PartialView(list.FirstOrDefault());
             }
         }
     }

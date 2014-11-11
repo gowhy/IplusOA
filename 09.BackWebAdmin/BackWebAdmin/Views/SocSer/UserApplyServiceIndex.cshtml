@@ -17,7 +17,12 @@
         $('#indexFrom').submit();
     }
 
+    function UserApplyServiceAuditing(id) {
 
+        var url = '@Url.Action("UserApplyServiceAuditing")' + '?id=' + id;
+
+        showAjaxResult(url, "审核用户服务申请", 650, 400);
+    }
 
 
 
@@ -74,10 +79,10 @@
 
                                       column.For(x => (x.Org.ToList().FirstOrDefault()).Name).Named("社会组织名称");
                                       column.For(x => x.ApplyEntiy.State ).Named("状态");
-                                      
-                              
 
-                                      column.Buttons(btns => btns.Add(x => Html.ActionLink("审核", "Auditing", new { id = x.ApplyEntiy.Id }))
+
+
+                                      column.Buttons(btns => btns.Add(x => Html.ScriptLink("审核", "UserApplyServiceAuditing({0})".FormatWith(x.ApplyEntiy.Id)))
                                                                  .Add(x => Html.ScriptLink("删除", "deleteSer({0})".FormatWith(x.ApplyEntiy.Id)))
                                                                  );
                                   }).Complex(ViewData)
