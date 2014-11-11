@@ -1,0 +1,91 @@
+﻿@model  BackWebAdmin.Models.SelectUserApplySerModel
+@using MvcContrib.UI.Grid
+@using MvcContrib.Pagination;
+@using MvcContrib.UI.Pager;
+@using Common;
+
+<script type="text/javascript">
+
+    function deleteSer(id) {
+
+        var url = '@Url.Action("Delete")' + '?id=' + id;
+        deleteMethod(id, "Delete");
+        //showAjaxResult(url, "删除用户中......", 600, 400);
+    }
+    function submitForm() {
+        // var url = "/SocSer/PostNoTakeIn" + '?detailId=' + id + "&state=" + state + "&msg=" + msg;
+        $('#indexFrom').submit();
+    }
+
+
+
+
+
+</script>
+<style>
+    .combo {
+        vertical-align: bottom;
+    }
+</style>
+@*<form id="indexFrom">
+
+    <div style="float: left; height: 40px; text-align: center;">
+        <span><a class="easyui-linkbutton" data-options="iconCls:'icon-add'" title="新增" href="@Url.Action("Add")">新增</a></span>
+        <span style="margin-left:70px;">
+            <select id="Type" class="easyui-combobox" data-options="" name="Type" style="width: 120px; ">
+                <option value="" selected="selected">全部</option>
+                <option value="GYFN">法律服务</option>
+                <option value="GYYLFW">医疗服务</option>
+                <option value="GYWH">文化娱乐</option>
+                <option value="GYYL">居家养老</option>
+                <option value="GYBF">社区帮扶</option>
+                <option value="GYWHKT">文化课堂</option>
+                <option value="GYNSD">社区绿丝带</option>
+                <option value="SYJZ">社区家政</option>
+                <option value="SYMY">美食娱乐</option>
+                <option value="SYWX">家居维修</option>
+                <option value="SYJR">金融服务</option>
+                <option value="SYYH">优惠进社区</option>
+            </select>
+            <span class="combo">
+                社组织名称<input type="text" name="SocialName" value="@Model.SocialName" />
+                社组织编号<input type="text" name="SocialNo" value="@Model.SocialNo" />
+                发布时间<input type="text" name="PubTime" value="@(Model.PubTime!=default(DateTime)? Model.PubTime.ToString("yyyy-MM-dd") : "")" onclick="WdatePicker()" />
+                -<input type="text" name="PubTimeEnd" value="@(Model.PubTimeEnd != default(DateTime) ? Model.PubTimeEnd.ToString("yyyy-MM-dd") : "")" onclick="WdatePicker()" />
+            </span>
+
+            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">查询</a>
+        </span>
+    </div>
+</form>*@
+<div class="grid_box">
+    <div class="grid_top">
+    </div>
+    @Html.Grid(Model.ApplySerList).Columns(column =>
+                                  {
+                  
+                                      column.For(x => x.UserEntiy.RealName).Named("申请人姓名");
+                                      column.For(x => x.UserEntiy.Phone).Named("联系电话");
+
+                                      column.For(x => x.Detail.Context).Named("服务内容");
+                                      column.For(x => x.Detail.PubTime.HasValue ? x.Detail.PubTime.Value.ToString("yyyy-MM-dd HH:mm") : "").Named("服务开始时间");
+                                      column.For(x => x.Detail.EndTime.HasValue ? x.Detail.EndTime.Value.ToString("yyyy-MM-dd HH:mm") : "").Named("服务截止时间");
+                                      column.For(x => x.Detail.SocialNo).Named("社会组织编号");
+
+                                      column.For(x => (x.Org.ToList().FirstOrDefault()).Name).Named("社会组织名称");
+                                      column.For(x => x.ApplyEntiy.State ).Named("状态");
+                                      
+                              
+
+                                      column.Buttons(btns => btns.Add(x => Html.ActionLink("审核", "Auditing", new { id = x.ApplyEntiy.Id }))
+                                                                 .Add(x => Html.ScriptLink("删除", "deleteSer({0})".FormatWith(x.ApplyEntiy.Id)))
+                                                                 );
+                                  }).Complex(ViewData)
+    <div class="grid_foot">
+    </div>
+</div>
+
+@Html.Pager(Model.ApplySerList)
+<script>
+   // $("#Type").val("@Model.Type");
+</script>

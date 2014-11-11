@@ -12,7 +12,7 @@ namespace IplusOAEntity
         #region Model
         private int _id;
         private long? _pid;
-        private long? _depid;
+        //private long? _depid;
         private string _type;
         private string _socialno="";
         private string _name;
@@ -44,11 +44,7 @@ namespace IplusOAEntity
         /// <summary>
         /// 
         /// </summary>
-        public long? DepId
-        {
-            set { _depid = value; }
-            get { return _depid; }
-        }
+        public string DepId { get; set; }
         /// <summary>
         /// 
         /// </summary>

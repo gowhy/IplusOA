@@ -12,7 +12,7 @@ namespace IplusOAEntity
         public string No { get; set; }
         public Nullable<int> SDId { get; set; }
         public Nullable<int> SocOrgId { get; set; }
-        public string VId { get; set; }
+        public int VId { get; set; }
         public Nullable<System.DateTime> BeginTime { get; set; }
         public Nullable<System.DateTime> EndTime { get; set; }
         public string Img { get; set; }

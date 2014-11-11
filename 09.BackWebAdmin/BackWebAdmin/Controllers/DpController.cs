@@ -188,7 +188,7 @@ namespace BackWebAdmin.Controllers
               DateTime gdate=DateTime.Now.AddHours(-8);
                 var vlist = (from r in record
                             join s in soc on r.SDId equals s.Id
-                            join v in vol on r.VId equals v.VID
+                            join v in vol on r.VId equals v.Id
                             join d in dep on r.SocID equals d.Id
                             where r.BeginTime<DateTime.Now //
                                 && r.BeginTime != null//

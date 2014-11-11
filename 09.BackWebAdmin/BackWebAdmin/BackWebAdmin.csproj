@@ -196,6 +196,7 @@
     <Compile Include="Models\MsgModel.cs" />
     <Compile Include="Models\Role\RoleModel.cs" />
     <Compile Include="Models\SocSer\SelectSocSerModel.cs" />
+    <Compile Include="Models\SocSer\SelectUserApplySerModel.cs" />
     <Compile Include="Models\SOrg\SelectSorgModel.cs" />
     <Compile Include="Models\UEditorModel.cs" />
     <Compile Include="Models\Vol\SelectVolModel.cs" />
@@ -1161,6 +1162,7 @@
     <Content Include="Views\ServiceAdImg\Add.cshtml" />
     <Content Include="Views\AppVer\Index.cshtml" />
     <Content Include="Views\AppVer\Add.cshtml" />
+    <Content Include="Views\SocSer\UserApplyServiceIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\02.Common\Common\Common.csproj">

@@ -14,5 +14,7 @@ namespace IplusOAEntity
         public int SDId { get; set; }
         public int State { get; set; }
         public int Num { get; set; }
+
+        public string Msg { get; set; }
     }
 }

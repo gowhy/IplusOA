@@ -58,7 +58,7 @@ namespace BackWebAdmin.Controllers
         {
             var pageNumber = page ?? 1;
             int size = pageSize ?? 20;
-             string depId =null;
+            string depId = null;
 
             return Json(SocSerService.TypeList(pageNumber, size, depId, model, sort), JsonRequestBehavior.AllowGet);
         }
@@ -69,7 +69,7 @@ namespace BackWebAdmin.Controllers
             using (IplusOADBContext db = new IplusOADBContext())
             {
                 var list = db.DepartmentTable.AsQueryable<DepartmentEntity>().ToList();
-                ViewData["Department_List"] = HelpSerializer.JSONSerialize<List<DepartmentEntity>>(list); 
+                ViewData["Department_List"] = HelpSerializer.JSONSerialize<List<DepartmentEntity>>(list);
                 return View();
             }
         }
@@ -143,7 +143,7 @@ namespace BackWebAdmin.Controllers
                 SelectSocSerModel model = new SelectSocSerModel();
                 model.Id = id;
                 SocServiceDetailEntityClone entity = SocSerService.TypeList(1, 1, "0", model, sort).FirstOrDefault();
-             
+
                 var list = db.DepartmentTable.AsQueryable<DepartmentEntity>().ToList();
 
                 IList<SocSerDetailJoinEntity> joinList = db.SocSerDetailJoinEntityTable.AsQueryable().Where(x => x.SSDetailId == id && x.DepId == AdminUser.DeptId && x.State != 1).ToList();
@@ -191,17 +191,17 @@ namespace BackWebAdmin.Controllers
 
             }
 
-     
+
 
 
             using (IplusOADBContext db = new IplusOADBContext())
             {
 
                 //删除
-                List<SocSerImgEntity> simgDelete = db.SocSerImgTable.Where(x => x.SocSerId==entity.Id).ToList<SocSerImgEntity>();
+                List<SocSerImgEntity> simgDelete = db.SocSerImgTable.Where(x => x.SocSerId == entity.Id).ToList<SocSerImgEntity>();
                 foreach (var item in simgDelete)
                 {
-                    item.SocSerId =0;
+                    item.SocSerId = 0;
                     db.Update(item);
                 }
                 db.SaveChanges();
@@ -343,7 +343,7 @@ namespace BackWebAdmin.Controllers
             original = "original-why",
             error = ""
         }, "text/html");
-            
+
         }
         public ActionResult SaveImg()
         {
@@ -392,7 +392,7 @@ namespace BackWebAdmin.Controllers
                 {
                     var table = db.UserApplyServiceTable;
 
-                    if (table.Count(x => x.VolId == entity.VolId && x.SDId == entity.SDId)>0)
+                    if (table.Count(x => x.VolId == entity.VolId && x.SDId == entity.SDId) > 0)
                     {
                         return Json(new { state = 0, msg = "失败,已经申请该服务" });
                     }
@@ -403,14 +403,64 @@ namespace BackWebAdmin.Controllers
                         db.SaveChanges();
                         return Json(new { state = 1, msg = "成功" });
                     }
-                  
+
                 }
-               
+
             }
             catch (Exception ex)
             {
-                return Json(new { state = -1, msg ="接口执行异常："+ ex.Message + ex.TargetSite });
+                return Json(new { state = -1, msg = "接口执行异常：" + ex.Message + ex.TargetSite });
                 throw;
+            }
+        }
+
+
+        public ActionResult UserApplyServiceAuditing(int id, int state, int num, string msg)
+        {
+
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                UserApplyServiceEntity entity = db.UserApplyServiceTable.Find(id);
+
+                entity.State = state;
+                entity.Num = num;
+                entity.Msg = msg;
+
+                db.Update<UserApplyServiceEntity>(entity);
+                db.SaveChanges();
+                db.Dispose();
+                return Success("操作成功");
+            }
+        }
+
+        public ActionResult UserApplyServiceIndex(int? page,SelectUserApplySerModel selectModel)
+        {
+            int pageNumber = page ?? 1;
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                var user = db.BackAdminUserEntityDBSet.FirstOrDefault(x => x.UserName == AdminUser.UserName);
+
+
+
+                var apply = db.UserApplyServiceTable;
+                var vol = db.VolunteerEntityTable;
+                var detail = db.SocServiceDetailEntityTable;
+                var record = db.SerRecordTable;
+                var sorg = db.SocialOrgEntityTable;
+
+                var list = from a in apply
+                           join v in vol on a.VolId equals v.Id
+                           join d in detail on a.SDId equals d.Id
+                           join r in record on a.Id equals r.UASId
+                           //select new { applyEntiy = a, userEntiy = v, vol2 = vol.Where(x => x.Id == r.VId), det = d, record = r, org = sorg.Where(x => x.SocialNO == d.SocialNo) };
+                           select new ShowApplyEntity { ApplyEntiy = a, UserEntiy = v, Vol = vol.Where(x => x.Id == r.VId), Detail = d, Record = r, Org = sorg.Where(x => x.SocialNO == d.SocialNo) };
+              
+                list = list.Where(x => x.Org.FirstOrDefault().Id == user.SocOrgId);
+                SelectUserApplySerModel model = new SelectUserApplySerModel();
+                model.ApplySerList =list.OrderByDescending(x => x.ApplyEntiy.Id).ToPagedList(pageNumber - 1, pageSize);
+
+                return View(model);
+
             }
         }
     }
