@@ -432,7 +432,7 @@ namespace BackWebAdmin.Controllers
                 return Success("操作成功");
             }
         }
-
+        [SecurityNode(Name = "服务申请审核")]
         public ActionResult UserApplyServiceIndex(int? page, SelectUserApplySerModel selectModel)
         {
             int pageNumber = page ?? 1;
@@ -449,12 +449,15 @@ namespace BackWebAdmin.Controllers
                 var sorg = db.SocialOrgEntityTable;
 
                 var list = from a in apply
-                           join v in vol on a.VolId equals v.Id
-                           join d in detail on a.SDId equals d.Id
-                           join r in record on a.Id equals r.UASId
+                           join v in vol on a.VolId equals v.Id into g                 
+                           join d in detail on a.SDId equals d.Id into g2
+                           join r in record on a.Id equals r.UASId into g3
+                           from gv in g.DefaultIfEmpty()
+                           from gd in g2.DefaultIfEmpty()
+                           from gr in g3.DefaultIfEmpty()
                            //select new { applyEntiy = a, userEntiy = v, vol2 = vol.Where(x => x.Id == r.VId), det = d, record = r, org = sorg.Where(x => x.SocialNO == d.SocialNo) };
-                           select new ShowApplyEntity { ApplyEntiy = a, UserEntiy = v, Vol = vol.Where(x => x.Id == r.VId), Detail = d, Record = r, Org = sorg.Where(x => x.SocialNO == d.SocialNo) };
-
+                           //select new ShowApplyEntity { ApplyEntiy = a, UserEntiy = v, Detail = d, Org = sorg.Where(x => x.SocialNO == d.SocialNo) };
+                           select new ShowApplyEntity { ApplyEntiy = a, UserEntiy = gv, Vol = vol.Where(x => x.Id == gr.VId), Detail = gd, Record = gr, Org = sorg.Where(x => x.SocialNO == gd.SocialNo) };
                 list = list.Where(x => x.Org.FirstOrDefault().Id == user.SocOrgId);
                 if (selectModel.Id > 0) list = list.Where(x => x.ApplyEntiy.Id == selectModel.Id);
 
@@ -484,12 +487,21 @@ namespace BackWebAdmin.Controllers
                 var record = db.SerRecordTable;
                 var sorg = db.SocialOrgEntityTable;
 
+                //var list = from a in apply
+                //           join v in vol on a.VolId equals v.Id
+                //           join d in detail on a.SDId equals d.Id
+                //           join r in record on a.Id equals r.UASId
+                //           select new ShowApplyEntity { ApplyEntiy = a, UserEntiy = v, Vol = vol.Where(x => x.Id == r.VId), Detail = d, Record = r, Org = sorg.Where(x => x.SocialNO == d.SocialNo) };
                 var list = from a in apply
-                           join v in vol on a.VolId equals v.Id
-                           join d in detail on a.SDId equals d.Id
-                           join r in record on a.Id equals r.UASId
-                           select new ShowApplyEntity { ApplyEntiy = a, UserEntiy = v, Vol = vol.Where(x => x.Id == r.VId), Detail = d, Record = r, Org = sorg.Where(x => x.SocialNO == d.SocialNo) };
-
+                           join v in vol on a.VolId equals v.Id into g
+                           join d in detail on a.SDId equals d.Id into g2
+                           join r in record on a.Id equals r.UASId into g3
+                           from gv in g.DefaultIfEmpty()
+                           from gd in g2.DefaultIfEmpty()
+                           from gr in g3.DefaultIfEmpty()
+                           //select new { applyEntiy = a, userEntiy = v, vol2 = vol.Where(x => x.Id == r.VId), det = d, record = r, org = sorg.Where(x => x.SocialNO == d.SocialNo) };
+                           //select new ShowApplyEntity { ApplyEntiy = a, UserEntiy = v, Detail = d, Org = sorg.Where(x => x.SocialNO == d.SocialNo) };
+                           select new ShowApplyEntity { ApplyEntiy = a, UserEntiy = gv, Vol = vol.Where(x => x.Id == gr.VId), Detail = gd, Record = gr, Org = sorg.Where(x => x.SocialNO == gd.SocialNo) };
                 list = list.Where(x => x.Org.FirstOrDefault().Id == user.SocOrgId);
                 if (id > 0) list = list.Where(x => x.ApplyEntiy.Id == id);
                 return PartialView(list.FirstOrDefault());
@@ -626,7 +638,7 @@ namespace BackWebAdmin.Controllers
 
                 SerRecordEntity dbEntity = record.Find(model.Id);
 
-                dbEntity.Img += model.Img;
+                dbEntity.Img +=model.Img;
                 dbEntity.BeginTime = DateTime.Now;
 
                 db.Update<SerRecordEntity>(dbEntity);
@@ -752,7 +764,7 @@ namespace BackWebAdmin.Controllers
 
                              };
 
-                var res = list.OrderBy(x => x.Id).ToPagedList(pageNumber - 1, size);
+                var res = list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size);
 
                 return Json(res);
             }
