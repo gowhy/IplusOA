@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IplusOAEntity
 {
-  public  class UserApplyServiceEntity
+    public class UserApplyServiceEntity
     {
         public int Id { get; set; }
         public int VolId { get; set; }
@@ -17,4 +17,11 @@ namespace IplusOAEntity
 
         public string Msg { get; set; }
     }
+    public enum UserApplyServiceState
+    {
+        待审核 = 0,
+        通过 = 1,
+        不通过 = 2,
+    }
+
 }

@@ -433,7 +433,7 @@ namespace BackWebAdmin.Controllers
             }
         }
 
-        public ActionResult UserApplyServiceIndex(int? page,SelectUserApplySerModel selectModel)
+        public ActionResult UserApplyServiceIndex(int? page, SelectUserApplySerModel selectModel)
         {
             int pageNumber = page ?? 1;
             using (IplusOADBContext db = new IplusOADBContext())
@@ -454,13 +454,13 @@ namespace BackWebAdmin.Controllers
                            join r in record on a.Id equals r.UASId
                            //select new { applyEntiy = a, userEntiy = v, vol2 = vol.Where(x => x.Id == r.VId), det = d, record = r, org = sorg.Where(x => x.SocialNO == d.SocialNo) };
                            select new ShowApplyEntity { ApplyEntiy = a, UserEntiy = v, Vol = vol.Where(x => x.Id == r.VId), Detail = d, Record = r, Org = sorg.Where(x => x.SocialNO == d.SocialNo) };
-              
-                list = list.Where(x => x.Org.FirstOrDefault().Id == user.SocOrgId);
-                if (selectModel.Id>0)list = list.Where(x => x.ApplyEntiy.Id ==selectModel.Id);
 
-               
+                list = list.Where(x => x.Org.FirstOrDefault().Id == user.SocOrgId);
+                if (selectModel.Id > 0) list = list.Where(x => x.ApplyEntiy.Id == selectModel.Id);
+
+
                 SelectUserApplySerModel model = new SelectUserApplySerModel();
-                model.ApplySerList =list.OrderByDescending(x => x.ApplyEntiy.Id).ToPagedList(pageNumber - 1, pageSize);
+                model.ApplySerList = list.OrderByDescending(x => x.ApplyEntiy.Id).ToPagedList(pageNumber - 1, pageSize);
 
                 return View(model);
 
@@ -470,27 +470,12 @@ namespace BackWebAdmin.Controllers
         [SecurityNode(Name = "添加页")]
         public PartialViewResult UserApplyServiceAuditing(int id)
         {
-            if (id<=0)
+            if (id <= 0)
             {
                 return PartialView();
             }
             using (IplusOADBContext db = new IplusOADBContext())
             {
-
-                IList<RoleEntity> role = db.RoleTable.AsQueryable<RoleEntity>().ToList();
-
-                ViewData["UserRole"] = role;
-
-                //部门组织
-                var list2 = db.DepartmentTable.AsQueryable<DepartmentEntity>().ToList();
-                ViewData["Department_List"] = HelpSerializer.JSONSerialize<List<DepartmentEntity>>(list2);
-
-
-                IList<SocialOrgEntity> Slist = db.SocialOrgEntityTable.AsQueryable<SocialOrgEntity>().ToList();
-                ViewData["SocialOrg_List"] = Slist;
-
-             //   db.Dispose();
-
 
                 var user = db.BackAdminUserEntityDBSet.FirstOrDefault(x => x.UserName == AdminUser.UserName);
                 var apply = db.UserApplyServiceTable;
@@ -503,11 +488,273 @@ namespace BackWebAdmin.Controllers
                            join v in vol on a.VolId equals v.Id
                            join d in detail on a.SDId equals d.Id
                            join r in record on a.Id equals r.UASId
-                        
                            select new ShowApplyEntity { ApplyEntiy = a, UserEntiy = v, Vol = vol.Where(x => x.Id == r.VId), Detail = d, Record = r, Org = sorg.Where(x => x.SocialNO == d.SocialNo) };
+
                 list = list.Where(x => x.Org.FirstOrDefault().Id == user.SocOrgId);
                 if (id > 0) list = list.Where(x => x.ApplyEntiy.Id == id);
                 return PartialView(list.FirstOrDefault());
+            }
+        }
+        public ActionResult VolServiceIndex(SelectSocSerModel model, GridSortOptions sort, int? page, int? pageSize = 20)
+        {
+            var pageNumber = page ?? 1;
+            int size = pageSize ?? 20;
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+
+
+                var apply = db.UserApplyServiceTable;
+                // var vol = db.VolunteerEntityTable;
+                var detail = db.SocServiceDetailEntityTable;
+                var record = db.SerRecordTable;
+                var sorg = db.SocialOrgEntityTable;
+                var img = db.SocSerImgTable;
+
+                var list = from s in detail
+                           join a in apply on s.Id equals a.SDId into g
+                           join o in sorg on s.SocialNo equals o.SocialNO
+                           from stuDesc in g.DefaultIfEmpty()
+                           where
+                            stuDesc.Num > record.Count(x => x.UASId == stuDesc.Id)
+                            || record.Count(x => x.UASId == stuDesc.Id) == 0
+                           select new SocServiceDetailEntityClone
+                             {
+                                 AddTime = s.AddTime,
+                                 SocialName = o.Name,
+                                 AddUser = s.AddUser,
+                                 Contacts = s.Contacts,
+                                 SocialNo = s.SocialNo,
+                                 Context = s.Context,
+                                 CoverCommunity = s.CoverCommunity,
+                                 Desc = s.Desc,
+                                 EndTime = s.EndTime,
+                                 Id = s.Id,
+                                 PayType = s.PayType,
+                                 Phone = s.Phone,
+                                 PubTime = s.PubTime,
+                                 Score = s.Score,
+                                 SerNum = s.SerNum,
+                                 THSScore = s.THSScore,
+                                 Type = s.Type,
+                                 VHelpDesc = s.VHelpDesc,
+                                 // UserApplyEntity=a,
+                                 SocSerImgs = img.Where(x => x.SocSerId == s.Id).ToList()
+
+                             };
+
+                //                string sql = @"  SELECT * FROM socservicedetail d
+                //                                    LEFT JOIN  userapplyservice u ON d.id=u.sdid 
+                //                                    WHERE u.num > (SELECT COUNT(* ) FROM serrecord r WHERE u.`Id`=r.`SDId`) OR 0=(SELECT COUNT(* ) FROM serrecord r WHERE u.`Id`=r.`SDId`)";
+                //                var list = db.Database.SqlQuery<SocServiceDetailEntity>(sql);
+                //list = list.Where(x => DateTime.Now > x.PubTime && DateTime.Now < x.EndTime);
+
+
+                //(from r in record where stuDesc.Id == r.SDId select r).Count()
+                if (!string.IsNullOrEmpty(model.Type)) list = list.Where(x => x.Type.Trim().ToUpper() == model.Type.Trim().ToUpper());
+                list = list.Where(x => DateTime.Now > x.PubTime && DateTime.Now < x.EndTime);
+                var res = list.OrderBy(x => x.Id).ToPagedList(pageNumber - 1, size);
+                return Json(res, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        /// <summary>
+        /// 志愿者申请处理服务
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+
+        public ActionResult VolApplyDo(SerRecordEntity model)
+        {
+            if (model.VId == 0 || model.SDId == 0)
+            {
+
+            }
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+
+                var apply = db.UserApplyServiceTable;
+                // var vol = db.VolunteerEntityTable;
+                var detail = db.SocServiceDetailEntityTable;
+                var record = db.SerRecordTable;
+                var sorg = db.SocialOrgEntityTable;
+                var img = db.SocSerImgTable;
+
+
+                UserApplyServiceEntity userApply = (from a in apply
+                                                    where a.SDId == model.SDId
+                                                    && a.Num > (record.Count(x => x.UASId == a.Id))
+                                                    || record.Count(x => x.UASId == a.Id) == 0
+                                                    select a).OrderByDescending(x => x.Id).FirstOrDefault();
+                if (userApply == null)
+                {
+                    return Json(new { state = 0, msg = "所申请参与的志愿者服务,已经被其他志愿者先申请,没有位置了." });
+                }
+
+                if (userApply.VolId == model.VId)
+                {
+                    return Json(new { state = 0, msg = "该服务你已经申请成功,不能再申请." });
+
+                }
+
+                model.UASId = userApply.Id;
+                model.SDId = userApply.SDId;
+
+
+                db.Add(model);
+                db.SaveChanges();
+                return Json(new { state = 1, msg = "成功" });
+            }
+        }
+
+        /// <summary>
+        /// 志愿者执行服务
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public ActionResult VolBeginDoing(SerRecordEntity model)
+        {
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+
+                var apply = db.UserApplyServiceTable;
+                // var vol = db.VolunteerEntityTable;
+                var detail = db.SocServiceDetailEntityTable;
+                var record = db.SerRecordTable;
+                var sorg = db.SocialOrgEntityTable;
+                var img = db.SocSerImgTable;
+
+
+                SerRecordEntity dbEntity = record.Find(model.Id);
+
+                dbEntity.Img += model.Img;
+                dbEntity.BeginTime = DateTime.Now;
+
+                db.Update<SerRecordEntity>(dbEntity);
+                db.SaveChanges();
+
+                return Json(new { state = 1, msg = "成功" });
+            }
+
+
+
+        }
+
+        public ActionResult VolEndDoing(SerRecordEntity model)
+        {
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+
+                var apply = db.UserApplyServiceTable;
+                // var vol = db.VolunteerEntityTable;
+                var detail = db.SocServiceDetailEntityTable;
+                var record = db.SerRecordTable;
+                var sorg = db.SocialOrgEntityTable;
+                var img = db.SocSerImgTable;
+
+
+                SerRecordEntity dbEntity = record.Find(model.Id);
+
+                dbEntity.Img += model.Img;
+                dbEntity.EndTime = DateTime.Now;
+                db.Update<SerRecordEntity>(dbEntity);
+                db.SaveChanges();
+
+                return Json(new { state = 1, msg = "成功" });
+            }
+
+
+
+        }
+
+        public ActionResult SaveVolDoImg()
+        {
+            try
+            {
+
+                var file = Request.Files[0];
+                string FtpServerHttpUrl = System.Configuration.ConfigurationManager.AppSettings["FtpServerHttpUrl"];
+                string FtpServer = System.Configuration.ConfigurationManager.AppSettings["FtpServer"];
+                string FtpUser = System.Configuration.ConfigurationManager.AppSettings["FtpUser"];
+                string FtpPassWord = System.Configuration.ConfigurationManager.AppSettings["FtpPassWord"];
+
+                string Dir = DateTime.Now.ToString("yyyyMMdd");
+                FTPHelper ftp = new FTPHelper(FtpServer, "VolDo/" + Dir, FtpUser, FtpPassWord);
+
+                FileInfo file2 = new FileInfo(file.FileName);
+                string fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + AdminUser.Id.ToString() + file2.Extension;
+
+                ftp.Upload(file, fileName);
+
+                string imgUrl = FtpServerHttpUrl + ftp.FtpRemotePath + "/" + fileName;
+
+                return Json(new
+                {
+                    state = 1,
+                    url = imgUrl,
+                    error = ""
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    state = 0,
+                    url = "",
+                    error = ex.Message + ex.TargetSite
+                });
+                throw ex;
+            }
+        }
+
+        public ActionResult VolDoingIndex(SerRecordEntity model, GridSortOptions sort, int? page, int? pageSize = 20)
+        {
+
+            var pageNumber = page ?? 1;
+            int size = pageSize ?? 20;
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+
+
+                var apply = db.UserApplyServiceTable;
+                // var vol = db.VolunteerEntityTable;
+                var detail = db.SocServiceDetailEntityTable;
+                var record = db.SerRecordTable;
+                var sorg = db.SocialOrgEntityTable;
+                var img = db.SocSerImgTable;
+
+                var list = from s in detail
+                           join a in apply on s.Id equals a.SDId into g
+                           join o in sorg on s.SocialNo equals o.SocialNO
+                           join r in record on s.Id equals r.SDId
+                           where r.VId == model.VId
+                           select new SocServiceDetailEntityClone
+                             {
+                                 AddTime = s.AddTime,
+                                 SocialName = o.Name,
+                                 AddUser = s.AddUser,
+                                 Contacts = s.Contacts,
+                                 SocialNo = s.SocialNo,
+                                 Context = s.Context,
+                                 CoverCommunity = s.CoverCommunity,
+                                 Desc = s.Desc,
+                                 EndTime = s.EndTime,
+                                 Id = s.Id,
+                                 PayType = s.PayType,
+                                 Phone = s.Phone,
+                                 PubTime = s.PubTime,
+                                 Score = s.Score,
+                                 SerNum = s.SerNum,
+                                 THSScore = s.THSScore,
+                                 Type = s.Type,
+                                 VHelpDesc = s.VHelpDesc,
+                                 // UserApplyEntity=a,
+                                 SocSerImgs = img.Where(x => x.SocSerId == s.Id).ToList()
+
+                             };
+
+                var res = list.OrderBy(x => x.Id).ToPagedList(pageNumber - 1, size);
+
+                return Json(res);
             }
         }
     }

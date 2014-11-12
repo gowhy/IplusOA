@@ -21,7 +21,7 @@
 
         var url = '@Url.Action("UserApplyServiceAuditing")' + '?id=' + id;
 
-        showAjaxResult(url, "审核用户服务申请", 650, 400);
+        showAjaxResult(url, "审核用户服务申请", 650, 350);
     }
 
 
@@ -78,9 +78,9 @@
                                       column.For(x => x.Detail.SocialNo).Named("社会组织编号");
 
                                       column.For(x => (x.Org.ToList().FirstOrDefault()).Name).Named("社会组织名称");
-                                      column.For(x => x.ApplyEntiy.State ).Named("状态");
-
-
+                                      column.For(x => Enum.Parse(typeof(IplusOAEntity.UserApplyServiceState), x.ApplyEntiy.State.ToString())).Named("状态");
+                                      column.For(x => x.ApplyEntiy.Num).Named("所需志愿者");
+                                      column.For(x => x.ApplyEntiy.Msg).Named("原因");
 
                                       column.Buttons(btns => btns.Add(x => Html.ScriptLink("审核", "UserApplyServiceAuditing({0})".FormatWith(x.ApplyEntiy.Id)))
                                                                  .Add(x => Html.ScriptLink("删除", "deleteSer({0})".FormatWith(x.ApplyEntiy.Id)))
