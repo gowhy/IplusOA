@@ -193,7 +193,9 @@ namespace BackWebAdmin.Controllers
             ReturnModel res = new ReturnModel();
             using (IplusOADBContext db = new IplusOADBContext())
             {
+                model.AddTime = DateTime.Now;
                 db.Add<LogEntity>(model);
+                db.SaveChanges();
                 res.State = 1;
                 res.Msg = "成功";
                 return Json(res);
