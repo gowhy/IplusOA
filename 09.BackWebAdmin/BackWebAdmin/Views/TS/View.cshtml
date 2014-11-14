@@ -75,9 +75,69 @@
                         </div>
                     </td>
                 </tr>
+                <tr>
+                    <td class="item_title">回复内容:</td>
+                    <td class="item_input"  style=" float:none;">
+                    <input type="hidden"  id="id" value="@Model.Id"/>
+                            <textarea class="textbox require" id="msg" name="Msg" rows="5" cols="60">@Model.Msg </textarea>
+                        <a href="javascript:void(0)" class="easyui-linkbutton" style=" margin-top:-80px; vertical-align:middle; "  id="apply">回复并赠予积分</a>
+                    
+                    
+                    </td>
+                </tr>
+                    @if (!string.IsNullOrEmpty(Model.Msg))
+                    { 
+                    <tr>
+                        <td class="item_title">居民评价状态:</td>
+                        <td class="item_input">
+                           待评价
+                        </td>
+                    </tr>
+                    }
+                    
+                
             </tbody>
         </table>
     </form>
+    <script type="text/javascript">
+
+    $(document).ready(function () {
+
+        function AdminApply(id, state, msg) {
+
+            var url = "/ts/AdminApply" + '?id=' + id + "&state=" + state + "&msg=" + msg;
+            url = encodeURI(url);
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: "json",
+                success: function (obj) {
+                    $("#info").html(obj.Info);
+                    if (obj.Status == true)
+                        location.href = location.href;
+                }
+            });
+        }
+
+        $("#apply").click(function () {
+
+            var id = $("#id").val();
+            var msg = $("#msg").val();
+            var state = 1;
+            AdminApply(id, state, msg);
+
+        });
+
+
+
+
+   
+
+    });
+
+
+
+    </script>
 
 </div>
 

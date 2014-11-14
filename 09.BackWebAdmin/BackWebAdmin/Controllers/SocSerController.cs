@@ -570,6 +570,53 @@ namespace BackWebAdmin.Controllers
         }
 
         /// <summary>
+        /// 废弃
+        /// </summary>
+        /// <param name="selectModel"></param>
+        /// <param name="sort"></param>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        public ActionResult AppVolServiceIndex(SelectSocSerModel selectModel, GridSortOptions sort, int? page, int? pageSize = 20)
+        {
+            int pageNumber = page ?? 1;
+            int size = pageSize ?? 20;
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                var user = db.BackAdminUserEntityDBSet.FirstOrDefault(x => x.UserName == AdminUser.UserName);
+
+
+
+                var apply = db.UserApplyServiceTable;
+                var vol = db.VolunteerEntityTable;
+                var detail = db.SocServiceDetailEntityTable;
+                var record = db.SerRecordTable;
+                var sorg = db.SocialOrgEntityTable;
+
+
+                var list = from a in apply
+                           join v in vol on a.VolId equals v.Id into g
+                           join d in detail on a.SDId equals d.Id into g2
+                           //join r in record on a.Id equals r.UASId into g3
+                           from gv in g.DefaultIfEmpty()
+                           from gd in g2.DefaultIfEmpty()
+                           //from gr in g3.DefaultIfEmpty()
+                           select new ShowApplyEntity { ApplyEntiy = a, UserEntiy = gv, Detail = gd, Org = sorg.Where(x => x.SocialNO == gd.SocialNo) };
+                list = list.Where(x => x.Org.FirstOrDefault().Id == user.SocOrgId);
+                if (selectModel.Id > 0) list = list.Where(x => x.ApplyEntiy.Id == selectModel.Id);
+
+                SelectUserApplySerModel model = new SelectUserApplySerModel();
+
+                model.ApplySerList = list.OrderByDescending(x => x.ApplyEntiy.Id).ToPagedList(pageNumber - 1, size);
+
+                return View(model);
+
+            }
+
+        }
+
+
+        /// <summary>
         /// 志愿者申请处理服务
         /// </summary>
         /// <param name="model"></param>

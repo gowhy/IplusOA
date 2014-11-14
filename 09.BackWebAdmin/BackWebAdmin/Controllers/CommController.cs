@@ -187,5 +187,17 @@ namespace BackWebAdmin.Controllers
                 return Json(list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size), JsonRequestBehavior.AllowGet);
             }
         }
+
+        public ActionResult AppLog(LogEntity model)
+        {
+            ReturnModel res = new ReturnModel();
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                db.Add<LogEntity>(model);
+                res.State = 1;
+                res.Msg = "成功";
+                return Json(res);
+            }
+        }
     }
 }

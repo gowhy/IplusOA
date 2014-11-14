@@ -112,7 +112,9 @@ namespace BackWebAdmin.Controllers
                                DepName = d.Name,
                                Id = s.Id,
                                ImgUrl=s.ImgUrl,
-                               volEntity = v
+                               volEntity = v,
+                               Msg=s.Msg,
+                               State=s.State
                            };
                 var model = list.SingleOrDefault(x => x.Id == id);
                 return View(model);
@@ -172,6 +174,22 @@ namespace BackWebAdmin.Controllers
                 });
                 throw ex;
             }
+        }
+        public ActionResult AdminApply(int id, int state, string msg)
+        {
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+
+              SuperviseEntity model=  db.SuperviseTable.Find(id);
+              model.Msg = msg.Trim();
+              model.State = state;
+
+              db.Update<SuperviseEntity>(model);
+              db.SaveChanges();
+            }
+
+
+            return Success("操作成功");
         }
     }
 }

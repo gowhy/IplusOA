@@ -33,7 +33,7 @@
                         姓名
                     </td>
                     <td class="item_input">
-                        @Model.UserEntiy.RealName
+                        @((Model.UserEntiy?? new IplusOAEntity.VolunteerEntity()).RealName) 
                     </td>
                 </tr>
                 

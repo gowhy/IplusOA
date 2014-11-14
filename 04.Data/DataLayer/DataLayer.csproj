@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="01.IplusOADB\IplusOADBContext.cs" />
     <Compile Include="BaseContext.cs" />
+    <Compile Include="EntityMap\LogEntityMap.cs" />
     <Compile Include="EntityMap\UserApplyServiceMap.cs" />
     <Compile Include="EntityMap\BackAdminUserToAdminUserMap.cs" />
     <Compile Include="EntityMap\DepartmentEntityToDepartmentMap.cs" />

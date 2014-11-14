@@ -43,7 +43,7 @@ namespace DataLayer.IplusOADB
             modelBuilder.Configurations.Add(new ServiceAdImgMap());
             modelBuilder.Configurations.Add(new AppVerMap());
             modelBuilder.Configurations.Add(new UserApplyServiceMap());
-
+            modelBuilder.Configurations.Add(new LogEntityMap());
             
            // modelBuilder.Entity<VolunteerEntity>().Property(p => p.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
            
@@ -87,6 +87,6 @@ namespace DataLayer.IplusOADB
         public virtual DbSet<AppVerEntity> AppVerTable { get; set; }
         public virtual DbSet<UserApplyServiceEntity> UserApplyServiceTable { get; set; }
 
-        
+        public virtual DbSet<LogEntity> LogTable { get; set; }
     }
 }

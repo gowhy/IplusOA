@@ -15,6 +15,8 @@ namespace IplusOAEntity
         public string Content { get; set; }
         public int AddUser { get; set; }
         public System.DateTime AddTime { get; set; }
+
+
     }
 
     public partial class SuggestionEntityClone
@@ -26,5 +28,6 @@ namespace IplusOAEntity
         public string DepName { get; set; }
         public VolunteerEntity volEntity { get; set; }
         public System.DateTime AddTime { get; set; }
+ 
     }
 }
