@@ -159,6 +159,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="CommService\Role\RoleCommService.cs" />
     <Compile Include="CommService\SocSer\SocSerService.cs" />
+    <Compile Include="CommService\UploadFile.cs" />
     <Compile Include="Content\plug-in\ueditor\net\App_Code\Config.cs" />
     <Compile Include="Content\plug-in\ueditor\net\App_Code\ConfigHandler.cs" />
     <Compile Include="Content\plug-in\ueditor\net\App_Code\CrawlerHandler.cs" />
@@ -196,6 +197,8 @@
     <Compile Include="Models\MsgModel.cs" />
     <Compile Include="Models\Role\RoleModel.cs" />
     <Compile Include="Models\SocSer\SelectSocSerModel.cs" />
+    <Compile Include="Models\SocSer\ShowDetailUserApplyInfo.cs" />
+    <Compile Include="Models\SocSer\ShowDetailUserApplySerModel.cs" />
     <Compile Include="Models\SocSer\SelectUserApplySerModel.cs" />
     <Compile Include="Models\SOrg\SelectSorgModel.cs" />
     <Compile Include="Models\UEditorModel.cs" />
@@ -1164,6 +1167,7 @@
     <Content Include="Views\AppVer\Add.cshtml" />
     <Content Include="Views\SocSer\UserApplyServiceIndex.cshtml" />
     <Content Include="Views\SocSer\UserApplyServiceAuditing.cshtml" />
+    <Content Include="Views\SocSer\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\02.Common\Common\Common.csproj">

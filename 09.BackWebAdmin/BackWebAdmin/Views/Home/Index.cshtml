@@ -22,7 +22,7 @@
             } else {
                 $('#tt').tabs('add', {
                     title: name,
-                    content: " <iframe scrolling=\"yes\" frameborder=\"0\" src=" + url + " style=\"width:100%;height:530px;\"></iframe>",
+                    content: " <iframe scrolling=\"auto\" frameborder=\"0\"  width=\"95%\" height=\"98%\" src=" + url + " style=\"width:100%;overflow-x:scroll;\"></iframe>",
                     iconCls: 'icon-reload',
                     closable: true
                     //,
@@ -46,11 +46,7 @@
         </div>
     </div>
     <div data-options="region:'west',split:true,title:'菜单'" style="width:150px;">
-        @*<iframe scrolling="yes" frameborder="0" src="/home/Left" style="width:100%;height:530px;"></iframe>*@
-
         <div id="aa" class="easyui-accordion">
-
-
             @foreach (var item in Model)
                 {
                     <div title="@item.name" data-options="iconCls:'icon-reload'" style="overflow:auto; text-align:center;">
@@ -69,39 +65,16 @@
                         }
                     </div>
                 }
-          
-            @*<div title="辖区服务统计" data-options="iconCls:'icon-reload'" style="overflow:auto; text-align:center;">
-
-              
-                    <div style="padding-bottom:5px; padding-top:5px;"><a style="color: #0099FF; color: black; " href="dp/index" target="_blank" >服务统计实况</a>  </div>
-                
-            </div>*@
-
-            @*<div title="Title1" data-options="iconCls:'icon-ok'" style="overflow:auto">
-                <a style="color:#0099FF;">Accordion for jQuery</a>
-                <a style="color:#0099FF;">Accordion for jQuery</a>
-                <a style="color:#0099FF;">Accordion for jQuery</a>
-                <a style="color:#0099FF;">Accordion for jQuery</a>
-                <a style="color:#0099FF;">Accordion for jQuery</a>
-            </div>
-            <div title="Title1" data-options="iconCls:'icon-ok'" style="overflow:auto">
-                <a style="color:#0099FF;">Accordion for jQuery</a>
-                <a style="color:#0099FF;">Accordion for jQuery</a>
-                <a style="color:#0099FF;">Accordion for jQuery</a>
-                <a style="color:#0099FF;">Accordion for jQuery</a>
-                <a style="color:#0099FF;">Accordion for jQuery</a>
-                <a style="color:#0099FF;">Accordion for jQuery</a>
-            </div>*@
+        
         </div>
        
     </div>
-    @*<div data-options="region:'east',split:true,collapsed:true,title:'East'" style="width:100px;padding:10px;">east region</div>
-        <div data-options="region:'south',border:false" style="height:20px;background:#A9FACD;"></div>*@
+
     <div data-options="region:'center'">
         <div id="tt" class="easyui-tabs" data-options="tools:'#tab-tools'">
-            <div title="首页" data-options="closable:true" style="overflow:hidden">
+            @*<div title="首页" data-options="closable:true" style="overflow:hidden">
                 <iframe scrolling="no" frameborder="0" src="/home/Main" style="width:100%;height:530px;"></iframe>
-            </div>
+            </div>*@
 
 
         </div>

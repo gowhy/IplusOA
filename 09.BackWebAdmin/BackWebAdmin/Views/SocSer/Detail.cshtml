@@ -1,0 +1,194 @@
+﻿@using Common;
+@using MvcContrib.UI.Grid
+@using MvcContrib.Pagination;
+@using MvcContrib.UI.Pager;
+@model  BackWebAdmin.Models.ModelShowDetailUserApplyList
+
+
+<style>
+  
+</style>
+
+
+
+<div id="tt">
+    <a href="@Url.Action("Index", "ts")" style=" width:100px;">返回列表</a>
+</div>
+<div id="p" class="easyui-panel" title="新增" style="height:530px;padding:10px;"
+     data-options="iconCls:'icon-add',closable:false,tools:'#tt'">
+
+    <form name="postedit" action="@Url.Action("PostEdit")" id="postedit" method="post" enctype="multipart/form-data">
+        <table class="form" cellpadding="0" cellspacing="0">
+            <tbody>
+               
+                <tr>
+                    <td class="item_title">
+                        服务类型:
+                    </td>
+                    <td class="item_input">
+                        <select id="Type" name="Type" disabled="disabled">
+                            <option value="GYFN">法律服务</option>
+                            <option value="GYYLFW">医疗服务</option>
+                            <option value="GYWH">文化娱乐</option>
+                            <option value="GYYL">居家养老</option>
+                            <option value="GYBF">社区帮扶</option>
+                            <option value="GYWHKT">文化课堂</option>
+                            <option value="GYNSD">社区绿丝带</option>
+                            <option value="SYJZ">社区家政</option>
+                            <option value="SYMY">美食娱乐</option>
+                            <option value="SYWX">家居维修</option>
+                            <option value="SYJR">金融服务</option>
+                            <option value="SYYH">优惠进社区</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="item_title">服务内容标题:</td>
+                    <td class="item_input"><input type="text" disabled="disabled" class="textbox require" name="Context" value="@Model.SocSerDetail.Context" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">发布时间:</td>
+                    <td class="item_input"><input type="text" disabled="disabled" class="textbox require" name="PubTime" value="@Model.SocSerDetail.PubTime" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">截止时间:</td>
+                    <td class="item_input"><input type="text" disabled="disabled" class="textbox require" name="EndTime" value="@Model.SocSerDetail.EndTime" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">服务描述:</td>
+                    <td class="item_input"><textarea class="textbox require" name="Desc" rows="5" cols="70">@Model.SocSerDetail.Desc</textarea></td>
+                </tr>
+                <tr>
+                    <td class="item_title">自愿者帮助说明:</td>
+                    <td class="item_input"><textarea class="textbox require" name="VHelpDesc" rows="5" cols="70">@Model.SocSerDetail.VHelpDesc</textarea></td>
+                </tr>
+             
+                <tr>
+                    <td class="item_title">感谢分值:</td>
+                    <td class="item_input"><input type="text" disabled="disabled" class="textbox require" name="THSScore" value="@Model.SocSerDetail.THSScore" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">服务分值:</td>
+                    <td class="item_input"><input type="text" disabled="disabled" class="textbox require" name="Score" value="@Model.SocSerDetail.Score" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">联系电话:</td>
+                    <td class="item_input"><input type="text" disabled="disabled" class="textbox require" name="Phone" value="@Model.SocSerDetail.Phone" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">联系人:</td>
+                    <td class="item_input"><input type="text" disabled="disabled" class="textbox require" name="Contacts" value="@Model.SocSerDetail.Contacts" /></td>
+                </tr>
+              
+
+
+            </tbody>
+        </table>
+
+        @*<div class="grid_box">
+            <div class="grid_top">
+            </div>
+            @Html.Grid(Model.UserRecApplyList).Columns(column =>
+                                  {
+                                      //   column.CheckBox(x => x.Id);
+                                      //   column.For(x => x.Id).Named("编号").HeaderAttributes(style => "width:50px;align:center;");
+                                      column.For(x => x.CardType).Named("证件类型");
+                                      column.For(x => x.Type).Named("类型");
+                                      column.For(x => x.Address).Named("地址");
+                                      column.For(x => x.CardNum).Named("证件号");
+                                      column.For(x => x.EMail).Named("邮箱");
+                                      column.For(x => x.Phone).Named("手机号");
+                                      column.For(x => x.QQ).Named("QQ号");
+                                      column.For(x => x.RealName).Named("姓名");
+                                      column.For(x => x.VID).Named("自愿者编号");
+
+                                      column.Buttons(btns => btns.Add(x => Html.ActionLink("编辑", "Edit", new { id = x.Id }))
+                                          //.Add(x => Html.ActionLink("查看", "View", new { id = x.Id }))
+                                                                 .Add(x => Html.ScriptLink("删除", "deleteVol({0})".FormatWith(x.Id)))
+                                                                 );
+                                  }).Complex(ViewData)
+            <div class="grid_foot">
+            </div>
+        </div>*@
+     
+        <div style=" margin-top:15px;">申请服务用户信息:</div>
+        <div id="aa" class="easyui-accordion" >
+            @foreach (var item in Model.UserRecApplyList)
+            {
+                <div data-options="selected:false" title="姓名:@((item.ApplyUserInfo??new IplusOAEntity.VolunteerEntity()).RealName)    &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 手机:@((item.ApplyUserInfo??new IplusOAEntity.VolunteerEntity()).Phone)     &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp         地址:@((item.ApplyUserInfo??new IplusOAEntity.VolunteerEntity()).Address)  " style=" text-align:center;padding:10px;">
+                    <div>为用户服务自愿者列表</div>
+
+                    @Html.Grid(item.SerVolList).Columns(column =>
+                                  {
+                                      //   column.CheckBox(x => x.Id);
+                                      //   column.For(x => x.Id).Named("编号").HeaderAttributes(style => "width:50px;align:center;");
+                                      column.For(x => x.Vol.Address).Named("居住地址");
+                                      column.For(x => x.Vol.RealName).Named("真实姓名");
+                                      column.For(x => x.Vol.Phone).Named("联系电话");
+                                      column.For(x => x.Vol.VID).Named("志愿者编号");
+                                      column.For(x => x.Vol.EMail).Named("邮箱");
+
+                                      column.For(x => x.Vol.QQ).Named("QQ号");
+
+
+
+                                  }).Complex(ViewData)
+                    @*@foreach (var chlid in item.SerVolList)
+                        {
+                            <table class="form" cellpadding="0" cellspacing="0">
+                                <tbody>
+
+
+                                    <tr>
+                                        <td class="item_title">居住地址:</td>
+                                        <td class="item_input"><input disabled="disabled" type="text" class="textbox require" name="Address" value="@chlid.Vol.Address" /></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="item_title">真实姓名:</td>
+                                        <td class="item_input"><input disabled="disabled" type="text" class="textbox require" name="RealName" value="@chlid.Vol.RealName" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="item_title">联系电话:</td>
+                                        <td class="item_input"><input disabled="disabled" type="text" class="textbox require" name="Phone" value="@chlid.Vol.Phone" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="item_title">邮件:</td>
+                                        <td class="item_input"><input disabled="disabled" type="text" class="textbox require" name="EMail" value="@chlid.Vol.EMail" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="item_title">QQ号码:</td>
+                                        <td class="item_input"><input disabled="disabled" type="text" class="textbox require" name="QQ" value="@chlid.Vol.QQ" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="item_title">微信号:</td>
+                                        <td class="item_input"><input disabled="disabled" type="text" class="textbox require" name="WeiXin" value="@chlid.Vol.WeiXin" /></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="item_title">志愿者编号:</td>
+                                        <td class="item_input"><input disabled="disabled" type="text" class="textbox require" name="VID" value="@chlid.Vol.VID" /></td>
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+                        }*@
+                </div>
+            }
+
+
+
+        </div>
+
+
+
+    </form>
+  
+
+</div>
+<script>
+
+
+    $("#Type").val("@Model.SocSerDetail.Type");
+</script>

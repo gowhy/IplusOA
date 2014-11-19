@@ -77,6 +77,7 @@
                                       column.For(x => x.Score).Named("服务分值");
 
                                       column.Buttons(btns => btns.Add(x => Html.ActionLink("编辑", "Edit", new { id = x.Id }))
+                                                                 .Add(x => Html.ActionLink("详情", "Detail", new { id = x.Id }))
                                                                  .Add(x => Html.ScriptLink("删除", "deleteSer({0})".FormatWith(x.Id)))
                                                                  );
                                   }).Complex(ViewData)

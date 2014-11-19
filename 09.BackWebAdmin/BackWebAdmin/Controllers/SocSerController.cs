@@ -449,7 +449,7 @@ namespace BackWebAdmin.Controllers
                 var sorg = db.SocialOrgEntityTable;
 
                 var list = from a in apply
-                           join v in vol on a.VolId equals v.Id into g                 
+                           join v in vol on a.VolId equals v.Id into g
                            join d in detail on a.SDId equals d.Id into g2
                            join r in record on a.Id equals r.UASId into g3
                            from gv in g.DefaultIfEmpty()
@@ -507,7 +507,7 @@ namespace BackWebAdmin.Controllers
                 return PartialView(list.FirstOrDefault());
             }
         }
-        public ActionResult VolServiceIndex(SelectSocSerModel model, GridSortOptions sort, int? page, int? pageSize = 20)
+        public ActionResult AppVolServiceIndex(SelectSocSerModel model, GridSortOptions sort, int? page, int? pageSize = 20)
         {
             var pageNumber = page ?? 1;
             int size = pageSize ?? 20;
@@ -577,7 +577,7 @@ namespace BackWebAdmin.Controllers
         /// <param name="page"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        public ActionResult AppVolServiceIndex(SelectSocSerModel selectModel, GridSortOptions sort, int? page, int? pageSize = 20)
+        public ActionResult AppVolServiceIndex_Bak(SelectSocSerModel selectModel, GridSortOptions sort, int? page, int? pageSize = 20)
         {
             int pageNumber = page ?? 1;
             int size = pageSize ?? 20;
@@ -622,12 +622,13 @@ namespace BackWebAdmin.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
 
-        public ActionResult VolApplyDo(SerRecordEntity model)
+        public ActionResult AppVolApplyDo(SerRecordEntity model)
         {
             if (model.VId == 0 || model.SDId == 0)
             {
 
             }
+            model.AddTime = DateTime.Now;
             using (IplusOADBContext db = new IplusOADBContext())
             {
 
@@ -670,7 +671,7 @@ namespace BackWebAdmin.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public ActionResult VolBeginDoing(SerRecordEntity model)
+        public ActionResult AppVolBeginDoing(SerRecordEntity model)
         {
             using (IplusOADBContext db = new IplusOADBContext())
             {
@@ -685,7 +686,7 @@ namespace BackWebAdmin.Controllers
 
                 SerRecordEntity dbEntity = record.Find(model.Id);
 
-                dbEntity.Img +=model.Img;
+                dbEntity.Img += model.Img;
                 dbEntity.BeginTime = DateTime.Now;
 
                 db.Update<SerRecordEntity>(dbEntity);
@@ -698,7 +699,7 @@ namespace BackWebAdmin.Controllers
 
         }
 
-        public ActionResult VolEndDoing(SerRecordEntity model)
+        public ActionResult AppVolEndDoing(SerRecordEntity model)
         {
             using (IplusOADBContext db = new IplusOADBContext())
             {
@@ -725,7 +726,7 @@ namespace BackWebAdmin.Controllers
 
         }
 
-        public ActionResult SaveVolDoImg()
+        public ActionResult AppSaveVolDoImg()
         {
             try
             {
@@ -765,7 +766,7 @@ namespace BackWebAdmin.Controllers
             }
         }
 
-        public ActionResult VolDoingIndex(SerRecordEntity model, GridSortOptions sort, int? page, int? pageSize = 20)
+        public ActionResult AppVolDoingIndex(SerRecordEntity model, GridSortOptions sort, int? page, int? pageSize = 20)
         {
 
             var pageNumber = page ?? 1;
@@ -806,6 +807,7 @@ namespace BackWebAdmin.Controllers
                                  THSScore = s.THSScore,
                                  Type = s.Type,
                                  VHelpDesc = s.VHelpDesc,
+                                 SerRecord = r,
                                  // UserApplyEntity=a,
                                  SocSerImgs = img.Where(x => x.SocSerId == s.Id).ToList()
 
@@ -814,6 +816,51 @@ namespace BackWebAdmin.Controllers
                 var res = list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size);
 
                 return Json(res);
+            }
+        }
+
+        public ActionResult Detail(int Id)
+        {
+            ModelShowDetailUserApplyList model = new ModelShowDetailUserApplyList();
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+
+                var apply = db.UserApplyServiceTable;
+                var vol = db.VolunteerEntityTable;
+                var detail = db.SocServiceDetailEntityTable;
+                var record = db.SerRecordTable;
+                var sorg = db.SocialOrgEntityTable;
+
+                ShowDetailUserApply list = (from d in detail
+                                            where d.Id == Id
+                                            select new ShowDetailUserApply 
+                                            { SocSerDetail = d, 
+                                              SOrg=sorg.Where(x=>x.SocialNO==d.SocialNo).FirstOrDefault(),
+                                              UserApplyList = apply.Where(x => x.SDId == d.Id).ToList() }).FirstOrDefault();
+
+                model.SocSerDetail = list.SocSerDetail;
+                model.SOrg = list.SOrg;
+              //  model.UserApplyList = list.UserApplyList.ToList();
+                model.UserRecApplyList = model.UserRecApplyList ?? new List<ApplyUserRecVol>();
+                foreach (var item in list.UserApplyList)
+                {
+                    ApplyUserRecVol aurv = new ApplyUserRecVol();
+                    //志愿者信息
+                    IList<RecVol> rdvList = (from r in record
+                                                             join v in vol on r.VId equals v.Id
+                                                             where r.UASId==item.Id
+                                                 select new RecVol { RecordEntity = r, Vol = v }).ToList();
+                  
+                    VolunteerEntity userInfo = vol.SingleOrDefault(x => x.Id == item.VolId);
+                    aurv.SerVolList = rdvList;
+                    aurv.ApplyUserInfo = userInfo;
+                    aurv.UserApplyService = list.UserApplyList.FirstOrDefault(x=>x.Id==item.Id);
+                    model.UserRecApplyList.Add(aurv);
+                }
+
+                //var m = model;
+               // return Json(model,JsonRequestBehavior.AllowGet);
+                return View(model);
             }
         }
     }

@@ -63,28 +63,28 @@
         </span>
     </div>
 </form>*@
-<div class="grid_box" style=" overflow-x:auto;">
+<div class="grid_box" style=" overflow-x:auto; width:1400px;">
     <div class="grid_top">
     </div>
     @Html.Grid(Model.ApplySerList).Columns(column =>
                                   {
 
-                                      column.For(x => x.UserEntiy==null?"":x.UserEntiy.RealName).Named("申请人姓名");
+                                      column.For(x => x.UserEntiy == null ? "" : x.UserEntiy.RealName).Named("申请人姓名").HeaderAttributes(style => "width:100px;align:center;") ;
                                       column.For(x => x.UserEntiy== null?"":x.UserEntiy.Phone).Named("联系电话");
 
                                       column.For(x => x.Detail.Context).Named("服务内容");
-                                      column.For(x => x.Detail.PubTime.HasValue ? x.Detail.PubTime.Value.ToString("yyyy-MM-dd HH:mm") : "").Named("服务开始时间");
-                                      column.For(x => x.Detail.EndTime.HasValue ? x.Detail.EndTime.Value.ToString("yyyy-MM-dd HH:mm") : "").Named("服务截止时间");
+                                      column.For(x => x.Detail.PubTime.HasValue ? x.Detail.PubTime.Value.ToString("yyyy-MM-dd HH:mm") : "").Named("服务开始时间").HeaderAttributes(style => "width:140px;align:center;");
+                                      column.For(x => x.Detail.EndTime.HasValue ? x.Detail.EndTime.Value.ToString("yyyy-MM-dd HH:mm") : "").Named("服务截止时间").HeaderAttributes(style => "width:140px;align:center;");
                                       column.For(x => x.Detail.SocialNo).Named("社会组织编号");
 
-                                      column.For(x => (x.Org.ToList().FirstOrDefault())==null?"":(x.Org.ToList().FirstOrDefault()).Name).Named("社会组织名称");
-                                      column.For(x => Enum.Parse(typeof(IplusOAEntity.UserApplyServiceState), x.ApplyEntiy.State.ToString())).Named("状态");
-                                      column.For(x => x.ApplyEntiy.Num).Named("所需志愿者");
+                                      column.For(x => (x.Org.ToList().FirstOrDefault()) == null ? "" : (x.Org.ToList().FirstOrDefault()).Name).Named("社会组织名称").HeaderAttributes(style => "width:160px;align:center;");
+                                      column.For(x => Enum.Parse(typeof(IplusOAEntity.UserApplyServiceState), x.ApplyEntiy.State.ToString())).Named("状态").HeaderAttributes(style => "width:60px;align:center;");
+                                      column.For(x => x.ApplyEntiy.Num).Named("所需志愿者").HeaderAttributes(style => "width:100px;align:center;");
                                       column.For(x => x.ApplyEntiy.Msg).Named("原因");
 
                                       column.Buttons(btns => btns.Add(x => Html.ScriptLink("审核", "UserApplyServiceAuditing({0})".FormatWith(x.ApplyEntiy.Id)))
                                                                  .Add(x => Html.ScriptLink("删除", "deleteSer({0})".FormatWith(x.ApplyEntiy.Id)))
-                                                                 );
+                                                                 ).HeaderAttributes(style => "width:100px;align:center;"); 
                                   }).Complex(ViewData)
     <div class="grid_foot">
     </div>
