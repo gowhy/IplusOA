@@ -17,6 +17,8 @@ namespace BackWebAdmin.Models
         public string SocialNo { get; set; }
         public string SocialName { get; set; }
 
+        public int VId { get; set; }
+
         public IPagedList<SocServiceDetailEntityClone> SocSerList { get; set; }
 
     }

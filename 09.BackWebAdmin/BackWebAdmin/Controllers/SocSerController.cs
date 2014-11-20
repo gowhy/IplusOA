@@ -527,8 +527,8 @@ namespace BackWebAdmin.Controllers
                            join o in sorg on s.SocialNo equals o.SocialNO
                            from stuDesc in g.DefaultIfEmpty()
                            where
-                            stuDesc.Num > record.Count(x => x.UASId == stuDesc.Id)
-                            || record.Count(x => x.UASId == stuDesc.Id) == 0
+                           ( stuDesc.Num > record.Count(x => x.UASId == stuDesc.Id)
+                            || record.Count(x => x.UASId == stuDesc.Id) == 0) && apply.Count(x => x.State == 1) > 0 && stuDesc.VolId!=model.VId
                            select new SocServiceDetailEntityClone
                              {
                                  AddTime = s.AddTime,
@@ -570,6 +570,64 @@ namespace BackWebAdmin.Controllers
         }
 
         /// <summary>
+        /// 普通用户查询其申请的服务
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="sort"></param>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        public ActionResult AppUserApplyServiceIndex(SelectSocSerModel model, GridSortOptions sort, int? page, int? pageSize = 20)
+        {
+            var pageNumber = page ?? 1;
+            int size = pageSize ?? 20;
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+
+
+                var apply = db.UserApplyServiceTable;
+                var detail = db.SocServiceDetailEntityTable;
+                var record = db.SerRecordTable;
+                var sorg = db.SocialOrgEntityTable;
+                var img = db.SocSerImgTable;
+
+                var list = from s in detail
+                           join a in apply on s.Id equals a.SDId into g
+                           join o in sorg on s.SocialNo equals o.SocialNO
+                           from stuDesc in g.DefaultIfEmpty()
+                           where
+                            stuDesc.VolId == model.VId
+                           select new 
+                           {
+                               AddTime = s.AddTime,
+                               SocialName = o.Name,
+                               AddUser = s.AddUser,
+                               Contacts = s.Contacts,
+                               SocialNo = s.SocialNo,
+                               Context = s.Context,
+                               CoverCommunity = s.CoverCommunity,
+                               Desc = s.Desc,
+                               EndTime = s.EndTime,
+                               Id = s.Id,
+                               PayType = s.PayType,
+                               Phone = s.Phone,
+                               PubTime = s.PubTime,
+                               Score = s.Score,
+                               SerNum = s.SerNum,
+                               THSScore = s.THSScore,
+                               Type = s.Type,
+                               VHelpDesc = s.VHelpDesc,
+                               UserApplyEntity=g,
+                               SocSerImgs = img.Where(x => x.SocSerId == s.Id).ToList()
+
+                           };
+      
+                var res = list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size);
+                return Json(res, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        /// <summary>
         /// 废弃
         /// </summary>
         /// <param name="selectModel"></param>
@@ -577,7 +635,7 @@ namespace BackWebAdmin.Controllers
         /// <param name="page"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        public ActionResult AppVolServiceIndex_Bak(SelectSocSerModel selectModel, GridSortOptions sort, int? page, int? pageSize = 20)
+        public ActionResult AppUserServiceIndex_bak(SelectSocSerModel selectModel, GridSortOptions sort, int? page, int? pageSize = 20)
         {
             int pageNumber = page ?? 1;
             int size = pageSize ?? 20;
@@ -609,7 +667,7 @@ namespace BackWebAdmin.Controllers
 
                 model.ApplySerList = list.OrderByDescending(x => x.ApplyEntiy.Id).ToPagedList(pageNumber - 1, size);
 
-                return View(model);
+                return Json(model);
 
             }
 
@@ -815,7 +873,7 @@ namespace BackWebAdmin.Controllers
 
                 var res = list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size);
 
-                return Json(res);
+                return Json(res,JsonRequestBehavior.AllowGet);
             }
         }
 

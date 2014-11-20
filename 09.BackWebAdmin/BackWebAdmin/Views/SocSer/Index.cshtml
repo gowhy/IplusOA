@@ -58,28 +58,28 @@
         </span>
     </div>
 </form>
-<div class="grid_box">
+<div class="grid_box" style=" overflow-x:auto; width:1400px;">
     <div class="grid_top">
     </div>
     @Html.Grid(Model.SocSerList).Columns(column =>
                                   {
-                                     // column.CheckBox(x => x.Id);
-                                   //   column.For(x => x.Id).Named("编号").HeaderAttributes(style => "width:50px;align:center;");
-                                      column.For(x => x.SerNum).Named("服务内容编号");
-                                      column.For(x => Html.F().GetSerTypeName(x.Type)).Named("服务类型");
-                                      column.For(x => x.SocialName).Named("社组织名称");
-                                      column.For(x => x.SocialNo).Named("社组织编号");
-                                      column.For(x => x.Context).Named("服务内容");
-                                      column.For(x => x.PubTime.HasValue ? x.PubTime.Value.ToString("yyyy-MM-dd HH:mm") : "").Named("发布时间");
-                                      column.For(x => x.EndTime.HasValue ? x.EndTime.Value.ToString("yyyy-MM-dd HH:mm") : "").Named("截止时间");
-                                      column.For(x => x.Contacts).Named("联系人");
-                                      column.For(x => x.Phone).Named("手机号");
-                                      column.For(x => x.Score).Named("服务分值");
+                                      // column.CheckBox(x => x.Id);
+                                      //   column.For(x => x.Id).Named("编号").HeaderAttributes(style => "width:50px;align:center;");
+                                      column.For(x => x.SerNum).Named("服务内容编号").HeaderAttributes(style => "width:160px;align:center;");
+                                      column.For(x => Html.F().GetSerTypeName(x.Type)).Named("服务类型").HeaderAttributes(style => "width:100px;align:center;");
+                                      column.For(x => x.SocialName).Named("社组织名称").HeaderAttributes(style => "width:140px;align:center;");
+                                     // column.For(x => x.SocialNo).Named("社组织编号").HeaderAttributes(style => "width:140px;align:center;");
+                                      column.For(x => x.Context).Named("服务内容").HeaderAttributes(style => "width:200px;align:center;");
+                                      column.For(x => x.PubTime.HasValue ? x.PubTime.Value.ToString("yyyy-MM-dd HH:mm") : "").Named("发布时间").HeaderAttributes(style => "width:170px;align:center;"); ;
+                                      column.For(x => x.EndTime.HasValue ? x.EndTime.Value.ToString("yyyy-MM-dd HH:mm") : "").Named("截止时间").HeaderAttributes(style => "width:170px;align:center;"); ;
+                                      column.For(x => x.Contacts).Named("联系人").HeaderAttributes(style => "width:100px;align:center;");
+                                      column.For(x => x.Phone).Named("手机号").HeaderAttributes(style => "width:120px;align:center;");
+                                      column.For(x => x.Score).Named("服务分值").HeaderAttributes(style => "width:70px;align:center;");
 
                                       column.Buttons(btns => btns.Add(x => Html.ActionLink("编辑", "Edit", new { id = x.Id }))
                                                                  .Add(x => Html.ActionLink("详情", "Detail", new { id = x.Id }))
                                                                  .Add(x => Html.ScriptLink("删除", "deleteSer({0})".FormatWith(x.Id)))
-                                                                 );
+                                                                 ).HeaderAttributes(style => "width:160px;align:center;"); 
                                   }).Complex(ViewData)
     <div class="grid_foot">
     </div>
