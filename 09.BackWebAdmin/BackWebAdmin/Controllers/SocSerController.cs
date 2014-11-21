@@ -11,6 +11,7 @@ using MvcContrib.UI.Grid;
 using MvcContrib.Sorting;
 using BackWebAdmin.Models;
 using System.IO;
+using Common.Dynamic;
 
 namespace BackWebAdmin.Controllers
 {
@@ -528,7 +529,7 @@ namespace BackWebAdmin.Controllers
                            from stuDesc in g.DefaultIfEmpty()
                            where
                            ( stuDesc.Num > record.Count(x => x.UASId == stuDesc.Id)
-                            || record.Count(x => x.UASId == stuDesc.Id) == 0) && apply.Count(x => x.State == 1) > 0 && stuDesc.VolId!=model.VId
+                            || record.Count(x => x.UASId == stuDesc.Id) == 0) && apply.Count(x => x.State == 1&&x.SDId==s.Id) > 0 && stuDesc.VolId!=model.VId
                            select new SocServiceDetailEntityClone
                              {
                                  AddTime = s.AddTime,
@@ -565,7 +566,8 @@ namespace BackWebAdmin.Controllers
                 if (!string.IsNullOrEmpty(model.Type)) list = list.Where(x => x.Type.Trim().ToUpper() == model.Type.Trim().ToUpper());
                 list = list.Where(x => DateTime.Now > x.PubTime && DateTime.Now < x.EndTime);
                 var res = list.OrderBy(x => x.Id).ToPagedList(pageNumber - 1, size);
-                return Json(res, JsonRequestBehavior.AllowGet);
+
+                return Json(res.DistinctBy(x=>x.Id).ToList(), JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -700,8 +702,8 @@ namespace BackWebAdmin.Controllers
 
                 UserApplyServiceEntity userApply = (from a in apply
                                                     where a.SDId == model.SDId
-                                                    && a.Num > (record.Count(x => x.UASId == a.Id))
-                                                    || record.Count(x => x.UASId == a.Id) == 0
+                                                    && (a.Num > (record.Count(x => x.UASId == a.Id))
+                                                    || record.Count(x => x.UASId == a.Id) == 0)&&a.State==1
                                                     select a).OrderByDescending(x => x.Id).FirstOrDefault();
                 if (userApply == null)
                 {

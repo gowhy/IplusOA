@@ -120,6 +120,23 @@ namespace Common.Dynamic
                     typeof(Queryable), "Count",
                     new Type[] { source.ElementType }, source.Expression));
         }
+
+        public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
+        {
+            HashSet<TKey> seenKeys = new HashSet<TKey>();
+            foreach (TSource element in source)
+            {
+                if (seenKeys.Add(keySelector(element)))
+                {
+                    yield return element;
+                }
+            }
+
+            //// 使用方法如下（针对ID，和Name进行Distinct）：
+            //var query = people.DistinctBy(p => new { p.Id, p.Name });
+            ////若仅仅针对ID进行distinct：
+            //var query = people.DistinctBy(p => p.Id);
+        }
     }
 
     public abstract class DynamicClass
