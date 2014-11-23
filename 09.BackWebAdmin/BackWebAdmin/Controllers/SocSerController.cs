@@ -686,7 +686,7 @@ namespace BackWebAdmin.Controllers
         {
             if (model.VId == 0 || model.SDId == 0)
             {
-
+                return Json(new { state = 0, msg = "自愿者ID（VId）或者服务Id（SDId）,是必填参数" });
             }
             model.AddTime = DateTime.Now;
             using (IplusOADBContext db = new IplusOADBContext())
@@ -700,6 +700,11 @@ namespace BackWebAdmin.Controllers
                 var img = db.SocSerImgTable;
 
 
+             
+                if (record.Count(r=>r.SDId==model.SDId&&r.VId==model.VId)>0)
+                {
+                    return Json(new { state = 0, msg = "该服务你已经成功申请成为志愿者,不能再申请." }); 
+                }
                 UserApplyServiceEntity userApply = (from a in apply
                                                     where a.SDId == model.SDId
                                                     && (a.Num > (record.Count(x => x.UASId == a.Id))
@@ -712,7 +717,7 @@ namespace BackWebAdmin.Controllers
 
                 if (userApply.VolId == model.VId)
                 {
-                    return Json(new { state = 0, msg = "该服务你已经申请成功,不能再申请." });
+                    return Json(new { state = 0, msg = "该服务你已作受众,不能再申请成为志愿者为项目提供服务." });
 
                 }
 
@@ -846,7 +851,7 @@ namespace BackWebAdmin.Controllers
                            join a in apply on s.Id equals a.SDId into g
                            join o in sorg on s.SocialNo equals o.SocialNO
                            join r in record on s.Id equals r.SDId
-                           where r.VId == model.VId
+                           where r.VId == model.VId&&g!=null
                            select new SocServiceDetailEntityClone
                              {
                                  AddTime = s.AddTime,
@@ -868,8 +873,9 @@ namespace BackWebAdmin.Controllers
                                  Type = s.Type,
                                  VHelpDesc = s.VHelpDesc,
                                  SerRecord = r,
-                                 // UserApplyEntity=a,
-                                 SocSerImgs = img.Where(x => x.SocSerId == s.Id).ToList()
+                                 UserApplyEntity=g.FirstOrDefault(),
+                                 SocSerImgs = img.Where(x => x.SocSerId == s.Id).ToList(),
+                                 VolCount=record.Count(x=>x.VId==model.VId)
 
                              };
 

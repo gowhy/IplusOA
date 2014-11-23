@@ -168,6 +168,12 @@ namespace IplusOAEntity
       //  public UserApplyServiceEntity  UserApplyEntity { get; set; }
         [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public SerRecordEntity SerRecord { get; set; }
+
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
+        public int VolCount { get; set; }
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
+        public UserApplyServiceEntity UserApplyEntity { get; set; }
+        
         #endregion Model
     }
 }

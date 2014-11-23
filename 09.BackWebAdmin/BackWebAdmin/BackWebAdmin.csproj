@@ -173,6 +173,7 @@
     <Compile Include="Controllers\Default1Controller.cs" />
     <Compile Include="Controllers\DpController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\AppVerController.cs" />
     <Compile Include="Controllers\ServiceAdImgController.cs" />
@@ -1168,6 +1169,7 @@
     <Content Include="Views\SocSer\UserApplyServiceIndex.cshtml" />
     <Content Include="Views\SocSer\UserApplyServiceAuditing.cshtml" />
     <Content Include="Views\SocSer\Detail.cshtml" />
+    <Content Include="Views\Log\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\02.Common\Common\Common.csproj">

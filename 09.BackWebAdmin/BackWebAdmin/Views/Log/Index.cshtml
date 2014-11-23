@@ -1,0 +1,49 @@
+﻿@model  IPagedList<IplusOAEntity.LogEntity>
+@using MvcContrib.UI.Grid
+@using MvcContrib.Pagination;
+@using MvcContrib.UI.Pager;
+@using Common;
+
+<script type="text/javascript">
+
+
+    function submitForm() {
+        
+        $('#indexFrom').submit();
+    }
+
+
+
+
+
+</script>
+<style>
+    .combo {
+        vertical-align: bottom;
+    }
+</style>
+<form id="indexFrom">
+
+
+</form>
+<div class="grid_box">
+    <div class="grid_top">
+    </div>
+    @Html.Grid(Model).Columns(column =>
+                                  {
+                                      // column.CheckBox(x => x.Id);
+                                      //   column.For(x => x.Id).Named("编号").HeaderAttributes(style => "width:50px;align:center;");
+                                      column.For(x => x.Id).Named("Id");
+                                      column.For(x => x.Content).Named("类容");
+                                      column.For(x => x.AddTime.ToString("yyyy-MM-dd HH:mm")).Named("时间").HeaderAttributes(style => "width:140px;align:center;");
+                                      column.For(x => x.UserId).Named("用户ID");
+                                      column.For(x => x.Module).Named("模块");
+                                      column.For(x => x.Type).Named("日志类型");
+                                     
+                                      //column.Buttons(btns => btns.Add(x => Html.ActionLink("查看", "view", new { id = x.Id })));
+                                  }).Complex(ViewData)
+    <div class="grid_foot">
+    </div>
+</div>
+
+@Html.Pager(Model)
