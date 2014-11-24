@@ -165,7 +165,7 @@ namespace IplusOAEntity
 
         public List<SocSerImgEntity> SocSerImgs { get; set; }
 
-      //  public UserApplyServiceEntity  UserApplyEntity { get; set; }
+        //  public UserApplyServiceEntity  UserApplyEntity { get; set; }
         [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public SerRecordEntity SerRecord { get; set; }
 
@@ -173,7 +173,7 @@ namespace IplusOAEntity
         public int VolCount { get; set; }
         [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public UserApplyServiceEntity UserApplyEntity { get; set; }
-        
+
         #endregion Model
     }
 }

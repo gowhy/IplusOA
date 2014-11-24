@@ -31,6 +31,11 @@ namespace BackWebAdmin.Controllers
 
                 list = list.OrderByDescending(x => x.Id);
 
+
+                //var list = from l in log
+                //           join v in vol on Convert.ToInt32(l.UserId) equals v.Id
+                //           select new { l, v };
+
                 return View(list.ToPagedList(pageNumber - 1, pageSize));
             }
 

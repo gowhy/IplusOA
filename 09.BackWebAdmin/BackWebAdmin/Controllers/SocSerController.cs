@@ -848,10 +848,11 @@ namespace BackWebAdmin.Controllers
                 var img = db.SocSerImgTable;
 
                 var list = from s in detail
-                           join a in apply on s.Id equals a.SDId into g
+                           //join a in apply on s.Id equals a.SDId into g
+                           join a in apply on s.Id equals a.SDId 
                            join o in sorg on s.SocialNo equals o.SocialNO
                            join r in record on s.Id equals r.SDId
-                           where r.VId == model.VId&&g!=null
+                           where r.VId == model.VId && a != null && r.UASId==a.Id
                            select new SocServiceDetailEntityClone
                              {
                                  AddTime = s.AddTime,
@@ -873,7 +874,8 @@ namespace BackWebAdmin.Controllers
                                  Type = s.Type,
                                  VHelpDesc = s.VHelpDesc,
                                  SerRecord = r,
-                                 UserApplyEntity=g.FirstOrDefault(),
+                                 //UserApplyEntity = g.FirstOrDefault(x => x.SDId == s.Id),
+                                 UserApplyEntity = a,
                                  SocSerImgs = img.Where(x => x.SocSerId == s.Id).ToList(),
                                  VolCount=record.Count(x=>x.VId==model.VId)
 
@@ -881,7 +883,7 @@ namespace BackWebAdmin.Controllers
 
                 var res = list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size);
 
-                return Json(res,JsonRequestBehavior.AllowGet);
+                return Json(res.DistinctBy(x => x.Id), JsonRequestBehavior.AllowGet);
             }
         }
 
