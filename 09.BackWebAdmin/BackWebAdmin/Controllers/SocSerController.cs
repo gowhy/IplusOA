@@ -686,7 +686,7 @@ namespace BackWebAdmin.Controllers
         {
             if (model.VId == 0 || model.SDId == 0)
             {
-                return Json(new { state = 0, msg = "自愿者ID（VId）或者服务Id（SDId）,是必填参数" });
+                return Json(new { state = -3, msg = "自愿者ID（VId）或者服务Id（SDId）,是必填参数" });
             }
             model.AddTime = DateTime.Now;
             using (IplusOADBContext db = new IplusOADBContext())
@@ -712,12 +712,12 @@ namespace BackWebAdmin.Controllers
                                                     select a).OrderByDescending(x => x.Id).FirstOrDefault();
                 if (userApply == null)
                 {
-                    return Json(new { state = 0, msg = "所申请参与的志愿者服务,已经被其他志愿者先申请,没有位置了." });
+                    return Json(new { state = -1, msg = "所申请参与的志愿者服务,已经被其他志愿者先申请,没有位置了." });
                 }
 
                 if (userApply.VolId == model.VId)
                 {
-                    return Json(new { state = 0, msg = "该服务你已作受众,不能再申请成为志愿者为项目提供服务." });
+                    return Json(new { state = -2, msg = "该服务你已作受众,不能再申请成为志愿者为项目提供服务." });
 
                 }
 
@@ -877,7 +877,7 @@ namespace BackWebAdmin.Controllers
                                  //UserApplyEntity = g.FirstOrDefault(x => x.SDId == s.Id),
                                  UserApplyEntity = a,
                                  SocSerImgs = img.Where(x => x.SocSerId == s.Id).ToList(),
-                                 VolCount=record.Count(x=>x.VId==model.VId)
+                                 VolCount=record.Count(x=>x.SDId==s.Id&&x.UASId==a.Id)
 
                              };
 
