@@ -46,7 +46,7 @@ namespace BackWebAdmin.Controllers
             using (IplusOADBContext db = new IplusOADBContext())
             {
 
-                int existCount = db.SMSTable.Count(x => x.Phone == entity.Phone.Trim() && x.Code == code.Trim() && x.AddTime.AddMinutes(10) < DateTime.Now);
+                int existCount = db.SMSTable.Count(x => x.Phone == entity.Phone.Trim() && x.VCode == code.Trim() && x.AddTime.AddMinutes(10) < DateTime.Now);
                 if (existCount==0)
                 {
                     returnModel.Msg = "验证码失效,请重新获取";
@@ -218,57 +218,67 @@ namespace BackWebAdmin.Controllers
 
         public ActionResult AppSMS(SMSEntity entity)
         {
-
-            string SMSUserName = System.Configuration.ConfigurationManager.AppSettings["SMSUserName"];
-            string SMSPassWord = System.Configuration.ConfigurationManager.AppSettings["SMSPassWord"];
-            string SMSServiceUrl = System.Configuration.ConfigurationManager.AppSettings["SMSServiceUrl"];
-
-
-            Random rad = new Random();//实例化随机数产生器rad；
-            int value = rad.Next(1000, 10000);//用rad生成大于等于1000，小于等于9999的随机数；
-            string code = value.ToString();
-            string msg = "【社区1+1】欢迎成为社区1+1用户，您的注册验证码是：" + code + "。";
-            msg = HttpUtility.UrlEncode(msg, Encoding.GetEncoding("GBK"));
-
-            entity.AddTime = DateTime.Now;
-            entity.Msg = msg;
-            entity.Code = code.Trim();
-
-            HttpItem parm = new HttpItem();
-            parm.ResultType = ResultType.String;
-            parm.URL = string.Format("{0}?name={1}&password={2}&mobile={3}&message={4}",
-                SMSServiceUrl, SMSUserName, SMSPassWord, entity.Phone, msg);
-
-
-            HttpHelper httpHelper = new HttpHelper();
-            HttpResult httpResult = httpHelper.GetHtml(parm);
-            string res = httpResult.Html;
-            if (httpResult.StatusCode == System.Net.HttpStatusCode.OK)
+            try
             {
-              string[] str=  res.Split(',');
-              if (str[0] == "succ")
-              {
-                  using (IplusOADBContext db = new IplusOADBContext())
-                  {
+                string SMSUserName = System.Configuration.ConfigurationManager.AppSettings["SMSUserName"];
+                string SMSPassWord = System.Configuration.ConfigurationManager.AppSettings["SMSPassWord"];
+                string SMSServiceUrl = System.Configuration.ConfigurationManager.AppSettings["SMSServiceUrl"];
 
-                      db.Add<SMSEntity>(entity);
-                      db.SaveChanges();
 
-                      return Json(new { state = 1, msg = "发送成功" }, JsonRequestBehavior.AllowGet);
+                Random rad = new Random();//实例化随机数产生器rad；
+                int value = rad.Next(1000, 10000);//用rad生成大于等于1000，小于等于9999的随机数；
+                string code = value.ToString();
+                string msg = "【社区1+1】欢迎成为社区1+1用户，您的注册验证码是：" + code + "。";
+                msg = HttpUtility.UrlEncode(msg, Encoding.GetEncoding("GBK"));
 
-                  }
+                entity.AddTime = DateTime.Now;
+                entity.Msg = msg;
+                entity.VCode = code.Trim();
 
-              }
-              else
-              {
-                  return Json(new { state = -1, msg = "发送失败,返回内容：" + httpResult.StatusCode + "   " + res }, JsonRequestBehavior.AllowGet);
-              }
-               
+                HttpItem parm = new HttpItem();
+                parm.ResultType = ResultType.String;
+                parm.URL = string.Format("{0}?name={1}&password={2}&mobile={3}&message={4}",
+                    SMSServiceUrl, SMSUserName, SMSPassWord, entity.Phone, msg);
+
+
+                HttpHelper httpHelper = new HttpHelper();
+                HttpResult httpResult = httpHelper.GetHtml(parm);
+                string res = httpResult.Html;
+                if (httpResult.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    string[] str = res.Split(',');
+                    if (str[0] == "succ")
+                    {
+                       
+            
+                        using (IplusOADBContext db = new IplusOADBContext())
+                        {
+
+                            db.Add<SMSEntity>(entity);
+                            db.SaveChanges();
+
+                            return Json(new { state = 1, msg = "发送成功" }, JsonRequestBehavior.AllowGet);
+
+                        }
+
+                    }
+                    else
+                    {
+                        return Json(new { state = -1, msg = "发送失败,返回内容：" + httpResult.StatusCode + "   " + res }, JsonRequestBehavior.AllowGet);
+                    }
+
+                }
+                else
+                {
+                    return Json(new { state = -2, msg = "发送失败,返回内容：" + httpResult.StatusCode + "   " + res }, JsonRequestBehavior.AllowGet);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return Json(new { state = -2, msg = "发送失败,返回内容：" + httpResult.StatusCode + "   " + res }, JsonRequestBehavior.AllowGet);
+
+                return Json(new { state = -2, msg = ex.Message+ex.InnerException+ex.Source+ex.TargetSite+ex.StackTrace }, JsonRequestBehavior.AllowGet);
             }
+          
         }
     }
 }

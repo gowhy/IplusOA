@@ -12,6 +12,6 @@ namespace IplusOAEntity
         public string Phone { get; set; }
         public string Msg { get; set; }
         public System.DateTime AddTime { get; set; }
-        public string Code { get; set; }
+        public string VCode { get; set; }
     }
 }

@@ -12,7 +12,7 @@ namespace DataLayer.EntityMap
     {
         public SMSEntityMap()
         {
-            ToTable("SMS");
+            ToTable("sms");
         }
     }
 }
