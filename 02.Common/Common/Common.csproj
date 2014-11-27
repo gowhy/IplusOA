@@ -68,6 +68,7 @@
     <Compile Include="Extensions\GridExtensions.cs" />
     <Compile Include="Extensions\HtmlExntensions.cs" />
     <Compile Include="FTPHelper.cs" />
+    <Compile Include="HttpHelper.cs" />
     <Compile Include="IMvcRegister.cs" />
     <Compile Include="IPathResolver.cs" />
     <Compile Include="IVirtualPathProvider.cs" />

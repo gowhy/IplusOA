@@ -26,5 +26,6 @@ namespace IplusOAEntity
         public string Source { get; set; }
 
         public int UASId { get; set; }
+        public string Description { get; set; }
     }
 }

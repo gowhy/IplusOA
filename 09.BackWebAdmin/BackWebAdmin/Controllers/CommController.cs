@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Common;
 using System.IO;
 using ServiceAPI;
+using System.Text;
 
 namespace BackWebAdmin.Controllers
 {
@@ -34,14 +35,27 @@ namespace BackWebAdmin.Controllers
             }
         }
         //用户注册
-        public ActionResult AppPostAddVol(VolunteerEntity entity)
+        public ActionResult AppPostAddVol(VolunteerEntity entity, string code)
         {
 
             if (entity == null || string.IsNullOrEmpty(entity.Type) || string.IsNullOrEmpty(entity.PassWord) && (string.IsNullOrEmpty(entity.VID) && string.IsNullOrEmpty(entity.Phone)))
             {
                 Json("登陆账号、密码和用户类型是必填项");
             }
-            ReturnModel returnModel = VolService.PostAddVol(entity, Request);
+            ReturnModel returnModel = new ReturnModel();
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+
+                int existCount = db.SMSTable.Count(x => x.Phone == entity.Phone.Trim() && x.Code == code.Trim() && x.AddTime.AddMinutes(10) < DateTime.Now);
+                if (existCount==0)
+                {
+                    returnModel.Msg = "验证码失效,请重新获取";
+                    returnModel.State = -1;
+                    return Json(returnModel);
+                }
+            }
+
+            returnModel = VolService.PostAddVol(entity, Request);
             return Json(returnModel);
         }
 
@@ -199,6 +213,61 @@ namespace BackWebAdmin.Controllers
                 res.State = 1;
                 res.Msg = "成功";
                 return Json(res);
+            }
+        }
+
+        public ActionResult AppSMS(SMSEntity entity)
+        {
+
+            string SMSUserName = System.Configuration.ConfigurationManager.AppSettings["SMSUserName"];
+            string SMSPassWord = System.Configuration.ConfigurationManager.AppSettings["SMSPassWord"];
+            string SMSServiceUrl = System.Configuration.ConfigurationManager.AppSettings["SMSServiceUrl"];
+
+
+            Random rad = new Random();//实例化随机数产生器rad；
+            int value = rad.Next(1000, 10000);//用rad生成大于等于1000，小于等于9999的随机数；
+            string code = value.ToString();
+            string msg = "【社区1+1】欢迎成为社区1+1用户，您的注册验证码是：" + code + "。";
+            msg = HttpUtility.UrlEncode(msg, Encoding.GetEncoding("GBK"));
+
+            entity.AddTime = DateTime.Now;
+            entity.Msg = msg;
+            entity.Code = code.Trim();
+
+            HttpItem parm = new HttpItem();
+            parm.ResultType = ResultType.String;
+            parm.URL = string.Format("{0}?name={1}&password={2}&mobile={3}&message={4}",
+                SMSServiceUrl, SMSUserName, SMSPassWord, entity.Phone, msg);
+
+
+            HttpHelper httpHelper = new HttpHelper();
+            HttpResult httpResult = httpHelper.GetHtml(parm);
+            string res = httpResult.Html;
+            if (httpResult.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+              string[] str=  res.Split(',');
+              if (str[0] == "succ")
+              {
+                  using (IplusOADBContext db = new IplusOADBContext())
+                  {
+
+                      db.Add<SMSEntity>(entity);
+                      db.SaveChanges();
+
+                      return Json(new { state = 1, msg = "发送成功" }, JsonRequestBehavior.AllowGet);
+
+                  }
+
+              }
+              else
+              {
+                  return Json(new { state = -1, msg = "发送失败,返回内容：" + httpResult.StatusCode + "   " + res }, JsonRequestBehavior.AllowGet);
+              }
+               
+            }
+            else
+            {
+                return Json(new { state = -2, msg = "发送失败,返回内容：" + httpResult.StatusCode + "   " + res }, JsonRequestBehavior.AllowGet);
             }
         }
     }

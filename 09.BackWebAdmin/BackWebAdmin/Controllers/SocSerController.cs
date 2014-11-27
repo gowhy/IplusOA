@@ -596,6 +596,7 @@ namespace BackWebAdmin.Controllers
                 var list = from s in detail
                            join a in apply on s.Id equals a.SDId into g
                            join o in sorg on s.SocialNo equals o.SocialNO
+                           join r in record on s.Id equals r.SDId
                            from stuDesc in g.DefaultIfEmpty()
                            where
                             stuDesc.VolId == model.VId
@@ -620,6 +621,7 @@ namespace BackWebAdmin.Controllers
                                Type = s.Type,
                                VHelpDesc = s.VHelpDesc,
                                UserApplyEntity=g,
+                               SerRecord = r,
                                SocSerImgs = img.Where(x => x.SocSerId == s.Id).ToList()
 
                            };
@@ -751,6 +753,14 @@ namespace BackWebAdmin.Controllers
 
                 SerRecordEntity dbEntity = record.Find(model.Id);
 
+                if (dbEntity.BeginTime.HasValue)
+                {
+                      return Json(new { state = -1, msg = "已经开始执行" });
+                }
+                if (dbEntity.EndTime.HasValue)
+                {
+                    return Json(new { state = -2, msg = "已经执行完成" });
+                }
                 dbEntity.Img += model.Img;
                 dbEntity.BeginTime = DateTime.Now;
 
@@ -778,6 +788,16 @@ namespace BackWebAdmin.Controllers
 
 
                 SerRecordEntity dbEntity = record.Find(model.Id);
+
+                if (!dbEntity.BeginTime.HasValue)
+                {
+                    return Json(new { state = -1, msg = "还没有开始执行" });
+                }
+
+                if (dbEntity.EndTime.HasValue)
+                {
+                    return Json(new { state = -2, msg = "已经执行完成" });
+                }
 
                 dbEntity.Img += model.Img;
                 dbEntity.EndTime = DateTime.Now;
