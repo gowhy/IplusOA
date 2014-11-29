@@ -37,26 +37,46 @@ namespace BackWebAdmin.Controllers
         //用户注册
         public ActionResult AppPostAddVol(VolunteerEntity entity, string code)
         {
-
-            if (entity == null || string.IsNullOrEmpty(entity.Type) || string.IsNullOrEmpty(entity.PassWord) && (string.IsNullOrEmpty(entity.VID) && string.IsNullOrEmpty(entity.Phone)))
-            {
-                Json("登陆账号、密码和用户类型是必填项");
-            }
             ReturnModel returnModel = new ReturnModel();
-            using (IplusOADBContext db = new IplusOADBContext())
+            try
             {
 
-                int existCount = db.SMSTable.Count(x => x.Phone == entity.Phone.Trim() && x.VCode == code.Trim() && x.AddTime.AddMinutes(10) < DateTime.Now);
-                if (existCount==0)
-                {
-                    returnModel.Msg = "验证码失效,请重新获取";
-                    returnModel.State = -1;
-                    return Json(returnModel);
-                }
-            }
 
-            returnModel = VolService.PostAddVol(entity, Request);
-            return Json(returnModel);
+                if (entity == null || string.IsNullOrEmpty(code) || string.IsNullOrEmpty(entity.Type) || string.IsNullOrEmpty(entity.PassWord) && (string.IsNullOrEmpty(entity.VID) && string.IsNullOrEmpty(entity.Phone)))
+                {
+                    Json("登陆账号、密码、验证码和用户类型是必填项", JsonRequestBehavior.AllowGet);
+                }
+            
+                using (IplusOADBContext db = new IplusOADBContext())
+                {
+
+                     returnModel = VolService.AccountExist(entity);
+                     if (returnModel == null || returnModel.State != 0)
+                     {
+                         return  Json(returnModel, JsonRequestBehavior.AllowGet);;
+                     }
+
+                    DateTime codeOutTime=DateTime.Now.AddMinutes(-10);
+                  //  int existCount = db.SMSTable.Count(x => x.Phone == entity.Phone.Trim() && x.VCode == code.Trim() && x.AddTime< codeOutTime);
+                    int existCount = db.SMSTable.Count(x => x.Phone == entity.Phone.Trim() && x.VCode == code.Trim() && x.AddTime < codeOutTime);
+                    if (existCount == 0)
+                    {
+                        returnModel.Msg = "验证码失效,请重新获取";
+                        returnModel.State = -2;
+                        return Json(returnModel, JsonRequestBehavior.AllowGet);
+                    }
+                }
+
+                returnModel = VolService.PostAddVol(entity, Request);
+                return Json(returnModel, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                returnModel.Msg = ex.Message+ex.Source+ex.StackTrace+ex.TargetSite+ex.InnerException;
+                returnModel.State = -4;
+                return Json(returnModel, JsonRequestBehavior.AllowGet);
+                throw;
+            }
         }
 
         /// <summary>

@@ -204,6 +204,7 @@
     <Compile Include="Models\SocSer\ShowDetailUserApplyInfo.cs" />
     <Compile Include="Models\SocSer\ShowDetailUserApplySerModel.cs" />
     <Compile Include="Models\SocSer\SelectUserApplySerModel.cs" />
+    <Compile Include="Models\SocSer\ShowVolDoingModel.cs" />
     <Compile Include="Models\SOrg\SelectSorgModel.cs" />
     <Compile Include="Models\UEditorModel.cs" />
     <Compile Include="Models\Vol\SelectVolModel.cs" />

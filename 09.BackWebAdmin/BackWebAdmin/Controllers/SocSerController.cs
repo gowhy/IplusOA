@@ -951,5 +951,46 @@ namespace BackWebAdmin.Controllers
                 return View(model);
             }
         }
+        public ActionResult  VolDoingIndex(SerRecordEntity model, GridSortOptions sort, int? page, int? pageSize = 20)
+        {
+
+            var pageNumber = page ?? 1;
+            int size = pageSize ?? 20;
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+
+
+                var apply = db.UserApplyServiceTable;
+                var vol = db.VolunteerEntityTable;
+                var detail = db.SocServiceDetailEntityTable;
+                var record = db.SerRecordTable;
+                var sorg = db.SocialOrgEntityTable;
+                var img = db.SocSerImgTable;
+
+                var list = from r in record
+                           join d in detail on r.SDId equals d.Id into g
+                           from gd in g.DefaultIfEmpty()
+                           join v in vol on r.VId equals v.Id
+                           join a in apply on r.UASId equals a.Id into g2
+                           from ga in g2.DefaultIfEmpty()
+                           join v2 in vol on ga.VolId equals v2.Id
+                           join o in sorg on gd.SocialNo equals o.SocialNO
+
+                           where v.DepId.StartsWith(AdminUser.DeptId)
+                           select new ShowVolDoingModel
+                           {
+                               SocServiceDetail = gd,
+                               Record = r,
+                               User = v,
+                               Vol = v2
+
+                           };
+
+                var res = list.OrderByDescending(x => x.Record.Id).ToPagedList(pageNumber - 1, size);
+
+                return View(res);
+            }
+        }
+
     }
 }
