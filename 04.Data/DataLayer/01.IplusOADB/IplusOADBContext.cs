@@ -45,10 +45,11 @@ namespace DataLayer.IplusOADB
             modelBuilder.Configurations.Add(new UserApplyServiceMap());
             modelBuilder.Configurations.Add(new LogEntityMap());
             modelBuilder.Configurations.Add(new SMSEntityMap());
-            
-           // modelBuilder.Entity<VolunteerEntity>().Property(p => p.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
-           
-            
+            modelBuilder.Configurations.Add(new SystemMsgEntityMap());
+
+            // modelBuilder.Entity<VolunteerEntity>().Property(p => p.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+
+
         }
 
 
@@ -90,5 +91,8 @@ namespace DataLayer.IplusOADB
 
         public virtual DbSet<LogEntity> LogTable { get; set; }
         public virtual DbSet<SMSEntity> SMSTable { get; set; }
+        public virtual DbSet<SystemMsgEntity> SystemMsgTable { get; set; }
+
+
     }
 }

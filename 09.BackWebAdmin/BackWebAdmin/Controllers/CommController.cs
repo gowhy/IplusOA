@@ -58,7 +58,7 @@ namespace BackWebAdmin.Controllers
 
                     DateTime codeOutTime=DateTime.Now.AddMinutes(-10);
                   //  int existCount = db.SMSTable.Count(x => x.Phone == entity.Phone.Trim() && x.VCode == code.Trim() && x.AddTime< codeOutTime);
-                    int existCount = db.SMSTable.Count(x => x.Phone == entity.Phone.Trim() && x.VCode == code.Trim() && x.AddTime < codeOutTime);
+                    int existCount = db.SMSTable.Count(x => x.Phone == entity.Phone.Trim() && x.VCode == code.Trim() && x.AddTime > codeOutTime);
                     if (existCount == 0)
                     {
                         returnModel.Msg = "验证码失效,请重新获取";
@@ -300,5 +300,20 @@ namespace BackWebAdmin.Controllers
             }
           
         }
+
+        public ActionResult AppSystemMsg(int? page)
+        {
+
+            var pageNumber = page ?? 1;
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                var msg = db.SystemMsgTable;
+
+                var list = from m in msg where m.State == 0 && m.BeginTime < DateTime.Now && m.EndTime > DateTime.Now select m;
+
+                return Json(list.ToPagedList(pageNumber - 1, pageSize));
+            }
+        }
+
     }
 }

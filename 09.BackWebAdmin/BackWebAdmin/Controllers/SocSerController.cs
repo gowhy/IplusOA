@@ -925,7 +925,10 @@ namespace BackWebAdmin.Controllers
                                             { SocSerDetail = d, 
                                               SOrg=sorg.Where(x=>x.SocialNO==d.SocialNo).FirstOrDefault(),
                                               UserApplyList = apply.Where(x => x.SDId == d.Id).ToList() }).FirstOrDefault();
-
+                if (list==null)
+                {
+                       return View(model);
+                }
                 model.SocSerDetail = list.SocSerDetail;
                 model.SOrg = list.SOrg;
               //  model.UserApplyList = list.UserApplyList.ToList();
@@ -951,6 +954,14 @@ namespace BackWebAdmin.Controllers
                 return View(model);
             }
         }
+        /// <summary>
+        /// 执行任务中的志愿者
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="sort"></param>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
         public ActionResult  VolDoingIndex(SerRecordEntity model, GridSortOptions sort, int? page, int? pageSize = 20)
         {
 

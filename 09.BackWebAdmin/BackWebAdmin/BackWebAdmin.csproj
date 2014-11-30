@@ -181,6 +181,7 @@
     <Compile Include="Controllers\AppVerController.cs" />
     <Compile Include="Controllers\ServiceAdImgController.cs" />
     <Compile Include="Controllers\SuggestionController.cs" />
+    <Compile Include="Controllers\SystemMsgController.cs" />
     <Compile Include="Controllers\TSController.cs" />
     <Compile Include="Controllers\WorkGuideController.cs" />
     <Compile Include="Controllers\NoticeController.cs" />
@@ -1174,6 +1175,9 @@
     <Content Include="Views\SocSer\UserApplyServiceAuditing.cshtml" />
     <Content Include="Views\SocSer\Detail.cshtml" />
     <Content Include="Views\Log\Index.cshtml" />
+    <Content Include="Views\SystemMsg\Index.cshtml" />
+    <Content Include="Views\SystemMsg\Add.cshtml" />
+    <Content Include="Views\SocSer\VolDoingIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\02.Common\Common\Common.csproj">

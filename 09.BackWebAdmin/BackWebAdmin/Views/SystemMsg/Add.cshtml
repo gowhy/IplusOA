@@ -1,0 +1,64 @@
+﻿@using Common;
+
+
+@Html.IncludeCSS("~/Content/EasyUI/themes/gray/easyui.css")
+@Html.IncludeCSS("~/Content/EasyUI/themes/icon.css")
+@Html.IncludeScript("~/Content/EasyUI/jquery.easyui.min.js")
+@Html.IncludeScript("~/Content/plug-in/My97DatePicker/WdatePicker.js")
+<style>
+    .panel-tool {
+        width: 95%;
+        float: left;
+    }
+
+    .item_title {
+        background: none;
+    }
+</style>
+
+<div class="main">
+
+    <div class="blank5"></div>
+    <form name="postadd" id="postadd" action="@Url.Action("PostAdd")" method="post" enctype="multipart/form-data" >
+        <table class="form" cellpadding="0" cellspacing="0">
+            <tbody>
+                <tr>
+                    <td class="item_title">标题:</td>
+                    <td class="item_input"><input type="text" class="textbox require" name="Title" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">消息内容:</td>
+                    <td class="item_input">
+                        <textarea class="textbox require" name="Content" rows="5" cols="30"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="item_title">有效期:</td>
+                 
+                    <td class="item_input">
+                    <input type="text" class="textbox require" name="BeginTime" onclick="WdatePicker()" />~<input type="text" class="textbox require" name="EndTime" onclick="WdatePicker()" />
+                    </td>
+                
+                </tr>
+
+                <tr>
+                    <td class="item_title"></td>
+                    <td class="item_input">
+                      
+                        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">新增</a>
+                        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">重置</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <script>
+            function submitForm() {
+                $('#postadd').submit();
+            }
+            function clearForm() {
+                $('#postadd').form('clear');
+            }
+
+        </script>
+    </form>
+</div>

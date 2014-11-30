@@ -1,0 +1,49 @@
+﻿@model  Common.IPagedList<IplusOAEntity.SystemMsgEntity>
+@using MvcContrib.UI.Grid
+@using MvcContrib.Pagination;
+@using MvcContrib.UI.Pager;
+@using Common;
+@section HeadSection {
+    <script type="text/javascript">
+        function addMsg() {
+
+            var url = '@Url.Action("Add")' + '?id=' +00;
+
+            showAjaxResult(url, "发布系统消息", 550, 300);
+        }
+   
+        function deleteMsg(id) {
+
+            var url = '@Url.Action("Delete")' + '?id=' + id;
+            deleteMethod(id, "Delete");
+        }
+    </script>
+
+}
+
+<div id="button-bar">
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-add'" title="新增" href="javascript: addMsg()">新增</a>
+</div>
+<div class="grid_box">
+    <div class="grid_top">
+    </div>
+
+    @Html.Grid(Model).Columns(column =>
+    {
+        //column.CheckBox(x => x.Id);
+        column.For(x => x.Id).Named("编号");
+        column.For(x => x.Title ?? "").Named("标题");
+        column.For(x => x.AddTime.ToString("yyyy-MM-dd HH:mm")).Named("发布时间");
+        column.For(x => x.Content ?? "").Named("消息内容");
+        column.For(x => x.BeginTime.ToString("yyyy-MM-dd")).Named("生效时间");
+        column.For(x => x.EndTime.ToString("yyyy-MM-dd")).Named("过期时间");
+        column.Buttons(btn => btn.Add(x => Html.ScriptLink("删除", "deleteMsg({0})", x.Id))
+
+            );
+    }).Complex(ViewData)
+    <div class="grid_foot">
+    </div>
+</div>
+<div class="blank5">
+</div>
+@Html.Pager(Model)

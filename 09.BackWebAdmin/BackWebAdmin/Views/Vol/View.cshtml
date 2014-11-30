@@ -9,7 +9,7 @@
 </script>
 <div class="main">
     <div class="main_title">
-        自愿者信息修改
+        用户信息
     </div>
     <div class="blank5"></div>
     <form name="edit" action="@Url.Action("PostEdit")" method="post" enctype="multipart/form-data" onsubmit="return check_incharge_form();">
@@ -93,7 +93,7 @@
                 </tr>
                 <tr>
                     <td class="item_title">社会组织编号:</td>
-                    <td class="item_input"><input disabled="disabled" type="text" class="textbox" name="SocID" value="@Model.SocID" /></td>
+                    <td class="item_input"><input disabled="disabled" type="text" class="textbox" name="SocialNO" value="@Model.SocialNO" /></td>
                 </tr>
                 <tr>
                     <td class="item_title">审核:</td>
