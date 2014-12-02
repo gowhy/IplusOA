@@ -15,6 +15,7 @@ namespace BackWebAdmin.CommService
 
         public bool BllPostEdit(RoleEditRole model, ref string errMsg)
         {
+           
             RoleManager manager = new RoleManager();
             manager.UpdateRole(model.ID, model.Name, model.IsEffect, ref errMsg);
             manager.UpdateRoleAccess(model.ID, model.RoleModule, model.RoleNode, ref errMsg);

@@ -528,8 +528,8 @@ namespace BackWebAdmin.Controllers
                            join o in sorg on s.SocialNo equals o.SocialNO
                            from stuDesc in g.DefaultIfEmpty()
                            where
-                           ( stuDesc.Num > record.Count(x => x.UASId == stuDesc.Id)
-                            || record.Count(x => x.UASId == stuDesc.Id) == 0) && apply.Count(x => x.State == 1&&x.SDId==s.Id) > 0 && stuDesc.VolId!=model.VId
+                           (stuDesc.Num > record.Count(x => x.UASId == stuDesc.Id)
+                            || record.Count(x => x.UASId == stuDesc.Id) == 0) && apply.Count(x => x.State == 1 && x.SDId == s.Id) > 0 && stuDesc.VolId != model.VId
                            select new SocServiceDetailEntityClone
                              {
                                  AddTime = s.AddTime,
@@ -567,7 +567,7 @@ namespace BackWebAdmin.Controllers
                 list = list.Where(x => DateTime.Now > x.PubTime && DateTime.Now < x.EndTime);
                 var res = list.OrderBy(x => x.Id).ToPagedList(pageNumber - 1, size);
 
-                return Json(res.DistinctBy(x=>x.Id).ToList(), JsonRequestBehavior.AllowGet);
+                return Json(res.DistinctBy(x => x.Id).ToList(), JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -600,7 +600,7 @@ namespace BackWebAdmin.Controllers
                            from stuDesc in g.DefaultIfEmpty()
                            where
                             stuDesc.VolId == model.VId
-                           select new 
+                           select new
                            {
                                AddTime = s.AddTime,
                                SocialName = o.Name,
@@ -620,12 +620,12 @@ namespace BackWebAdmin.Controllers
                                THSScore = s.THSScore,
                                Type = s.Type,
                                VHelpDesc = s.VHelpDesc,
-                               UserApplyEntity=g,
+                               UserApplyEntity = g,
                                SerRecord = r,
                                SocSerImgs = img.Where(x => x.SocSerId == s.Id).ToList()
 
                            };
-      
+
                 var res = list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size);
                 return Json(res, JsonRequestBehavior.AllowGet);
             }
@@ -702,15 +702,15 @@ namespace BackWebAdmin.Controllers
                 var img = db.SocSerImgTable;
 
 
-             
-                if (record.Count(r=>r.SDId==model.SDId&&r.VId==model.VId)>0)
+
+                if (record.Count(r => r.SDId == model.SDId && r.VId == model.VId) > 0)
                 {
-                    return Json(new { state = 0, msg = "该服务你已经成功申请成为志愿者,不能再申请." }); 
+                    return Json(new { state = 0, msg = "该服务你已经成功申请成为志愿者,不能再申请." });
                 }
                 UserApplyServiceEntity userApply = (from a in apply
                                                     where a.SDId == model.SDId
                                                     && (a.Num > (record.Count(x => x.UASId == a.Id))
-                                                    || record.Count(x => x.UASId == a.Id) == 0)&&a.State==1
+                                                    || record.Count(x => x.UASId == a.Id) == 0) && a.State == 1
                                                     select a).OrderByDescending(x => x.Id).FirstOrDefault();
                 if (userApply == null)
                 {
@@ -755,7 +755,7 @@ namespace BackWebAdmin.Controllers
 
                 if (dbEntity.BeginTime.HasValue)
                 {
-                      return Json(new { state = -1, msg = "已经开始执行" });
+                    return Json(new { state = -1, msg = "已经开始执行" });
                 }
                 if (dbEntity.EndTime.HasValue)
                 {
@@ -780,7 +780,7 @@ namespace BackWebAdmin.Controllers
             {
 
                 var apply = db.UserApplyServiceTable;
-                // var vol = db.VolunteerEntityTable;
+                var vol = db.VolunteerEntityTable;
                 var detail = db.SocServiceDetailEntityTable;
                 var record = db.SerRecordTable;
                 var sorg = db.SocialOrgEntityTable;
@@ -798,6 +798,15 @@ namespace BackWebAdmin.Controllers
                 {
                     return Json(new { state = -2, msg = "已经执行完成" });
                 }
+
+
+
+                SocServiceDetailEntity dtEntity = detail.Find(model.SDId);
+
+                VolunteerEntity volEntity = vol.Find(model.VId);
+                volEntity.Score = volEntity.Score + dtEntity.Score;
+                db.Update<VolunteerEntity>(volEntity);
+                db.SaveChanges();
 
                 dbEntity.Img += model.Img;
                 dbEntity.EndTime = DateTime.Now;
@@ -869,10 +878,10 @@ namespace BackWebAdmin.Controllers
 
                 var list = from s in detail
                            //join a in apply on s.Id equals a.SDId into g
-                           join a in apply on s.Id equals a.SDId 
+                           join a in apply on s.Id equals a.SDId
                            join o in sorg on s.SocialNo equals o.SocialNO
                            join r in record on s.Id equals r.SDId
-                           where r.VId == model.VId && a != null && r.UASId==a.Id
+                           where r.VId == model.VId && a != null && r.UASId == a.Id
                            select new SocServiceDetailEntityClone
                              {
                                  AddTime = s.AddTime,
@@ -897,7 +906,7 @@ namespace BackWebAdmin.Controllers
                                  //UserApplyEntity = g.FirstOrDefault(x => x.SDId == s.Id),
                                  UserApplyEntity = a,
                                  SocSerImgs = img.Where(x => x.SocSerId == s.Id).ToList(),
-                                 VolCount=record.Count(x=>x.SDId==s.Id&&x.UASId==a.Id)
+                                 VolCount = record.Count(x => x.SDId == s.Id && x.UASId == a.Id)
 
                              };
 
@@ -921,36 +930,38 @@ namespace BackWebAdmin.Controllers
 
                 ShowDetailUserApply list = (from d in detail
                                             where d.Id == Id
-                                            select new ShowDetailUserApply 
-                                            { SocSerDetail = d, 
-                                              SOrg=sorg.Where(x=>x.SocialNO==d.SocialNo).FirstOrDefault(),
-                                              UserApplyList = apply.Where(x => x.SDId == d.Id).ToList() }).FirstOrDefault();
-                if (list==null)
+                                            select new ShowDetailUserApply
+                                            {
+                                                SocSerDetail = d,
+                                                SOrg = sorg.Where(x => x.SocialNO == d.SocialNo).FirstOrDefault(),
+                                                UserApplyList = apply.Where(x => x.SDId == d.Id).ToList()
+                                            }).FirstOrDefault();
+                if (list == null)
                 {
-                       return View(model);
+                    return View(model);
                 }
                 model.SocSerDetail = list.SocSerDetail;
                 model.SOrg = list.SOrg;
-              //  model.UserApplyList = list.UserApplyList.ToList();
+                //  model.UserApplyList = list.UserApplyList.ToList();
                 model.UserRecApplyList = model.UserRecApplyList ?? new List<ApplyUserRecVol>();
                 foreach (var item in list.UserApplyList)
                 {
                     ApplyUserRecVol aurv = new ApplyUserRecVol();
                     //志愿者信息
                     IList<RecVol> rdvList = (from r in record
-                                                             join v in vol on r.VId equals v.Id
-                                                             where r.UASId==item.Id
-                                                 select new RecVol { RecordEntity = r, Vol = v }).ToList();
-                  
+                                             join v in vol on r.VId equals v.Id
+                                             where r.UASId == item.Id
+                                             select new RecVol { RecordEntity = r, Vol = v }).ToList();
+
                     VolunteerEntity userInfo = vol.SingleOrDefault(x => x.Id == item.VolId);
                     aurv.SerVolList = rdvList;
                     aurv.ApplyUserInfo = userInfo;
-                    aurv.UserApplyService = list.UserApplyList.FirstOrDefault(x=>x.Id==item.Id);
+                    aurv.UserApplyService = list.UserApplyList.FirstOrDefault(x => x.Id == item.Id);
                     model.UserRecApplyList.Add(aurv);
                 }
 
                 //var m = model;
-               // return Json(model,JsonRequestBehavior.AllowGet);
+                // return Json(model,JsonRequestBehavior.AllowGet);
                 return View(model);
             }
         }
@@ -962,7 +973,8 @@ namespace BackWebAdmin.Controllers
         /// <param name="page"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        public ActionResult  VolDoingIndex(SerRecordEntity model, GridSortOptions sort, int? page, int? pageSize = 20)
+        [SecurityNode(Name = "执行任务中的志愿者")]
+        public ActionResult VolDoingIndex(SerRecordEntity model, GridSortOptions sort, int? page, int? pageSize = 20)
         {
 
             var pageNumber = page ?? 1;
@@ -1000,6 +1012,31 @@ namespace BackWebAdmin.Controllers
                 var res = list.OrderByDescending(x => x.Record.Id).ToPagedList(pageNumber - 1, size);
 
                 return View(res);
+            }
+        }
+
+        public ActionResult AppUserComment(SerRecordEntity model)
+        {
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+
+                var record = db.SerRecordTable;
+                SerRecordEntity dbEntity = record.Find(model.Id);
+                if (!dbEntity.BeginTime.HasValue)
+                {
+                    return Json(new { state = -1, msg = "还没有开始执行,不能评价" });
+                }
+
+                if (!dbEntity.EndTime.HasValue)
+                {
+                    return Json(new { state = -2, msg = "服务还没有执行完成,不能评价" });
+                }
+
+                dbEntity.Comment = model.Comment;
+                db.Update<SerRecordEntity>(dbEntity);
+                db.SaveChanges();
+
+                return Json(new { state = 1, msg = "成功" });
             }
         }
 

@@ -33,6 +33,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00.Doc", "00.Doc", "{2196078D-C9E9-4B17-B8A7-11F8CF90AC27}"
 	ProjectSection(SolutionItems) = preProject
 		00.Doc\iplusoa_db1129.sql = 00.Doc\iplusoa_db1129.sql
+		00.Doc\MySql_每月第一天清零感谢分.txt = 00.Doc\MySql_每月第一天清零感谢分.txt
 		00.Doc\SqlBak.txt = 00.Doc\SqlBak.txt
 		00.Doc\短信发送接口文档.doc = 00.Doc\短信发送接口文档.doc
 		00.Doc\社区1+1开发说明文档.docx = 00.Doc\社区1+1开发说明文档.docx

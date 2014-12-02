@@ -72,7 +72,13 @@ namespace BackWebAdmin.Controllers
         [SecurityNode(Name = "保存修改")]
         public ActionResult PostEdit(RoleEditRole model)
         {
+          
             string errMsg = "";
+
+            if (RoleManager.ExistRole(model.Name))
+            {
+                return Error("该角色名已经存在,请修改为其他");
+            }
             RoleCommService role = new RoleCommService();
             role.BllPostEdit(model, ref errMsg);
             if (!string.IsNullOrEmpty(errMsg))

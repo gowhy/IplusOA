@@ -1,0 +1,49 @@
+﻿@model  IPagedList<BackWebAdmin.Models.ShowVolDoingModel>
+@using MvcContrib.UI.Grid
+@using MvcContrib.Pagination;
+@using MvcContrib.UI.Pager;
+@using Common;
+
+<style>
+    .combo {
+        vertical-align: bottom;
+    }
+</style>
+<form id="indexFrom"></form>
+<div class="grid_box" style=" overflow-x:auto; width:2600px;">
+    <div class="grid_top">
+    </div>
+    @Html.Grid(Model).Columns(column =>
+                                  {
+                                      // column.CheckBox(x => x.Id);
+                                      //   column.For(x => x.Id).Named("编号").HeaderAttributes(style => "width:50px;align:center;");
+                                      column.For(x => x.Record.Id).Named("记录Id");
+                                      //column.For(x => x.Vol.Phone).Named("志愿者电话");
+                                      column.For(x => Html.ActionLink(x.Vol.Phone, "View", "Vol", new { id = x.User.Id }, new { title = "点击查看志愿者详细信息" })).Named("志愿者电话");
+                                      column.For(x => x.Vol.RealName).Named("志愿者真实姓名");
+                                      //column.For(x => x.Vol.Address).Named("志愿者地址");
+                                      //column.For(x => x.Vol.EMail).Named("志愿者邮箱");
+                                      column.For(x => Html.ActionLink(x.User.Phone, "View", "Vol", new { id = x.User.Id}, new { title = "点击查看被服务对象详细信息" })).Named("服务对象电话");
+                                      column.For(x => x.User.RealName).Named("服务对象真实姓名");
+                                      //column.For(x => x.User.Address).Named("服务对象地址");
+                                      //column.For(x => x.User.EMail).Named("服务对象邮箱");
+                                      column.For(x => x.Record.Comment).Named("服务评价");
+                                      column.For(x => x.Record.Description).Named("服务描述");
+                                      column.For(x => x.Record.BeginTime.HasValue ? x.Record.BeginTime.Value.ToString("yyyy-MM-dd HH:mm") : "").Named("服务开始执行时间");
+                                      column.For(x => x.Record.EndTime.HasValue ? x.Record.EndTime.Value.ToString("yyyy-MM-dd HH:mm") : "").Named("服务完成时间");
+
+                                     // column.For(x => x.SocServiceDetail.Context).Named("社会服务内容");
+                                      column.For(x => Html.ActionLink(x.SocServiceDetail.Context, "Detail", "SocSer", new { id = x.SocServiceDetail.Id }, new { title = "点击查看服务详细信息" })).Named("社会服务内容");
+                                      column.For(x => x.SocServiceDetail.Desc).Named("社会服务详情").HeaderAttributes(style => "width:260px;align:center;"); ;
+                                      column.For(x => x.SocServiceDetail.Phone).Named("社会服务联系电话");
+                                      column.For(x => x.SocServiceDetail.Contacts).Named("社会服务联系人");
+                                      column.For(x => x.SocServiceDetail.PubTime.HasValue ? x.SocServiceDetail.PubTime.Value.ToString("yyyy-MM-dd HH:mm") : "").Named("社会服务开始时间");
+                                      column.For(x => x.SocServiceDetail.EndTime.HasValue ? x.SocServiceDetail.EndTime.Value.ToString("yyyy-MM-dd HH:mm") : "").Named("社会服务截止时间");
+
+                                      //column.Buttons(btns => btns.Add(x => Html.ActionLink("查看", "view", new { id = x.Id })));
+                                  }).Complex(ViewData)
+    <div class="grid_foot">
+    </div>
+</div>
+
+@Html.Pager(Model)

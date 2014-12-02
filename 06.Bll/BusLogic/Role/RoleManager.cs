@@ -16,7 +16,7 @@ namespace BusLogic.Role
             {
                 if (ExistRole(name))
                 {
-                    msg = "管理员角色已经存在";
+                    msg = "角色已经存在";
                     return false;
                 }
                 var role = new RoleEntity
@@ -61,7 +61,7 @@ namespace BusLogic.Role
             }
         }
 
-        private static bool ExistRole(string roleName)
+        public static bool ExistRole(string roleName)
         {
             IplusOADBContext db = new IplusOADBContext();
             return db.RoleTable.Count(x => x.Name == roleName) > 0;

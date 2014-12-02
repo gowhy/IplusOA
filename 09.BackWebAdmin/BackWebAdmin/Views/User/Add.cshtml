@@ -123,6 +123,7 @@
                     </td>
                     <td class="item_input">
                         <select name="SocOrgId">
+                            <option value="-1">无</option>
                             @foreach (var soc in ViewData["SocialOrg_List"] as IList<IplusOAEntity.SocialOrgEntity> ?? new List<IplusOAEntity.SocialOrgEntity>())
                             {
                                 <option value="@soc.Id">@soc.Name</option>

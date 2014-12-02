@@ -1,0 +1,6 @@
+第一步
+SHOW VARIABLES LIKE '%sche%';
+第二步
+SET GLOBAL event_scheduler =1;
+第三步：
+CREATE EVENT `init_Vol_Score_event` ON SCHEDULE EVERY 1 DAY STARTS '2010-11-01 0:00:00' ON COMPLETION PRESERVE ENABLE DO      UPDATE    volunteer  SET thscore=20;

@@ -137,7 +137,7 @@
                     </td>
                     <td class="item_input">
                         <select name="SocOrgId">
-                            @*<option value="-1">无</option>*@
+                            <option value="-1">无</option>
                             @foreach (var soc in ViewData["SocialOrg_List"] as IList<IplusOAEntity.SocialOrgEntity> ?? new List<IplusOAEntity.SocialOrgEntity>())
                             {
                                 <option value="@soc.Id" @(Model.SocOrgId == soc.Id ? "selected = \"selected\"" : "")>@soc.Name</option>
