@@ -3,4 +3,15 @@ SHOW VARIABLES LIKE '%sche%';
 第二步
 SET GLOBAL event_scheduler =1;
 第三步：
-CREATE EVENT `init_Vol_Score_event` ON SCHEDULE EVERY 1 DAY STARTS '2010-11-01 0:00:00' ON COMPLETION PRESERVE ENABLE DO      UPDATE    volunteer  SET thscore=20;
+1.废弃
+CREATE EVENT `init_Vol_Score_event` ON SCHEDULE EVERY 1 DAY STARTS '2010-11-01 0:00:00' ON COMPLETION PRESERVE ENABLE DO      UPDATE    volunteer  SET thsscore=20;
+
+2.改进版正在使用
+CREATE  EVENT    init_Vol_Score_event
+ON  SCHEDULE  EVERY  1  MONTH  STARTS DATE_ADD(DATE_ADD(DATE_SUB(CURDATE(),INTERVAL DAY(CURDATE())-1 DAY), INTERVAL 1 MONTH),INTERVAL 1 HOUR)
+ON  COMPLETION  PRESERVE  ENABLE
+DO UPDATE     volunteer  SET thsscore=20;
+
+第四步：
+查询事件情况
+SELECT * FROM information_schema.events WHERE event_name='init_Vol_Score_event';

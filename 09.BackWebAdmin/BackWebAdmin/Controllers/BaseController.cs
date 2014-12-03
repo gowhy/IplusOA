@@ -1,5 +1,6 @@
 ﻿using BackWebAdmin.Models;
 using Common;
+using DataLayer.IplusOADB;
 using IplusOAEntity;
 using SSO;
 using System;
@@ -95,10 +96,21 @@ namespace BackWebAdmin.Controllers
 
             if (filterContext.IsChildAction) return;
 
+          
+            LogEntity model = new LogEntity();
+            model.Module = "OA";
+            model.UserId = AdminUser.UserName;
+            model.Type = "Exception";
+            model.Content = filterContext.Exception.Message + filterContext.Exception.InnerException
+                + filterContext.Exception.Source + filterContext.Exception.StackTrace + filterContext.Exception.TargetSite;
+          //  log4net.LogManager.GetLogger(this.GetType()).Error(filterContext.Exception.Message, filterContext.Exception);
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                model.AddTime = DateTime.Now;
+                db.Add<LogEntity>(model);
+                db.SaveChangesAsync();
+            }
             filterContext.Result = Error(filterContext.Exception.Message);
-
-            log4net.LogManager.GetLogger(this.GetType()).Error(filterContext.Exception.Message, filterContext.Exception);
-
             filterContext.ExceptionHandled = true;
         }
 

@@ -788,7 +788,10 @@ namespace BackWebAdmin.Controllers
 
 
                 SerRecordEntity dbEntity = record.Find(model.Id);
-
+                if (dbEntity==null)
+                {
+                      return Json(new { state = -3, msg = "服务记录不存在" });
+                }
                 if (!dbEntity.BeginTime.HasValue)
                 {
                     return Json(new { state = -1, msg = "还没有开始执行" });
@@ -801,13 +804,19 @@ namespace BackWebAdmin.Controllers
 
 
 
-                SocServiceDetailEntity dtEntity = detail.Find(model.SDId);
+                SocServiceDetailEntity dtEntity = detail.Find(dbEntity.SDId);
 
-                VolunteerEntity volEntity = vol.Find(model.VId);
+                if (dtEntity==null)
+                {
+                    return Json(new { state = -5, msg = "服务详情不存在" });
+                }
+
+                VolunteerEntity volEntity = vol.Find(dbEntity.VId);
                 volEntity.Score = volEntity.Score + dtEntity.Score;
                 db.Update<VolunteerEntity>(volEntity);
                 db.SaveChanges();
 
+                dbEntity.Description = model.Description;
                 dbEntity.Img += model.Img;
                 dbEntity.EndTime = DateTime.Now;
                 db.Update<SerRecordEntity>(dbEntity);
