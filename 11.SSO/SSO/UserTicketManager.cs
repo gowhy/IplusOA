@@ -20,11 +20,11 @@ namespace SSO
         {
            string strUserName=adminUser.UserName;
            int roleId = adminUser.RoleId??0;
-           string deptId = adminUser.DeptId;
+           string userId = adminUser.Id.ToString();
            int socOrgId = adminUser.SocOrgId??0;
             //构造Form验证的票据信息  
             FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, strUserName, DateTime.Now, DateTime.Now.AddMinutes(90),
-                true, string.Format("{0}:{1}:{2}:{3}", strUserName, roleId, deptId, socOrgId), FormsAuthentication.FormsCookiePath);
+                true, string.Format("{0}:{1}:{2}:{3}", strUserName, roleId, userId, socOrgId), FormsAuthentication.FormsCookiePath);
 
             string ticString = FormsAuthentication.Encrypt(ticket);
 
@@ -68,7 +68,7 @@ namespace SSO
 
                 user.UserName = userInfoArr[0];
                 user.RoleId =int.Parse(userInfoArr[1]??"0");
-                user.DeptId =userInfoArr[2] ?? "";
+                user.Id = int.Parse(userInfoArr[2] ?? "0");
                 user.SocOrgId = int.Parse(userInfoArr[3] ?? "0");
                 return true;
             }

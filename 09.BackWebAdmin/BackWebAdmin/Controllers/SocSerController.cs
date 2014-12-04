@@ -40,8 +40,13 @@ namespace BackWebAdmin.Controllers
         public ActionResult ManagerIndex(int? page, SelectSocSerModel model, GridSortOptions sort)
         {
             var pageNumber = page ?? 1;
-            string depId = AdminUser.DeptId.ToString();
 
+            string depId = "";
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                var vol = db.VolunteerEntityTable;
+                depId = (from v in vol where v.Id == AdminUser.Id select v.DepId).FirstOrDefault();
+            }
             model.SocSerList = SocSerService.TypeList(pageNumber, pageSize, depId, model, sort);
             return View(model);
         }
@@ -50,8 +55,12 @@ namespace BackWebAdmin.Controllers
         {
             var pageNumber = page ?? 1;
             int size = pageSize ?? 20;
-            string depId = AdminUser.DeptId.ToString();
-
+            string depId ="";
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                var vol = db.VolunteerEntityTable;
+                depId =( from v in vol where v.Id == AdminUser.Id select v.DepId).FirstOrDefault();
+            }
             return Json(SocSerService.TypeList(pageNumber, size, depId, model, sort), JsonRequestBehavior.AllowGet);
         }
 
@@ -1047,6 +1056,24 @@ namespace BackWebAdmin.Controllers
 
                 return Json(new { state = 1, msg = "成功" });
             }
+        }
+        /// <summary>
+        /// 通过Id获取服务详细信息
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="sort"></param>
+        /// <returns></returns>
+        public ActionResult AppGetByIdSocSerDetail(SelectSocSerModel model, GridSortOptions sort)
+        {
+            var pageNumber = 1;
+            int size = 1;
+            string depId = "";
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                var vol = db.VolunteerEntityTable;
+                depId = (from v in vol where v.Id == AdminUser.Id select v.DepId).FirstOrDefault();
+            }
+            return Json(SocSerService.TypeList(pageNumber, size, depId, model, sort), JsonRequestBehavior.AllowGet);
         }
 
     }

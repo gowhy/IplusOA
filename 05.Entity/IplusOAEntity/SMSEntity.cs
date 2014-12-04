@@ -13,5 +13,7 @@ namespace IplusOAEntity
         public string Msg { get; set; }
         public System.DateTime AddTime { get; set; }
         public string VCode { get; set; }
+
+        public int BType { get; set; }
     }
 }

@@ -314,6 +314,101 @@ namespace BackWebAdmin.Controllers
                 return Json(list.ToPagedList(pageNumber - 1, pageSize));
             }
         }
+        public ActionResult AppChangePassWordSMS(SMSEntity entity)
+        {
+            try
+            {
+                string SMSUserName = System.Configuration.ConfigurationManager.AppSettings["SMSUserName"];
+                string SMSPassWord = System.Configuration.ConfigurationManager.AppSettings["SMSPassWord"];
+                string SMSServiceUrl = System.Configuration.ConfigurationManager.AppSettings["SMSServiceUrl"];
 
+
+                Random rad = new Random();//实例化随机数产生器rad；
+                int value = rad.Next(1000, 10000);//用rad生成大于等于1000，小于等于9999的随机数；
+                string code = value.ToString();
+                string msg = "【社区1+1】欢迎你，您的修改密码验证码是：" + code + "。";
+                msg = HttpUtility.UrlEncode(msg, Encoding.GetEncoding("GBK"));
+
+                entity.AddTime = DateTime.Now;
+                entity.Msg = msg;
+                entity.VCode = code.Trim();
+                entity.BType = 1;
+
+                HttpItem parm = new HttpItem();
+                parm.ResultType = ResultType.String;
+                parm.URL = string.Format("{0}?name={1}&password={2}&mobile={3}&message={4}",
+                    SMSServiceUrl, SMSUserName, SMSPassWord, entity.Phone, msg);
+
+
+                HttpHelper httpHelper = new HttpHelper();
+                HttpResult httpResult = httpHelper.GetHtml(parm);
+                string res = httpResult.Html;
+                if (httpResult.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    string[] str = res.Split(',');
+                    if (str[0] == "succ")
+                    {
+
+
+                        using (IplusOADBContext db = new IplusOADBContext())
+                        {
+
+                            db.Add<SMSEntity>(entity);
+                            db.SaveChanges();
+
+                            return Json(new { state = 1, msg = "发送成功" }, JsonRequestBehavior.AllowGet);
+
+                        }
+
+                    }
+                    else
+                    {
+                        return Json(new { state = -1, msg = "发送失败,返回内容：" + httpResult.StatusCode + "   " + res }, JsonRequestBehavior.AllowGet);
+                    }
+
+                }
+                else
+                {
+                    return Json(new { state = -2, msg = "发送失败,返回内容：" + httpResult.StatusCode + "   " + res }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return Json(new { state = -2, msg = ex.Message + ex.InnerException + ex.Source + ex.TargetSite + ex.StackTrace }, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+        [HttpPost]
+        public ActionResult AppFindPassWord(VolunteerEntity entity, string code)
+        {
+            ReturnModel returnModel = new ReturnModel();
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+               
+
+                DateTime codeOutTime = DateTime.Now.AddMinutes(-10);
+                int existCount = db.SMSTable.Count(x => x.Phone == entity.Phone.Trim() && x.VCode == code.Trim() && x.BType==1 && x.AddTime > codeOutTime);
+                if (existCount == 0)
+                {
+                    returnModel.Msg = "验证码失效,请重新获取";
+                    returnModel.State = -2;
+                    return Json(returnModel, JsonRequestBehavior.AllowGet);
+                }
+
+                VolunteerEntity model = db.VolunteerEntityTable.FirstOrDefault(x => x.Phone == entity.Phone);
+                model.PassWord = entity.PassWord;
+
+                db.Update<VolunteerEntity>(model);
+                db.SaveChanges();
+                db.Dispose();
+
+                returnModel.State = 1;
+                returnModel.Msg = "修改成功";
+                return Json(returnModel);
+
+            }
+        }
     }
 }
