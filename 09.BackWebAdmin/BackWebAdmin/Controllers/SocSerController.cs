@@ -250,6 +250,7 @@ namespace BackWebAdmin.Controllers
         [SecurityNode(Name = "本社区不参与服务")]
         public ActionResult NoTakeIn(int id)
         {
+
             using (IplusOADBContext db = new IplusOADBContext())
             {
                 SocServiceDetailEntity entity = db.SocServiceDetailEntityTable.Find(id);
@@ -997,6 +998,7 @@ namespace BackWebAdmin.Controllers
 
             var pageNumber = page ?? 1;
             int size = pageSize ?? 20;
+            BackAdminUser bUser = this.GetBackUserInfo();
             using (IplusOADBContext db = new IplusOADBContext())
             {
 
@@ -1017,7 +1019,7 @@ namespace BackWebAdmin.Controllers
                            join v2 in vol on ga.VolId equals v2.Id
                            join o in sorg on gd.SocialNo equals o.SocialNO
 
-                           where v.DepId.StartsWith(AdminUser.DeptId)
+                           where v.DepId.StartsWith(bUser.DeptId)
                            select new ShowVolDoingModel
                            {
                                SocServiceDetail = gd,

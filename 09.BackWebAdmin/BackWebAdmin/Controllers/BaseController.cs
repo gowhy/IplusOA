@@ -16,8 +16,25 @@ namespace BackWebAdmin.Controllers
     {
         public BaseController()
         {
-          
+         
+
         }
+
+        protected BackAdminUser GetBackUserInfo()
+        {
+            BackAdminUser backUser = new BackAdminUser();
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+
+                if (AdminUser != null && AdminUser.Id > 0)
+                {
+                    var vol = db.BackAdminUserEntityDBSet;
+                    backUser = (from v in vol where v.Id == AdminUser.Id select v).FirstOrDefault();
+                }
+            }
+            return backUser;
+        }
+
         protected ActionResult Message(MsgModel model)
         {
             if (Request.IsAjaxRequest())

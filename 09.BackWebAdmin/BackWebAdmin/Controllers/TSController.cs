@@ -20,8 +20,13 @@ namespace BackWebAdmin.Controllers
         [SecurityNode(Name = "首页")]
         public ActionResult Index(int? page, int? pageSize)
         {
+
+
+
             var pageNumber = page ?? 1;
             var size = pageSize ?? PageSize;
+
+            string DeptId = this.GetBackUserInfo().DeptId;
             using (IplusOADBContext db = new IplusOADBContext())
             {
 
@@ -29,6 +34,7 @@ namespace BackWebAdmin.Controllers
                 var dep = db.DepartmentTable;
                 var vol = db.VolunteerEntityTable;
 
+                //string depId = (from v in vol where v.Id == AdminUser.Id select v.DepId).FirstOrDefault();
                 var list = from s in sup
                            join d in dep on s.DepId equals d.Id
                            join v in vol on s.AddUser equals v.Id
@@ -42,7 +48,7 @@ namespace BackWebAdmin.Controllers
                                Id = s.Id,
                                volEntity = v
                            };
-                list = list.Where(x => x.DepId == AdminUser.DeptId);
+                list = list.Where(x => x.DepId == DeptId);
                 return View(list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size));
             }
 

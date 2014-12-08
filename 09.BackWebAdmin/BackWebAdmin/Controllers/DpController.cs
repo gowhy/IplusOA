@@ -31,7 +31,8 @@ namespace BackWebAdmin.Controllers
         //[HttpPost]
         public ActionResult AjaxCount()
         {
-            string udepId = AdminUser.DeptId;
+            BackAdminUser bUser = this.GetBackUserInfo();
+            string udepId = bUser.DeptId;
 
             List<DpEntity> resList = new List<DpEntity>();
             using (IplusOADBContext db = new IplusOADBContext())
@@ -58,7 +59,8 @@ namespace BackWebAdmin.Controllers
         public DpEntity CountSer(BaseContext db)
         {
             DpEntity res = new DpEntity();
-            string udepId = AdminUser.DeptId;
+            BackAdminUser bUser = this.GetBackUserInfo();
+            string udepId = bUser.DeptId;
 
             string sql = string.Format(@" SELECT  COUNT(S.`Id`) `count`,T.`Name`,T.`Code`
                                             ,COUNT(CASE  WHEN s.`EndTime` <NOW()   THEN s.`Id`  ELSE NULL END) OLD
@@ -89,7 +91,8 @@ namespace BackWebAdmin.Controllers
 
         public DpEntity CountOrg(BaseContext db)
         {
-            string udepId = AdminUser.DeptId;
+            BackAdminUser bUser = this.GetBackUserInfo();
+            string udepId = bUser.DeptId;
 
             string sql = string.Format(@"SELECT  COUNT( s.`SocialNo`)  COUNT 
 
@@ -116,7 +119,9 @@ namespace BackWebAdmin.Controllers
         {
             DpEntity res = new DpEntity();
             res.Name = "辖区服务志愿者总计";
-            string udepId = AdminUser.DeptId;
+
+            BackAdminUser bUser = this.GetBackUserInfo();
+            string udepId = bUser.DeptId;
 
             string sql = string.Format(@"  SELECT  COUNT(r.`Id`) `count`,T.`Name`,T.`Code`
 
@@ -144,7 +149,8 @@ namespace BackWebAdmin.Controllers
 
         public DpEntity CountSheQuvol(BaseContext db)
         {
-            string udepId = AdminUser.DeptId;
+            BackAdminUser bUser = this.GetBackUserInfo();
+            string udepId = bUser.DeptId;
 
             string sql = string.Format(@"SELECT COUNT(*) `count`
                                                 ,COUNT(CASE  WHEN  v.`AddTime` <CURDATE()   THEN v.`Id`  ELSE NULL END) `old`
@@ -161,7 +167,9 @@ namespace BackWebAdmin.Controllers
 
         public ActionResult SerVolShow()
         {
-            string depId = AdminUser.DeptId.ToString();
+            BackAdminUser bUser = this.GetBackUserInfo();
+
+            string depId = bUser.DeptId; ;
             Dictionary<string, object> dic = new Dictionary<string, object>();
             using (IplusOADBContext db = new IplusOADBContext())
             {

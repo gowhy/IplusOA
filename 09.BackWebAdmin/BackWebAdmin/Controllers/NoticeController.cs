@@ -21,6 +21,8 @@ namespace BackWebAdmin.Controllers
         {
             var pageNumber = page ?? 1;
             var size = pageSize ?? PageSize;
+
+            BackAdminUser bUser = this.GetBackUserInfo();
             using (IplusOADBContext db = new IplusOADBContext())
             {
                 var dep = db.DepartmentTable;
@@ -39,7 +41,7 @@ namespace BackWebAdmin.Controllers
                                AddTime = a.AddTime,
                                Title=a.Title
                            };
-                list = list.Where(x => x.DepId == AdminUser.DeptId);
+                list = list.Where(x => x.DepId == bUser.DeptId);
                 return View(list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size));
             }
         }

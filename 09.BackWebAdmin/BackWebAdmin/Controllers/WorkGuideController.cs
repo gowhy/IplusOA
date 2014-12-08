@@ -21,6 +21,9 @@ namespace BackWebAdmin.Controllers
         {
             var pageNumber = page ?? 1;
             var size = pageSize ?? PageSize;
+
+            BackAdminUser bUser = this.GetBackUserInfo();
+
             using (IplusOADBContext db = new IplusOADBContext())
             {
 
@@ -28,7 +31,7 @@ namespace BackWebAdmin.Controllers
 
                 var list = from w in work select w;
 
-                list = list.Where(x => x.DepId == AdminUser.DeptId);
+                list = list.Where(x => x.DepId == bUser.DeptId);
 
                 return View(list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size));
             }
@@ -67,8 +70,9 @@ namespace BackWebAdmin.Controllers
         [ValidateInput(false)]
         public ActionResult PostAdd(WorkGuideEntity entity)
         {
-            entity.DepId = AdminUser.DeptId;
-            entity.AddUser = AdminUser.UserName;
+            BackAdminUser bUser = this.GetBackUserInfo();
+            entity.DepId = bUser.DeptId;
+            entity.AddUser = bUser.UserName;
 
             using (IplusOADBContext db = new IplusOADBContext())
             {
