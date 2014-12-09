@@ -61,6 +61,8 @@
     <Compile Include="SuperviseEntity.cs" />
     <Compile Include="SuggestionEntity.cs" />
     <Compile Include="SystemMsg\SystemMsgEntity.cs" />
+    <Compile Include="TV8\MicroShopEntity.cs" />
+    <Compile Include="TV8\MicroShopCallRecordEntity.cs" />
     <Compile Include="Vol\VolunteerEntity.cs" />
     <Compile Include="SOrg\DepartmentEntity.cs" />
     <Compile Include="SOrg\SocialOrgEntity.cs" />

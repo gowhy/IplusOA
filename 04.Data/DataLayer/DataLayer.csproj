@@ -45,6 +45,8 @@
   <ItemGroup>
     <Compile Include="01.IplusOADB\IplusOADBContext.cs" />
     <Compile Include="BaseContext.cs" />
+    <Compile Include="EntityMap\MicroShopCallRecordEntityMap.cs" />
+    <Compile Include="EntityMap\MicroShopEntityMap.cs" />
     <Compile Include="EntityMap\SystemMsgEntityMap.cs" />
     <Compile Include="EntityMap\SMSEntityMap.cs" />
     <Compile Include="EntityMap\LogEntityMap.cs" />

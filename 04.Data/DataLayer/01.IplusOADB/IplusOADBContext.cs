@@ -47,6 +47,8 @@ namespace DataLayer.IplusOADB
             modelBuilder.Configurations.Add(new SMSEntityMap());
             modelBuilder.Configurations.Add(new SystemMsgEntityMap());
 
+            modelBuilder.Configurations.Add(new MicroShopEntityMap());
+            modelBuilder.Configurations.Add(new MicroShopCallRecordEntityMap());
             // modelBuilder.Entity<VolunteerEntity>().Property(p => p.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
 
@@ -92,7 +94,9 @@ namespace DataLayer.IplusOADB
         public virtual DbSet<LogEntity> LogTable { get; set; }
         public virtual DbSet<SMSEntity> SMSTable { get; set; }
         public virtual DbSet<SystemMsgEntity> SystemMsgTable { get; set; }
+        public virtual DbSet<MicroShopCallRecordEntity> MicroShopCallRecordEntityTable { get; set; }
+        public virtual DbSet<MicroShopEntity> MicroShopEntityTable { get; set; }
 
-
+        
     }
 }

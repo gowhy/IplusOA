@@ -183,6 +183,7 @@
     <Compile Include="Controllers\SuggestionController.cs" />
     <Compile Include="Controllers\SystemMsgController.cs" />
     <Compile Include="Controllers\TSController.cs" />
+    <Compile Include="Controllers\TV8Controller.cs" />
     <Compile Include="Controllers\WorkGuideController.cs" />
     <Compile Include="Controllers\NoticeController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
@@ -1178,6 +1179,9 @@
     <Content Include="Views\SystemMsg\Index.cshtml" />
     <Content Include="Views\SystemMsg\Add.cshtml" />
     <Content Include="Views\SocSer\VolDoingIndex.cshtml" />
+    <Content Include="Views\TV8\Add.cshtml" />
+    <Content Include="Views\TV8\Index.cshtml" />
+    <Content Include="Views\TV8\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\02.Common\Common\Common.csproj">
