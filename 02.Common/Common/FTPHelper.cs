@@ -40,7 +40,7 @@ namespace Common
         /// <summary>  
         /// 上传  
         /// </summary>   
-        public void Upload(System.Web.HttpPostedFileBase file,string fileName)
+        public void Upload(System.Web.HttpPostedFileBase file, string fileName)
         {
 
 
@@ -49,7 +49,7 @@ namespace Common
             MakeDir("");
 
             FtpWebRequest reqFTP;
-            reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri(FtpURI +fileName));
+            reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri(FtpURI + fileName));
             reqFTP.Credentials = new NetworkCredential(ftpUserID, ftpPassword);
             reqFTP.Method = WebRequestMethods.Ftp.UploadFile;
             reqFTP.KeepAlive = true;
@@ -58,11 +58,12 @@ namespace Common
             int buffLength = 2048;
             byte[] buff = new byte[buffLength];
             int contentLen;
-           // FileStream fs = fileInf.OpenRead();
+            // FileStream fs = fileInf.OpenRead();
+            Stream strm = null;
             try
             {
-              
-                Stream strm = reqFTP.GetRequestStream();
+
+                strm = reqFTP.GetRequestStream();
                 contentLen = file.InputStream.Read(buff, 0, buffLength);
                 while (contentLen != 0)
                 {
@@ -71,12 +72,19 @@ namespace Common
                 }
                 strm.Close();
                 file.InputStream.Flush();
-              
+
                 file.InputStream.Close();
                 //fs.Close();
             }
             catch (Exception ex)
             {
+                file.InputStream.Flush();
+
+                file.InputStream.Close();
+                if (strm != null)
+                {
+                    strm.Close();
+                }
                 throw ex;
             }
         }

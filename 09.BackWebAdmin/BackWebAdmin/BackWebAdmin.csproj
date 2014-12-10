@@ -1182,6 +1182,7 @@
     <Content Include="Views\TV8\Add.cshtml" />
     <Content Include="Views\TV8\Index.cshtml" />
     <Content Include="Views\TV8\Edit.cshtml" />
+    <Content Include="Views\TV8\MicroShopCallRecordIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\02.Common\Common\Common.csproj">

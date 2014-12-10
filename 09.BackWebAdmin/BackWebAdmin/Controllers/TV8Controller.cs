@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using BackWebAdmin.CommService;
+using Common;
 using DataLayer.IplusOADB;
 using IplusOAEntity;
 using System;
@@ -149,6 +150,57 @@ namespace BackWebAdmin.Controllers
                 return Json(retunModel);
             }
         }
+        public ActionResult SaveImg()
+        {
 
+            //接收上传后的文件
+            System.Web.HttpPostedFileBase file = Request.Files["Filedata"];
+
+
+           SocSerImgEntity res= UploadFile.SaveFile(file, "TV", "");
+
+           return Json(res);
+        }
+
+         /// <summary>
+         /// 获取对应微店电话拨打详情
+         /// </summary>
+        /// <param name="id">microshop表Id</param>
+         /// <param name="page"></param>
+         /// <param name="pageSize"></param>
+         /// <returns></returns>
+        public ActionResult MicroShopCallRecordIndex(int id, int? page, int? pageSize = 20)
+        {
+            var pageNumber = page ?? 1;
+            int size = pageSize ?? 20;
+
+
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                var mic = db.MicroShopEntityTable;
+                var record = db.MicroShopCallRecordEntityTable;
+                var vol = db.VolunteerEntityTable;
+
+                var list = from r in record
+                           join m in mic on r.MicroShopId equals m.Id
+                           join v in vol on r.UserId equals v.Id
+                           where r.MicroShopId == id
+                           select new MicroShopCallRecordEntityClone
+                           {
+                               MicroShopName = m.MicroName,
+                               AddTime = r.AddTime,
+                               MicroShopId = r.MicroShopId,
+                               MicroShopPhone = r.MicroShopPhone,
+                               Phone = r.Phone,
+                               UserId = r.UserId,
+                               User=v,
+                               Id=r.Id
+
+                           };
+
+                return View(list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size));
+
+            }
+        }
     }
 }
