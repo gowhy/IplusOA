@@ -1,0 +1,32 @@
+﻿@model  IPagedList<IplusOAEntity.MicroShopCallRecordEntityClone>
+@using MvcContrib.UI.Grid
+@using MvcContrib.Pagination;
+@using MvcContrib.UI.Pager;
+@using Common;
+
+
+<style>
+    .combo {
+        vertical-align: bottom;
+    }
+</style>
+
+<div class="grid_box">
+    <div class="grid_top">
+    </div>
+    @Html.Grid(Model).Columns(column =>
+                                  {
+                                     
+                                      column.For(x => x.Id).Named("编号");
+                                      column.For(x => x.MicroShopName).Named("微店名");
+                                      column.For(x => x.Phone).Named("拨打电话");
+                                      column.For(x => x.User.RealName).Named("用户真实姓名");
+                                      column.For(x => x.User.Address).Named("用户地址");
+                                      column.For(x => x.User.Phone).Named("用户注册电话");
+                                      column.For(x => x.AddTime.ToString("yyyy-MM-dd HH:ss")).Named("拨打时间");
+                                  }).Complex(ViewData)
+    <div class="grid_foot">
+    </div>
+</div>
+
+@Html.Pager(Model)

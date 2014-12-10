@@ -75,10 +75,16 @@ namespace BackWebAdmin.Controllers
           
             string errMsg = "";
 
-            if (RoleManager.ExistRole(model.Name))
+            //if (RoleManager.ExistRole(model.Name, model.ID))
+            //{
+            //    return Error("该角色名已经存在,请修改为其他");
+            //}
+            IplusOADBContext db = new IplusOADBContext();
+            if (db.RoleTable.Count(x => x.Name == model.Name && x.Id != model.ID) > 0)
             {
                 return Error("该角色名已经存在,请修改为其他");
-            }
+            } 
+
             RoleCommService role = new RoleCommService();
             role.BllPostEdit(model, ref errMsg);
             if (!string.IsNullOrEmpty(errMsg))
