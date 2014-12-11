@@ -22,7 +22,7 @@ namespace BackWebAdmin.Controllers
         {
             using (IplusOADBContext db = new IplusOADBContext())
             {
-                if (id != null )
+                if (id != null)
                 {
                     var list = db.DepartmentTable.AsQueryable<DepartmentEntity>().Where(x => x.PId == id).ToList();
                     return Json(list);
@@ -46,18 +46,18 @@ namespace BackWebAdmin.Controllers
                 {
                     Json("登陆账号、密码、验证码和用户类型是必填项", JsonRequestBehavior.AllowGet);
                 }
-            
+
                 using (IplusOADBContext db = new IplusOADBContext())
                 {
 
-                     returnModel = VolService.AccountExist(entity);
-                     if (returnModel == null || returnModel.State != 0)
-                     {
-                         return  Json(returnModel, JsonRequestBehavior.AllowGet);;
-                     }
+                    returnModel = VolService.AccountExist(entity);
+                    if (returnModel == null || returnModel.State != 0)
+                    {
+                        return Json(returnModel, JsonRequestBehavior.AllowGet); ;
+                    }
 
-                    DateTime codeOutTime=DateTime.Now.AddMinutes(-10);
-                  //  int existCount = db.SMSTable.Count(x => x.Phone == entity.Phone.Trim() && x.VCode == code.Trim() && x.AddTime< codeOutTime);
+                    DateTime codeOutTime = DateTime.Now.AddMinutes(-10);
+                    //  int existCount = db.SMSTable.Count(x => x.Phone == entity.Phone.Trim() && x.VCode == code.Trim() && x.AddTime< codeOutTime);
                     int existCount = db.SMSTable.Count(x => x.Phone == entity.Phone.Trim() && x.VCode == code.Trim() && x.AddTime > codeOutTime);
                     if (existCount == 0)
                     {
@@ -72,7 +72,7 @@ namespace BackWebAdmin.Controllers
             }
             catch (Exception ex)
             {
-                returnModel.Msg = ex.Message+ex.Source+ex.StackTrace+ex.TargetSite+ex.InnerException;
+                returnModel.Msg = ex.Message + ex.Source + ex.StackTrace + ex.TargetSite + ex.InnerException;
                 returnModel.State = -4;
                 return Json(returnModel, JsonRequestBehavior.AllowGet);
                 throw;
@@ -269,8 +269,8 @@ namespace BackWebAdmin.Controllers
                     string[] str = res.Split(',');
                     if (str[0] == "succ")
                     {
-                       
-            
+
+
                         using (IplusOADBContext db = new IplusOADBContext())
                         {
 
@@ -296,9 +296,9 @@ namespace BackWebAdmin.Controllers
             catch (Exception ex)
             {
 
-                return Json(new { state = -2, msg = ex.Message+ex.InnerException+ex.Source+ex.TargetSite+ex.StackTrace }, JsonRequestBehavior.AllowGet);
+                return Json(new { state = -2, msg = ex.Message + ex.InnerException + ex.Source + ex.TargetSite + ex.StackTrace }, JsonRequestBehavior.AllowGet);
             }
-          
+
         }
 
         public ActionResult AppSystemMsg(int? page)
@@ -386,10 +386,10 @@ namespace BackWebAdmin.Controllers
             ReturnModel returnModel = new ReturnModel();
             using (IplusOADBContext db = new IplusOADBContext())
             {
-               
+
 
                 DateTime codeOutTime = DateTime.Now.AddMinutes(-10);
-                int existCount = db.SMSTable.Count(x => x.Phone == entity.Phone.Trim() && x.VCode == code.Trim() && x.BType==1 && x.AddTime > codeOutTime);
+                int existCount = db.SMSTable.Count(x => x.Phone == entity.Phone.Trim() && x.VCode == code.Trim() && x.BType == 1 && x.AddTime > codeOutTime);
                 if (existCount == 0)
                 {
                     returnModel.Msg = "验证码失效,请重新获取";
@@ -408,6 +408,41 @@ namespace BackWebAdmin.Controllers
                 returnModel.Msg = "修改成功";
                 return Json(returnModel);
 
+            }
+        }
+        /// <summary>
+        /// 合并 版本检查：comm/AppVerAppIndex 开机图片：comm/StartAdImgAppStateIndex  广告位图片：comm/ServiceAdImgAppIndex，3个接口
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult AppStart(string depId, int? page, int? pageSize)
+        {
+            var pageNumber = page ?? 1;
+            var size = pageSize ?? 1;
+
+            AppStartModel returnModel = new AppStartModel();
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                //获取版本信息
+                var appver = db.AppVerTable;
+                var appverlist = from a in appver select a;
+                appverlist = appverlist.Where(x => x.State == 0);
+                returnModel.AppVer = appverlist.OrderByDescending(x => x.Id).FirstOrDefault();
+
+                //获取开机广告信息
+                var dep = db.DepartmentTable;
+                var adimg = db.StartAdImgTable;
+                var depList = dep.ToList();
+                List<StartAdImgEntity> listStartAdImg = adimg.ToList();
+                returnModel.StartAdImg = StartAdImgService.GetAppStateIndex(depId, depList, listStartAdImg);
+
+                //广告位图片
+                var serviceAdImg = db.ServiceAdImgTable;
+                var listServiceAdImg = from a in serviceAdImg select a;
+                returnModel.ListServiceAdImg = listServiceAdImg.Where(x => x.State == 0).OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size).ToList();
+
+
+
+                return Json(returnModel);
             }
         }
     }

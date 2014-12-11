@@ -35,6 +35,21 @@ namespace BackWebAdmin.Controllers
             return backUser;
         }
 
+        protected VolunteerEntity GetAppUserInfo()
+        {
+            VolunteerEntity backUser = new VolunteerEntity();
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+
+                if (AdminUser != null && AdminUser.Id > 0)
+                {
+                    var vol = db.VolunteerEntityTable;
+                    backUser = (from v in vol where v.Id == AdminUser.Id select v).FirstOrDefault();
+                }
+            }
+            return backUser;
+        }
+
         protected ActionResult Message(MsgModel model)
         {
             if (Request.IsAjaxRequest())

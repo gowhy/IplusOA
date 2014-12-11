@@ -198,6 +198,7 @@
     </Compile>
     <Compile Include="Help\FunctionHelper.cs" />
     <Compile Include="Models\AppReturnModel.cs" />
+    <Compile Include="Models\AppStartModel.cs" />
     <Compile Include="Models\Dp\ShowSocSerModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\MsgModel.cs" />

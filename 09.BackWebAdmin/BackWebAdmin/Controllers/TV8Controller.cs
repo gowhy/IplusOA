@@ -115,18 +115,18 @@ namespace BackWebAdmin.Controllers
             }
         }
 
-        public ActionResult AppIndex(int? userId, int? page, int? pageSize = 20)
+        public ActionResult AppIndex(string depId, int? page, int? pageSize = 20)
         {
             var pageNumber = page ?? 1;
             int size = pageSize ?? 20;
 
-            BackAdminUser bUser = this.GetBackUserInfo();
-            string deptId = bUser.DeptId;
+            //VolunteerEntity bUser = this.GetAppUserInfo();
+            //string deptId = bUser.DepId;
             using (IplusOADBContext db = new IplusOADBContext())
             {
                 var mic = db.MicroShopEntityTable;
 
-                var list = from m in mic where m.ConverCommunity.IndexOf(deptId) > -1 select m;
+                var list = from m in mic where m.ConverCommunity.IndexOf(depId) > -1 select m;
 
                 return Json(list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size), JsonRequestBehavior.AllowGet);
             }
