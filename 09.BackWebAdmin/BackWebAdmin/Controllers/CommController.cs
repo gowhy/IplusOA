@@ -445,5 +445,21 @@ namespace BackWebAdmin.Controllers
                 return Json(returnModel);
             }
         }
+
+        public ActionResult AppMsgSendCode(AppCodeMsgSend entity)
+        {
+            entity.AddTime = DateTime.Now;
+            ReturnModel retunModel = new ReturnModel();
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+
+                db.AppMsgSendTable.Add(entity);
+                db.SaveChanges();
+                retunModel.State = 1;
+                retunModel.Msg = "新增成功";
+                return Json(retunModel);
+            }
+
+        }
     }
 }

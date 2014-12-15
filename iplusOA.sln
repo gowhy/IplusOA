@@ -9,6 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01.Dll", "01.Dll", "{C64C319E-29E4-4F88-910D-F52BC059A47F}"
 	ProjectSection(SolutionItems) = preProject
+		01.Dll\Jpush.API.dll = 01.Dll\Jpush.API.dll
 		01.Dll\log4net.dll = 01.Dll\log4net.dll
 	EndProjectSection
 EndProject
@@ -60,6 +61,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cache", "03.Cache\Cache\Cache.csproj", "{267783F3-A1F5-45BA-97DF-0450E717D029}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceAPI", "07.Service\ServiceAPI\ServiceAPI.csproj", "{694AE2D8-1EC5-4766-B0B7-7BEB35BB00C2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "12.AutoPush", "12.AutoPush", "{FE3CDE61-D845-4E7C-9DAF-C1402BAEE1FA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JPush", "12.AutoPush\JPush\WindowsFormsApplication1\JPush.csproj", "{B9387768-2252-4DE3-869C-01EFD7684995}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -115,6 +120,10 @@ Global
 		{694AE2D8-1EC5-4766-B0B7-7BEB35BB00C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{694AE2D8-1EC5-4766-B0B7-7BEB35BB00C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{694AE2D8-1EC5-4766-B0B7-7BEB35BB00C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9387768-2252-4DE3-869C-01EFD7684995}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9387768-2252-4DE3-869C-01EFD7684995}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9387768-2252-4DE3-869C-01EFD7684995}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9387768-2252-4DE3-869C-01EFD7684995}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -129,5 +138,6 @@ Global
 		{E7D81CC2-342E-44F5-BF02-E908D2F25E6C} = {649C8D0A-5C73-472C-AC65-A1CD8C2A9C24}
 		{267783F3-A1F5-45BA-97DF-0450E717D029} = {1949E117-AA8C-4BC2-8812-1786033D9F86}
 		{694AE2D8-1EC5-4766-B0B7-7BEB35BB00C2} = {6D8CC6A0-DCF1-4120-9771-046A83DAEC4D}
+		{B9387768-2252-4DE3-869C-01EFD7684995} = {FE3CDE61-D845-4E7C-9DAF-C1402BAEE1FA}
 	EndGlobalSection
 EndGlobal

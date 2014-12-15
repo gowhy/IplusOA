@@ -100,10 +100,11 @@ namespace BackWebAdmin.Controllers
             IList<string> coverList = entity.CoverCommunity.Split(',');
 
             List<SocSerDetailJoinEntity> Join = new List<SocSerDetailJoinEntity>();
+            BackAdminUser bau = base.GetBackUserInfo();
             using (IplusOADBContext db = new IplusOADBContext())
             {
 
-                SocialOrgEntity soc = db.SocialOrgEntityTable.SingleOrDefault(x => x.Id == AdminUser.SocOrgId);
+                SocialOrgEntity soc = db.SocialOrgEntityTable.SingleOrDefault(x => x.Id == bau.SocOrgId);
                 entity.SocialNo = soc.SocialNO;
 
                 int number = 0;

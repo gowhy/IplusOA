@@ -96,7 +96,12 @@ namespace DataLayer.IplusOADB
         public virtual DbSet<SystemMsgEntity> SystemMsgTable { get; set; }
         public virtual DbSet<MicroShopCallRecordEntity> MicroShopCallRecordEntityTable { get; set; }
         public virtual DbSet<MicroShopEntity> MicroShopEntityTable { get; set; }
+       
+        /// <summary>
+        /// 消息推送
+        /// </summary>
+        public virtual DbSet<AppCodeMsgSend> AppMsgSendTable { get; set; }
 
-        
+
     }
 }

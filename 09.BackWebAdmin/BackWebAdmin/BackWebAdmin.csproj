@@ -139,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\AppMsgSend\" />
     <Folder Include="Views\Comm\" />
   </ItemGroup>
   <ItemGroup>
@@ -171,6 +172,7 @@
     <Compile Include="Content\plug-in\ueditor\net\App_Code\NotSupportedHandler.cs" />
     <Compile Include="Content\plug-in\ueditor\net\App_Code\PathFormater.cs" />
     <Compile Include="Content\plug-in\ueditor\net\App_Code\UploadHandler.cs" />
+    <Compile Include="Controllers\AppMsgSendController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CommController.cs" />
     <Compile Include="Controllers\Default1Controller.cs" />
