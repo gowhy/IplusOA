@@ -12,6 +12,8 @@ namespace IplusOAEntity
         public int UserId { get; set; }
         public string TCode { get; set; }
         public DateTime AddTime { get; set; }
+        public string Platform { get; set; }
+
 
     }
 }

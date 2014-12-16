@@ -3,6 +3,8 @@ using cn.jpush.api.common;
 using cn.jpush.api.common.resp;
 using cn.jpush.api.push.mode;
 using cn.jpush.api.push.notification;
+using DataLayer.IplusOADB;
+using IplusOAEntity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -32,6 +34,15 @@ namespace WindowsFormsApplication1
 
         private void btnStart_Click(object sender, EventArgs e)
         {
+
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+
+                SuperviseEntity model = db.SuperviseTable.FirstOrDefault();
+
+                Console.WriteLine("*****开始发送******");
+            }
+
             Console.WriteLine("*****开始发送******");
             JPushClient client = new JPushClient(app_key, master_secret);
             PushPayload payload = PushObject_All_All_Alert();
