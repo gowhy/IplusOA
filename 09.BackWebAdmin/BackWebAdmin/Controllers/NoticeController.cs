@@ -209,6 +209,16 @@ namespace BackWebAdmin.Controllers
                 return View(notice);
             }
         }
+
+        public ActionResult AppView(int id)
+        {
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                NoticeEntity notice = db.NoticeTable.Find(id);
+                return Json(notice);
+            }
+        }
+
         [ValidateInput(false)]
         public ActionResult PostEdit(NoticeEntity entity)
         {

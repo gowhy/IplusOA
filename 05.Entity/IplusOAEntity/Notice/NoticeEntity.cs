@@ -15,6 +15,7 @@ namespace IplusOAEntity
         public string Des { get; set; }
         public string Title { get; set; }
         public string AddUser { get; set; }
+        public int State { get; set; }
     }
    public class NoticeEntityClone
    {
@@ -27,5 +28,6 @@ namespace IplusOAEntity
        public string Des { get; set; }
        public string Title { get; set; }
        public string AddUser { get; set; }
+       public int State { get; set; }
    }
 }

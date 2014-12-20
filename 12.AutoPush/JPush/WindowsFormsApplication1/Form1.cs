@@ -14,57 +14,164 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Common;
+using cn.jpush.api.push;
+using System.Threading;
 
 namespace WindowsFormsApplication1
 {
     public partial class Form1 : Form
     {
 
-        public static String TITLE = "Test from C# v3 sdk";
-        public static String ALERT = "Test from  C# v3 sdk - alert";
+        #region 测试数据
+        public static String TITLE = "社区1+1测试消息推送";
+        public static String ALERT = "测试推送消息内容---韦";
         public static String MSG_CONTENT = "Test from C# v3 sdk - msgContent";
-        public static String REGISTRATION_ID = "0900e8d85ef";
+        public static String REGISTRATION_ID = "040bfc1ddfa";
+        #endregion
+
         public static String TAG = "tag_api";
-        public static String app_key = "997f28c1cea5a9f17d82079a";
-        public static String master_secret = "47d264a3c02a6a5a4a256a45";
+        public static String app_key = "35b9a424c942fc42f3b32dfb";
+        public static String master_secret = "54749844fa6b0085348694ff";
+        public static bool RunState = false;
+
         public Form1()
         {
             InitializeComponent();
         }
-
+        static  JPushClient client = new JPushClient(app_key, master_secret);
         private void btnStart_Click(object sender, EventArgs e)
         {
 
+            RunState = true;
+
+            while (RunState)
+            {
+                try
+                {
+
+                    AsyncPushNotice();
+                    AsyncPushWorkGuide();
+                }
+                catch (APIRequestException ex)
+                {
+                    Console.WriteLine("Error response from JPush server. Should review and fix it. ");
+                    Console.WriteLine("HTTP Status: " + ex.Status);
+                    Console.WriteLine("Error Code: " + ex.ErrorCode);
+                    Console.WriteLine("Error Message: " + ex.ErrorCode);
+                }
+                catch (APIConnectionException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+
+                Thread.Sleep(5000);
+            }
+
+
+        }
+        public async static Task<MessageResult> AsyncPushNotice()
+        {
+            MessageResult res = await PushNotice();
+            return res;
+        }
+        public async static Task<MessageResult> PushNotice()
+        {
+            string IUrl = "Notice/AppView";
+            PushPayload payload = null;
             using (IplusOADBContext db = new IplusOADBContext())
             {
+                var noticeTable = db.NoticeTable;
+                NoticeEntity noticeModel = noticeTable.OrderBy(x=>x.Id).FirstOrDefault(x => x.State == 1 && x.DepId != null);
 
-                SuperviseEntity model = db.SuperviseTable.FirstOrDefault();
+                noticeModel.State = 2;
+                db.Update<NoticeEntity>(noticeModel);
+                db.SaveChanges();
 
-                Console.WriteLine("*****开始发送******");
+                var UserList = from c in db.AppMsgSendTable
+                               join v in db.VolunteerEntityTable on c.UserId equals v.Id
+                               where v.DepId == noticeModel.DepId
+                               select c.TCode;
+
+                string[] uStringList = null;
+                int i = 0;
+                do
+                {
+
+                    uStringList = UserList.ToPagedList(i, 999).ToArray();
+                    if (uStringList == null || uStringList.Length == 0)
+                    {
+                        break;
+                    }
+                    payload = PushObject_all_regId_alert(noticeModel.Title, IUrl + "?id=" + noticeModel.Id, uStringList);
+                    i++;
+                }
+                while (uStringList != null && uStringList.Length == 999);
+
+
             }
+            var ret = client.SendPush(payload);
+            return ret;
+          
+        }
 
-            Console.WriteLine("*****开始发送******");
-            JPushClient client = new JPushClient(app_key, master_secret);
-            PushPayload payload = PushObject_All_All_Alert();
-            try
+
+        public async static Task<MessageResult> AsyncPushWorkGuide()
+        {
+            MessageResult res = await PushWorkGuide();
+            return res;
+        }
+        public async static Task<MessageResult> PushWorkGuide()
+        {
+
+            PushPayload payload = null;
+            string IUrl = "WorkGuide/AppView";
+            using (IplusOADBContext db = new IplusOADBContext())
             {
-                var result = client.SendPush(payload);
+                var noticeTable = db.WorkGuideTable;
+                WorkGuideEntity noticeModel = noticeTable.OrderBy(x => x.Id).FirstOrDefault(x => x.State == 1 && x.DepId != null);
 
-              
+                noticeModel.State = 2;
+                db.Update<WorkGuideEntity>(noticeModel);
+                db.SaveChanges();
+
+                var UserList = from c in db.AppMsgSendTable
+                               join v in db.VolunteerEntityTable on c.UserId equals v.Id
+                               where v.DepId == noticeModel.DepId
+                               select c.TCode;
+
+                string[] uStringList = null;
+                int i = 0;
+                do
+                {
+
+                    uStringList = UserList.ToPagedList(i, 999).ToArray();
+                    if (uStringList == null || uStringList.Length == 0)
+                    {
+                        break;
+                    }
+                    payload = PushObject_all_regId_alert(noticeModel.Title, IUrl+"?id="+noticeModel.Id, uStringList);
+                    i++;
+                }
+                while (uStringList != null && uStringList.Length == 999);
+
 
             }
-            catch (APIRequestException ex)
-            {
-                Console.WriteLine("Error response from JPush server. Should review and fix it. ");
-                Console.WriteLine("HTTP Status: " + ex.Status);
-                Console.WriteLine("Error Code: " + ex.ErrorCode);
-                Console.WriteLine("Error Message: " + ex.ErrorCode);
-            }
-            catch (APIConnectionException ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            Console.WriteLine("*****结束发送******");
+            var ret = client.SendPush(payload);
+            return ret;
+
+        }
+
+        public async static Task<MessageResult> AsyncPush(PushPayload payload)
+        {
+            var result = client.SendPush(payload);
+            return result;
+        
+        }
+        public async static Task<MessageResult> PushLoadMsg(PushPayload payload)
+        {
+            var result = client.SendPush(payload);
+            return result;
         }
 
         public static PushPayload PushObject_All_All_Alert()
@@ -85,14 +192,28 @@ namespace WindowsFormsApplication1
             return pushPayload;
 
         }
-
-        public static PushPayload PushObject_all_regId_alert(string[] values)
+        
+        public static PushPayload PushObject_all_regId_alert(string msg,string url,params string[] values)
         {
 
             PushPayload pushPayload = new PushPayload();
-            pushPayload.platform = Platform.android();
+            pushPayload.platform = Platform.all();
+
+
+            AndroidNotification andorid = new AndroidNotification();
+            andorid.AddExtra("IUrl", url);
+          
+            IosNotification ios = new IosNotification();
+            ios.AddExtra("IUrl", url);
+
             pushPayload.audience = Audience.s_registrationId(values);
-            pushPayload.notification = new Notification().setAlert(ALERT);
+
+            Notification notification = new Notification();
+            notification.setAlert(msg);
+            notification.setAndroid(andorid);
+            notification.setIos(ios);
+
+            pushPayload.notification = notification;
             return pushPayload;
 
         }
@@ -146,6 +267,11 @@ namespace WindowsFormsApplication1
             pushPayload.message = cn.jpush.api.push.mode.Message.content(MSG_CONTENT).AddExtras("from", "JPush");
             return pushPayload;
 
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            RunState = false;
         }
     }
 }

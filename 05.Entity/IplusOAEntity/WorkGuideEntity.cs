@@ -14,7 +14,7 @@ namespace IplusOAEntity
         public string ImgUrl { get; set; }
         public string Des { get; set; }
         public string Title { get; set; }
-
+        public int State { get; set; }
         public string AddUser { get; set; }
     }
 }

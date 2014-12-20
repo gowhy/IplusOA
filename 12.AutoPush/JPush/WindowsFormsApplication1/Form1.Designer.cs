@@ -38,7 +38,7 @@
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 23);
             this.btnStart.TabIndex = 0;
-            this.btnStart.Text = "开始";
+            this.btnStart.Text = "开始运行";
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
@@ -50,16 +50,17 @@
             this.button2.TabIndex = 1;
             this.button2.Text = "停止";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 262);
+            this.ClientSize = new System.Drawing.Size(284, 219);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.btnStart);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "App消息推送服务";
             this.ResumeLayout(false);
 
         }

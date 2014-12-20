@@ -198,6 +198,15 @@ namespace BackWebAdmin.Controllers
             }
             return Success("添加成功");
         }
+
+        public ActionResult AppView(int id)
+        {
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                WorkGuideEntity work = db.WorkGuideTable.Find(id);
+                return Json(work);
+            }
+        }
         
     }
 }
