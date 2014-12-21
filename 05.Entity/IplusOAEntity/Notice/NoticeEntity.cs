@@ -30,4 +30,11 @@ namespace IplusOAEntity
        public string AddUser { get; set; }
        public int State { get; set; }
    }
+   public enum NoticePushState
+   {
+       未推送 = 0,
+       推送中 = 1,
+       推送完成 = 2
+
+   }
 }

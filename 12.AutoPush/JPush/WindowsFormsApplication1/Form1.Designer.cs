@@ -44,7 +44,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(155, 56);
+            this.button2.Location = new System.Drawing.Point(155, 57);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 1;
@@ -61,6 +61,7 @@
             this.Controls.Add(this.btnStart);
             this.Name = "Form1";
             this.Text = "App消息推送服务";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
 
         }

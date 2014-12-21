@@ -207,6 +207,28 @@ namespace BackWebAdmin.Controllers
                 return Json(work);
             }
         }
-        
+        /// <summary>
+        /// App推送消息标识
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult PushMsg(int id)
+        {
+
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                WorkGuideEntity notice = db.WorkGuideTable.Find(id);
+                if (notice.State>=1)
+                {
+                      return Json("已经推送,不能再推送");
+                }
+                notice.State = 1;
+
+                db.Update<WorkGuideEntity>(notice);
+                db.SaveChanges();
+                db.Dispose();
+                return Json("操作成功");
+            }
+        }
     }
 }

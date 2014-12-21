@@ -39,7 +39,8 @@ namespace BackWebAdmin.Controllers
                                Id = a.Id,
                                Des = a.Des,
                                AddTime = a.AddTime,
-                               Title=a.Title
+                               Title=a.Title,
+                                State=a.State
                            };
                 list = list.Where(x => x.DepId == bUser.DeptId);
                 return View(list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size));
@@ -232,6 +233,28 @@ namespace BackWebAdmin.Controllers
             }
             return Success("添加成功");
         }
-        
+        /// <summary>
+        /// App推送消息标识
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult PushMsg(int id)
+        {
+
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                NoticeEntity notice = db.NoticeTable.Find(id);
+                if (notice.State >= 1)
+                {
+                    return Json("已经推送,不能再推送");
+                }
+                notice.State = 1;
+
+                db.Update<NoticeEntity>(notice);
+                db.SaveChanges();
+                db.Dispose();
+                return Json("操作成功");
+            }
+        }
     }
 }

@@ -17,4 +17,13 @@ namespace IplusOAEntity
         public int State { get; set; }
         public string AddUser { get; set; }
     }
+
+    public enum WorkGuidePushState
+    {
+        未推送 = 0,
+        推送中 = 1,
+        推送完成 = 2
+
+    }
+
 }

@@ -12,6 +12,25 @@
         deleteMethod(id, "Delete");
         //showAjaxResult(url, "删除用户中......", 600, 400);
     }
+ 
+
+    function PushMsg(id) {
+
+        var url = '@Url.Action("PushMsg")' + '?id=' + id;
+        url = encodeURI(url);
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: "json",
+            success: function (obj) {
+                
+                alert(obj);
+               
+                    location.href = location.href;
+            }
+        });
+    }
+    
     function submitForm() {
         // var url = "/SocSer/PostNoTakeIn" + '?detailId=' + id + "&state=" + state + "&msg=" + msg;
         $('#indexFrom').submit();
@@ -52,11 +71,13 @@
                                       // column.CheckBox(x => x.Id);
                                       //   column.For(x => x.Id).Named("编号").HeaderAttributes(style => "width:50px;align:center;");
                                       column.For(x => x.Title).Named("标题");
+                                      column.For(x => Enum.GetName(typeof(IplusOAEntity.NoticePushState), x.State)).Named("是否推送");
                                       column.For(x => x.AddTime.ToString("yyyy-MM-dd HH:ss")).Named("发布时间");
                                       column.For(x => x.DepName).Named("社区");
                                       column.Buttons(btns => btns
                                           .Add(x => Html.ActionLink("编辑", "view", new { id = x.Id }))
                                           .Add(x => Html.ScriptLink("删除", "del({0})".FormatWith(x.Id)))
+                                          .Add(x => Html.ScriptLink("推送消息", "PushMsg({0})".FormatWith(x.Id)))
                                                                  );
                                   }).Complex(ViewData)
     <div class="grid_foot">

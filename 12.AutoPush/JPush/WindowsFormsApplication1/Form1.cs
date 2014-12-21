@@ -34,56 +34,74 @@ namespace WindowsFormsApplication1
         public static String app_key = "35b9a424c942fc42f3b32dfb";
         public static String master_secret = "54749844fa6b0085348694ff";
         public static bool RunState = false;
-
+        System.Timers.Timer myTimer; 
         public Form1()
         {
+          
+          
             InitializeComponent();
+         
+        }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            myTimer = new System.Timers.Timer(2000);//定时周期2秒
+            myTimer.Elapsed += btnStart_Click;//到2秒了做的事件
+            myTimer.AutoReset = true; //是否不断重复定时器操作
+            myTimer.Enabled = true;
         }
         static  JPushClient client = new JPushClient(app_key, master_secret);
+
+
         private void btnStart_Click(object sender, EventArgs e)
         {
-
+      
             RunState = true;
+            DoAction();
+        }
 
-            while (RunState)
+        public void DoAction()
+        {
+
+
+            try
             {
-                try
-                {
-
-                    AsyncPushNotice();
-                    AsyncPushWorkGuide();
-                }
-                catch (APIRequestException ex)
-                {
-                    Console.WriteLine("Error response from JPush server. Should review and fix it. ");
-                    Console.WriteLine("HTTP Status: " + ex.Status);
-                    Console.WriteLine("Error Code: " + ex.ErrorCode);
-                    Console.WriteLine("Error Message: " + ex.ErrorCode);
-                }
-                catch (APIConnectionException ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-
-                Thread.Sleep(5000);
+                Console.WriteLine("开始运行时间: " + DateTime.Now);
+                AsyncPushNotice();
+                AsyncPushWorkGuide();
+                Console.WriteLine("结束运行时间: " + DateTime.Now);
             }
-
+            catch (APIRequestException ex)
+            {
+                Console.WriteLine("Error response from JPush server. Should review and fix it. ");
+                Console.WriteLine("HTTP Status: " + ex.Status);
+                Console.WriteLine("Error Code: " + ex.ErrorCode);
+                Console.WriteLine("Error Message: " + ex.ErrorCode);
+            }
+            catch (APIConnectionException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
         }
         public async static Task<MessageResult> AsyncPushNotice()
         {
+            Thread.CurrentThread.IsBackground = true;
             MessageResult res = await PushNotice();
             return res;
         }
         public async static Task<MessageResult> PushNotice()
         {
+          
             string IUrl = "Notice/AppView";
             PushPayload payload = null;
             using (IplusOADBContext db = new IplusOADBContext())
             {
                 var noticeTable = db.NoticeTable;
                 NoticeEntity noticeModel = noticeTable.OrderBy(x=>x.Id).FirstOrDefault(x => x.State == 1 && x.DepId != null);
-
+                if (noticeModel==null)
+                {
+                    return new MessageResult();
+                }
                 noticeModel.State = 2;
                 db.Update<NoticeEntity>(noticeModel);
                 db.SaveChanges();
@@ -118,6 +136,7 @@ namespace WindowsFormsApplication1
 
         public async static Task<MessageResult> AsyncPushWorkGuide()
         {
+          
             MessageResult res = await PushWorkGuide();
             return res;
         }
@@ -130,7 +149,10 @@ namespace WindowsFormsApplication1
             {
                 var noticeTable = db.WorkGuideTable;
                 WorkGuideEntity noticeModel = noticeTable.OrderBy(x => x.Id).FirstOrDefault(x => x.State == 1 && x.DepId != null);
-
+                if (noticeModel == null)
+                {
+                    return new MessageResult();
+                }
                 noticeModel.State = 2;
                 db.Update<WorkGuideEntity>(noticeModel);
                 db.SaveChanges();
@@ -271,7 +293,15 @@ namespace WindowsFormsApplication1
 
         private void button2_Click(object sender, EventArgs e)
         {
+           
             RunState = false;
         }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            
+        }
+
+     
     }
 }

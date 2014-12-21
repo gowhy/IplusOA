@@ -65,8 +65,8 @@ namespace BackWebAdmin.Controllers
         {
             try
             {
-                BackAdminUser bUser = this.GetBackUserInfo();
-                entity.DepId = bUser.DeptId;
+                VolunteerEntity bUser = this.GetAppUserInfo();
+                entity.DepId = bUser.DepId;
 
                 using (IplusOADBContext db = new IplusOADBContext())
                 {
