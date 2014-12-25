@@ -84,7 +84,7 @@ namespace BackWebAdmin.Controllers
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public ActionResult AccountExist(VolunteerEntity entity)
+        public ActionResult AppAccountExist(VolunteerEntity entity)
         {
             ReturnModel returnModel = VolService.AccountExist(entity);
             return Json(returnModel);

@@ -63,25 +63,26 @@ namespace BackWebAdmin.Controllers
         [ValidateInput(false)]
         public ActionResult AppPostAdd(SuggestionEntity entity)
         {
-            try
-            {
-                VolunteerEntity bUser = this.GetAppUserInfo();
-                entity.DepId = bUser.DepId;
+            //try
+            //{
+            VolunteerEntity bUser = this.GetAppUserInfoById(entity.AddUser);
+            entity.DepId = bUser.DepId;
 
-                using (IplusOADBContext db = new IplusOADBContext())
-                {
-                    entity.AddTime = DateTime.Now;
-                    db.Add(entity);
-                    db.SaveChanges();
-
-                }
-                return Json(new { state = 1, msg = "新增成功" });
-            }
-            catch (Exception ex)
+            using (IplusOADBContext db = new IplusOADBContext())
             {
-                return Json(new { state = 0, msg = ex.Message + ex.TargetSite });
-                throw;
+
+                entity.AddTime = DateTime.Now;
+                db.Add<SuggestionEntity>(entity);
+                db.SaveChanges();
+
             }
+            return Json(new { state = 1, msg = "新增成功" });
+            //}
+            //catch (Exception ex)
+            //{
+
+            //    throw ex;
+            //}
 
         }
 
