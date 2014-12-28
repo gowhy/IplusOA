@@ -105,7 +105,11 @@ namespace BackWebAdmin.Controllers
             {
 
                 SocialOrgEntity soc = db.SocialOrgEntityTable.SingleOrDefault(x => x.Id == bau.SocOrgId);
-                entity.SocialNo = soc.SocialNO;
+                if (soc!=null)
+                {
+                    entity.SocialNo = soc.SocialNO;
+                }
+               
 
                 int number = 0;
                 try

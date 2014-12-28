@@ -37,7 +37,7 @@
     @Html.Grid(Model.VolList).Columns(column =>
                                   {
                                    //   column.CheckBox(x => x.Id);
-                                   //   column.For(x => x.Id).Named("编号").HeaderAttributes(style => "width:50px;align:center;");
+                                      column.For(x => x.Id).Named("用户社区编号");
                                       column.For(x => x.CardType).Named("证件类型");
                                       column.For(x => x.Type).Named("类型");
                                       column.For(x => x.Address).Named("地址");
@@ -50,7 +50,11 @@
                                     
                                       column.Buttons(btns => btns.Add(x => Html.ActionLink("编辑", "Edit", new { id = x.Id }))
                                                                  //.Add(x => Html.ActionLink("查看", "View", new { id = x.Id }))
-                                                                 .Add(x => Html.ScriptLink("删除", "deleteVol({0})".FormatWith(x.Id)))
+                                                               //  .Add(x => Html.ActionLink("领奖", "PrizeRecord", "Prize", new { id = x.Id },null))
+                                                                 .Add(x => Html.ScriptLink("领奖", "PrizeRecord({0})".FormatWith(x.Id)))
+                                                                // .Add(x => Html.ActionLink("领奖记录", "View", new { id = x.Id }))
+                                                                 .Add(x => Html.ActionLink("领奖记录", "PrizeRecordIndex", "Prize", new { userId = x.Id }, null))
+                                                                // .Add(x => Html.ScriptLink("删除", "deleteVol({0})".FormatWith(x.Id)))
                                                                  );
                                   }).Complex(ViewData)
     <div class="grid_foot">
@@ -69,6 +73,14 @@
         deleteMethod(id, "Delete");
         //showAjaxResult(url, "删除用户中......", 600, 400);
     }
+
+    function PrizeRecord(id) {
+
+        var url = '@Url.Action("PrizeRecord", "Prize")' + '?userId=' + id;
+
+        showAjaxResult(url, "领取奖品", 450, 200);
+    }
+
     $("#Type").val("@Model.Type");
     function submitForm() {
         // var url = "/SocSer/PostNoTakeIn" + '?detailId=' + id + "&state=" + state + "&msg=" + msg;

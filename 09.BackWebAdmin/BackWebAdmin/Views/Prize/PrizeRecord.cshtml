@@ -1,0 +1,84 @@
+﻿@using Common;
+@model IplusOAEntity.PrizeRecord
+
+@Html.IncludeCSS("~/Content/EasyUI/themes/gray/easyui.css")
+@Html.IncludeCSS("~/Content/EasyUI/themes/icon.css")
+
+@Html.IncludeScript("~/Content/EasyUI/jquery.easyui.min.js")
+<style>
+    .panel-tool {
+        width: 95%;
+        float: left;
+    }
+
+    .item_title {
+        background: none;
+    }
+</style>
+
+<div class="main">
+
+    <div class="blank5"></div>
+    <form name="PostPrizeRecord" id="PostPrizeRecord" action="@Url.Action("PostPrizeRecord","Prize")" method="post" enctype="multipart/form-data" >
+        <table class="form" cellpadding="0" cellspacing="0">
+            <tbody>
+                <tr>
+                    <td class="item_title">领奖用户社区编号</td>
+                    <td class="item_input">
+                        <input type="text" disabled="disabled"  value="@Model.UserId" />
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td class="item_title">
+                        奖品:
+                    </td>
+                    <td class="item_input">
+                        <select name="AprizeId">
+
+                            @if (ViewData["PrizeTable_list"] != null)
+                            {
+                                foreach (var pri in ViewData["PrizeTable_list"] as IList<IplusOAEntity.Prize> ?? new List<IplusOAEntity.Prize>())
+                                {
+                                    <option value="@pri.Id">@pri.Name</option>
+                                }
+                            }
+                            else
+                            {
+                                <option value="-1">无</option>
+                            }
+
+
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="item_title">领用说明:</td>
+                    <td class="item_input"><input type="text" class="textbox require" style=" width:200px;" name="Desc" /></td>
+                </tr>
+
+                <tr>
+                    <td class="item_title"></td>
+                    <td class="item_input">
+                        <input type="hidden" name="UserId" value="@Model.UserId" />
+                        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">领取</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="bottomTd"></td>
+                </tr>
+            </tbody>
+        </table>
+        <script>
+            function submitForm() {
+                $('#PostPrizeRecord').submit();
+            }
+            function clearForm() {
+                $('#postadd').form('clear');
+            }
+
+
+        </script>
+    </form>
+
+</div>

@@ -44,6 +44,8 @@
     <Compile Include="AppSendMsgContent.cs" />
     <Compile Include="BackAdminUser.cs" />
     <Compile Include="Count\DpEntity.cs" />
+    <Compile Include="Prize\Prize.cs" />
+    <Compile Include="Prize\PrizeRecord.cs" />
     <Compile Include="SMSEntity.cs" />
     <Compile Include="LogEntity.cs" />
     <Compile Include="Menu\MenuEntity.cs" />

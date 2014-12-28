@@ -181,6 +181,7 @@
     <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\AppVerController.cs" />
+    <Compile Include="Controllers\PrizeController.cs" />
     <Compile Include="Controllers\ServiceAdImgController.cs" />
     <Compile Include="Controllers\SuggestionController.cs" />
     <Compile Include="Controllers\SystemMsgController.cs" />
@@ -205,6 +206,7 @@
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\MsgModel.cs" />
     <Compile Include="Models\Role\RoleModel.cs" />
+    <Compile Include="Models\ShowPrizeRecordModel.cs" />
     <Compile Include="Models\SocSer\SelectSocSerModel.cs" />
     <Compile Include="Models\SocSer\ShowDetailUserApplyInfo.cs" />
     <Compile Include="Models\SocSer\ShowDetailUserApplySerModel.cs" />
@@ -1186,6 +1188,11 @@
     <Content Include="Views\TV8\Index.cshtml" />
     <Content Include="Views\TV8\Edit.cshtml" />
     <Content Include="Views\TV8\MicroShopCallRecordIndex.cshtml" />
+    <Content Include="Views\Prize\Index.cshtml" />
+    <Content Include="Views\Prize\Add.cshtml" />
+    <Content Include="Views\Prize\Edit.cshtml" />
+    <Content Include="Views\Prize\PrizeRecord.cshtml" />
+    <Content Include="Views\Prize\PrizeRecordIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\02.Common\Common\Common.csproj">

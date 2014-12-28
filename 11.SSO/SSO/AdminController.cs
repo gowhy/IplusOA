@@ -36,7 +36,7 @@ namespace SSO
         {
             get
             {
-
+                SetUserToken(null);
                 BackAdminUser admin = HttpContext.Items["Login_User_Info"] as BackAdminUser;
                 if (admin == null)
                 {

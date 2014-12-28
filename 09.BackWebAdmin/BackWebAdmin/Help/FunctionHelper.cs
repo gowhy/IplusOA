@@ -24,20 +24,36 @@ namespace BackWebAdmin
             dicSerType.Add("SYWX", "家居维修");
             dicSerType.Add("SYJR", "金融服务");
             dicSerType.Add("SYYH", "优惠进社区");
+            dicSerType.Add("JYPX", "教育培训");
+            dicSerType.Add("MSKD", "美食快递");
+            dicSerType.Add("XLYL", "休闲娱乐");
+            dicSerType.Add("LRYS", "丽人养生");
+            dicSerType.Add("XHKD", "鲜花快递");
+            dicSerType.Add("SQCF", "社区厨房");
+            dicSerType.Add("TV8", "TV8折购物");
 
             dicSorgType.Add("SS", "枢纽型社会组织");
             dicSorgType.Add("MF", "民非类社会组织");
             dicSorgType.Add("ST", "社团类社会组织");
             dicSorgType.Add("SY", "商业类社会组织");
 
+        
+
+           
+            
         }
         public string GetSerTypeName(string typeCode)
         {
+
             if (string.IsNullOrEmpty(typeCode))
             {
                 return typeCode;
             }
-            return dicSerType[typeCode];
+            if (dicSerType.ContainsKey(typeCode))
+            {   return dicSerType[typeCode];
+                
+            }
+            return "";
         }
         public string GetSorgTypeName(string typeCode)
         {

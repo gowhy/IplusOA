@@ -1,0 +1,124 @@
+﻿@using Common;
+@{
+    Layout = null;
+}
+
+@Html.IncludeCSS("~/Content/Css/style.css")
+@Html.IncludeCSS("~/Content/plug-in/ztree/css/zTreeStyle/zTreeStyle.css")
+@Html.IncludeCSS("~/Content/Css/demo.css")
+@Html.IncludeCSS("~/Content/plug-in/uploadify/uploadify.css")
+@Html.IncludeCSS("~/Content/EasyUI/themes/gray/easyui.css")
+@Html.IncludeCSS("~/Content/EasyUI/themes/icon.css")
+
+<script>
+    window.UEDITOR_HOME_serverPath = "@Url.Content("../../../notice/ImgFile")";
+</script>
+
+
+
+<style>
+    .panel-tool {
+        width: 95%;
+        float: left;
+    }
+
+    .item_title {
+        background: none;
+    }
+</style>
+
+
+
+<div id="tt">
+    <a href="@Url.Action("Index")" style=" width:100px;  padding-left:20px;">返回列表</a>
+</div>
+<div id="p" class="easyui-panel" title="新增奖品" style="height:530px;padding:10px;"
+     data-options="iconCls:'icon-add',closable:false,tools:'#tt'">
+
+    <form name="postadd" action="@Url.Action("PostAdd")" id="postadd" method="post" enctype="multipart/form-data">
+        <table class="form" cellpadding="0" cellspacing="0">
+            <tbody>
+                <tr>
+                    <td class="item_title">名称:</td>
+                    <td class="item_input"><input type="text" class="textbox require easyui-validatebox" missingmessage="必须填写" data-options="required:true" name="Name" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">有效期:</td>
+                    <td class="item_input">
+                        <input type="text" class="textbox require easyui-validatebox" name="StartTime" missingmessage="必须填写" data-options="required:true" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" />
+                    ~
+                        <input type="text" class="textbox require easyui-validatebox" name="EndTime" missingmessage="必须填写" data-options="required:true" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" />
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="item_title">说明:</td>
+                    <td class="item_input">
+                        <input type="hidden" name="Description" id="Description" />
+                        <div>
+                            <script id="editor" type="text/plain" style="width:800px;height:400px;">
+                            </script>
+                          
+                        </div>
+                    </td>
+                </tr>
+
+
+
+                <tr>
+                    <td class="item_title"></td>
+                    <td class="item_input">
+                        <a href="javascript:void(0)" id="btnsubmitForm" class="easyui-linkbutton">新增</a>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </form>
+</div>
+@Html.IncludeScript("~/Content/EasyUI/jquery-1.8.0.min.js")
+@Html.IncludeScript("~/Content/Js/jquery.timer.js")
+@Html.IncludeScript("~/Content/Js/common.js")
+
+@Html.IncludeScript("~/Content/EasyUI/jquery.easyui.min.js")
+
+
+
+@Html.IncludeScript("~/Content/plug-in/ueditor/ueditor.config.js")
+@Html.IncludeScript("~/Content/plug-in/ueditor/ueditor.all.js")
+@Html.IncludeScript("~/Content/plug-in/ueditor/lang/zh-cn/zh-cn.js")
+@Html.IncludeScript("~/Content/plug-in/My97DatePicker/WdatePicker.js")
+
+<script>
+
+
+
+
+    function clearForm() {
+        $('#postadd').form('clear');
+    }
+
+
+
+    $(function () {
+
+        var ue = UE.getEditor('editor');
+
+
+        function submitForm() {
+      
+            $("#Description").val(UE.getEditor('editor').getContent());
+            $('#postadd').submit();
+        }
+
+        $("#btnsubmitForm").click(function () {
+            submitForm();
+        });
+
+
+
+    
+
+
+    });
+</script>

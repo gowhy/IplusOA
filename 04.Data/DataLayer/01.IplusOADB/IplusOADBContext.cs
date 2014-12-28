@@ -102,6 +102,8 @@ namespace DataLayer.IplusOADB
         /// </summary>
         public virtual DbSet<AppCodeMsgSend> AppMsgSendTable { get; set; }
 
+        public virtual DbSet<Prize> PrizeTable { get; set; }
+        public virtual DbSet<PrizeRecord> PrizeRecordTable { get; set; }
 
     }
 }
