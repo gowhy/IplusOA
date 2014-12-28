@@ -15,7 +15,8 @@
     }
 </style>
 <div id="tt">
-    <a href="@Url.Action("Index", "vol")" style=" width:100px;">返回列表</a>
+    @*<a href="@Url.Action("Index", "vol")" style=" width:100px;">返回列表</a>*@
+    <a href="@HttpContext.Current.Request.UrlReferrer" style=" width:100px;padding-left:20px;">返回列表</a>
 </div>
 <div id="p" class="easyui-panel" title="编辑" style="height:530px;padding:10px;"
      data-options="iconCls:'icon-edit',closable:false,tools:'#tt'">

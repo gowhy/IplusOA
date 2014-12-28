@@ -31,7 +31,7 @@
 
 
 <div id="tt">
-    <a href="@Url.Action("Index", "notice")" style=" width:100px;">返回列表</a>
+    <a href="@HttpContext.Current.Request.RawUrl" style=" width:100px;">返回列表</a>
 </div>
 <div id="p" class="easyui-panel" title="新增" style="height:530px;padding:10px;"
      data-options="iconCls:'icon-add',closable:false,tools:'#tt'">

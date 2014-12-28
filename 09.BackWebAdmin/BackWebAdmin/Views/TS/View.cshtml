@@ -16,7 +16,8 @@
 
 
 <div id="tt">
-    <a href="@Url.Action("Index", "ts")" style=" width:100px;">返回列表</a>
+    @*<a href="@Url.Action("Index", "ts")" style=" width:100px;">返回列表</a>*@
+    <a href="@HttpContext.Current.Request.UrlReferrer" style=" width:100px;padding-left:20px;">返回列表</a>
 </div>
 <div id="p" class="easyui-panel" title="新增" style="height:530px;padding:10px;"
      data-options="iconCls:'icon-add',closable:false,tools:'#tt'">

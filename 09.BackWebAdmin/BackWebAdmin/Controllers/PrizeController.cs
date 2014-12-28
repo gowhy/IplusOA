@@ -143,7 +143,7 @@ namespace BackWebAdmin.Controllers
                 var list = from pr in prizeRecord
                            join p in prize on pr.AprizeId equals p.Id
                            join v in vol on pr.UserId equals v.Id
-
+                           where pr.UserId==userId
                            select new ShowPrizeRecordModel { 
                             Prize=p,
                             PrizeRecord=pr,
