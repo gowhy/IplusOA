@@ -60,7 +60,18 @@ namespace BackWebAdmin.Controllers
             {
                 var vol = db.VolunteerEntityTable;
                 depId =( from v in vol where v.Id == AdminUser.Id select v.DepId).FirstOrDefault();
+
+                LogEntity log = new LogEntity();
+                log.Content = "depId:" + depId + "  AdminUser.Id ：" + AdminUser.Id;
+                log.UserId = AdminUser.Id.ToString();
+                log.AddTime = DateTime.Now;
+                db.Add<LogEntity>(log);
+                db.SaveChanges();
             }
+
+          
+
+            
             return Json(SocSerService.TypeList(pageNumber, size, depId, model, sort), JsonRequestBehavior.AllowGet);
         }
 
@@ -78,7 +89,7 @@ namespace BackWebAdmin.Controllers
         {
             using (IplusOADBContext db = new IplusOADBContext())
             {
-                var list = db.DepartmentTable.AsQueryable<DepartmentEntity>().ToList();
+                var list = db.DepartmentTable.AsQueryable<DepartmentEntity>().Where(x=>x.Level<=6).ToList();
                 ViewData["Department_List"] = HelpSerializer.JSONSerialize<List<DepartmentEntity>>(list);
                 return View();
             }
@@ -159,7 +170,7 @@ namespace BackWebAdmin.Controllers
                 model.Id = id;
                 SocServiceDetailEntityClone entity = SocSerService.TypeList(1, 1, "0", model, sort).FirstOrDefault();
 
-                var list = db.DepartmentTable.AsQueryable<DepartmentEntity>().ToList();
+                var list = db.DepartmentTable.AsQueryable<DepartmentEntity>().Where(x => x.Level <= 6).ToList();
 
                 IList<SocSerDetailJoinEntity> joinList = db.SocSerDetailJoinEntityTable.AsQueryable().Where(x => x.SSDetailId == id && x.DepId == AdminUser.DeptId && x.State != 1).ToList();
                 db.Dispose();

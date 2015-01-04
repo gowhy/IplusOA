@@ -104,6 +104,8 @@ namespace BusLogic.Login
                 VolunteerEntityClone resVol = longVol.FirstOrDefault();
                 if (resVol != null)
                 {
+                    admin.UserName = resVol.Phone;
+                    admin.Id = resVol.Id;
                     admin.DeptId = resVol.DepId;
                     resVol.LoginState = 1;//登陆成功
                     admin.LoginToken = SSO.UserTicketManager.CreateLoginUserTicket(admin);

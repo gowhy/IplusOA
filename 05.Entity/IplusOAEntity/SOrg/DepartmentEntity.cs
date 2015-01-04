@@ -75,5 +75,6 @@ namespace IplusOAEntity
         /// </summary>
         public Nullable<double> Lng { get; set; }
         // public virtual ICollection<SocialOrgEntity> ListSocialOrgEntity { get; set; }
+        public int Level { get; set; }
     }
 }

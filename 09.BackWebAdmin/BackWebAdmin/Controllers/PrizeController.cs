@@ -45,6 +45,10 @@ namespace BackWebAdmin.Controllers
         [ValidateInput(false)]
         public ActionResult PostAdd(Prize entity)
         {
+            if (string.IsNullOrEmpty(entity.Name))
+            {
+                return Success("奖品名称是必填项");
+            }
             entity.DeptId = AdminUser.DeptId;
             entity.AddUserId = AdminUser.Id;
             entity.AddTime = DateTime.Now;

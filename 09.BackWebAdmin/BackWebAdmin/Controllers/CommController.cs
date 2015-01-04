@@ -29,7 +29,7 @@ namespace BackWebAdmin.Controllers
                 }
                 else
                 {
-                    var list = db.DepartmentTable.AsQueryable<DepartmentEntity>().ToList();
+                    var list = db.DepartmentTable.AsQueryable<DepartmentEntity>().Where(x => x.Level <= 6).ToList();
                     return Json(list);
                 }
             }

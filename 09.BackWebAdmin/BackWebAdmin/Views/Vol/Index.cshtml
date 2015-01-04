@@ -54,7 +54,7 @@
                                                                  .Add(x => Html.ScriptLink("领奖", "PrizeRecord({0})".FormatWith(x.Id)))
                                                                 // .Add(x => Html.ActionLink("领奖记录", "View", new { id = x.Id }))
                                                                  .Add(x => Html.ActionLink("领奖记录", "PrizeRecordIndex", "Prize", new { userId = x.Id }, null))
-                                                                // .Add(x => Html.ScriptLink("删除", "deleteVol({0})".FormatWith(x.Id)))
+                                                                .Add(x => Html.ScriptLink("删除", "deleteVol({0})".FormatWith(x.Id)))
                                                                  );
                                   }).Complex(ViewData)
     <div class="grid_foot">
