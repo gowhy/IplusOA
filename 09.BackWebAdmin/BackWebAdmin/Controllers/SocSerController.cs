@@ -104,10 +104,14 @@ namespace BackWebAdmin.Controllers
         /// <returns></returns>
         public ActionResult PostAdd(SocServiceDetailEntity entity, string SocSerImgId)
         {
+         
             entity.AddTime = DateTime.Now;
             entity.AddUser = AdminUser.UserName;
 
-
+            if (string.IsNullOrEmpty(entity.CoverCommunity))
+            {
+                return Error("覆盖社区必须填写");
+            }
             IList<string> coverList = entity.CoverCommunity.Split(',');
 
             List<SocSerDetailJoinEntity> Join = new List<SocSerDetailJoinEntity>();

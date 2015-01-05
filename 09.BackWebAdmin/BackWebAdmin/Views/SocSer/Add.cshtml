@@ -19,8 +19,8 @@
 
 
     <div id="tt">
-        @*<a href="@Url.Action("Index", "SocSer")" style=" width:100px;">返回列表</a>*@
-        <a href="@HttpContext.Current.Request.UrlReferrer" style=" width:100px;padding-left:20px;">返回列表</a>
+        <a href="@Url.Action("Index", "SocSer")" style=" width:100px;">返回列表</a>
+        @*<a href="@HttpContext.Current.Request.UrlReferrer" style=" width:100px;padding-left:20px;">返回列表</a>*@
     </div>
     <div id="p" class="easyui-panel" title="新增" style="height:530px;padding:10px;"
          data-options="iconCls:'icon-add',closable:false,tools:'#tt'">
@@ -64,6 +64,7 @@
                                 <option value="LRYS">丽人养生</option>
                                 <option value="XHKD">鲜花快递</option>
                                 <option value="SQCF">社区厨房</option>
+                                <option value="MYQZ">母婴亲子</option>
                             </select>
                         </td>
                     </tr>

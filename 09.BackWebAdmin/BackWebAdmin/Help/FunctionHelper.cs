@@ -31,7 +31,8 @@ namespace BackWebAdmin
             dicSerType.Add("XHKD", "鲜花快递");
             dicSerType.Add("SQCF", "社区厨房");
             dicSerType.Add("TV8", "TV8折购物");
-
+            dicSerType.Add("MYQZ", "母婴亲子");
+             
             dicSorgType.Add("SS", "枢纽型社会组织");
             dicSorgType.Add("MF", "民非类社会组织");
             dicSorgType.Add("ST", "社团类社会组织");
