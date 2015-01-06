@@ -158,6 +158,9 @@ namespace IplusOAEntity
         }
         [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public string SocialName { get; set; }
+
+        public int State { get; set; }
+
         #endregion Model
     }
 }

@@ -173,7 +173,7 @@ namespace IplusOAEntity
         public int VolCount { get; set; }
         [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public UserApplyServiceEntity UserApplyEntity { get; set; }
-
+        public int State { get; set; }
         #endregion Model
     }
 }

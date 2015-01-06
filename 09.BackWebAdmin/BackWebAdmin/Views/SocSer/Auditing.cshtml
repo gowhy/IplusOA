@@ -1,0 +1,291 @@
+﻿@using Common;
+@model IplusOAEntity.SocServiceDetailEntityClone
+
+@{
+    Layout = null;
+}
+
+@Html.IncludeCSS("~/Content/Css/style.css")
+@Html.IncludeCSS("~/Content/plug-in/ztree/css/zTreeStyle/zTreeStyle.css")
+@Html.IncludeCSS("~/Content/Css/demo.css")
+@Html.IncludeCSS("~/Content/plug-in/uploadify/uploadify.css")
+@Html.IncludeCSS("~/Content/EasyUI/themes/gray/easyui.css")
+@Html.IncludeCSS("~/Content/EasyUI/themes/icon.css")
+
+
+
+
+<script>
+    //window.UEDITOR_HOME_URL = "/xxxx/xxxx/";
+   // window.UEDITOR_HOME_serverPath="../../../socser/UeditConfig";
+    window.UEDITOR_HOME_serverPath="@Url.Content( "../../../socser/UeditConfig")";
+
+
+</script>
+
+<style>
+    .panel-tool {
+        width: 95%;
+        float: left;
+    }
+
+    .item_title {
+        background: none;
+    }
+</style>
+
+
+<div id="tt">
+    <a href="@Url.Action("Index", "SocSer")" style=" width:100px;">返回列表</a>
+    @*<a href="@HttpContext.Current.Request.UrlReferrer" style=" width:100px;padding-left:20px;">返回列表</a>*@
+</div>
+<div id="p" class="easyui-panel" title="新增" style="height:530px;padding:10px;"
+     data-options="iconCls:'icon-add',closable:false,tools:'#tt'">
+    <form name="PostAuditing" id="PostAuditing" action="@Url.Action("PostAuditing")" method="post" enctype="multipart/form-data">
+        <table class="form" cellpadding="0" cellspacing="0">
+            <tbody>
+
+                <tr>
+                    <td class="item_title">收费类型:</td>
+                    <td class="item_input">
+                        @*<input type="text" class="textbox require" name="PayType" value="@Model.PayType" />*@
+                        <select id="PayType" name="PayType">
+                            <option value="无偿">无偿</option>
+                            <option value="低偿">低偿</option>
+
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="item_title">
+                        服务类型:
+                    </td>
+                    <td class="item_input">
+                        <select id="Type" name="Type">
+                            <option value="GYFN">法律服务</option>
+                            <option value="GYYLFW">医疗服务</option>
+                            <option value="GYWH">文化娱乐</option>
+                            <option value="GYYL">居家养老</option>
+                            <option value="GYBF">社区帮扶</option>
+                            <option value="GYWHKT">文化课堂</option>
+                            <option value="GYNSD">社区绿丝带</option>
+                            <option value="SYJZ">社区家政</option>
+                            <option value="SYMY">美食娱乐</option>
+                            <option value="SYWX">家居维修</option>
+                            <option value="SYJR">金融服务</option>
+                            <option value="SYYH">优惠进社区</option>
+                            @*<option value="TV8">TV8折购物</option>*@
+                            <option value="JYPX">教育培训</option>
+                            <option value="MSKD">美食快递</option>
+                            <option value="XLYL">休闲娱乐</option>
+                            <option value="LRYS">丽人养生</option>
+                            <option value="XHKD">鲜花快递</option>
+                            <option value="SQCF">社区厨房</option>
+                            <option value="MYQZ">母婴亲子</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="item_title">服务内容标题:</td>
+                    <td class="item_input"><input type="text" class="textbox easyui-validatebox" missingmessage="必须填写" data-options="required:true" name="Context" value="@Model.Context" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">发布时间:</td>
+                    <td class="item_input"><input type="text" class="textbox easyui-validatebox" missingmessage="必须填写" data-options="required:true" name="PubTime" value="@(Model.PubTime.HasValue? Model.PubTime.Value.ToString("yyyy-MM-dd HH:mm") : "")" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">截止时间:</td>
+                    <td class="item_input"><input type="text" class="textbox easyui-validatebox" missingmessage="必须填写" data-options="required:true" name="EndTime" value="@(Model.EndTime.HasValue ? Model.EndTime.Value.ToString("yyyy-MM-dd HH:mm") : "")" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">服务描述:</td>
+                    <td class="item_input"><textarea class="textbox require" name="Desc" rows="5" cols="70">@Model.Desc</textarea></td>
+                </tr>
+                <tr>
+                    <td class="item_title">服务图片:</td>
+                    <td class="item_input">
+                        @*用来作为文件队列区域*@
+                        <div id="fileQueue">
+                        </div>
+                        @*<input type="file" name="uploadify" id="uploadify" multiple="true" />
+                        <input type="hidden" name="SocSerImgId" id="SocSerImgId" value="" />*@
+                        <div id="imgQueue">
+                            @*<a href="javascript:$('#uploadify').uploadify('upload')">上传</a>*@
+
+                            @foreach (var item in @Model.SocSerImgs)
+                            {
+                                <img socserimgid="@item.Id" ondblclick="delImgSocSer(this)" src="@item.HttpUrl" title="双击删除图片" alt="" width="160" height="140" />
+                            }
+
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="item_title">自愿者帮助说明:</td>
+                    <td class="item_input"><textarea class="textbox require" name="VHelpDesc" rows="5" cols="70">@Model.VHelpDesc</textarea></td>
+                </tr>
+                <tr>
+                    <td class="item_title">覆盖社区:</td>
+                    <td class="">
+                        <input type="hidden" name="CoverCommunity" id="CoverCommunityIds" value="@Model.CoverCommunity" />
+                        @*<input type="text" class="button" value="选择社区" name="CoverCommunity" onclick="showMenu(); return false;" />*@
+                        @*<a id="menuBtn" href="#" onclick="showMenu(this); return false;">请选择 &nbsp; &nbsp;</a>
+                        <div id="menuContent" class="menuContent" style="display:none; position: absolute;">
+                            <ul id="ztree" class="ztree" style="margin-top:0;  overflow:scroll; height:270px;"></ul>
+                        </div>*@
+                        <span class="textbox" id="CoverCommunityNames">@Model.CoverCommunityNames</span>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="item_title">感谢分值:</td>
+                    <td class="item_input"><input type="text" class="easyui-numberbox" name="THSScore" required="false" missingmessage="必须填写整数" value="@Model.THSScore" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">服务分值:</td>
+                    <td class="item_input"><input type="text" class="easyui-numberbox" name="Score" required="false" missingmessage="必须填写整数" value="@Model.Score" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">联系电话:</td>
+                    <td class="item_input"><input type="text" class="textbox require" name="Phone" value="@Model.Phone" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">联系人:</td>
+                    <td class="item_input"><input type="text" class="textbox require" name="Contacts" value="@Model.Contacts" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">审核理由:</td>
+                    <td class="item_input"><textarea class="textbox require" id="msg" name="Msg" rows="5" cols="70"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="item_title"></td>
+                    <td class="item_input">
+                        <input type="hidden" name="SDId" value="@Model.Id" />
+                        <input type="hidden" id="State" name="State" />
+                        <a href="javascript:void(0)" class="easyui-linkbutton" id="Pass">通过</a>
+                        <a href="javascript:void(0)" class="easyui-linkbutton" id="NoPass">不通过</a>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+
+
+        @Html.IncludeScript("~/Content/EasyUI/jquery-1.8.0.min.js")
+        @Html.IncludeScript("~/Content/Js/jquery.timer.js")
+        @Html.IncludeScript("~/Content/Js/common.js")
+
+        @Html.IncludeScript("~/Content/EasyUI/jquery.easyui.min.js")
+        @Html.IncludeScript("~/Content/plug-in/My97DatePicker/WdatePicker.js")
+
+        @Html.IncludeScript("~/Content/plug-in/ztree/js/jquery.ztree.core-3.5.js")
+        @Html.IncludeScript("~/Content/plug-in/ztree/js/jquery.ztree.excheck-3.5.js")
+        @Html.IncludeScript("~/Content/plug-in/uploadify/jquery.uploadify-3.1.js")
+
+        @Html.IncludeScript("~/Content/plug-in/ueditor/ueditor.config.js")
+        @Html.IncludeScript("~/Content/plug-in/ueditor/ueditor.all.js")
+        @Html.IncludeScript("~/Content/plug-in/ueditor/lang/zh-cn/zh-cn.js")
+
+        <script type="text/javascript">
+
+
+            var setting = {
+                view: {
+                    dblClickExpand: false,
+                    showLine: true,
+                    selectedMulti: false
+                },
+                check: {
+                    enable: true
+                },
+                data: {
+                    simpleData: {
+                        enable: true,
+                        idKey: "Id",
+                        pIdKey: "PId",
+                        rootPId: ""
+                    },
+                    key: {
+                        name: "Name",
+                        checked: "IsCheck"
+
+                    }
+
+                },
+                callback: {
+                    beforeCheck: beforeCheck,
+                    onCheck: onCheck
+                }
+            };
+
+            var zNodes =@(Html.Raw(ViewData["Department_List"].ToString()));
+
+            function onCheck(e, treeId, treeNode) {
+                var checkString="";
+                var  checkStringNames="";
+                var zTree = $.fn.zTree.getZTreeObj("ztree");
+                var checkNodesChild=    zTree.getCheckedNodes(true);
+                for (var i = 0; i < checkNodesChild.length; i++) {
+                    if (!checkNodesChild[i].isParent) {
+                        checkString+=","+checkNodesChild[i].Id;
+                        checkStringNames+=checkNodesChild[i].Name+",";
+                    }
+                }
+                $("#CoverCommunityIds").val(checkString);
+                $("#CoverCommunityNames").text(checkStringNames);
+
+            }
+
+            function beforeCheck(treeId, treeNode) {
+
+            }
+            function showMenu(e) {
+                $("#menuContent").css("top", $(e).offset().top+15).slideDown("fast");
+                $("body").bind("mousedown", onBodyDown);
+            }
+            function hideMenu() {
+                $("#menuContent").fadeOut("fast");
+                $("body").unbind("mousedown", onBodyDown);
+            }
+            function onBodyDown(event) {
+                if (!(event.target.id == "menuBtn" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length>0)) {
+                    hideMenu();
+                }
+            }
+
+
+            function clearForm() {
+                $('#PostEdit').form('clear');
+            }
+            function delImgSocSer(e)
+            {
+                if (!confirm("确认要删除该图片吗？")) {
+                    return false;
+                }
+                $(e).remove();
+            }
+            $(function(){
+
+                $.fn.zTree.init($("#ztree"), setting, zNodes);
+                $("#Type").val("@Model.Type");
+                $("#PayType").val("@Model.PayType");
+
+                $("#Pass").click(function () {
+
+                    $("#State").val("1");
+                    $('#PostAuditing').submit();
+
+                });
+                $("#NoPass").click(function () {
+
+                  
+                    $("#State").val("0");
+                    $('#PostAuditing').submit();
+
+                });
+           
+            });
+        </script>
+    </form>
+
+</div>

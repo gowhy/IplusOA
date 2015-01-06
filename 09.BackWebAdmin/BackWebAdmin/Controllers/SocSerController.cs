@@ -1098,5 +1098,61 @@ namespace BackWebAdmin.Controllers
             return Json(SocSerService.TypeList(pageNumber, size, depId, model, sort), JsonRequestBehavior.AllowGet);
         }
 
+
+        public ActionResult Auditing(int id)
+        {
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                //SocServiceDetailEntity entity = db.SocServiceDetailEntityTable.Find(id);
+                GridSortOptions sort = new GridSortOptions();
+                SelectSocSerModel model = new SelectSocSerModel();
+                model.Id = id;
+                SocServiceDetailEntityClone entity = SocSerService.TypeList(1, 1, "0", model, sort).FirstOrDefault();
+
+                var list = db.DepartmentTable.AsQueryable<DepartmentEntity>().Where(x => x.Level <= 6).ToList();
+
+                IList<SocSerDetailJoinEntity> joinList = db.SocSerDetailJoinEntityTable.AsQueryable().Where(x => x.SSDetailId == id && x.DepId == AdminUser.DeptId && x.State != 1).ToList();
+                db.Dispose();
+                string CoverCommunityNames = "";
+                IList<string> clit = entity.CoverCommunity.Trim().Split(',');
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (clit.Contains(list[i].Id) && (joinList.FirstOrDefault(x => x.DepId == list[i].Id) == null))
+                    {
+                        list[i].IsCheck = true;
+                        CoverCommunityNames += list[i].Name + ",";
+                    }
+                }
+
+                entity.CoverCommunityNames = CoverCommunityNames;
+                ViewData["Department_List"] = HelpSerializer.JSONSerialize<List<DepartmentEntity>>(list);
+
+                return View(entity);
+            }
+
+        }
+
+        //[SecurityNode(Name = "修改社区服务内容")]
+        public ActionResult PostAuditing(SocServiceAuditeLog entity)
+        {
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                SocServiceDetailEntity data = db.SocServiceDetailEntityTable.Find(entity.SDId);
+
+                data.State = entity.State;
+                db.Update<SocServiceDetailEntity>(data);
+                db.SaveChanges();
+
+                entity.AuditeUserId = AdminUser.Id;
+                entity.AddTime = DateTime.Now;
+                db.Add<SocServiceAuditeLog>(entity);
+                db.SaveChanges();
+
+                db.Dispose();
+                return Success("审核成功");
+         
+            }
+
+        }
     }
 }

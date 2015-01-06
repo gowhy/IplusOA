@@ -66,7 +66,8 @@ namespace BackWebAdmin.CommService
                               THSScore = s.THSScore,
                               Type = s.Type,
                               VHelpDesc = s.VHelpDesc,
-                              SocSerImgs =img.Where(x=>x.SocSerId==s.Id).ToList()
+                              State=s.State,
+                              SocSerImgs = img.Where(x => x.SocSerId >0&& x.SocSerId == s.Id).ToList()
 
                           };
 

@@ -452,7 +452,12 @@ namespace BackWebAdmin.Controllers
             ReturnModel retunModel = new ReturnModel();
             using (IplusOADBContext db = new IplusOADBContext())
             {
-
+                if ( db.AppMsgSendTable.Count(x=>x.UserId==entity.UserId&&x.TCode==entity.TCode)>0)
+                {
+                    retunModel.State = 1;
+                    retunModel.Msg = "已经存在";
+                    return Json(retunModel);
+                }
                 db.AppMsgSendTable.Add(entity);
                 db.SaveChanges();
                 retunModel.State = 1;

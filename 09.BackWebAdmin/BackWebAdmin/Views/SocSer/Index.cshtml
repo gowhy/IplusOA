@@ -86,6 +86,7 @@
 
                                       column.Buttons(btns => btns.Add(x => Html.ActionLink("编辑", "Edit", new { id = x.Id }))
                                                                  .Add(x => Html.ActionLink("详情", "Detail", new { id = x.Id }))
+                                                                 .Add(x => Html.ActionLink("审核", "Auditing", new { id = x.Id }))
                                                                  .Add(x => Html.ScriptLink("删除", "deleteSer({0})".FormatWith(x.Id)))
                                                                  ).HeaderAttributes(style => "width:160px;align:center;"); 
                                   }).Complex(ViewData)
