@@ -145,7 +145,11 @@ namespace BackWebAdmin.Controllers
                 {
                     if (!string.IsNullOrEmpty(item))
                     {
-                        listIdImg.Add(int.Parse(item));
+                        if (int.Parse(item)>0)
+                        {
+                            listIdImg.Add(int.Parse(item));
+                        }
+                       
                     }
 
                 }
@@ -1153,6 +1157,14 @@ namespace BackWebAdmin.Controllers
          
             }
 
+        }
+        [SecurityNode(Name = "待审核列表")]
+        public ActionResult PostAuditingIndex(int? page, SelectSocSerModel model, GridSortOptions sort)
+        {
+            var pageNumber = page ?? 1;
+            model.State = 0;//表示待审核的
+            model.SocSerList = SocSerService.TypeListState(pageNumber, pageSize, null, model, sort);
+            return View(model);
         }
     }
 }

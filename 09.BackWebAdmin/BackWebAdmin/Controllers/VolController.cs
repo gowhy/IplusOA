@@ -52,25 +52,69 @@ namespace BackWebAdmin.Controllers
             }
         }
 
+        //[SecurityNode(Name = "保存新增")]
+        //public ActionResult PostAdd(VolunteerEntity entity)
+        //{
+
+        //    entity.State = 0;//待审核
+        //    entity.Doing = 1;//默认接受任务
+        //    // entity.PassWord = "000000";//自愿者默认密码
+        //    //model.Score = entity.Score;
+        //    entity.Score = 0;
+        //    using (IplusOADBContext db = new IplusOADBContext())
+        //    {
+
+
+        //        BackAdminUser ba = base.GetBackUserInfo();
+        //        SocialOrgEntity so = db.SocialOrgEntityTable.Single(x => x.Id == ba.SocOrgId);
+        //        entity.SocialNO = so.SocialNO;
+
+        //        db.Add<VolunteerEntity>(entity);
+        //        db.SaveChanges();
+        //        db.Dispose();
+        //        return Success("添加成功");
+        //    }
+        //}
         [SecurityNode(Name = "保存新增")]
         public ActionResult PostAdd(VolunteerEntity entity)
         {
-
-            entity.State = 0;//待审核
-            entity.Doing = 1;//默认接受任务
-           // entity.PassWord = "000000";//自愿者默认密码
-            //model.Score = entity.Score;
-            entity.Score = 0;
-            using (IplusOADBContext db = new IplusOADBContext())
+            ReturnModel returnModel = new ReturnModel();
+            try
             {
 
-                SocialOrgEntity so = db.SocialOrgEntityTable.Single(x => x.Id == AdminUser.SocOrgId);
-                entity.SocialNO = so.SocialNO;
 
-                db.Add<VolunteerEntity>(entity);
-                db.SaveChanges();
-                db.Dispose();
-                return Success("添加成功");
+                if (entity == null  || string.IsNullOrEmpty(entity.Type) || string.IsNullOrEmpty(entity.PassWord) && (string.IsNullOrEmpty(entity.VID) && string.IsNullOrEmpty(entity.Phone)))
+                {
+                    Json("登陆账号、密码、验证码和用户类型是必填项", JsonRequestBehavior.AllowGet);
+                }
+
+                using (IplusOADBContext db = new IplusOADBContext())
+                {
+
+                    returnModel = VolService.AccountExist(entity);
+                    if (returnModel == null || returnModel.State != 0)
+                    {
+                        return Error(returnModel.Msg); 
+                    }
+                }
+
+                returnModel = VolService.PostAddVol(entity, Request);
+                if (returnModel.State==1)
+                {
+                   return Success(returnModel.Msg);
+                }
+                else
+                {
+                    return Error(returnModel.Msg);
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                returnModel.Msg = ex.Message + ex.Source + ex.StackTrace + ex.TargetSite + ex.InnerException;
+                returnModel.State = -4;
+                return Error(returnModel.Msg);
+                throw;
             }
         }
 

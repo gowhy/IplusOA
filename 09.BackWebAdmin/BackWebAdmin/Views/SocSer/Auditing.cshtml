@@ -36,7 +36,7 @@
 
 
 <div id="tt">
-    <a href="@Url.Action("Index", "SocSer")" style=" width:100px;">返回列表</a>
+    <a href="@Url.Action("PostAuditingIndex", "SocSer")" style=" width:100px;">返回列表</a>
     @*<a href="@HttpContext.Current.Request.UrlReferrer" style=" width:100px;padding-left:20px;">返回列表</a>*@
 </div>
 <div id="p" class="easyui-panel" title="新增" style="height:530px;padding:10px;"
@@ -153,19 +153,31 @@
                     <td class="item_title">联系人:</td>
                     <td class="item_input"><input type="text" class="textbox require" name="Contacts" value="@Model.Contacts" /></td>
                 </tr>
-                <tr>
-                    <td class="item_title">审核理由:</td>
-                    <td class="item_input"><textarea class="textbox require" id="msg" name="Msg" rows="5" cols="70"></textarea></td>
-                </tr>
-                <tr>
-                    <td class="item_title"></td>
-                    <td class="item_input">
-                        <input type="hidden" name="SDId" value="@Model.Id" />
-                        <input type="hidden" id="State" name="State" />
-                        <a href="javascript:void(0)" class="easyui-linkbutton" id="Pass">通过</a>
-                        <a href="javascript:void(0)" class="easyui-linkbutton" id="NoPass">不通过</a>
-                    </td>
-                </tr>
+                @if (@Model.State == 0)
+                {
+                    <tr>
+                        <td class="item_title">审核理由:</td>
+                        <td class="item_input"><textarea class="textbox require" id="msg" name="Msg" rows="5" cols="70"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td class="item_title"></td>
+                        <td class="item_input">
+                            <input type="hidden" name="SDId" value="@Model.Id" />
+                            <input type="hidden" id="State" name="State" />
+                            <a href="javascript:void(0)" class="easyui-linkbutton" id="Pass">通过</a>
+                            <a href="javascript:void(0)" class="easyui-linkbutton" id="NoPass">不通过</a>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+
+                    <tr>
+                        <td class="item_title">审核结果:</td>
+                        <td class="item_input">已通过</td>
+                    </tr>
+                }
+            
 
             </tbody>
         </table>
@@ -279,7 +291,7 @@
                 $("#NoPass").click(function () {
 
                   
-                    $("#State").val("0");
+                    $("#State").val("2");
                     $('#PostAuditing').submit();
 
                 });

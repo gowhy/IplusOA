@@ -1194,6 +1194,7 @@
     <Content Include="Views\Prize\PrizeRecord.cshtml" />
     <Content Include="Views\Prize\PrizeRecordIndex.cshtml" />
     <Content Include="Views\SocSer\Auditing.cshtml" />
+    <Content Include="Views\SocSer\PostAuditingIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\02.Common\Common\Common.csproj">
