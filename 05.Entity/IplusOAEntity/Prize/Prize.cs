@@ -18,6 +18,8 @@ namespace IplusOAEntity
       
         public DateTime AddTime { get; set; }
         public string Description { get; set; }
+        public string PrizeItem { get; set; }
+
 
     }
 }

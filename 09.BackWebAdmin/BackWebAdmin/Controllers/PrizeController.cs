@@ -62,30 +62,45 @@ namespace BackWebAdmin.Controllers
             return Success("添加成功");
 
         }
-        public ActionResult Edit()
+        public ActionResult Edit(int id)
         {
-
-            return View();
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                Prize entity = db.PrizeTable.Find(id);
+                return View(entity);
+            }
+           
         }
         [ValidateInput(false)]
         public ActionResult PostEdit(Prize entity)
         {
-            entity.DeptId = AdminUser.DeptId;
-            entity.AddUserId = AdminUser.Id;
 
             using (IplusOADBContext db = new IplusOADBContext())
             {
-                entity.AddTime = DateTime.Now;
-                db.Add(entity);
+
+                Prize p = db.PrizeTable.Find(entity.Id);
+                p.Name = entity.Name;
+                p.PrizeItem = entity.PrizeItem;
+                p.StartTime = entity.StartTime;
+                p.EndTime = entity.EndTime;
+                p.Description = entity.Description;
+                db.Update<Prize>(p);
                 db.SaveChanges();
 
             }
-            return Success("添加成功");
+            return Success("修改成功");
 
         }
-        public ActionResult Delete()
+        public ActionResult Delete(int id)
         {
-            return View();
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                Prize entity = db.PrizeTable.Find(id);
+                db.Delete<Prize>(entity);
+                db.SaveChanges();
+                return Success("删除成功");
+            }
+      
         }
         public PartialViewResult PrizeRecord(int userId)
         {
@@ -120,7 +135,7 @@ namespace BackWebAdmin.Controllers
                 if (tb.Count(x => x.AprizeId == entity.AprizeId && x.UserId == entity.UserId) > 0)
                 {
 
-                    return Error("该用户已经领取过该奖品,请领取其他奖品");
+                    return Error("该用户已经参与过该活动,不能再参与");
                 }
 
                 db.Add(entity);

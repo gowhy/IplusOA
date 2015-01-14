@@ -49,7 +49,7 @@
                     <td class="item_title">收费类型:</td>
                     <td class="item_input">
                         @*<input type="text" class="textbox require" name="PayType" value="@Model.PayType" />*@
-                        <select id="PayType" name="PayType">
+                        <select id="PayType" disabled="disabled" name="PayType">
                             <option value="无偿">无偿</option>
                             <option value="低偿">低偿</option>
 
@@ -61,7 +61,7 @@
                         服务类型:
                     </td>
                     <td class="item_input">
-                        <select id="Type" name="Type">
+                        <select id="Type" disabled="disabled" name="Type">
                             <option value="GYFN">法律服务</option>
                             <option value="GYYLFW">医疗服务</option>
                             <option value="GYWH">文化娱乐</option>
@@ -87,19 +87,19 @@
                 </tr>
                 <tr>
                     <td class="item_title">服务内容标题:</td>
-                    <td class="item_input"><input type="text" class="textbox easyui-validatebox" missingmessage="必须填写" data-options="required:true" name="Context" value="@Model.Context" /></td>
+                    <td class="item_input"><input type="text" class="textbox easyui-validatebox" disabled="disabled" missingmessage="必须填写" data-options="required:true" name="Context" value="@Model.Context" /></td>
                 </tr>
                 <tr>
                     <td class="item_title">发布时间:</td>
-                    <td class="item_input"><input type="text" class="textbox easyui-validatebox" missingmessage="必须填写" data-options="required:true" name="PubTime" value="@(Model.PubTime.HasValue? Model.PubTime.Value.ToString("yyyy-MM-dd HH:mm") : "")" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" /></td>
+                    <td class="item_input"><input type="text" class="textbox easyui-validatebox" disabled="disabled" missingmessage="必须填写" data-options="required:true" name="PubTime" value="@(Model.PubTime.HasValue? Model.PubTime.Value.ToString("yyyy-MM-dd HH:mm") : "")" /></td>
                 </tr>
                 <tr>
                     <td class="item_title">截止时间:</td>
-                    <td class="item_input"><input type="text" class="textbox easyui-validatebox" missingmessage="必须填写" data-options="required:true" name="EndTime" value="@(Model.EndTime.HasValue ? Model.EndTime.Value.ToString("yyyy-MM-dd HH:mm") : "")" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" /></td>
+                    <td class="item_input"><input type="text" class="textbox easyui-validatebox" disabled="disabled" missingmessage="必须填写" data-options="required:true" name="EndTime" value="@(Model.EndTime.HasValue ? Model.EndTime.Value.ToString("yyyy-MM-dd HH:mm") : "")" /></td>
                 </tr>
                 <tr>
                     <td class="item_title">服务描述:</td>
-                    <td class="item_input"><textarea class="textbox require" name="Desc" rows="5" cols="70">@Model.Desc</textarea></td>
+                    <td class="item_input"><textarea class="textbox require" name="Desc" rows="5" disabled="disabled" cols="70">@Model.Desc</textarea></td>
                 </tr>
                 <tr>
                     <td class="item_title">服务图片:</td>
@@ -122,12 +122,12 @@
                 </tr>
                 <tr>
                     <td class="item_title">自愿者帮助说明:</td>
-                    <td class="item_input"><textarea class="textbox require" name="VHelpDesc" rows="5" cols="70">@Model.VHelpDesc</textarea></td>
+                    <td class="item_input"><textarea class="textbox require" disabled="disabled" name="VHelpDesc" rows="5" cols="70">@Model.VHelpDesc</textarea></td>
                 </tr>
                 <tr>
                     <td class="item_title">覆盖社区:</td>
                     <td class="">
-                        <input type="hidden" name="CoverCommunity" id="CoverCommunityIds" value="@Model.CoverCommunity" />
+                        <input type="hidden" disabled="disabled" name="CoverCommunity" id="CoverCommunityIds" value="@Model.CoverCommunity" />
                         @*<input type="text" class="button" value="选择社区" name="CoverCommunity" onclick="showMenu(); return false;" />*@
                         @*<a id="menuBtn" href="#" onclick="showMenu(this); return false;">请选择 &nbsp; &nbsp;</a>
                         <div id="menuContent" class="menuContent" style="display:none; position: absolute;">
@@ -139,19 +139,19 @@
                 </tr>
                 <tr>
                     <td class="item_title">感谢分值:</td>
-                    <td class="item_input"><input type="text" class="easyui-numberbox" name="THSScore" required="false" missingmessage="必须填写整数" value="@Model.THSScore" /></td>
+                    <td class="item_input"><input type="text" class="easyui-numberbox" disabled="disabled" name="THSScore" required="false" missingmessage="必须填写整数" value="@Model.THSScore" /></td>
                 </tr>
                 <tr>
                     <td class="item_title">服务分值:</td>
-                    <td class="item_input"><input type="text" class="easyui-numberbox" name="Score" required="false" missingmessage="必须填写整数" value="@Model.Score" /></td>
+                    <td class="item_input"><input type="text" class="easyui-numberbox" disabled="disabled" name="Score" required="false" missingmessage="必须填写整数" value="@Model.Score" /></td>
                 </tr>
                 <tr>
                     <td class="item_title">联系电话:</td>
-                    <td class="item_input"><input type="text" class="textbox require" name="Phone" value="@Model.Phone" /></td>
+                    <td class="item_input"><input type="text" class="textbox require" disabled="disabled" name="Phone" value="@Model.Phone" /></td>
                 </tr>
                 <tr>
                     <td class="item_title">联系人:</td>
-                    <td class="item_input"><input type="text" class="textbox require" name="Contacts" value="@Model.Contacts" /></td>
+                    <td class="item_input"><input type="text" class="textbox require" disabled="disabled" name="Contacts" value="@Model.Contacts" /></td>
                 </tr>
                 @if (@Model.State == 0)
                 {
@@ -266,16 +266,7 @@
             }
 
 
-            function clearForm() {
-                $('#PostEdit').form('clear');
-            }
-            function delImgSocSer(e)
-            {
-                if (!confirm("确认要删除该图片吗？")) {
-                    return false;
-                }
-                $(e).remove();
-            }
+         
             $(function(){
 
                 $.fn.zTree.init($("#ztree"), setting, zNodes);

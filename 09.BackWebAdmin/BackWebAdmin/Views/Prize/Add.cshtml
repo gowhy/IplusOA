@@ -40,16 +40,27 @@
         <table class="form" cellpadding="0" cellspacing="0">
             <tbody>
                 <tr>
-                    <td class="item_title">名称:</td>
+                    <td class="item_title">活动名称:</td>
                     <td class="item_input"><input type="text" class="textbox require easyui-validatebox" missingmessage="必须填写" data-options="required:true" name="Name" /></td>
                 </tr>
                 <tr>
-                    <td class="item_title">有效期:</td>
+                    <td class="item_title">活动有效期:</td>
                     <td class="item_input">
                         <input type="text" class="textbox require easyui-validatebox" name="StartTime" missingmessage="必须填写" data-options="required:true" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" />
                     ~
                         <input type="text" class="textbox require easyui-validatebox" name="EndTime" missingmessage="必须填写" data-options="required:true" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" />
 
+                    </td>
+                </tr>
+                <tr>
+                    <td class="item_title">活动奖品:</td>
+                    <td class="item_input">
+                        <input type="hidden" id="PrizeItem" name="PrizeItem" />
+                        奖品一 <input type="text" class="textbox" id="PrizeItem1" /> <br />
+                        奖品二 <input type="text" class="textbox" id="PrizeItem2" /><br />
+                        奖品三 <input type="text" class="textbox" id="PrizeItem3" /><br />
+                        奖品四 <input type="text" class="textbox" id="PrizeItem4" /><br />
+                        奖品五 <input type="text" class="textbox" id="PrizeItem5" />
                     </td>
                 </tr>
                 <tr>
@@ -107,7 +118,9 @@
 
 
         function submitForm() {
-      
+          
+            var prizeItem = $("#PrizeItem1").val() + "#" + $("#PrizeItem2").val() + "#" + $("#PrizeItem3").val() + "#" + $("#PrizeItem4").val() + "#" + $("#PrizeItem5").val();
+            $("#PrizeItem").val(prizeItem);
             $("#Description").val(UE.getEditor('editor').getContent());
             $('#postadd').submit();
         }

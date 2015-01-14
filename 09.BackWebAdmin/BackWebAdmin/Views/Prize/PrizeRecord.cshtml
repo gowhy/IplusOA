@@ -31,16 +31,16 @@
                 </tr>
                 <tr>
                     <td class="item_title">
-                        奖品:
+                        活动:
                     </td>
                     <td class="item_input">
-                        <select name="AprizeId">
+                        <select id="AprizeId" name="AprizeId">
 
                             @if (ViewData["PrizeTable_list"] != null)
                             {
                                 foreach (var pri in ViewData["PrizeTable_list"] as IList<IplusOAEntity.Prize> ?? new List<IplusOAEntity.Prize>())
                                 {
-                                    <option value="@pri.Id">@pri.Name</option>
+                                    <option value="@pri.Id" prizeitem="@pri.PrizeItem">@pri.Name</option>
                                 }
                             }
                             else
@@ -49,6 +49,16 @@
                             }
 
 
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                 <td class="item_title">
+                        奖品:
+                    </td>
+                    <td class="item_input">
+                        <select id="PrizeName" name="PrizeName">
+                         
                         </select>
                     </td>
                 </tr>
@@ -76,7 +86,36 @@
             function clearForm() {
                 $('#postadd').form('clear');
             }
+         
+            $(function () {
+              
+                $("#AprizeId").change(function () {
+                    BindPrizeItem();
 
+                });
+                BindPrizeItem();
+                function BindPrizeItem()
+                {
+                    var ObjThis = $("#AprizeId");
+                    $("#PrizeName").empty();
+                    var prizeitemString = ObjThis.find("option:selected").attr("prizeitem");
+
+
+
+                    var prizeitemArr = prizeitemString.split("#")
+
+                    var prizeitemHtml = "";
+                    for (var i = 0; i < prizeitemArr.length; i++) {
+                        if (prizeitemArr[i] && $.trim(prizeitemArr[i]) != "") {
+                            prizeitemHtml += "<option value='" + prizeitemArr[i] + "'>" + prizeitemArr[i] + "</option>"
+                        }
+
+                    }
+                    $("#PrizeName").append(prizeitemHtml);
+
+                }
+
+            });
 
         </script>
     </form>

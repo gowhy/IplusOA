@@ -69,10 +69,11 @@ namespace BackWebAdmin.Controllers
                 db.SaveChanges();
             }
 
-          
 
-            
-            return Json(SocSerService.TypeList(pageNumber, size, depId, model, sort), JsonRequestBehavior.AllowGet);
+            model.State = 1;//表示待审核的
+           
+           return Json(SocSerService.TypeListState(pageNumber, size, depId, model, sort), JsonRequestBehavior.AllowGet);
+            //return Json(SocSerService.TypeList(pageNumber, size, depId, model, sort), JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult AppAdImgServiceIndex(SelectSocSerModel model, GridSortOptions sort, int? page, int? pageSize = 20)

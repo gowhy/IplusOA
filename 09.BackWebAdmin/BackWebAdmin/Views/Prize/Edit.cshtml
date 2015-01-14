@@ -1,7 +1,146 @@
-﻿
+﻿@using Common;
+@model IplusOAEntity.Prize
 @{
-    ViewBag.Title = "Edit";
+    Layout = null;
 }
 
-<h2>Edit</h2>
+@Html.IncludeCSS("~/Content/Css/style.css")
+@Html.IncludeCSS("~/Content/plug-in/ztree/css/zTreeStyle/zTreeStyle.css")
+@Html.IncludeCSS("~/Content/Css/demo.css")
+@Html.IncludeCSS("~/Content/plug-in/uploadify/uploadify.css")
+@Html.IncludeCSS("~/Content/EasyUI/themes/gray/easyui.css")
+@Html.IncludeCSS("~/Content/EasyUI/themes/icon.css")
 
+<script>
+    window.UEDITOR_HOME_serverPath = "@Url.Content("../../../notice/ImgFile")";
+</script>
+
+
+
+<style>
+    .panel-tool {
+        width: 95%;
+        float: left;
+    }
+
+    .item_title {
+        background: none;
+    }
+</style>
+
+
+
+<div id="tt">
+    <a href="@Url.Action("Index")" style=" width:100px;   margin-left:100px;">返回列表</a>
+    @*<a href="@HttpContext.Current.Request.UrlReferrer" style=" width:100px;padding-left:20px;">返回列表</a>*@
+</div>
+<div id="p" class="easyui-panel" title="修改活动及奖品" style="height:530px;padding:10px;"
+     data-options="iconCls:'icon-add',closable:false,tools:'#tt'">
+
+    <form name="PostEdit" action="@Url.Action("PostEdit")" id="PostEdit" method="post" enctype="multipart/form-data">
+        <table class="form" cellpadding="0" cellspacing="0">
+            <tbody>
+                <tr>
+                    <td class="item_title">活动名称:</td>
+                    <td class="item_input"><input type="text" value="@Model.Name" class="textbox require easyui-validatebox" missingmessage="必须填写" data-options="required:true" name="Name" /></td>
+                </tr>
+
+                <tr>
+                    <td class="item_title">活动有效期:</td>
+                    <td class="item_input">
+                        <input type="text" value="@Model.StartTime.ToString("yyyy-MM-dd HH:mm")" class="textbox require easyui-validatebox" name="StartTime" missingmessage="必须填写" data-options="required:true" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" />
+                        ~
+                        <input type="text" value="@Model.EndTime.ToString("yyyy-MM-dd HH:mm")" class="textbox require easyui-validatebox" name="EndTime" missingmessage="必须填写" data-options="required:true" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" />
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="item_title">活动奖品:</td>
+                    <td class="item_input">
+                        <input type="hidden" id="PrizeItem" name="PrizeItem" />
+                        奖品一 <input type="text" class="textbox" id="PrizeItem1" value="@(Model.PrizeItem.Split('#')[0])" /> <br />
+                        奖品二 <input type="text" class="textbox" id="PrizeItem2" value="@(Model.PrizeItem.Split('#')[1])" /><br />
+                        奖品三 <input type="text" class="textbox" id="PrizeItem3" value="@(Model.PrizeItem.Split('#')[2])" /><br />
+                        奖品四 <input type="text" class="textbox" id="PrizeItem4" value="@(Model.PrizeItem.Split('#')[3])" /><br />
+                        奖品五 <input type="text" class="textbox" id="PrizeItem5" value="@(Model.PrizeItem.Split('#')[4])" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="item_title">说明:</td>
+                    <td class="item_input">
+                        <input type="hidden" name="Description" id="Description" />
+                        <div>
+                            <script id="editor" type="text/plain" style="width:800px;height:400px;">
+                                @Html.Raw(Model.Description);
+                            </script>
+
+                        </div>
+                    </td>
+                </tr>
+
+
+
+                <tr>
+                    <td class="item_title"></td>
+                    <td class="item_input">
+                        <input type="hidden" id="Id" name="Id" value="@Model.Id" />
+                        <a href="javascript:void(0)" id="btnsubmitForm" class="easyui-linkbutton">保存</a>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </form>
+</div>
+@Html.IncludeScript("~/Content/EasyUI/jquery-1.8.0.min.js")
+@Html.IncludeScript("~/Content/Js/jquery.timer.js")
+@Html.IncludeScript("~/Content/Js/common.js")
+
+@Html.IncludeScript("~/Content/EasyUI/jquery.easyui.min.js")
+
+
+
+@Html.IncludeScript("~/Content/plug-in/ueditor/ueditor.config.js")
+@Html.IncludeScript("~/Content/plug-in/ueditor/ueditor.all.js")
+@Html.IncludeScript("~/Content/plug-in/ueditor/lang/zh-cn/zh-cn.js")
+@Html.IncludeScript("~/Content/plug-in/My97DatePicker/WdatePicker.js")
+
+<script>
+
+
+
+
+    function clearForm() {
+        $('#PostEdit').form('clear');
+    }
+
+
+
+    $(function () {
+
+        var ue = UE.getEditor('editor');
+       
+
+        function submitForm() {
+      
+            var prizeItem = $("#PrizeItem1").val() + "#" + $("#PrizeItem2").val() + "#" + $("#PrizeItem3").val() + "#" + $("#PrizeItem4").val() + "#" + $("#PrizeItem5").val();
+         
+            $("#PrizeItem").val(prizeItem);
+         
+            $("#Description").val(UE.getEditor('editor').getContent());
+      
+            $('#PostEdit').submit();
+        }
+
+        $("#btnsubmitForm").click(function () {
+         
+            submitForm();
+        });
+
+
+
+
+
+
+    });
+</script>

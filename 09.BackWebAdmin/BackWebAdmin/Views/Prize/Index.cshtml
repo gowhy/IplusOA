@@ -58,9 +58,9 @@
                                   {
                                       column.For(x => x.Name).Named("奖品名称");
                                       column.For(x => x.StartTime.ToString("yyyy-MM-dd HH:ss")+"  到  "+ x.EndTime.ToString("yyyy-MM-dd HH:ss")).Named("有效期");
-                                      column.For(x => x.AddTime.ToString("yyyy-MM-dd HH:ss")).Named("添加时间");
+                                    //  column.For(x => x.AddTime.ToString("yyyy-MM-dd HH:ss")).Named("添加时间");
                                       column.Buttons(btns => btns
-                                          .Add(x => Html.ActionLink("编辑", "view", new { id = x.Id }))
+                                          .Add(x => Html.ActionLink("编辑", "Edit", new { id = x.Id }))
                                           .Add(x => Html.ScriptLink("删除", "del({0})".FormatWith(x.Id)))
                                                                  );
                                   }).Complex(ViewData)

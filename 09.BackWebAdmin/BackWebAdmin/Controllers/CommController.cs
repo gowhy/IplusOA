@@ -58,10 +58,10 @@ namespace BackWebAdmin.Controllers
 
                     DateTime codeOutTime = DateTime.Now.AddMinutes(-10);
                     //  int existCount = db.SMSTable.Count(x => x.Phone == entity.Phone.Trim() && x.VCode == code.Trim() && x.AddTime< codeOutTime);
-                    int existCount = db.SMSTable.Count(x => x.Phone == entity.Phone.Trim() && x.VCode == code.Trim() && x.AddTime > codeOutTime);
+                    int existCount = db.SMSTable.Count(x => x.Phone == entity.Phone.Trim() && x.VCode == code.Trim() && x.BType==0&& x.AddTime > codeOutTime);
                     if (existCount == 0)
                     {
-                        returnModel.Msg = "验证码失效,请重新获取";
+                        returnModel.Msg = "注册验证码失效,请重新获取";
                         returnModel.State = -2;
                         return Json(returnModel, JsonRequestBehavior.AllowGet);
                     }
@@ -448,8 +448,15 @@ namespace BackWebAdmin.Controllers
 
         public ActionResult AppMsgSendCode(AppCodeMsgSend entity)
         {
-            entity.AddTime = DateTime.Now;
             ReturnModel retunModel = new ReturnModel();
+            if (string.IsNullOrEmpty(entity.TCode)||entity.UserId <1)
+            {
+                retunModel.State = 0;
+                retunModel.Msg = "TCode、UserId是必填项";
+                return Json(retunModel);
+            }
+            entity.AddTime = DateTime.Now;
+        
             using (IplusOADBContext db = new IplusOADBContext())
             {
                 if ( db.AppMsgSendTable.Count(x=>x.UserId==entity.UserId&&x.TCode==entity.TCode)>0)
