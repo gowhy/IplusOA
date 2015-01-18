@@ -391,10 +391,10 @@ namespace BackWebAdmin.Controllers
         {
             using (IplusOADBContext db = new IplusOADBContext())
             {
-                VolunteerEntity vol = db.VolunteerEntityTable.Find(id);
-                db.Delete<VolunteerEntity>(vol);
-                db.SaveChanges();
-                db.Dispose();
+                //VolunteerEntity vol = db.VolunteerEntityTable.Find(id);
+                //db.Delete<VolunteerEntity>(vol);
+                //db.SaveChanges();
+                //db.Dispose();
                 return Success("操作成功");
             }
         }

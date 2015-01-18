@@ -110,7 +110,7 @@
                     </td>
                     <td class="item_input">
                         <select name="RoleId">
-                            @foreach (var role in ViewData["UserRole"] as IList<IplusOAEntity.RoleEntity> ?? new List<IplusOAEntity.RoleEntity>())
+                            @foreach (var role in ((ViewData["UserRole"] as IList<IplusOAEntity.RoleEntity> )?? new List<IplusOAEntity.RoleEntity>()))
                             {
                                 <option value="@role.Id" @(Model.RoleId == role.Id ? "selected = \"selected\"" : "")>@role.Name</option>
                             }
@@ -123,8 +123,8 @@
                     </td>
                     <td class="item_input">
                         <input type="hidden" name="DeptId" id="DeptId" value="@Model.DeptId" />
-                        <input type="text" class="textbox200 require" onclick="showMenu()" id="CoverCommunity" value="@Model.Department.Name" name="CoverCommunity" />
-                        <div id="menuContent" class="menuContent" style="display:none; position: absolute;">
+                        <input type="text" class="textbox200 require" onclick="showMenu()" id="CoverCommunity" value="@((Model.Department??new IplusOAEntity.DepartmentEntity()).Name)" name="CoverCommunity" />
+                        <div id="menuContent" class="menuContent" style="display:none; z-index:10; position: absolute;">
                             <ul id="ztree" class="ztree" style="margin-top:0;  overflow:scroll; height:270px;"></ul>
                         </div>
 
@@ -155,7 +155,7 @@
                     <td class="item_title"></td>
                     <td class="item_input">
                         @*<input type="submit" class="button" value="保存修改">*@
-                        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">保存修改</a>
+                        <a href="javascript:void(0)" style=" z-index:0;" class="easyui-linkbutton" onclick="submitForm()">保存修改</a>
                     </td>
                 </tr>
                 <tr>

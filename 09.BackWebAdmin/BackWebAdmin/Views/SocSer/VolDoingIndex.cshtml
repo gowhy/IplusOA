@@ -9,11 +9,12 @@
         vertical-align: bottom;
     }
 </style>
-<form id="indexFrom"></form>
-<div class="grid_box" style=" overflow-x:auto; width:2600px;">
-    <div class="grid_top">
-    </div>
-    @Html.Grid(Model).Columns(column =>
+<div style="height:500px; min-height:500px">
+    <form id="indexFrom"></form>
+    <div class="grid_box" style=" overflow-x:auto; width:2600px;">
+        <div class="grid_top">
+        </div>
+        @Html.Grid(Model).Columns(column =>
                                   {
                                       // column.CheckBox(x => x.Id);
                                       //   column.For(x => x.Id).Named("编号").HeaderAttributes(style => "width:50px;align:center;");
@@ -42,8 +43,8 @@
 
                                       //column.Buttons(btns => btns.Add(x => Html.ActionLink("查看", "view", new { id = x.Id })));
                                   }).Complex(ViewData)
-    <div class="grid_foot">
+        <div class="grid_foot">
+        </div>
     </div>
 </div>
-
-@Html.Pager(Model)
+    @Html.Pager(Model)

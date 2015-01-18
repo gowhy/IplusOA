@@ -102,18 +102,25 @@ namespace BackWebAdmin.Controllers
             {
                 BackAdminUser user = db.BackAdminUserEntityDBSet.Find(id);
 
-                IList<RoleEntity> role = db.RoleTable.AsQueryable<RoleEntity>().ToList();
+                List<RoleEntity> role = db.RoleTable.AsQueryable<RoleEntity>().ToList();
 
                 ViewData["UserRole"] = role;
 
 
                 //部门组织
                 var list = db.DepartmentTable.AsQueryable<DepartmentEntity>().Where(x => x.Level <= 6).ToList();
-                ViewData["Department_List"] = HelpSerializer.JSONSerialize<List<DepartmentEntity>>(list);
+                if (list!=null)
+                {
+                    ViewData["Department_List"] = HelpSerializer.JSONSerialize<List<DepartmentEntity>>(list);
+                }
+              
 
 
                 IList<SocialOrgEntity> Slist = db.SocialOrgEntityTable.AsQueryable<SocialOrgEntity>().ToList();
-                ViewData["SocialOrg_List"] = Slist;
+                if (Slist != null)
+                {
+                    ViewData["SocialOrg_List"] = Slist;
+                }
 
                 db.Dispose();
 

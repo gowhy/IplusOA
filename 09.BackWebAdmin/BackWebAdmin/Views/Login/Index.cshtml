@@ -45,20 +45,28 @@
         <div id="box">
             @using (Html.BeginForm())
             {
-                <p class="main">
-                    <label>
-                        用户名
-                    </label>
-                    <input type="text" name="username" tabindex="1" data-required />
-                    <label>
-                        密码
-                    </label>
-                    <input type="password" name="password" tabindex="2" data-required />
-                </p>
-                <p class="space">
-                    <input type="submit" value="登录" class="login" tabindex="3" />
-                 
-                </p>
+                <div >
+                    <table class="main" style="  margin-left:auto;margin-right:auto;text-align:center;">
+                        <tr>
+                            <td> 用户名</td>
+                            <td><input type="text" name="username" tabindex="1" data-required=data-required /></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"> &nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>密码</td>
+                            <td><input type="password" name="password" tabindex="2" data-required=data-required /></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"> &nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><input type="submit" value="登录" class="login" tabindex="3" /></td>
+                        </tr>
+                    </table>
+                </div>
+
             }
         </div>
         <div class="center foot">

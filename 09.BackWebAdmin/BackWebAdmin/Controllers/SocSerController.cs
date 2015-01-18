@@ -423,6 +423,11 @@ namespace BackWebAdmin.Controllers
 
             try
             {
+                if (entity.VolId <= 0 || entity.SDId<=0)
+                {
+                    return Json(new { state = -1, msg = "VolId或者SDId是必填参数，切必须大于0" });
+                }
+
                 entity.AddTime = DateTime.Now;
                 using (IplusOADBContext db = new IplusOADBContext())
                 {
