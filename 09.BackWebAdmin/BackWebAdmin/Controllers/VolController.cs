@@ -9,6 +9,7 @@ using Common;
 using BackWebAdmin.Models;
 using ServiceAPI;
 using System.IO;
+using System.Data;
 
 namespace BackWebAdmin.Controllers
 {
@@ -341,6 +342,8 @@ namespace BackWebAdmin.Controllers
                 ViewData["Department_List"] = HelpSerializer.JSONSerialize<List<DepartmentEntity>>(list);
 
                 entity = db.VolunteerEntityTable.FirstOrDefault(x => x.Id == id);
+
+              
             }
             return View(entity);
 
@@ -451,7 +454,47 @@ namespace BackWebAdmin.Controllers
             }
         }
 
-   
+        public ActionResult AddVolExcel()
+        {
+            HttpPostedFileBase Volfile = Request.Files["volInfo"];
+
+            FileInfo file2 = new FileInfo(Volfile.FileName);
+            string FileName = System.IO.Directory.GetCurrentDirectory() + "//" + AdminUser.Id + DateTime.Now.ToString("yyyyMMddHHmmss")+"." + file2.Extension;
+            FileHelper.Upload(Volfile, FileName);
+
+            ExcelHelper eh = new ExcelHelper(FileName, "");
+            DataTable dt = eh.InputFromExcel();
+
+            List<VolunteerEntity> volList = new List<VolunteerEntity>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                VolunteerEntity tmp = new VolunteerEntity();
+                tmp.Phone=dt.Rows[i]["手机"].ToString();
+                tmp.RealName = dt.Rows[i]["姓名"].ToString();
+
+                tmp.State = 1;
+                tmp.Score = 0;
+                tmp.ThsScore = 20;
+                tmp.Type = "志愿者";
+                tmp.PassWord = "000000";
+
+                tmp.SocialNO ="SNO1111";
+                tmp.DepId = "8510122";
+                tmp.VID = "VID1111";
+
+                volList.Add(tmp);
+            }
+
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+
+                db.VolunteerEntityTable.AddRange(volList);
+                db.SaveChanges();
+            }
+
+            System.IO.File.Delete(FileName);
+            return Success("批量导入成功");
+        }
       
     }
 }

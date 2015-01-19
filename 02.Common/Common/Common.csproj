@@ -62,11 +62,13 @@
     <Compile Include="CollectionExtensions.cs" />
     <Compile Include="Des.cs" />
     <Compile Include="Dynamic.cs" />
+    <Compile Include="ExcelHelper.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\GridExtensions.cs" />
     <Compile Include="Extensions\HtmlExntensions.cs" />
+    <Compile Include="FileHelper.cs" />
     <Compile Include="FTPHelper.cs" />
     <Compile Include="HttpHelper.cs" />
     <Compile Include="IMvcRegister.cs" />

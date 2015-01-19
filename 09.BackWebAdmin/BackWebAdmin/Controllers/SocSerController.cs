@@ -61,12 +61,12 @@ namespace BackWebAdmin.Controllers
                 var vol = db.VolunteerEntityTable;
                 depId =( from v in vol where v.Id == AdminUser.Id select v.DepId).FirstOrDefault();
 
-                LogEntity log = new LogEntity();
-                log.Content = "depId:" + depId + "  AdminUser.Id ：" + AdminUser.Id;
-                log.UserId = AdminUser.Id.ToString();
-                log.AddTime = DateTime.Now;
-                db.Add<LogEntity>(log);
-                db.SaveChanges();
+                //LogEntity log = new LogEntity();
+                //log.Content = "depId:" + depId + "  AdminUser.Id ：" + AdminUser.Id;
+                //log.UserId = AdminUser.Id.ToString();
+                //log.AddTime = DateTime.Now;
+                //db.Add<LogEntity>(log);
+                //db.SaveChanges();
             }
 
 
