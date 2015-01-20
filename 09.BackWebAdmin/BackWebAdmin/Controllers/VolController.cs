@@ -454,39 +454,67 @@ namespace BackWebAdmin.Controllers
             }
         }
 
-        public ActionResult AddVolExcel()
+        public PartialViewResult AddVolExcel()
         {
-            HttpPostedFileBase Volfile = Request.Files["volInfo"];
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                IList<RoleEntity> role = db.RoleTable.AsQueryable<RoleEntity>().ToList();
+
+                ViewData["UserRole"] = role;
+
+                //部门组织
+                var list = db.DepartmentTable.AsQueryable<DepartmentEntity>().Where(x => x.Level <= 6).ToList();
+                ViewData["Department_List"] = HelpSerializer.JSONSerialize<List<DepartmentEntity>>(list);
+
+
+                IList<SocialOrgEntity> Slist = db.SocialOrgEntityTable.AsQueryable<SocialOrgEntity>().ToList();
+                ViewData["SocialOrg_List"] = Slist;
+
+                db.Dispose();
+                return PartialView();
+            }
+        }
+
+        public ActionResult PostAddVolExcel(string socialNO, string deptId)
+        {
+            HttpPostedFileBase Volfile = Request.Files["volInfoExcel"];
 
             FileInfo file2 = new FileInfo(Volfile.FileName);
-            string FileName = System.IO.Directory.GetCurrentDirectory() + "//" + AdminUser.Id + DateTime.Now.ToString("yyyyMMddHHmmss")+"." + file2.Extension;
+            string FileName = System.IO.Directory.GetCurrentDirectory() + "//" + AdminUser.Id + DateTime.Now.ToString("yyyyMMddHHmmss") + "." + file2.Extension;
             FileHelper.Upload(Volfile, FileName);
 
             ExcelHelper eh = new ExcelHelper(FileName, "");
             DataTable dt = eh.InputFromExcel();
 
             List<VolunteerEntity> volList = new List<VolunteerEntity>();
-            for (int i = 0; i < dt.Rows.Count; i++)
-            {
-                VolunteerEntity tmp = new VolunteerEntity();
-                tmp.Phone=dt.Rows[i]["手机"].ToString();
-                tmp.RealName = dt.Rows[i]["姓名"].ToString();
-
-                tmp.State = 1;
-                tmp.Score = 0;
-                tmp.ThsScore = 20;
-                tmp.Type = "志愿者";
-                tmp.PassWord = "000000";
-
-                tmp.SocialNO ="SNO1111";
-                tmp.DepId = "8510122";
-                tmp.VID = "VID1111";
-
-                volList.Add(tmp);
-            }
-
             using (IplusOADBContext db = new IplusOADBContext())
             {
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    VolunteerEntity tmp = new VolunteerEntity();
+                    tmp.Phone = dt.Rows[i]["手机号"].ToString();
+
+
+                    //if (db.VolunteerEntityTable.Count(x => x.Phone == tmp.Phone) > 0)
+                    //{
+                    //    return Error("批量导入失败，手机号是：" + tmp.Phone + "、姓名是" + tmp.RealName+ "的自愿者已经存在");
+                    //}
+                    tmp.RealName = dt.Rows[i]["姓名"].ToString();
+
+                    tmp.State = 1;
+                    tmp.Score = 0;
+                    tmp.ThsScore = 20;
+                    tmp.Type = "志愿者";
+                    tmp.PassWord = "000000";
+
+                    tmp.SocialNO = socialNO;
+                    tmp.DepId = deptId;
+                    tmp.VID = tmp.Phone;
+
+                    volList.Add(tmp);
+                }
+
+
 
                 db.VolunteerEntityTable.AddRange(volList);
                 db.SaveChanges();

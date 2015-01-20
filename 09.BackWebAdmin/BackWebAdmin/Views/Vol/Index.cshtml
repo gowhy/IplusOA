@@ -12,8 +12,14 @@
 <form id="indexFrom">
 
     <div style="float: left; height: 40px; text-align: center;">
-        <span><a class="easyui-linkbutton" data-options="iconCls:'icon-add'" title="新增" href="@Url.Action("Add")">新增</a></span>
-        <span style="margin-left:70px;">
+        <span>
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-add'" title="新增" href="@Url.Action("Add")">新增</a>
+           @* <a class="easyui-linkbutton" data-options="iconCls:'icon-add'" title="导入志愿者" href="@Url.Action("AddVolExcel")">导入志愿者</a>*@
+       
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-add'" title="导入志愿者" href="javascript: AddVolExcel()">导入志愿者</a>
+            <a class="easyui-linkbutton"  href="@Url.Content("~/Content/志愿者导入模板.xls")">下载志愿者Excel模板</a>
+         </span>
+        <span style="margin-left:30px;">
             <span class="combo">
 
                 <select id="Type" class="easyui-combobox" data-options="" name="Type" style="width: 120px; ">
@@ -80,6 +86,15 @@
 
         showAjaxResult(url, "领取奖品", 450, 240);
     }
+
+
+    function AddVolExcel() {
+
+        var url = '@Url.Action("AddVolExcel")' + '?id=' + 00;
+
+        showAjaxResult(url, "导入志愿者", 650, 300);
+    }
+
 
     $("#Type").val("@Model.Type");
     function submitForm() {

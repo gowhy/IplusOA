@@ -1095,6 +1095,7 @@
     <Content Include="config.json" />
     <Content Include="Config\App.config" />
     <Content Include="Config\DataBase.config" />
+    <Content Include="Content\志愿者导入模板.xls" />
     <None Include="OA.pubxml" />
     <None Include="Properties\PublishProfiles\IplusOAConfig.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -1195,6 +1196,7 @@
     <Content Include="Views\Prize\PrizeRecordIndex.cshtml" />
     <Content Include="Views\SocSer\Auditing.cshtml" />
     <Content Include="Views\SocSer\PostAuditingIndex.cshtml" />
+    <Content Include="Views\Vol\AddVolExcel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\02.Common\Common\Common.csproj">
