@@ -40,20 +40,35 @@ namespace BackWebAdmin.Controllers
         [HttpPost]
         public ActionResult App(LoginModel model,string type)
         {
+            if (string.IsNullOrEmpty(model.UserName) || string.IsNullOrEmpty(model.Password) || string.IsNullOrEmpty(type))
+            {
+                return Json("UserName、Password、type是必填参数");
+            }
             BackAdminUser admin = new BackAdminUser();
-            admin.UserName = model.UserName;
-            admin.PassWord = model.Password;
-            VolunteerEntityClone res = Login.VLoginApp(admin, type);
-            res.PassWord = null;
-            if (res != null)
+            try
             {
-                res.Msg += "登录成功";
-                return Json(res);
+              
+                admin.UserName = model.UserName;
+                admin.PassWord = model.Password;
+                VolunteerEntityClone res = Login.VLoginApp(admin, type);
+                res.PassWord = null;
+                if (res != null)
+                {
+                  
+                    res.Msg += "登录成功";
+                    return Json(res);
+                }
+                else
+                {
+                    return Json("用户名或者密码不对," + admin.Msg);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return Json("用户名或者密码不对");
+                return Json("登陆异常,异常信息：" + ex.Message + admin.Msg); 
+                throw;
             }
+         
         }
 
 

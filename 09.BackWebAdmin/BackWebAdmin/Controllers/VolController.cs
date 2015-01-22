@@ -10,6 +10,7 @@ using BackWebAdmin.Models;
 using ServiceAPI;
 using System.IO;
 using System.Data;
+using MvcContrib.UI.Grid;
 
 namespace BackWebAdmin.Controllers
 {
@@ -21,7 +22,7 @@ namespace BackWebAdmin.Controllers
         /// </summary>
         const int pageSize = 20;
         [SecurityNode(Name = "首页")]
-        public ActionResult Index(int? page,SelectVolModel model)
+        public ActionResult Index(int? page, SelectVolModel model, GridSortOptions sort)
         {
             var pageNumber = page ?? 1;
 
@@ -480,9 +481,9 @@ namespace BackWebAdmin.Controllers
             HttpPostedFileBase Volfile = Request.Files["volInfoExcel"];
 
             FileInfo file2 = new FileInfo(Volfile.FileName);
-            string FileName = System.IO.Directory.GetCurrentDirectory() + "//" + AdminUser.Id + DateTime.Now.ToString("yyyyMMddHHmmss") + "." + file2.Extension;
+            string FileName = Server.MapPath("..//Tmp") + "//" + AdminUser.Id + DateTime.Now.ToString("yyyyMMddHHmmss") + "." + file2.Extension;
             FileHelper.Upload(Volfile, FileName);
-
+          
             ExcelHelper eh = new ExcelHelper(FileName, "");
             DataTable dt = eh.InputFromExcel();
 
@@ -495,10 +496,10 @@ namespace BackWebAdmin.Controllers
                     tmp.Phone = dt.Rows[i]["手机号"].ToString();
 
 
-                    //if (db.VolunteerEntityTable.Count(x => x.Phone == tmp.Phone) > 0)
-                    //{
-                    //    return Error("批量导入失败，手机号是：" + tmp.Phone + "、姓名是" + tmp.RealName+ "的自愿者已经存在");
-                    //}
+                    if (db.VolunteerEntityTable.Count(x => x.Phone == tmp.Phone) > 0)
+                    {
+                        return Error("批量导入失败，手机号是：" + tmp.Phone + "、姓名是" + tmp.RealName + "的自愿者已经存在");
+                    }
                     tmp.RealName = dt.Rows[i]["姓名"].ToString();
 
                     tmp.State = 1;

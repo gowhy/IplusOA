@@ -94,7 +94,7 @@
 
                 <tr>
                     <td class="item_title">
-                        行政级别:
+                        社区:
                     </td>
                     <td class="item_input">
                         <input type="hidden" name="DeptId" id="DeptId" />
@@ -110,7 +110,7 @@
                         社会组织:
                     </td>
                     <td class="item_input">
-                        <select name="socialNO">
+                        <select id="socialNO" name="socialNO">
                             <option value="-1">无</option>
                             @foreach (var soc in ViewData["SocialOrg_List"] as IList<IplusOAEntity.SocialOrgEntity> ?? new List<IplusOAEntity.SocialOrgEntity>())
                             {
@@ -140,6 +140,16 @@
         <script>
             function submitForm() {
                 // var url = "/SocSer/PostNoTakeIn" + '?detailId=' + id + "&state=" + state + "&msg=" + msg;
+             
+               
+                if (!$("#DeptId").val()) {
+                    alert("请选择社区");
+                    return false;
+                }
+                if ($("#socialNO").val()=="-1") {
+                    alert("请选择社会组织");
+                    return false;
+                }
                 $('#PostAddVolExcel').submit();
             }
             function clearForm() {
