@@ -160,7 +160,7 @@ namespace IplusOAEntity
         public string SocialName { get; set; }
 
         public int State { get; set; }
-
+   
         #endregion Model
     }
 }

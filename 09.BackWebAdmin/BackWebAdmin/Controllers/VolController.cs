@@ -221,7 +221,7 @@ namespace BackWebAdmin.Controllers
                 VolunteerEntity model = db.VolunteerEntityTable.FirstOrDefault(x => x.Id == entity.Id);
 
                 if (entity.Address != null) model.Address = entity.Address;
-                if (entity.Address != null) model.CardNum = entity.CardNum;
+                if (entity.CardNum != null) model.CardNum = entity.CardNum;
                 if (entity.CardType != null) model.CardType = entity.CardType;
                 if (entity.DepId!= null) model.DepId = entity.DepId;
                 if (entity.EMail != null) model.EMail = entity.EMail;
@@ -370,6 +370,7 @@ namespace BackWebAdmin.Controllers
                     if (!string.IsNullOrEmpty(entity.VID)) model.VID = entity.VID;
                     if (!string.IsNullOrEmpty(entity.SocialNO)) model.SocialNO = entity.SocialNO;
                     model.Type = "志愿者";
+                    model.Score = model.Score + 20;
                 }
 
                 db.Update<VolunteerEntity>(model);

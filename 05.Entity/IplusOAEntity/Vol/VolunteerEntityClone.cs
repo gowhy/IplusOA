@@ -213,7 +213,7 @@ namespace IplusOAEntity
         public int Age { get; set; }
 
         public string Sex { get; set; }
-      
+        public string SerAreas { get; set; }
         #endregion Model
     }
 }

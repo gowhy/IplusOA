@@ -210,7 +210,7 @@ namespace IplusOAEntity
 
         public string Sex { get; set; }
 
-
+        public string SerAreas { get; set; }
         #endregion Model
 
     }

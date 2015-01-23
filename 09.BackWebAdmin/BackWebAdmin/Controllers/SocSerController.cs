@@ -590,6 +590,7 @@ namespace BackWebAdmin.Controllers
                                  THSScore = s.THSScore,
                                  Type = s.Type,
                                  VHelpDesc = s.VHelpDesc,
+                               
                                  // UserApplyEntity=a,
                                  SocSerImgs = img.Where(x => x.SocSerId == s.Id).ToList()
 
@@ -633,39 +634,75 @@ namespace BackWebAdmin.Controllers
                 var sorg = db.SocialOrgEntityTable;
                 var img = db.SocSerImgTable;
 
-                var list = from s in detail
-                           join a in apply on s.Id equals a.SDId into g
-                           join o in sorg on s.SocialNo equals o.SocialNO
-                           join r in record on s.Id equals r.SDId
-                           from stuDesc in g.DefaultIfEmpty()
-                           where
-                            stuDesc.VolId == model.VId
-                           select new
-                           {
-                               AddTime = s.AddTime,
-                               SocialName = o.Name,
-                               AddUser = s.AddUser,
-                               Contacts = s.Contacts,
-                               SocialNo = s.SocialNo,
-                               Context = s.Context,
-                               CoverCommunity = s.CoverCommunity,
-                               Desc = s.Desc,
-                               EndTime = s.EndTime,
-                               Id = s.Id,
-                               PayType = s.PayType,
-                               Phone = s.Phone,
-                               PubTime = s.PubTime,
-                               Score = s.Score,
-                               SerNum = s.SerNum,
-                               THSScore = s.THSScore,
-                               Type = s.Type,
-                               VHelpDesc = s.VHelpDesc,
-                               UserApplyEntity = g,
-                               SerRecord = r,
-                               SocSerImgs = img.Where(x => x.SocSerId == s.Id).ToList()
+                var list=from a in apply
+                          join d in detail on a.SDId   equals d.Id  into g
+                         from s in g.DefaultIfEmpty()
+                          join o in sorg on s.SocialNo equals o.SocialNO into g3
+                         from go in g3.DefaultIfEmpty()
+                          join r in record on  s.Id equals r.SDId into g2
+                          where
+                          a.VolId == model.VId
+                          select new
+                          {
+                              AddTime = s.AddTime,
+                              SocialName = go.Name,
+                              AddUser = s.AddUser,
+                              Contacts = s.Contacts,
+                              SocialNo = s.SocialNo,
+                              Context = s.Context,
+                              CoverCommunity = s.CoverCommunity,
+                              Desc = s.Desc,
+                              EndTime = s.EndTime,
+                              Id = s.Id,
+                              PayType = s.PayType,
+                              Phone = s.Phone,
+                              PubTime = s.PubTime,
+                              Score = s.Score,
+                              SerNum = s.SerNum,
+                              THSScore = s.THSScore,
+                              Type = s.Type,
+                              VHelpDesc = s.VHelpDesc,
+                              UserApplyEntity = a,
+                              SerRecord = g2,
+                              State=s.State,
+                           
+                              SocSerImgs = img.Where(x => x.SocSerId == s.Id).ToList()
 
-                           };
+                          };
+                #region 注释
+                //var list = from s in detail
+                //           join a in apply on s.Id equals a.SDId into g
+                //           // join o in sorg on s.SocialNo equals o.SocialNO
+                //           join r in record on s.Id equals r.SDId
+                //           from stuDesc in g.DefaultIfEmpty()
+                //           where
+                //            stuDesc.VolId == model.VId
+                //           select new
+                //           {
+                //               AddTime = s.AddTime,
+                //               //  SocialName = o.Name,
+                //               AddUser = s.AddUser,
+                //               Contacts = s.Contacts,
+                //               SocialNo = s.SocialNo,
+                //               Context = s.Context,
+                //               CoverCommunity = s.CoverCommunity,
+                //               Desc = s.Desc,
+                //               EndTime = s.EndTime,
+                //               Id = s.Id,
+                //               PayType = s.PayType,
+                //               Phone = s.Phone,
+                //               PubTime = s.PubTime,
+                //               Score = s.Score,
+                //               SerNum = s.SerNum,
+                //               THSScore = s.THSScore,
+                //               Type = s.Type,
+                //               VHelpDesc = s.VHelpDesc,
+                //               UserApplyEntity = g,
+                //               SerRecord = r,
+                //               SocSerImgs = img.Where(x => x.SocSerId == s.Id).ToList()
 
+                //           };
+                #endregion
                 var res = list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size);
                 return Json(res, JsonRequestBehavior.AllowGet);
             }
@@ -954,6 +991,7 @@ namespace BackWebAdmin.Controllers
                                  SerRecord = r,
                                  //UserApplyEntity = g.FirstOrDefault(x => x.SDId == s.Id),
                                  UserApplyEntity = a,
+                               
                                  SocSerImgs = img.Where(x => x.SocSerId == s.Id).ToList(),
                                  VolCount = record.Count(x => x.SDId == s.Id && x.UASId == a.Id)
 
@@ -1054,8 +1092,8 @@ namespace BackWebAdmin.Controllers
                            {
                                SocServiceDetail = gd,
                                Record = r,
-                               User = v,
-                               Vol = v2
+                               User = v2,
+                               Vol = v
 
                            };
 
