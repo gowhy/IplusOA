@@ -30,6 +30,27 @@
                     <td colspan="2" class="topTd"></td>
                 </tr>
                 <tr>
+                    <td class="item_title">收费类型:</td>
+                    <td class="item_input">
+                        @*<input type="text" class="textbox require" name="PayType" value="@Model.PayType" />*@
+                        <select id="PayType" name="PayType" disabled="disabled">
+                            <option value="无偿">无偿</option>
+                            <option value="低偿">低偿</option>
+
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="item_title">是否需居民申请:</td>
+                    <td class="item_input">
+                        <select id="ISUserApply" name="ISUserApply" disabled="disabled">
+                            <option value="0">是</option>
+                            <option value="1">否</option>
+
+                        </select>
+                    </td>
+                </tr>
+                <tr>
                     <td class="item_title">
                         服务类型:
                     </td>
@@ -194,7 +215,8 @@
 
 
                 $("#Type").val("@Model.Type");
-
+                $("#PayType").val("@Model.PayType");
+                $("#ISUserApply").val("@Model.ISUserApply");
             });
 
 

@@ -57,6 +57,16 @@
                     </td>
                 </tr>
                 <tr>
+                    <td class="item_title">是否需居民申请:</td>
+                    <td class="item_input">
+                        <select id="ISUserApply" name="ISUserApply">
+                            <option value="0">是</option>
+                            <option value="1">否</option>
+
+                        </select>
+                    </td>
+                </tr>
+                <tr>
                     <td class="item_title">
                         服务类型:
                     </td>
@@ -267,7 +277,8 @@
                     $.fn.zTree.init($("#ztree"), setting, zNodes);
                     $("#Type").val("@Model.Type");
                     $("#PayType").val("@Model.PayType");
-
+                    $("#ISUserApply").val("@Model.ISUserApply");
+                    
                     //  var ue = UE.getEditor('editor');
 
                     function submitForm() {

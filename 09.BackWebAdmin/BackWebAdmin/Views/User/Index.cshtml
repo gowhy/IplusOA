@@ -46,7 +46,7 @@
         column.For(x => (x.SocialOrg??new IplusOAEntity.SocialOrgEntity()).Name??"").Named("社会组织"); 
        
         column.Buttons(btn => btn.Add(x => Html.ScriptLink("编辑", "editUser({0})", x.Id))
-                                 .Add(x => Html.ScriptLink("删除", "deleteUser({0})", x.Id))
+                                 //.Add(x => Html.ScriptLink("删除", "deleteUser({0})", x.Id))
               
             );
     }).Complex(ViewData)

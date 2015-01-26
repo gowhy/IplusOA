@@ -93,8 +93,9 @@
         <div class="grid_foot">
         </div>
     </div>
+    @Html.Pager(Model.SocSerList)
 </div>
-@Html.Pager(Model.SocSerList)
+
 <script>
     $("#Type").val("@Model.Type");
 </script>

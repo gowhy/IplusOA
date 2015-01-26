@@ -27,6 +27,7 @@ namespace BackWebAdmin.Controllers
         public ActionResult Index(int? page, SelectSocSerModel model, GridSortOptions sort)
         {
             var pageNumber = page ?? 1;
+            model.AddUser = base.GetBackUserInfo().UserName;
             model.SocSerList = SocSerService.TypeList(pageNumber, pageSize, null, model, sort);
             return View(model);
         }
@@ -476,6 +477,7 @@ namespace BackWebAdmin.Controllers
         [SecurityNode(Name = "服务申请审核")]
         public ActionResult UserApplyServiceIndex(int? page, SelectUserApplySerModel selectModel)
         {
+           // base.GetBackUserInfo().SocOrgId
             int pageNumber = page ?? 1;
             using (IplusOADBContext db = new IplusOADBContext())
             {
@@ -500,6 +502,7 @@ namespace BackWebAdmin.Controllers
                            //select new ShowApplyEntity { ApplyEntiy = a, UserEntiy = v, Detail = d, Org = sorg.Where(x => x.SocialNO == d.SocialNo) };
                            select new ShowApplyEntity { ApplyEntiy = a, UserEntiy = gv, Vol = vol.Where(x => x.Id == gr.VId), Detail = gd, Record = gr, Org = sorg.Where(x => x.SocialNO == gd.SocialNo) };
                 list = list.Where(x => x.Org.FirstOrDefault().Id == user.SocOrgId);
+                if (selectModel.Id > 0) list = list.Where(x => x.ApplyEntiy.Id == selectModel.Id);
                 if (selectModel.Id > 0) list = list.Where(x => x.ApplyEntiy.Id == selectModel.Id);
 
 
@@ -568,8 +571,10 @@ namespace BackWebAdmin.Controllers
                            join o in sorg on s.SocialNo equals o.SocialNO
                            from stuDesc in g.DefaultIfEmpty()
                            where
-                           (stuDesc.Num > record.Count(x => x.UASId == stuDesc.Id)
+                          ( (stuDesc.Num > record.Count(x => x.UASId == stuDesc.Id)
                             || record.Count(x => x.UASId == stuDesc.Id) == 0) && apply.Count(x => x.State == 1 && x.SDId == s.Id) > 0 && stuDesc.VolId != model.VId
+                           )
+                           || s.ISUserApply==1//或者是不需要用户申请的
                            select new SocServiceDetailEntityClone
                              {
                                  AddTime = s.AddTime,
@@ -590,23 +595,17 @@ namespace BackWebAdmin.Controllers
                                  THSScore = s.THSScore,
                                  Type = s.Type,
                                  VHelpDesc = s.VHelpDesc,
-                               
+                                 ISUserApply = s.ISUserApply,
                                  // UserApplyEntity=a,
                                  SocSerImgs = img.Where(x => x.SocSerId == s.Id).ToList()
 
                              };
 
-                //                string sql = @"  SELECT * FROM socservicedetail d
-                //                                    LEFT JOIN  userapplyservice u ON d.id=u.sdid 
-                //                                    WHERE u.num > (SELECT COUNT(* ) FROM serrecord r WHERE u.`Id`=r.`SDId`) OR 0=(SELECT COUNT(* ) FROM serrecord r WHERE u.`Id`=r.`SDId`)";
-                //                var list = db.Database.SqlQuery<SocServiceDetailEntity>(sql);
-                //list = list.Where(x => DateTime.Now > x.PubTime && DateTime.Now < x.EndTime);
-
-
-                //(from r in record where stuDesc.Id == r.SDId select r).Count()
+ 
                 if (!string.IsNullOrEmpty(model.Type)) list = list.Where(x => x.Type.Trim().ToUpper() == model.Type.Trim().ToUpper());
                 list = list.Where(x => DateTime.Now > x.PubTime && DateTime.Now < x.EndTime);
                 var res = list.OrderBy(x => x.Id).ToPagedList(pageNumber - 1, size);
+
 
                 return Json(res.DistinctBy(x => x.Id).ToList(), JsonRequestBehavior.AllowGet);
             }
@@ -778,30 +777,38 @@ namespace BackWebAdmin.Controllers
                 var sorg = db.SocialOrgEntityTable;
                 var img = db.SocSerImgTable;
 
-
+            
 
                 if (record.Count(r => r.SDId == model.SDId && r.VId == model.VId) > 0)
                 {
                     return Json(new { state = 0, msg = "该服务你已经成功申请成为志愿者,不能再申请." });
                 }
-                UserApplyServiceEntity userApply = (from a in apply
-                                                    where a.SDId == model.SDId
-                                                    && (a.Num > (record.Count(x => x.UASId == a.Id))
-                                                    || record.Count(x => x.UASId == a.Id) == 0) && a.State == 1
-                                                    select a).OrderByDescending(x => x.Id).FirstOrDefault();
-                if (userApply == null)
+
+                SocServiceDetailEntity sdEntity = detail.Find(model.SDId);
+
+                if (sdEntity.ISUserApply==0)//0表示，需要普通用户申请的服务,反面是1表示是不需要普通用户申请的默认
                 {
-                    return Json(new { state = -1, msg = "所申请参与的志愿者服务,已经被其他志愿者先申请,没有位置了." });
+                    UserApplyServiceEntity userApply = (from a in apply
+                                                        where a.SDId == model.SDId
+                                                        && (a.Num > (record.Count(x => x.UASId == a.Id))
+                                                        || record.Count(x => x.UASId == a.Id) == 0) && a.State == 1
+                                                        select a).OrderByDescending(x => x.Id).FirstOrDefault();
+
+                    if (userApply == null)
+                    {
+                        return Json(new { state = -1, msg = "所申请参与的志愿者服务,已经被其他志愿者先申请,没有位置了." });
+                    }
+
+                    if (userApply.VolId == model.VId)
+                    {
+                        return Json(new { state = -2, msg = "该服务你已作受众,不能再申请成为志愿者为项目提供服务." });
+
+                    }
+
+                    model.UASId = userApply.Id;
                 }
 
-                if (userApply.VolId == model.VId)
-                {
-                    return Json(new { state = -2, msg = "该服务你已作受众,不能再申请成为志愿者为项目提供服务." });
-
-                }
-
-                model.UASId = userApply.Id;
-                model.SDId = userApply.SDId;
+                model.SDId = model.SDId;
 
 
                 db.Add(model);
@@ -991,7 +998,7 @@ namespace BackWebAdmin.Controllers
                                  SerRecord = r,
                                  //UserApplyEntity = g.FirstOrDefault(x => x.SDId == s.Id),
                                  UserApplyEntity = a,
-                               
+                                 ISUserApply = s.ISUserApply,
                                  SocSerImgs = img.Where(x => x.SocSerId == s.Id).ToList(),
                                  VolCount = record.Count(x => x.SDId == s.Id && x.UASId == a.Id)
 

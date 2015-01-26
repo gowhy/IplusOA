@@ -174,6 +174,10 @@ namespace IplusOAEntity
         [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public UserApplyServiceEntity UserApplyEntity { get; set; }
         public int State { get; set; }
+        /// <summary>
+        /// 是否需用户申请
+        /// </summary>
+        public int ISUserApply { get; set; }
 
         #endregion Model
     }

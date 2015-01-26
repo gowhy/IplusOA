@@ -67,7 +67,7 @@ namespace BackWebAdmin.CommService
                               Type = s.Type,
                               VHelpDesc = s.VHelpDesc,
                               State=s.State,
-                          
+                              ISUserApply=s.ISUserApply,
                               SocSerImgs = img.Where(x => x.SocSerId >0&& x.SocSerId == s.Id).ToList()
 
                           };
@@ -79,7 +79,7 @@ namespace BackWebAdmin.CommService
                 if (model.PubTimeEnd != default(DateTime)) res = res.Where(x => x.PubTime <= model.PubTimeEnd);
                 if (!string.IsNullOrEmpty(model.SocialName)) res = res.Where(x => x.SocialName.Contains(model.SocialName));
                 if (model.Id>0) res = res.Where(x => x.Id==model.Id);
-
+                if (!string.IsNullOrEmpty(model.AddUser)) res = res.Where(x => x.AddUser==(model.AddUser));
 
 
 
@@ -122,7 +122,7 @@ namespace BackWebAdmin.CommService
                               THSScore = s.THSScore,
                               Type = s.Type,
                               VHelpDesc = s.VHelpDesc,
-                           
+                              ISUserApply = s.ISUserApply,
                               SocSerImgs = img.Where(x => x.SocSerId == s.Id).ToList()
 
                           };
@@ -176,7 +176,7 @@ namespace BackWebAdmin.CommService
                               Type = s.Type,
                               VHelpDesc = s.VHelpDesc,
                               State = s.State,
-                           
+                              ISUserApply = s.ISUserApply,
                               SocSerImgs = img.Where(x => x.SocSerId > 0 && x.SocSerId == s.Id).ToList()
 
                           };

@@ -21,6 +21,7 @@ namespace BackWebAdmin.Models
 
         public int State { get; set; }
 
+        public string AddUser { get; set; }
         public IPagedList<SocServiceDetailEntityClone> SocSerList { get; set; }
 
     }
