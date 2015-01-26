@@ -43,6 +43,8 @@
     <Compile Include="AppMsgSend.cs" />
     <Compile Include="AppSendMsgContent.cs" />
     <Compile Include="BackAdminUser.cs" />
+    <Compile Include="ChangeGoods\ChangeGoods.cs" />
+    <Compile Include="ChangeGoods\ChangeGoodsLog.cs" />
     <Compile Include="Count\DpEntity.cs" />
     <Compile Include="EnumState.cs" />
     <Compile Include="Prize\Prize.cs" />

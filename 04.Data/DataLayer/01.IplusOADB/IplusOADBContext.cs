@@ -106,5 +106,7 @@ namespace DataLayer.IplusOADB
         public virtual DbSet<PrizeRecord> PrizeRecordTable { get; set; }
         public virtual DbSet<SocServiceAuditeLog> SocServiceAuditeLogTable { get; set; }
 
+        public virtual DbSet<ChangeGoods> ChangeGoodsTable { get; set; }
+        public virtual DbSet<ChangeGoodsLog> ChangeGoodsLogTable { get; set; }
     }
 }
