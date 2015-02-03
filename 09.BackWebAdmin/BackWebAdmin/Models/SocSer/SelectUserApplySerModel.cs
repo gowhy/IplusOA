@@ -29,6 +29,9 @@ namespace BackWebAdmin.Models
         public IQueryable<VolunteerEntity> Vol { get; set; }
         public SocServiceDetailEntity Detail { get; set; }
         public SerRecordEntity Record { get; set; }
+
+        public IEnumerable<VolunteerEntity> VolList { get; set; }
+        public IEnumerable<SerRecordEntity> RecordList { get; set; }
         public IQueryable<SocialOrgEntity> Org { get; set; }
     }
 }

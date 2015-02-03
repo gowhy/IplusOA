@@ -45,27 +45,35 @@ namespace BackWebAdmin.Controllers
                 return Json("UserName、Password、type是必填参数");
             }
             BackAdminUser admin = new BackAdminUser();
+            VolunteerEntityClone resFail = new VolunteerEntityClone();
             try
             {
               
                 admin.UserName = model.UserName;
                 admin.PassWord = model.Password;
                 VolunteerEntityClone res = Login.VLoginApp(admin, type);
-                res.PassWord = null;
+              
                 if (res != null)
                 {
-                  
+                    res.PassWord = null;
                     res.Msg += "登录成功";
+                    res.State = 1;
                     return Json(res);
                 }
                 else
                 {
-                    return Json("用户名或者密码不对," + admin.Msg);
+                 
+                    resFail.State = 0;
+                    resFail.Msg = "用户名或者密码不对." + admin.Msg;
+
+                    return Json(resFail);
                 }
             }
             catch (Exception ex)
             {
-                return Json("登陆异常,异常信息：" + ex.Message + admin.Msg); 
+                resFail.State = 0;
+                resFail.Msg = "登陆异常,异常信息." + ex.Message + admin.Msg;
+                return Json(resFail);
                 throw;
             }
          

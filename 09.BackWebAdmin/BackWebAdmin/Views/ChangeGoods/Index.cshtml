@@ -31,13 +31,15 @@
         vertical-align: bottom;
     }
 </style>
-
+<div id="button-bar">
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-add'" title="新增" href="@Url.Action("Add")">新增</a>
+</div>
 <div class="grid_box">
     <div class="grid_top">
     </div>
     @Html.Grid(Model).Columns(column =>
                                   {
-
+                                      column.For(x => x.Id).Named("商品Id");
                                       column.For(x => x.Name).Named("名称");
                                       column.For(x => x.Score).Named("所需积分");
                                       column.For(x => x.Count).Named("库存");

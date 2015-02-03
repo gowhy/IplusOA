@@ -27,54 +27,58 @@
         vertical-align: bottom;
     }
 </style>
-<form id="indexFrom">
-  
-    <div style="float: left; height: 40px; text-align: center;">
-        <span><a class="easyui-linkbutton" data-options="iconCls:'icon-add'" title="新增" href="@Url.Action("Add")">新增</a></span>
-        <span style="margin-left:70px;" >
-            <select id="Type" class="easyui-combobox" data-options="" name="Type" style="width: 120px; ">
-                <option value="GYFN">法律服务</option>
-                <option value="GYYLFW">医疗服务</option>
-                <option value="GYWH">文化娱乐</option>
-                <option value="GYYL">居家养老</option>
-                <option value="GYBF">社区帮扶</option>
-                <option value="GYWHKT">文化课堂</option>
-                <option value="GYNSD">社区绿丝带</option>
-                <option value="SYJZ">社区家政</option>
-                <option value="SYMY">美食娱乐</option>
-                <option value="SYWX">家居维修</option>
-                <option value="SYJR">金融服务</option>
-                <option value="SYYH">优惠进社区</option>
-                @*<option value="TV8">TV8折购物</option>*@
-                <option value="JYPX">教育培训</option>
-                <option value="MSKD">美食快递</option>
-                <option value="XLYL">休闲娱乐</option>
-                <option value="LRYS">丽人养生</option>
-                <option value="XHKD">鲜花快递</option>
-                <option value="SQCF">社区厨房</option>
-                <option value="TV8">TV8折购物</option>
-                <option value="MYQZ">母婴亲子</option>
-            </select>
-            <span class="combo">
-                社组织名称<input type="text" name="SocialName" value="@Model.SocialName" />
-                社组织编号<input type="text" name="SocialNo" value="@Model.SocialNo" />
-                发布时间<input type="text" name="PubTime" value="@(Model.PubTime!=default(DateTime)? Model.PubTime.ToString("yyyy-MM-dd") : "")" onclick="WdatePicker()" />
-                -<input type="text" name="PubTimeEnd" value="@(Model.PubTimeEnd != default(DateTime) ? Model.PubTimeEnd.ToString("yyyy-MM-dd") : "")" onclick="WdatePicker()" />
-            </span>
+<div style="height:500px; min-height:500px">
+    <form id="indexFrom">
 
-            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">查询</a>
-        </span>
-    </div>
-</form>
-<div class="grid_box" style=" overflow-x:auto; width:1400px;">
-    <div class="grid_top">
-    </div>
-    @Html.Grid(Model.SocSerList).Columns(column =>
+        <div style="float: left; height: 40px; text-align: center;">
+            <span><a class="easyui-linkbutton" data-options="iconCls:'icon-add'" title="新增" href="@Url.Action("Add")">新增</a></span>
+            <span style="margin-left:70px;">
+                <select id="Type" class="easyui-combobox" data-options="" name="Type" style="width: 120px; ">
+                    <option value="GYFN">法律服务</option>
+                    <option value="GYYLFW">医疗服务</option>
+                    <option value="GYWH">文化娱乐</option>
+                    <option value="GYYL">居家养老</option>
+                    <option value="GYBF">社区帮扶</option>
+                    <option value="GYWHKT">文化课堂</option>
+                    <option value="GYNSD">社区绿丝带</option>
+                    <option value="SYJZ">社区家政</option>
+                    <option value="SYMY">美食娱乐</option>
+                    <option value="SYWX">家居维修</option>
+                    <option value="SYJR">金融服务</option>
+                    <option value="SYYH">优惠进社区</option>
+                    @*<option value="TV8">TV8折购物</option>*@
+                    <option value="JYPX">教育培训</option>
+                    <option value="MSKD">美食快递</option>
+                    <option value="XLYL">休闲娱乐</option>
+                    <option value="LRYS">丽人养生</option>
+                    <option value="XHKD">鲜花快递</option>
+                    <option value="SQCF">社区厨房</option>
+                    <option value="TV8">TV8折购物</option>
+                    <option value="MYQZ">母婴亲子</option>
+                </select>
+                <span class="combo">
+                    社组织名称<input type="text" name="SocialName" value="@Model.SocialName" />
+                    社组织编号<input type="text" name="SocialNo" value="@Model.SocialNo" />
+                    发布时间<input type="text" name="PubTime" value="@(Model.PubTime!=default(DateTime)? Model.PubTime.ToString("yyyy-MM-dd") : "")" onclick="WdatePicker()" />
+                    -<input type="text" name="PubTimeEnd" value="@(Model.PubTimeEnd != default(DateTime) ? Model.PubTimeEnd.ToString("yyyy-MM-dd") : "")" onclick="WdatePicker()" />
+                </span>
+
+                <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">查询</a>
+            </span>
+        </div>
+    </form>
+    <div class="grid_box" style=" overflow-x:auto; width:1400px;">
+        <div class="grid_top">
+        </div>
+        @Html.Grid(Model.SocSerList).Columns(column =>
                                   {
                                       // column.CheckBox(x => x.Id);
                                       //   column.For(x => x.Id).Named("编号").HeaderAttributes(style => "width:50px;align:center;");
                                       column.For(x => x.SerNum).Named("服务内容编号").HeaderAttributes(style => "width:160px;align:center;");
                                       column.For(x => Html.F().GetSerTypeName(x.Type)).Named("服务类型").HeaderAttributes(style => "width:100px;align:center;");
+
+                                      column.For(x => Enum.Parse(typeof(IplusOAEntity.EnumState), x.State.ToString())).Named("状态");
+                                      
                                       column.For(x => x.SocialName).Named("社组织名称").HeaderAttributes(style => "width:140px;align:center;");
                                      // column.For(x => x.SocialNo).Named("社组织编号").HeaderAttributes(style => "width:140px;align:center;");
                                       column.For(x => x.Context).Named("服务内容").HeaderAttributes(style => "width:200px;align:center;");
@@ -88,13 +92,14 @@
                                                                  .Add(x => Html.ActionLink("详情", "Detail", new { id = x.Id }))
                                                                  //.Add(x => Html.ActionLink("审核", "Auditing", new { id = x.Id }))
                                                                  .Add(x => Html.ScriptLink("删除", "deleteSer({0})".FormatWith(x.Id)))
-                                                                 ).HeaderAttributes(style => "width:160px;align:center;"); 
+                                                                 ).HeaderAttributes(style => "width:160px;align:center;");
                                   }).Complex(ViewData)
-    <div class="grid_foot">
+        <div class="grid_foot">
+        </div>
     </div>
-</div>
 
-@Html.Pager(Model.SocSerList)
-<script>
-    $("#Type").val("@Model.Type");
-</script>
+    @Html.Pager(Model.SocSerList)
+    </div>
+    <script>
+        $("#Type").val("@Model.Type");
+    </script>

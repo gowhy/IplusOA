@@ -164,5 +164,36 @@ namespace BackWebAdmin.Controllers
             return Json(res);
         }
 
+        /// <summary>
+        /// 兑换记录
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public ActionResult ChangeGoodsLogIndex(int? page,int? cGoodsId)
+        {
+            var pageNumber = page ?? 1;
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+
+                var cgl = db.ChangeGoodsLogTable;
+                var cg = db.ChangeGoodsTable;
+                var vol = db.VolunteerEntityTable;
+
+                var list = from cl in cgl
+                           join c in cg on cl.ChangeGoodsId equals c.Id
+                           join v in vol on cl.UserId equals v.Id
+                           select new ChangeGoodsLogModel
+                           {  
+                            CGoodsLogs=cl,
+                            User=v,
+                            CGoods=c
+                           };
+                if (cGoodsId.HasValue)
+                {
+                    list = list.Where(x=>x.CGoodsLogs.ChangeGoodsId==cGoodsId);
+                }
+                return View(list.OrderByDescending(x => x.CGoodsLogs.Id).ToPagedList(pageNumber - 1, pageSize));
+            }
+        }
     }
 }

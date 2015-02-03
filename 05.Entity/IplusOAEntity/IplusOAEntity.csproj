@@ -76,6 +76,7 @@
     <Compile Include="SOrg\SocialOrgEntity.cs" />
     <Compile Include="Vol\ReturnModel.cs" />
     <Compile Include="Vol\VolunteerEntityClone.cs" />
+    <Compile Include="Wish.cs" />
     <Compile Include="WorkGuideEntity.cs" />
   </ItemGroup>
   <ItemGroup />

@@ -52,7 +52,11 @@
                         {
                             foreach (var item in Model.ImgUrl.Split('#'))
                             {
-                                <img src="@item"/>
+                                if (!string.IsNullOrEmpty(item))
+                                {
+                                    <img src="@item" width="200" />
+                                }
+
                             }
                         }
                     </td>

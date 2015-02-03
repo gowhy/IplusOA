@@ -108,5 +108,7 @@ namespace DataLayer.IplusOADB
 
         public virtual DbSet<ChangeGoods> ChangeGoodsTable { get; set; }
         public virtual DbSet<ChangeGoodsLog> ChangeGoodsLogTable { get; set; }
+
+        public virtual DbSet<Wish> WishTable { get; set; }
     }
 }

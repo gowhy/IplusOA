@@ -57,7 +57,7 @@ namespace BackWebAdmin.Controllers
                     }
 
                     DateTime codeOutTime = DateTime.Now.AddMinutes(-10);
-                    //  int existCount = db.SMSTable.Count(x => x.Phone == entity.Phone.Trim() && x.VCode == code.Trim() && x.AddTime< codeOutTime);
+                  
                     int existCount = db.SMSTable.Count(x => x.Phone == entity.Phone.Trim() && x.VCode == code.Trim() && x.BType==0&& x.AddTime > codeOutTime);
                     if (existCount == 0)
                     {
@@ -66,7 +66,14 @@ namespace BackWebAdmin.Controllers
                         return Json(returnModel, JsonRequestBehavior.AllowGet);
                     }
                 }
-
+                entity.Score = 50;
+                entity.Type = "志愿者";
+                entity.State = 1;
+                entity.ThsScore = 20;
+                entity.VID = entity.Phone;
+                entity.SocialNO = "SS2015013121";
+                entity.SerAreas = entity.DepId;//服务社区
+ 
                 returnModel = VolService.PostAddVol(entity, Request);
                 return Json(returnModel, JsonRequestBehavior.AllowGet);
             }

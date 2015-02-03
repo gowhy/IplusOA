@@ -51,6 +51,7 @@ namespace BusLogic.Login
                 return null;
             }
             IplusOADBContext db = null;
+            VolunteerEntityClone resVol = new VolunteerEntityClone(); ;
             try
             {
                 db = new IplusOADBContext();
@@ -63,11 +64,11 @@ namespace BusLogic.Login
                 var longVol = from v in vol
                               join d in dep on v.DepId equals d.Id into gd
                               join s in sorg on v.SocialNO equals s.SocialNO into gs
-                              
+
                               select new VolunteerEntityClone
                               {
-                                  
-                                  
+
+
                                   DepName = gd.FirstOrDefault().Name,
                                   Address = v.Address,
                                   CardNum = v.CardNum,
@@ -92,16 +93,20 @@ namespace BusLogic.Login
                                   VID = v.VID,
                                   WeiXin = v.WeiXin,
                                   SocialName = gs.FirstOrDefault().Name,
-                                  PassWord=v.PassWord,
-                                  Sex=v.Sex,
-                                  Age=v.Age
+                                  PassWord = v.PassWord,
+                                  Sex = v.Sex,
+                                  Age = v.Age,
+                                  SerAreas=v.SerAreas,
+                                  Speciality = v.Speciality,
+                                  Msg=v.Msg
 
                               };
 
-                if (!string.IsNullOrEmpty(type) && type == "志愿者") longVol = longVol.Where(x => x.VID == admin.UserName && x.PassWord == admin.PassWord);
-                if (!string.IsNullOrEmpty(type) && type == "普通用户") longVol = longVol.Where(x => x.Phone == admin.UserName && x.PassWord == admin.PassWord);
+                //  if (!string.IsNullOrEmpty(type) && type == "志愿者") longVol = longVol.Where(x => x.VID == admin.UserName && x.PassWord == admin.PassWord);
 
-                VolunteerEntityClone resVol = longVol.FirstOrDefault();
+                longVol = longVol.Where(x => x.Phone == admin.UserName && x.PassWord == admin.PassWord);
+
+                  resVol = longVol.FirstOrDefault();
                 if (resVol != null)
                 {
                     admin.UserName = resVol.Phone;
@@ -113,12 +118,17 @@ namespace BusLogic.Login
                 }
                 else
                 {
-                    return null;
+                    resVol.LoginState = 0;//登陆失败
+                    resVol.Msg = "用户名或者密码错误";
+                    return resVol;
                 }
             }
             catch (Exception e)
             {
                 admin.Msg = e.Message;
+                resVol.LoginState = 0;//登陆失败
+                resVol.Msg = "登陆异常"+e.Message;
+                return resVol;
                 throw e;
             }
             finally
@@ -128,6 +138,7 @@ namespace BusLogic.Login
                     db.Dispose();
                 }
             }
+            return resVol;
         }
         /// <summary>
         /// 验证用户登陆

@@ -1,0 +1,121 @@
+﻿@using Common;
+@using MvcContrib.UI.Grid
+@using MvcContrib.Pagination;
+@using MvcContrib.UI.Pager;
+@model  BackWebAdmin.Models.ShowApplyEntity
+
+
+<div class="easyui-tabs" >
+    <div title="申请人和志愿者服务信息" style="padding:10px">
+        <p style="font-size:14px">申请人信息</p>
+        <table class="form" cellpadding="0" cellspacing="0">
+            <tr>
+                <td class="item_title">申请人:</td>
+                <td>@Model.UserEntiy.RealName</td>
+                <td class="item_title">联系电话:</td>
+                <td>@Model.UserEntiy.Phone</td>
+                <td class="item_title">地址:</td>
+                <td>@Model.UserEntiy.Address</td>
+            </tr>
+           
+        </table>
+        <p style="font-size:14px">社会服务活动详情.</p>
+        <table class="form" cellpadding="0" cellspacing="0">
+            <tr>
+                <td class="item_title">收费类型:</td>
+                <td>@Model.Detail.PayType</td>
+                <td class="item_title">服务类型:</td>
+                <td>@Model.Detail.Type</td>
+                <td class="item_title">服务内容标题:</td>
+                <td>@Model.Detail.Context</td>
+            </tr>
+            <tr>
+                <td class="item_title">有效期:</td>
+                <td>@Model.Detail.PubTime~@Model.Detail.EndTime</td>
+                <td class="item_title">感谢分值:</td>
+                <td>@Model.Detail.THSScore</td>
+                <td class="item_title">服务分值:</td>
+                <td>@Model.Detail.Score</td>
+            </tr>
+            <tr>
+                <td class="item_title">联系电话:</td>
+                <td>@Model.Detail.Phone</td>
+                <td class="item_title">联系人:</td>
+                <td colspan="3">@Model.Detail.Contacts</td>
+
+            </tr>
+            <tr>
+                <td class="item_title">服务描述:</td>
+                <td colspan="5">@Model.Detail.Desc</td>
+
+            </tr>
+            <tr>
+                <td class="item_title">自愿者帮助说明:</td>
+                <td colspan="5">@Model.Detail.VHelpDesc</td>
+
+            </tr>
+        </table>
+
+        <p style="font-size:14px">志愿者服务情况</p>
+        <table class="form" cellpadding="0" cellspacing="0">
+
+             @foreach (var item in @Model.RecordList)
+              {
+                <tr>
+                    <td class="item_title">服务开始时间:</td>
+                    <td>@item.BeginTime</td>
+                    <td class="item_title">服务结束时间:</td>
+                    <td>@item.EndTime</td>
+                    <td class="item_title">服务记录:</td>
+                    <td>
+                        @foreach (var img in item.Img.Split('#'))
+                        {
+                            <img  width="20%" src="@img"/>
+                        }
+                    </td>
+                </tr>
+              }
+          
+        </table>
+    </div>
+    <div title="社会服务活动详情" style="padding:10px">
+      
+            <table class="form" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td class="item_title">收费类型:</td>
+                    <td>@Model.Detail.PayType</td>
+                    <td class="item_title">服务类型:</td>
+                    <td>@Model.Detail.Type</td>
+                    <td class="item_title">服务内容标题:</td>
+                    <td>@Model.Detail.Context</td>
+                </tr>
+                <tr>
+                    <td class="item_title">有效期:</td>
+                    <td>@Model.Detail.PubTime~@Model.Detail.EndTime</td>
+                    <td class="item_title">感谢分值:</td>
+                    <td>@Model.Detail.THSScore</td>
+                    <td class="item_title">服务分值:</td>
+                    <td>@Model.Detail.Score</td>
+                </tr>
+                <tr>
+                    <td class="item_title">联系电话:</td>
+                    <td>@Model.Detail.Phone</td>
+                    <td class="item_title">联系人:</td>
+                    <td colspan="3">@Model.Detail.Contacts</td>
+                    
+                </tr>
+                <tr>
+                    <td class="item_title">服务描述:</td>
+                    <td colspan="5">@Model.Detail.Desc</td>
+                  
+                </tr>
+                <tr>
+                    <td class="item_title">自愿者帮助说明:</td>
+                    <td colspan="5">@Model.Detail.VHelpDesc</td>
+
+                </tr>
+            </table>
+     
+    </div>
+
+</div>

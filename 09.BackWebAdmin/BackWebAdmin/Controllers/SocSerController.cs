@@ -503,13 +503,61 @@ namespace BackWebAdmin.Controllers
                            select new ShowApplyEntity { ApplyEntiy = a, UserEntiy = gv, Vol = vol.Where(x => x.Id == gr.VId), Detail = gd, Record = gr, Org = sorg.Where(x => x.SocialNO == gd.SocialNo) };
                 list = list.Where(x => x.Org.FirstOrDefault().Id == user.SocOrgId);
                 if (selectModel.Id > 0) list = list.Where(x => x.ApplyEntiy.Id == selectModel.Id);
-                if (selectModel.Id > 0) list = list.Where(x => x.ApplyEntiy.Id == selectModel.Id);
+               // if (selectModel.Id > 0) list = list.Where(x => x.ApplyEntiy.Id == selectModel.Id);
 
 
                 SelectUserApplySerModel model = new SelectUserApplySerModel();
                 model.ApplySerList = list.OrderByDescending(x => x.ApplyEntiy.Id).ToPagedList(pageNumber - 1, pageSize);
 
                 return View(model);
+
+            }
+        }
+
+        /// <summary>
+        /// 用户申请详细记录
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult UserApplyServiceDetail(int id)
+        {
+            // base.GetBackUserInfo().SocOrgId
+
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                var user = db.BackAdminUserEntityDBSet.FirstOrDefault(x => x.UserName == AdminUser.UserName);
+
+
+
+                var apply = db.UserApplyServiceTable;
+                var vol = db.VolunteerEntityTable;
+                var detail = db.SocServiceDetailEntityTable;
+                var record = db.SerRecordTable;
+                var sorg = db.SocialOrgEntityTable;
+
+                var list = from a in apply
+                           join v in vol on a.VolId equals v.Id into g
+                           join d in detail on a.SDId equals d.Id into g2
+                           join r in record on a.Id equals r.UASId into g3
+                     
+                           from gv in g.DefaultIfEmpty()
+                           from gd in g2.DefaultIfEmpty()
+                           from gr in g3.DefaultIfEmpty()
+                           join v2 in vol on gr.VId equals v2.Id into g4
+
+                           select new ShowApplyEntity { 
+                               ApplyEntiy = a,
+                               UserEntiy = gv, 
+                               VolList = g4,
+                               Detail = gd,
+                               RecordList=g3,
+                               Org = sorg.Where(x => x.SocialNO == gd.SocialNo)
+                           };
+              
+                list = list.Where(x => x.ApplyEntiy.Id == id);
+
+                ShowApplyEntity showModel = list.FirstOrDefault();
+                return View(showModel);
 
             }
         }
@@ -638,7 +686,7 @@ namespace BackWebAdmin.Controllers
                          from s in g.DefaultIfEmpty()
                           join o in sorg on s.SocialNo equals o.SocialNO into g3
                          from go in g3.DefaultIfEmpty()
-                          join r in record on  s.Id equals r.SDId into g2
+                          join r in record on  s.Id equals r.SDId into g2 
                           where
                           a.VolId == model.VId
                           select new
@@ -668,40 +716,7 @@ namespace BackWebAdmin.Controllers
                               SocSerImgs = img.Where(x => x.SocSerId == s.Id).ToList()
 
                           };
-                #region 注释
-                //var list = from s in detail
-                //           join a in apply on s.Id equals a.SDId into g
-                //           // join o in sorg on s.SocialNo equals o.SocialNO
-                //           join r in record on s.Id equals r.SDId
-                //           from stuDesc in g.DefaultIfEmpty()
-                //           where
-                //            stuDesc.VolId == model.VId
-                //           select new
-                //           {
-                //               AddTime = s.AddTime,
-                //               //  SocialName = o.Name,
-                //               AddUser = s.AddUser,
-                //               Contacts = s.Contacts,
-                //               SocialNo = s.SocialNo,
-                //               Context = s.Context,
-                //               CoverCommunity = s.CoverCommunity,
-                //               Desc = s.Desc,
-                //               EndTime = s.EndTime,
-                //               Id = s.Id,
-                //               PayType = s.PayType,
-                //               Phone = s.Phone,
-                //               PubTime = s.PubTime,
-                //               Score = s.Score,
-                //               SerNum = s.SerNum,
-                //               THSScore = s.THSScore,
-                //               Type = s.Type,
-                //               VHelpDesc = s.VHelpDesc,
-                //               UserApplyEntity = g,
-                //               SerRecord = r,
-                //               SocSerImgs = img.Where(x => x.SocSerId == s.Id).ToList()
-
-                //           };
-                #endregion
+           
                 var res = list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size);
                 return Json(res, JsonRequestBehavior.AllowGet);
             }
@@ -1217,5 +1232,54 @@ namespace BackWebAdmin.Controllers
             model.SocSerList = SocSerService.TypeListState(pageNumber, pageSize, null, model, sort);
             return View(model);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="vId">志愿者Id(用户Id)</param>
+        /// <param name="sort"></param>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        [SecurityNode(Name = "执行任务完成的志愿者")]
+        public ActionResult AppVolDoEndIndex(int vId, GridSortOptions sort, int? page, int? pageSize = 20)
+        {
+            var pageNumber = page ?? 1;
+            int size = pageSize ?? 20;
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+
+                var apply = db.UserApplyServiceTable;
+                var vol = db.VolunteerEntityTable;
+                var detail = db.SocServiceDetailEntityTable;
+                var record = db.SerRecordTable;
+                var sorg = db.SocialOrgEntityTable;
+                var img = db.SocSerImgTable;
+
+                var list = from r in record
+                           join d in detail on r.SDId equals d.Id into g
+                           from gd in g.DefaultIfEmpty()
+                           join v in vol on r.VId equals v.Id
+                           join a in apply on r.UASId equals a.Id into g2
+                           from ga in g2.DefaultIfEmpty()
+                           join v2 in vol on ga.VolId equals v2.Id
+                           join o in sorg on gd.SocialNo equals o.SocialNO
+                           select new ShowVolDoingModel
+                           {
+                               SocServiceDetail = gd,
+                               Record = r,
+                               User = v2,
+                               Vol = v
+
+                           };
+                list = list.Where(x => x.Record.EndTime.HasValue);
+                list = list.Where(x => x.Record.VId == vId);
+                var res = list.OrderByDescending(x => x.Record.Id).ToPagedList(pageNumber - 1, size);
+
+                return Json(res);
+            }
+        }
+
+
     }
 }

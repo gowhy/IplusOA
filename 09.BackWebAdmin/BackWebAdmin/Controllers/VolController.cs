@@ -28,36 +28,48 @@ namespace BackWebAdmin.Controllers
             BackAdminUser bauEntity = base.GetBackUserInfo();
             string depId = bauEntity.DeptId;
 
-            //var filter = PredicateExtensionses.True<VolunteerEntity>();
-
-            //if (!string.IsNullOrWhiteSpace(model.RealName)) filter = filter.And(x => x.RealName.Contains(model.RealName.Trim()));
-            //if (!string.IsNullOrWhiteSpace(model.Phone)) filter = filter.And(x => x.Phone == model.Phone.Trim());
-            //if (!string.IsNullOrWhiteSpace(model.CardNum)) filter = filter.And(x => x.CardNum == model.CardNum.Trim());
-            //if (!string.IsNullOrWhiteSpace(model.Type)) filter = filter.And(x => x.Type == model.Type.Trim());
-
-            //if (!string.IsNullOrEmpty(depId)) filter = filter.And(x => x.DepId.StartsWith(depId));
-         
-            //model.VolList = VolService.CList(pageNumber, pageSize, filter);
-
-
             using (IplusOADBContext db = new IplusOADBContext())
             {
                 var vol = db.VolunteerEntityTable;
                 var sorg = db.SocialOrgEntityTable;
                 SocialOrgEntity soEntity = sorg.Find(bauEntity.SocOrgId);
 
+
                 //查询社区用户
-                var listDept = from v in vol select v;
-                listDept = listDept.Where(x => x.DepId == (depId));
+                IQueryable<VolunteerEntity> listDept = null;
+                if (!string.IsNullOrEmpty(depId))
+                {
+                    listDept = from v in vol select v;
+                    listDept = listDept.Where(x => x.DepId == (depId));
+                }
 
-             
                 //查询社会组织用户
-                var listOrg = from v in vol select v;
-                listOrg = listOrg.Where(x => x.SocialNO == soEntity.SocialNO);
-              
-                //合并社区的和社会组织的
-                var listAll = listDept.Union(listOrg);
+                IQueryable<VolunteerEntity> listOrg = null;
+                if (soEntity !=null&& !string.IsNullOrEmpty(soEntity.SocialNO))
+                {
+                    listOrg = from v in vol select v;
+                    listOrg = listOrg.Where(x => x.SocialNO == soEntity.SocialNO);
+                }
 
+
+                //合并社区的和社会组织的
+                IQueryable<VolunteerEntity> listAll = null;
+                if (listDept != null && listOrg!=null)
+                {
+                    listAll = listDept.Union(listOrg);
+                }
+                else
+                {
+                    if (listDept == null && listOrg != null)
+                    {
+                        listAll = listOrg;
+                    }
+                    if (listOrg == null && listDept != null)
+                    {
+                        listAll = listDept;
+                    }
+                }
+            
 
 
                 if (!string.IsNullOrEmpty(model.RealName)) listAll = listAll.Where(x => x.RealName.Contains(model.RealName.Trim()));
@@ -69,7 +81,7 @@ namespace BackWebAdmin.Controllers
                 model.VolList = listAll.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, pageSize);
 
             }
-          
+
             return View(model);
 
 
@@ -272,6 +284,9 @@ namespace BackWebAdmin.Controllers
                 if (entity.VID != null) model.VID = entity.VID;
                 if (entity.WeiXin != null) model.WeiXin = entity.WeiXin;
                 if (entity.State.HasValue) model.State = entity.State;
+
+                if (entity.Speciality != null) model.Speciality = entity.Speciality;
+                if (entity.SerAreas != null) model.SerAreas = entity.SerAreas;
 
                 db.Update<VolunteerEntity>(model);
                 db.SaveChanges();
@@ -537,7 +552,7 @@ namespace BackWebAdmin.Controllers
                     tmp.RealName = dt.Rows[i]["姓名"].ToString();
 
                     tmp.State = 1;
-                    tmp.Score = 0;
+                    tmp.Score = 50;
                     tmp.ThsScore = 20;
                     tmp.Type = "志愿者";
                     tmp.PassWord = "000000";
