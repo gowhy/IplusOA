@@ -503,7 +503,22 @@ namespace BackWebAdmin.Controllers
                 return Json(volentity);
             }
         }
+        //获用户信息通过Id
+        public ActionResult AppGetUserByPhone(VolunteerEntity volentity)
+        {
 
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+
+                volentity = db.VolunteerEntityTable.FirstOrDefault<VolunteerEntity>(x => x.Phone == volentity.Phone);
+                if (volentity == null)
+                {
+                    return Json("用户不存在");
+                }
+
+                return Json(volentity);
+            }
+        }
         public PartialViewResult AddVolExcel()
         {
             using (IplusOADBContext db = new IplusOADBContext())

@@ -106,7 +106,7 @@ namespace BusLogic.Login
 
                 longVol = longVol.Where(x => x.Phone == admin.UserName && x.PassWord == admin.PassWord);
 
-                  resVol = longVol.FirstOrDefault();
+                resVol = longVol.FirstOrDefault();
                 if (resVol != null)
                 {
                     admin.UserName = resVol.Phone;
@@ -118,16 +118,14 @@ namespace BusLogic.Login
                 }
                 else
                 {
-                    resVol.LoginState = 0;//登陆失败
-                    resVol.Msg = "用户名或者密码错误";
-                    return resVol;
+                  
+                    return null ;
                 }
             }
             catch (Exception e)
             {
                 admin.Msg = e.Message;
-                resVol.LoginState = 0;//登陆失败
-                resVol.Msg = "登陆异常"+e.Message;
+              
                 return resVol;
                 throw e;
             }

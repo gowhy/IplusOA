@@ -40,9 +40,9 @@ namespace BackWebAdmin.Controllers
         [HttpPost]
         public ActionResult App(LoginModel model,string type)
         {
-            if (string.IsNullOrEmpty(model.UserName) || string.IsNullOrEmpty(model.Password) || string.IsNullOrEmpty(type))
+            if (string.IsNullOrEmpty(model.UserName) || string.IsNullOrEmpty(model.Password))
             {
-                return Json("UserName、Password、type是必填参数");
+                return Json("UserName、Password是必填参数");
             }
             BackAdminUser admin = new BackAdminUser();
             VolunteerEntityClone resFail = new VolunteerEntityClone();

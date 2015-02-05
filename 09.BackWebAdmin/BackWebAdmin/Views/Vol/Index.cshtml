@@ -42,7 +42,7 @@
     </div>
     @Html.Grid(Model.VolList).Columns(column =>
                                   {
-                                   //   column.CheckBox(x => x.Id);
+                                       column.CheckBox(x => x.Id);
                                       column.For(x => x.Id).Named("用户社区编号");
                                       column.For(x => x.CardType).Named("证件类型");
                                       column.For(x => x.Type).Named("类型");

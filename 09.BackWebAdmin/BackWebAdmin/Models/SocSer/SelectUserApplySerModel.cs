@@ -33,5 +33,18 @@ namespace BackWebAdmin.Models
         public IEnumerable<VolunteerEntity> VolList { get; set; }
         public IEnumerable<SerRecordEntity> RecordList { get; set; }
         public IQueryable<SocialOrgEntity> Org { get; set; }
+
+        public VolunteerEntity VolModel { get; set; }
+
+        public IList<ShowApplyEntity2> RecVol { get; set; }
+
+    }
+
+    public class ShowApplyEntity2
+    {
+     
+        public SerRecordEntity Record { get; set; }
+
+        public VolunteerEntity VolModel { get; set; }
     }
 }

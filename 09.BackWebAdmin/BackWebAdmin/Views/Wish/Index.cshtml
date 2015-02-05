@@ -1,4 +1,4 @@
-﻿@model  IPagedList<IplusOAEntity.Wish>
+﻿@model  IPagedList<BackWebAdmin.ShowWishModel>
 @using MvcContrib.UI.Grid
 @using MvcContrib.Pagination;
 @using MvcContrib.UI.Pager;
@@ -43,7 +43,9 @@
                 <th>姓名</th>
                 <th>手机号</th>
                 <th>心愿</th>
-                <th>申请时间</th>
+                <th>点亮人</th>
+                <th>点亮人手机号</th>
+                <th>点亮时间</th>
                 <th>审核时间</th>
                 <th>状态</th>
                 <th style="width:120px;align:center;">审核</th>
@@ -53,24 +55,26 @@
         {
             <tbody>
                 <tr class="gridrow_alternate">
-                    <td>@item.Id</td>
-                    <td>@item.Name</td>
-                    <td>@item.Phone</td>
-                    <td>@item.WishDesc</td>
-                    <td>@(item.ApplyTime.HasValue ? item.ApplyTime.Value.ToString("yyyy-MM-dd HH:mm") : "")</td>
-                    <td>@(item.AuditeTime.HasValue ? item.AuditeTime.Value.ToString("yyyy-MM-dd HH:mm") : "")</td>
+                    <td>@item.Wish.Id</td>
+                    <td>@item.Wish.Name</td>
+                    <td>@item.Wish.Phone</td>
+                    <td>@item.Wish.WishDesc</td>
+                    <td>@((item.User??new IplusOAEntity.VolunteerEntity()).RealName)</td>
+                    <td>@((item.User?? new IplusOAEntity.VolunteerEntity()).Phone)</td>
+                    <td>@(item.Wish.ApplyTime.HasValue ? item.Wish.ApplyTime.Value.ToString("yyyy-MM-dd HH:mm") : "")</td>
+                    <td>@(item.Wish.AuditeTime.HasValue ? item.Wish.AuditeTime.Value.ToString("yyyy-MM-dd HH:mm") : "")</td>
                     <td>
-                        @Enum.Parse(typeof(IplusOAEntity.EnumWishState), item.State.ToString())
+                        @Enum.Parse(typeof(IplusOAEntity.EnumWishState), item.Wish.State.ToString())
                     </td>
                     <td class="grid_btn">
-                          @if (@item.State == 1)
+                          @if (@item.Wish.State == 1)
                           {
-                            <a href="javascript: Auditing(@item.Id,2)">通过</a>
-                            <a href="javascript: Auditing(@item.Id,3)">不通过</a>
+                            <a href="javascript: Auditing(@item.Wish.Id,2)">通过</a>
+                            <a href="javascript: Auditing(@item.Wish.Id,0)">不通过</a>
                           }
                           else
                           {
-                              if (@item.State == 0)
+                              if (@item.Wish.State == 0)
                               {
                                   @Html.Raw("等待用户申请");
                               }

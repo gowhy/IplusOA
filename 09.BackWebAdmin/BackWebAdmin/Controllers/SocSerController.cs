@@ -535,31 +535,90 @@ namespace BackWebAdmin.Controllers
                 var record = db.SerRecordTable;
                 var sorg = db.SocialOrgEntityTable;
 
-                var list = from a in apply
-                           join v in vol on a.VolId equals v.Id into g
-                           join d in detail on a.SDId equals d.Id into g2
-                           join r in record on a.Id equals r.UASId into g3
-                     
-                           from gv in g.DefaultIfEmpty()
-                           from gd in g2.DefaultIfEmpty()
-                           from gr in g3.DefaultIfEmpty()
-                           join v2 in vol on gr.VId equals v2.Id into g4
 
-                           select new ShowApplyEntity { 
-                               ApplyEntiy = a,
-                               UserEntiy = gv, 
-                               VolList = g4,
-                               Detail = gd,
-                               RecordList=g3,
-                               Org = sorg.Where(x => x.SocialNO == gd.SocialNo)
+                var list2 = from a in apply
+                            join v in vol on a.VolId equals v.Id into g
+                            join d in detail on a.SDId equals d.Id into g2
+                            from gv in g.DefaultIfEmpty()
+                            from gd in g2.DefaultIfEmpty()
+                            select new ShowApplyEntity {
+                                ApplyEntiy = a,
+                                UserEntiy = gv,
+                                Detail = gd,
+                                Org = sorg.Where(x => x.SocialNO == gd.SocialNo)
+                            };
+                ShowApplyEntity TmpModel = list2.Where(x => x.ApplyEntiy.Id == id).FirstOrDefault();
+
+
+                var list = from r in record
+                           join v in vol on r.VId equals v.Id
+                           select new ShowApplyEntity2
+                           { 
+                            Record=r,
+                            VolModel = v
                            };
-              
-                list = list.Where(x => x.ApplyEntiy.Id == id);
 
-                ShowApplyEntity showModel = list.FirstOrDefault();
-                return View(showModel);
+                list = list.Where(x => x.Record.UASId == TmpModel.ApplyEntiy.Id);
+
+                TmpModel.RecVol = list.ToList();
+
+                return View(TmpModel);
 
             }
+        }
+
+
+        public ActionResult PostUserApplyServiceDetail()
+        {
+            string recordIds = Request.Form["RecordId"];
+            string sdId = Request.Form["SDId"];
+            string userapplyId = Request.Form["userapplyId"];
+            if (string.IsNullOrEmpty(sdId) || string.IsNullOrEmpty(sdId) || string.IsNullOrEmpty(userapplyId))
+            {
+                return Error("请选择自愿者");
+            }
+          
+
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                var vol = db.VolunteerEntityTable;
+                var detail = db.SocServiceDetailEntityTable;
+                var userApply = db.UserApplyServiceTable;
+                var record = db.SerRecordTable;
+
+                UserApplyServiceEntity userApplyEntity = userApply.Find(int.Parse(userapplyId));
+                if (userApplyEntity==null||userApplyEntity.State==2)
+                {
+                     return Success("服务已经处理完成,不能再处理");
+                }
+                userApplyEntity.State = 2;//修改服务状态2表示处理完成
+                db.SaveChanges();
+                if (string.IsNullOrEmpty(recordIds))
+                {
+                    return Success("服务用户服务处理完成没有志愿者符合加分条件,未能加分");
+                }
+                SocServiceDetailEntity deEntity = detail.Find(int.Parse(sdId));
+
+                List<int> ArrRecordIds = new List<int>();
+                foreach (var item in recordIds.Split(','))
+                {
+                    ArrRecordIds.Add(int.Parse(item));
+                }
+
+                var recordListEntity = record.Where(x => ArrRecordIds.Contains(x.Id)).ToList();
+                for (int i = 0; i < recordListEntity.Count(); i++)
+                {
+                    VolunteerEntity volTmp = vol.Find(recordListEntity[i].VId);
+                    volTmp.Score = volTmp.Score + deEntity.Score;//给自愿者加积分
+                    db.Update<VolunteerEntity>(volTmp);
+                    db.SaveChanges();
+
+                    recordListEntity[i].State = 2;//修改服务记录状态
+                    db.Update<SerRecordEntity>(recordListEntity[i]);
+                    db.SaveChanges();
+                }
+            }
+            return Success("提交成功");
         }
 
         [SecurityNode(Name = "添加页")]
@@ -910,14 +969,15 @@ namespace BackWebAdmin.Controllers
                     return Json(new { state = -5, msg = "服务详情不存在" });
                 }
 
-                VolunteerEntity volEntity = vol.Find(dbEntity.VId);
-                volEntity.Score = volEntity.Score + dtEntity.Score;
-                db.Update<VolunteerEntity>(volEntity);
-                db.SaveChanges();
+                //VolunteerEntity volEntity = vol.Find(dbEntity.VId);
+                //volEntity.Score = volEntity.Score + dtEntity.Score;
+                //db.Update<VolunteerEntity>(volEntity);
+                //db.SaveChanges();
 
                 dbEntity.Description = model.Description;
                 dbEntity.Img += model.Img;
                 dbEntity.EndTime = DateTime.Now;
+                dbEntity.State = 1;
                 db.Update<SerRecordEntity>(dbEntity);
                 db.SaveChanges();
 

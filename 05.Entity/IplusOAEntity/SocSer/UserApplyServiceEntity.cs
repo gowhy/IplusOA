@@ -16,6 +16,8 @@ namespace IplusOAEntity
         public int Num { get; set; }
 
         public string Msg { get; set; }
+
+        public int VolState { get; set; }
     }
     public enum UserApplyServiceState
     {

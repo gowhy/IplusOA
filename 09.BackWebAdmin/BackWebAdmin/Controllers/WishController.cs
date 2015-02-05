@@ -18,7 +18,7 @@ namespace BackWebAdmin.Controllers
     [SecurityModule(Name = "中天社区幸福响当当")]
     public class WishController : BaseController
     {
-        const int pageSize = 20;
+        const int pageSize = 100;
         [SecurityNode(Name = "首页")]
         public ActionResult Index(int? page)
         {
@@ -26,10 +26,18 @@ namespace BackWebAdmin.Controllers
             using (IplusOADBContext db = new IplusOADBContext())
             {
                 var wish = db.WishTable;
+                var vol = db.VolunteerEntityTable;
 
-                var list = from w in wish select w;
+                var list = from w in wish
+                           join v in vol on w.ApplyUserId equals v.Id into g
+                           from wv in g.DefaultIfEmpty()
+                           select new ShowWishModel 
+                           {
+                            Wish=w,
+                            User= wv
+                           };
 
-                return View(list.ToPagedList(pageNumber - 1, pageSize));
+                return View(list.OrderByDescending(x=>x.Wish.ApplyTime).ToPagedList(pageNumber - 1, pageSize));
             }
         }
 
@@ -55,13 +63,21 @@ namespace BackWebAdmin.Controllers
                 var wish = db.WishTable;
 
                Wish wishEntity= wish.Find(wishId);
+               if (wishEntity.State > 0)
+               {
+                   res.State = 0;
+                   res.Msg = "该心愿已被点亮";
+                   return Json(res);
+               }
 
                wishEntity.ApplyUserId = applyUserId;
                wishEntity.Id = wishId;
+               wishEntity.State = 1;
                wishEntity.ApplyTime = DateTime.Now;
-
+               db.Update<Wish>(wishEntity);
+               db.SaveChanges();
                res.State = 1;
-               res.Msg = "领取成功";
+               res.Msg = "点亮成功";
 
                return Json(res);
             }
