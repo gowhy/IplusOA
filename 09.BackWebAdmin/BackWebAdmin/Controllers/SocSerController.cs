@@ -591,7 +591,7 @@ namespace BackWebAdmin.Controllers
                 {
                      return Success("服务已经处理完成,不能再处理");
                 }
-                userApplyEntity.State = 2;//修改服务状态2表示处理完成
+                userApplyEntity.VolState = 2;//修改志愿者处理服务状态2表示处理完成
                 db.SaveChanges();
                 if (string.IsNullOrEmpty(recordIds))
                 {
