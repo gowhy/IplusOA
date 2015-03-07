@@ -16,14 +16,14 @@ using Common.Dynamic;
 
 namespace BackWebAdmin.Controllers
 {
-    [SecurityModule(Name = "中天社区幸福响当当")]
+    [SecurityModule(Name = "签到")]
     public class SignInController : BaseController
     {
         const int pageSize = 100;
         [SecurityNode(Name = "首页")]
         public ActionResult AppSignIn(SignIn signInModel)
         {
-            AppReturnModel returnModel = new AppReturnModel();
+            AppReturnSignInModel returnModel = new AppReturnSignInModel();
             if (signInModel.UserId<=0)
             {
                 returnModel.State = -1;
@@ -56,7 +56,7 @@ namespace BackWebAdmin.Controllers
                     if (days == 0)//表示当天已经签到过
                     {
                         returnModel.State = 0;
-                        returnModel.Msg = "当天已经签到过,当前用户积分:" + signInEntity.Score;
+                        returnModel.Msg = "当天已经签到过";
                         return Json(returnModel);
                     }
                     if ((days == 1) && (week - lastSignInWeek == 1))//表示连续签到获得积分，积分是当前星期几得积分
@@ -82,11 +82,88 @@ namespace BackWebAdmin.Controllers
                 db.SaveChanges();
 
                 returnModel.State = 1;
+                returnModel.Score = userEntity.Score??0;
+                returnModel.LastSignInTime = signInScore;//连续签到次数
                 returnModel.Msg = "签到成功,新增积分:" + signInModel.Score;
                 return Json(returnModel);
 
             }
         }
 
+
+        public ActionResult AppCheckSignIn(SignIn signInModel)
+        {
+            AppReturnSignInModel returnModel = new AppReturnSignInModel();
+            if (signInModel.UserId <= 0)
+            {
+                returnModel.State = -1;
+                returnModel.Msg = "UserId(当前登录用户Id)是必填参数";
+                returnModel.LastSignInTime = 0;
+                return Json(returnModel);
+            }
+
+            int signInScore = 0;
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+
+                var sT = db.SignInTable;
+                var vol = db.VolunteerEntityTable;
+          
+                //获取用户数据库中最新的1条签到记录
+                SignIn signInEntity = sT.Where(x => x.UserId == signInModel.UserId).OrderByDescending(x => x.Id).FirstOrDefault();
+
+                if (signInEntity == null)//从来未签到
+                {
+                    returnModel.State = 1;
+                    returnModel.Score = 0;
+                    returnModel.LastSignInTime = 0;
+                    returnModel.Msg = "从来未签到过";
+                    return Json(returnModel);
+                }
+                else
+                {
+                    int lastSignInWeek = Convert.ToInt32(signInEntity.SignInTime.DayOfWeek.ToString("d"));//上次签到是星期几
+                    int week = Convert.ToInt32(DateTime.Now.DayOfWeek.ToString("d"));//当前星期几
+
+                    TimeSpan ts = DateTime.Now - signInEntity.SignInTime;//2个日期相减如果两天的查是1，表示是连续的2天签到
+                    int days = ts.Days;
+                    //if (days == 0)//表示当天已经签到过
+                    //{
+                    //    returnModel.State = 0;
+                    //    returnModel.Msg = "当天已经签到过";
+
+                    //}
+                    //else
+                    //{
+                    //    returnModel.State = 1;//
+                    //    returnModel.Msg = "当天未签到过";
+                    //}
+
+                  
+                    if (days == 0)//表示当天已经签到过
+                    {
+                        returnModel.State = 0;
+                        returnModel.LastSignInTime = signInEntity.Score;//已经连续签到次数
+                        returnModel.Msg = "当天已经签到过";
+                        return Json(returnModel);
+                    }
+                    if ((days == 1) && (week - lastSignInWeek == 1))//表示连续签到获得积分，积分是当前星期几得积分
+                    {
+                        returnModel.LastSignInTime =signInEntity.Score;//已经连续签到次数
+                     
+                    }
+                    else
+                    {
+                        returnModel.LastSignInTime = 0;//没有连续签到了
+                       
+                    }
+
+                }
+                VolunteerEntity userEntity = vol.Find(signInModel.UserId);
+                returnModel.Score = userEntity.Score??0;
+              
+                return Json(returnModel);
+            }
+        }
     }
 }

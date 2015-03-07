@@ -112,5 +112,8 @@ namespace DataLayer.IplusOADB
         public virtual DbSet<Wish> WishTable { get; set; }
 
         public virtual DbSet<SignIn> SignInTable { get; set; }
+
+        public virtual DbSet<ScoreMall> ScoreMallTable { get; set; }
+        
     }
 }

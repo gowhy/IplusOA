@@ -180,6 +180,7 @@
     <Compile Include="Controllers\DpController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LogController.cs" />
+    <Compile Include="Controllers\ScoreMallController.cs" />
     <Compile Include="Controllers\SignInController.cs" />
     <Compile Include="Controllers\WishController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
@@ -219,6 +220,7 @@
     <Compile Include="Models\SocSer\ShowVolDoingModel.cs" />
     <Compile Include="Models\SOrg\SelectSorgModel.cs" />
     <Compile Include="Models\UEditorModel.cs" />
+    <Compile Include="Models\UEditorReturnModel.cs" />
     <Compile Include="Models\Vol\SelectVolModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -1208,6 +1210,9 @@
     <Content Include="Views\ChangeGoods\ChangeGoodsLogIndex.cshtml" />
     <Content Include="Views\SocSer\UserApplyServiceDetail.cshtml" />
     <Content Include="Views\Wish\Index.cshtml" />
+    <Content Include="Views\ScoreMall\Add.cshtml" />
+    <Content Include="Views\ScoreMall\Index.cshtml" />
+    <Content Include="Views\ScoreMall\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\02.Common\Common\Common.csproj">

@@ -1,0 +1,46 @@
+﻿@model  IPagedList<IplusOAEntity.ScoreMall>
+@using MvcContrib.UI.Grid
+@using MvcContrib.Pagination;
+@using MvcContrib.UI.Pager;
+@using Common;
+
+<script type="text/javascript">
+
+    function del(id) {
+
+        var url = '@Url.Action("Delete")' + '?id=' + id;
+        deleteMethod(id, "Delete");
+    }
+
+</script>
+<style>
+    .combo {
+        vertical-align: bottom;
+    }
+</style>
+
+<div class="grid_box">
+    <div class="grid_top">
+    </div>
+    @Html.Grid(Model).Columns(column =>
+                                  {
+                                      column.For(x => x.Id).Named("Id");
+                                      column.For(x => x.Name).Named("名称");
+                                      column.For(x => x.Count).Named("库存");
+                                      column.For(x => x.Price).Named("价格");
+                                      column.For(x => x.UseScore).Named("消耗积分");
+                                      column.For(x => x.StartTime.ToString("yyyy-MM-dd HH:mm")+"--"+x.EndTime.ToString("yyyy-MM-dd HH:mm")).Named("有效期");
+                               
+                                      column.For(x => x.AddTime.ToString("yyyy-MM-dd HH:mm")).Named("发布时间");
+                                 
+                                      column.Buttons(btns => btns
+                                          .Add(x => Html.ActionLink("编辑", "Edit", new { id = x.Id }))
+                                          .Add(x => Html.ScriptLink("删除", "del({0})".FormatWith(x.Id)))
+                                       
+                                                      );
+                                  }).Complex(ViewData)
+    <div class="grid_foot">
+    </div>
+</div>
+
+@Html.Pager(Model)

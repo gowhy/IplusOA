@@ -14,4 +14,17 @@ namespace BackWebAdmin
 
 
     }
+
+    public class AppReturnSignInModel
+    {
+        public int State { get; set; }
+        public string Msg { get; set; }
+
+        public int Score { get; set; }
+        /// <summary>
+        /// 持续签到次数
+        /// </summary>
+        public int LastSignInTime { get; set; }
+
+    }
 }
