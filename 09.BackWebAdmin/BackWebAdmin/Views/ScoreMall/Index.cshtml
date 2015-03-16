@@ -18,20 +18,26 @@
         vertical-align: bottom;
     }
 </style>
+<form id="indexFrom">
 
+    <div style="float: left; height: 40px; text-align: center;">
+        <span><a class="easyui-linkbutton" data-options="iconCls:'icon-add'" title="新增" href="@Url.Action("Add")">新增</a></span>
+
+    </div>
+</form>
 <div class="grid_box">
     <div class="grid_top">
     </div>
     @Html.Grid(Model).Columns(column =>
                                   {
-                                      column.For(x => x.Id).Named("Id");
+                                      column.For(x => x.Id).Named("商品编号");
                                       column.For(x => x.Name).Named("名称");
                                       column.For(x => x.Count).Named("库存");
                                       column.For(x => x.Price).Named("价格");
-                                      column.For(x => x.UseScore).Named("消耗积分");
-                                      column.For(x => x.StartTime.ToString("yyyy-MM-dd HH:mm")+"--"+x.EndTime.ToString("yyyy-MM-dd HH:mm")).Named("有效期");
+                                      column.For(x => x.UseScore).Named("兑换积分");
+                                      column.For(x => x.StartTime.ToString("yyyy-MM-dd HH:mm")+" 到 "+x.EndTime.ToString("yyyy-MM-dd HH:mm")).Named("有效期");
                                
-                                      column.For(x => x.AddTime.ToString("yyyy-MM-dd HH:mm")).Named("发布时间");
+                                      column.For(x => x.AddTime.ToString("yyyy-MM-dd HH:mm")).Named("录入时间");
                                  
                                       column.Buttons(btns => btns
                                           .Add(x => Html.ActionLink("编辑", "Edit", new { id = x.Id }))

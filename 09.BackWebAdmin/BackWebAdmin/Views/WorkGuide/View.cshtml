@@ -123,8 +123,8 @@
     ueditor.addListener("ready", function () {
         // editor准备好之后才可以使用
         // ueditor.setContent('');
-
-        UE.getEditor('editor').execCommand('insertHtml', '@Html.Raw(Model.Des)');
+        
+        UE.getEditor('editor').execCommand('insertHtml', ' @(Html.Raw(Model.Des))');
     });
 
 

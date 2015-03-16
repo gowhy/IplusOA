@@ -182,6 +182,7 @@
     <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Controllers\ScoreMallController.cs" />
     <Compile Include="Controllers\SignInController.cs" />
+    <Compile Include="Controllers\ScratchCardController.cs" />
     <Compile Include="Controllers\WishController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\AppVerController.cs" />
@@ -217,6 +218,7 @@
     <Compile Include="Models\SocSer\ShowDetailUserApplyInfo.cs" />
     <Compile Include="Models\SocSer\ShowDetailUserApplySerModel.cs" />
     <Compile Include="Models\SocSer\SelectUserApplySerModel.cs" />
+    <Compile Include="Models\SocSer\ShowSocSerDetailCommentModel.cs" />
     <Compile Include="Models\SocSer\ShowVolDoingModel.cs" />
     <Compile Include="Models\SOrg\SelectSorgModel.cs" />
     <Compile Include="Models\UEditorModel.cs" />
@@ -1213,6 +1215,7 @@
     <Content Include="Views\ScoreMall\Add.cshtml" />
     <Content Include="Views\ScoreMall\Index.cshtml" />
     <Content Include="Views\ScoreMall\Edit.cshtml" />
+    <Content Include="Views\ScratchCardControlle\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\02.Common\Common\Common.csproj">

@@ -114,6 +114,20 @@ namespace DataLayer.IplusOADB
         public virtual DbSet<SignIn> SignInTable { get; set; }
 
         public virtual DbSet<ScoreMall> ScoreMallTable { get; set; }
-        
+        public virtual DbSet<ScoreMallChangeLog> ScoreMallChangeLogTable { get; set; }
+          /// <summary>
+          /// 刮刮卡
+          /// </summary>
+        public virtual DbSet<ScratchCard> ScratchCardTable { get; set; }
+        /// <summary>
+        /// 社会服务评论
+        /// </summary>
+        public virtual DbSet<SocServiceDetailComment> SocServiceDetailCommentTable { get; set; }
+
+        //点赞
+        public virtual DbSet<SocServiceDetailGood> SocServiceDetailGoodTable { get; set; }
+
+        //分享
+        public virtual DbSet<SocServiceDetailShare> SocServiceDetailShareTable { get; set; }
     }
 }

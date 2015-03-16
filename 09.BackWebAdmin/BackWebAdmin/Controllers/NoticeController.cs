@@ -221,12 +221,16 @@ namespace BackWebAdmin.Controllers
         }
 
         [ValidateInput(false)]
-        public ActionResult PostEdit(NoticeEntity entity)
+        public ActionResult PostEdit(NoticeEntity model)
         {
             using (IplusOADBContext db = new IplusOADBContext())
             {
-
-                entity.AddTime = DateTime.Now;
+                NoticeEntity entity = db.NoticeTable.Find(model.Id);
+                entity.Des = model.Des;
+                entity.ImgUrl = model.ImgUrl;
+                entity.Title = model.Title;
+                entity.State = model.State;
+               // entity.AddTime = DateTime.Now;
                 db.Update(entity);
                 db.SaveChanges();
 

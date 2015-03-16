@@ -43,6 +43,76 @@ namespace BackWebAdmin.Controllers
             }
         }
 
+        public ActionResult AppIndex(int? page, int? pageSize)
+        {
+            var pageNumber = page ?? 1;
+            var size = pageSize ?? PageSize;
+
+        
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+
+                var smt = db.ScoreMallTable;
+
+                var list = from s in smt select s;
+
+                list = list.Where(x => x.StartTime<DateTime.Now&&x.EndTime>DateTime.Now);
+
+                return Json(list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size));
+            }
+        }
+        /// <summary>
+        /// 兑换商品
+        /// 参数scoremallId UserId
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public ActionResult AppPostScoreMallChange(ScoreMallChangeLog entity)
+        {
+            entity.AddTime = DateTime.Now;
+
+            AppReturnModel returnModel = new AppReturnModel();
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                //ScoreMall tmpScoreMallEntity = from s in db.ScoreMallTable where s.Id == entity.ScoreMallId && DateTime.Now > s.StartTime && s.EndTime > DateTime.Now select s;
+
+                ScoreMall tmpScoreMallEntity = db.ScoreMallTable.FirstOrDefault(s => s.Id == entity.ScoreMallId && DateTime.Now > s.StartTime && s.EndTime > DateTime.Now);
+                if (tmpScoreMallEntity == null )//
+                {
+                    returnModel.State = 0;//失败
+                    returnModel.Msg = "商品已经下架";
+                    return Json(returnModel);
+                }
+
+                if (tmpScoreMallEntity != null && tmpScoreMallEntity.Count > 0)//没有库存了
+                {
+                    returnModel.State = 0;//失败
+                    returnModel.Msg = "无库存";
+                    return Json(returnModel);
+                }
+               
+                //添加兑换记录
+                entity.UseScore = tmpScoreMallEntity.UseScore;
+                db.Add<ScoreMallChangeLog>(entity);
+                db.SaveChanges();
+
+                //降低库存
+                tmpScoreMallEntity.Count = tmpScoreMallEntity.Count - 1;
+                db.Update(tmpScoreMallEntity);
+                db.SaveChanges();
+
+                ///扣除用户的积分
+                VolunteerEntity volEntity = db.VolunteerEntityTable.Find(entity.UserId);
+                volEntity.Score = volEntity.Score - entity.UseScore;
+                db.Update(volEntity);
+                db.SaveChanges();
+
+                returnModel.State = 1;//失败
+                returnModel.Msg = "兑换成功";
+                return Json(returnModel);
+
+            } 
+        }
         public ActionResult Add()
         {
             return View();

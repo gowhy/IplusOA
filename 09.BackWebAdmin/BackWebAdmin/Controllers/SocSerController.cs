@@ -1340,6 +1340,162 @@ namespace BackWebAdmin.Controllers
             }
         }
 
+        /// <summary>
+        /// App提交服务评论
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public ActionResult AppSocServiceDetailComment(SocServiceDetailComment entity)
+        {
+            ReturnModel ret = new ReturnModel();
+            entity.AddTime = DateTime.Now;
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+              
+                SocServiceDetailEntity sDetail = db.SocServiceDetailEntityTable.Find(entity.SdId);
 
+                if (sDetail.CommentSocre < 0)
+                {
+                    ret.State = 0;
+                    ret.Msg = "当前服务暂停评论";
+                    return Json(ret);
+                }
+                VolunteerEntity vol = db.VolunteerEntityTable.Find(entity.UserId);
+             
+                var tab = db.SocServiceDetailCommentTable;
+                //评论第一次加积分
+                if (tab.Count(x=>x.UserId==entity.UserId)<=0)
+                {
+                    vol.Score = vol.Score + sDetail.CommentSocre;//增加评论积分
+                    sDetail.CommentTotal = sDetail.CommentTotal + 1;//增加评论总数
+                    db.SaveChanges();
+                }
+
+                //保存评论内容
+                tab.Add(entity);
+                db.SaveChanges();
+                ret.State = 1;
+                ret.Msg = "提交成功";
+                return Json(ret);
+
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sdId">社会服务Id</param>
+        /// <returns></returns>
+        public ActionResult AppSocServiceDetailCommentListBySdId(int sdId, int? page, int? pageSize)
+        {
+            var pageNumber = page ?? 1;
+            var size = pageSize ?? 20;
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                var comment = db.SocServiceDetailCommentTable;
+                var vol = db.VolunteerEntityTable;
+
+                var list = from c in comment
+                           join v in vol on c.UserId equals v.Id
+                           select new ShowSocSerDetailCommentListModel
+                           {
+                               Comment = c.Comment,
+                               CommentTime = c.AddTime,
+                               CommentUserId = c.UserId,
+                               UserRealName = v.RealName,
+                               Phone = v.Phone,
+                               SdId = c.SdId
+                           };
+                list = list.Where(x => x.SdId == sdId).OrderBy(x => x.CommentTime);
+
+                ShowSocSerDetailCommentModel model = new ShowSocSerDetailCommentModel();
+                model.CommentList=list.OrderByDescending(x=>x.CommentTime).ToPagedList(pageNumber - 1, size).ToList();
+                model.CommentTotalCount = comment.Count(x => x.SdId == sdId);
+
+                return Json(model, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        /// <summary>
+        /// 点赞
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public ActionResult AppSocServiceDetailGood(SocServiceDetailGood entity)
+        {
+            ReturnModel ret = new ReturnModel();
+            entity.AddTime = DateTime.Now;
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+
+                SocServiceDetailEntity sDetail = db.SocServiceDetailEntityTable.Find(entity.SdId);
+
+                if (sDetail.GoodScore<0)
+                {
+                    ret.State = 0;
+                    ret.Msg = "当前服务暂停点赞";
+                    return Json(ret);
+                }
+                VolunteerEntity vol = db.VolunteerEntityTable.Find(entity.UserId);
+
+                var tab = db.SocServiceDetailGoodTable;
+                //点赞第一次加积分
+                if (tab.Count(x => x.UserId == entity.UserId) <= 0)
+                {
+                    vol.Score = vol.Score + sDetail.GoodScore;//增加点赞积分
+                    sDetail.CommentTotal = sDetail.GoodTotal + 1;//增加点赞总数
+                    db.SaveChanges();
+                }
+
+                //保存点赞内容
+                tab.Add(entity);
+                db.SaveChanges();
+                ret.State = 1;
+                ret.Msg = "提交成功";
+                return Json(ret);
+
+            }
+        }
+
+
+        /// <summary>
+        /// 分享
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public ActionResult AppSocServiceDetailShare(SocServiceDetailShare entity)
+        {
+            ReturnModel ret = new ReturnModel();
+            entity.AddTime = DateTime.Now;
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+
+                SocServiceDetailEntity sDetail = db.SocServiceDetailEntityTable.Find(entity.SdId);
+                if (sDetail.GoodScore < 0)
+                {
+                    ret.State = 0;
+                    ret.Msg = "当前服务暂停分享";
+                    return Json(ret);
+                }
+
+                VolunteerEntity vol = db.VolunteerEntityTable.Find(entity.UserId);
+
+                var tab = db.SocServiceDetailShareTable;
+                //分享第一次加积分
+                if (tab.Count(x => x.UserId == entity.UserId) <= 0)
+                {
+                    vol.Score = vol.Score + sDetail.ShareScore;//增加分享积分
+                    sDetail.CommentTotal = sDetail.ShareTotal + 1;//增加分享总数
+                    db.SaveChanges();
+                }
+
+                //保存分享内容
+                tab.Add(entity);
+                db.SaveChanges();
+                ret.State = 1;
+                ret.Msg = "提交成功";
+                return Json(ret);
+
+            }
+        }
     }
 }

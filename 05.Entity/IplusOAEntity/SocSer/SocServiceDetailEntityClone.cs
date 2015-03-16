@@ -178,7 +178,12 @@ namespace IplusOAEntity
         /// 是否需用户申请
         /// </summary>
         public int ISUserApply { get; set; }
-
+        public int CommentSocre { get; set; }
+        public int GoodScore { get; set; }
+        public int ShareScore { get; set; }
+        public int CommentTotal { get; set; }
+        public int GoodTotal { get; set; }
+        public int ShareTotal { get; set; }
         #endregion Model
     }
 }

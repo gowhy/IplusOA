@@ -57,6 +57,7 @@ namespace BackWebAdmin.Controllers
                     {
                         returnModel.State = 0;
                         returnModel.Msg = "当天已经签到过";
+                        returnModel.LastSignInTime = signInEntity.Score;
                         return Json(returnModel);
                     }
                     if ((days == 1) && (week - lastSignInWeek == 1))//表示连续签到获得积分，积分是当前星期几得积分
@@ -149,11 +150,13 @@ namespace BackWebAdmin.Controllers
                     }
                     if ((days == 1) && (week - lastSignInWeek == 1))//表示连续签到获得积分，积分是当前星期几得积分
                     {
+                        returnModel.State = 0;
                         returnModel.LastSignInTime =signInEntity.Score;//已经连续签到次数
                      
                     }
                     else
                     {
+                        returnModel.State =1;
                         returnModel.LastSignInTime = 0;//没有连续签到了
                        
                     }
