@@ -288,6 +288,9 @@ namespace BackWebAdmin.Controllers
                 if (entity.Speciality != null) model.Speciality = entity.Speciality;
                 if (entity.SerAreas != null) model.SerAreas = entity.SerAreas;
 
+                if (entity.Age >0) model.Age = entity.Age;
+                if (entity.Sex != null) model.Sex = entity.Sex;
+
                 db.Update<VolunteerEntity>(model);
                 db.SaveChanges();
 
@@ -488,19 +491,53 @@ namespace BackWebAdmin.Controllers
         }
 
         //获用户信息通过Id
-        public ActionResult AppGetUserById(VolunteerEntity volentity)
+        public ActionResult AppGetUserById(VolunteerEntity volEntity)
         {
 
             using (IplusOADBContext db = new IplusOADBContext())
             {
           
-                volentity = db.VolunteerEntityTable.FirstOrDefault<VolunteerEntity>(x => x.Id==volentity.Id);
-                if (volentity == null)
+               // volentity = db.VolunteerEntityTable.FirstOrDefault<VolunteerEntity>(x => x.Id==volentity.Id);
+
+                var vol = from v in db.VolunteerEntityTable
+                          where v.Id == volEntity.Id
+                          select new  VolunteerEntityClone
+                          {
+                              Address = v.Address,
+                              Age = v.Age,
+                              Id = v.Id,
+                              CardNum = v.CardNum,
+                              CardType = v.CardType,
+                              DepId = v.DepId,
+                              Doing = v.Doing,
+                              EMail = v.EMail,
+                              GroupID = v.GroupID,
+                              Honor = v.Honor,
+                            //  LoginState = v.LoginState,
+                              Msg = v.Msg,
+                              Number = v.Number,
+                              Phone = v.Phone,
+                              QQ = v.QQ,
+                              RealName = v.RealName,
+                              Score = v.Score,
+                              SerAreas = v.SerAreas,
+                              Sex = v.Sex,
+                              SocialNO = v.SocialNO,
+                              Speciality = v.Speciality,
+                              State = v.State,
+                              ThsScore = v.ThsScore,
+                              Type = v.Type,
+                              UerName = v.UerName,
+                              VID = v.VID,
+                              WeiXin = v.WeiXin
+
+                          };
+                if (vol == null)
                 {
                     return Json("用户不存在");
                 }
-
-                return Json(volentity);
+                VolunteerEntityClone tmp = vol.FirstOrDefault();
+                return Json(tmp);
             }
         }
         //获用户信息通过Id

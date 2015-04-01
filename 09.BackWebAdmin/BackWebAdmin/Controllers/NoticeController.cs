@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using BackWebAdmin.CommService;
+using Common;
 using DataLayer.IplusOADB;
 using IplusOAEntity;
 using System;
@@ -230,6 +231,8 @@ namespace BackWebAdmin.Controllers
                 entity.ImgUrl = model.ImgUrl;
                 entity.Title = model.Title;
                 entity.State = model.State;
+                entity.LinkSocSerUrl = model.LinkSocSerUrl;
+                entity.UploadHtmlFile = model.UploadHtmlFile;
                // entity.AddTime = DateTime.Now;
                 db.Update(entity);
                 db.SaveChanges();
@@ -259,6 +262,14 @@ namespace BackWebAdmin.Controllers
                 db.Dispose();
                 return Json("操作成功");
             }
+        }
+
+        public ActionResult SaveUploadHtmlFile()
+        {
+            //接收上传后的文件
+            System.Web.HttpPostedFileBase file = Request.Files["Filedata"];
+            SocSerImgEntity res = UploadFile.SaveFile(file, "NoticeHtmlFile", "");
+            return Json(res);
         }
     }
 }

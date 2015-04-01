@@ -108,10 +108,6 @@
                     <td class="item_input"><input type="text" class="textbox easyui-validatebox" missingmessage="必须填写" data-options="required:true" name="EndTime" value="@(Model.EndTime.HasValue ? Model.EndTime.Value.ToString("yyyy-MM-dd HH:mm") : "")" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" /></td>
                 </tr>
                 <tr>
-                    <td class="item_title">服务描述:</td>
-                    <td class="item_input"><textarea class="textbox require" name="Desc" rows="5" cols="70">@Model.Desc</textarea></td>
-                </tr>
-                <tr>
                     <td class="item_title">服务图片:</td>
                     <td class="item_input">
                         @*用来作为文件队列区域*@
@@ -121,15 +117,56 @@
                         <input type="hidden" name="SocSerImgId" id="SocSerImgId" value="" />
                         <div id="imgQueue">
                             @*<a href="javascript:$('#uploadify').uploadify('upload')">上传</a>*@
-                           
-                           @foreach (var item in @Model.SocSerImgs)
-                           {
-                                <img   socserimgid="@item.Id" ondblclick="delImgSocSer(this)" src="@item.HttpUrl" title="双击删除图片" alt="" width="160" height="140" />
-                           }
-                           
+
+                            @foreach (var item in @Model.SocSerImgs)
+                            {
+                                <img socserimgid="@item.Id" ondblclick="delImgSocSer(this)" src="@item.HttpUrl" title="双击删除图片" alt="" width="160" height="140" />
+                            }
+
                         </div>
                     </td>
                 </tr>
+                <tr>
+                    <td class="item_title">服务外部链接:</td>
+                    <td class="item_input">
+                        <input type="text" class="textbox" id="LinkSocSerUrl" value="@Model.LinkSocSerUrl"  name="LinkSocSerUrl" />
+                        <span>（服务外部链接， 上传服务HTML文件， 服务描述 3者只能填其一）</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="item_title">上传服务HTML文件:</td>
+                    <td class="item_input">
+                        <input type="hidden" id="UploadHtmlFile" value="@Model.UploadHtmlFile" name="uploadhtmlfile" />
+                        <span id="HtmlFileName">@Model.UploadHtmlFile</span>
+                        <input type="text" class="textbox  easyui-validatebox" id="SaveUploadHtmlFile" name="SaveUploadHtmlFile" />
+                        <span>（服务外部链接， 上传服务HTML文件， 服务描述 3者只能填其一）</span>
+                     </td>
+                </tr>
+           
+                @*<tr>
+                    <td class="item_title">服务描述:</td>
+                    <td class="item_input">
+                    <textarea class="textbox require" name="Desc" rows="5" cols="70">@Model.Desc</textarea>
+                    </td>
+                </tr>*@
+                <tr>
+                    <td class="item_title">服务描述:
+                    <br />
+                        <span>（服务外部链接， 上传服务HTML文件， 服务描述 3者只能填其一）</span>
+                    </td>
+                    <td class="item_input">
+                        @*<textarea class="textbox require" name="Desc" rows="5" cols="70" ></textarea>*@
+                        <input type="hidden" name="Desc" id="Desc" />
+                        <div>
+                            <script id="editor" type="text/plain" style="width:450px;height:500px;">
+                                @Html.Raw(Model.Desc)
+                            </script>
+                        </div>
+
+
+                    </td>
+                </tr>
+            
                 <tr>
                     <td class="item_title">自愿者帮助说明:</td>
                     <td class="item_input"><textarea class="textbox require" name="VHelpDesc" rows="5" cols="70">@Model.VHelpDesc</textarea></td>
@@ -287,7 +324,7 @@
                         $("#imgQueue img").each(function(){
                             $("#SocSerImgId").val( $("#SocSerImgId").val()+","+$(this).attr("socserimgId"));
                         });
-
+                        $("#Desc").val(UE.getEditor('editor').getContent());
                         $('#PostEdit').submit();
                     }
 
@@ -295,7 +332,36 @@
                         submitForm();
                     });
 
-      
+                    var ueditor = UE.getEditor('editor');
+
+                    @*ueditor.addListener("ready", function () { 
+                        UE.getEditor('editor').execCommand('insertHtml', ' @(Html.Raw(Model.Desc))');
+                    });*@
+
+                    $("#SaveUploadHtmlFile").uploadify({
+                        //指定swf文件
+                        'swf':"@Url.Content("~/Content/plug-in/uploadify/uploadify.swf")",
+                    //后台处理的页面
+                       'uploader': '/socser/SaveUploadHtmlFile',
+                    //按钮显示的文字
+                     'buttonText': '上传HTML文件',
+                     'fileTypeExts': '*.html; *.htm; ',
+                     'cancelImg':"@Url.Content("~/Content/plug-in/uploadify/cancel.jpg")",
+                     'auto': true,
+                    //设置为true将允许多文件上传
+                     'multi': false,
+                     onUploadSuccess: function (file, data, response) {//上传完成时触发（每个文件触发一次）
+
+                         data = eval("(" + data + ")");
+
+                         $("#UploadHtmlFile").val(data.HttpUrl);
+                         $("#HtmlFileName").html("已上传成功文件："+data.Name);
+              
+
+                     }
+
+                    });
+
                     $("#uploadify").uploadify({
                         //指定swf文件
                         'swf':"@Url.Content("~/Content/plug-in/uploadify/uploadify.swf")",

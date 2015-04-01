@@ -22,18 +22,43 @@ namespace BackWebAdmin.Controllers
              return View();
         }
 
-
-        [HttpPost]
-        public ActionResult Index(LoginModel model)
+        /// <summary>
+        /// 登陆验证码
+        /// </summary>
+        /// <param name="phone"></param>
+        /// <returns></returns>
+        public ActionResult SMSLogin(string phone)
         {
+            ReturnModel ret = SMSComm.SendLoginCodeSMS(phone);
+      
+            return Json(ret);
+
+        }
+        [HttpPost]
+        public ActionResult Index(LoginModel model, string phone, string code)
+        {
+            ReturnModel returnModel = new ReturnModel();
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                DateTime codeOutTime = DateTime.Now.AddMinutes(-10);
+                int existCount = db.SMSTable.Count(x => x.Phone == phone.Trim() && x.VCode == code.Trim() && x.BType == 2 && x.AddTime > codeOutTime);
+                if (existCount == 0)
+                {
+                    returnModel.Msg = "验证码失效,请重新获取";
+                    returnModel.State = -2;
+                    return View(returnModel);
+                }
+            }
             BackAdminUser admin = new BackAdminUser();
             admin.UserName = model.UserName;
             admin.PassWord = model.Password;
-            if (Login.VLogin( admin))
+            if (Login.VLogin(admin))
             {
                 return RedirectToAction("Index", "Home");
             }
-            return View(model);
+            returnModel.Msg = "用户名或者密码错误";
+            
+            return View(returnModel);
 
         }
 
@@ -49,6 +74,7 @@ namespace BackWebAdmin.Controllers
             try
             {
               
+
                 admin.UserName = model.UserName;
                 admin.PassWord = model.Password;
                 VolunteerEntityClone res = Login.VLoginApp(admin, type);

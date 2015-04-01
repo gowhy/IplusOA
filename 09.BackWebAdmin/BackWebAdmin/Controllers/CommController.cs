@@ -162,7 +162,10 @@ namespace BackWebAdmin.Controllers
                                Id = a.Id,
                                Des = a.Des,
                                AddTime = a.AddTime,
-                               Title = a.Title
+                               Title = a.Title,
+                               LinkSocSerUrl=a.LinkSocSerUrl,
+                               UploadHtmlFile=a.UploadHtmlFile
+
                            };
                 if (!string.IsNullOrEmpty(depId))
                 {

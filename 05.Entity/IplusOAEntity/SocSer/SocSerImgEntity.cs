@@ -12,6 +12,7 @@ namespace IplusOAEntity
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
+     //   public string SourceName { get; set; }
         public string FTPUrl { get; set; }
         public System.DateTime AddTime { get; set; }
         public string Module { get; set; }

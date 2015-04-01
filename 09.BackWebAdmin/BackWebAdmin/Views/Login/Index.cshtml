@@ -1,5 +1,5 @@
 ﻿@using Common
-@model BackWebAdmin.Models.LoginModel
+@model IplusOAEntity.ReturnModel
  @{
    Layout = null;
 }
@@ -58,6 +58,16 @@
                             <td>密码</td>
                             <td><input type="password" name="password" tabindex="2" data-required=data-required /></td>
                         </tr>
+                        <tr style=" height:55px;">
+                            <td>手机号</td>
+                            <td><input type="text" id="phone" name="phone" tabindex="2" data-required=data-required />
+                            <br />
+                                <input type="button" id="btnphone" value="获取验证码" onclick="SendLoginSMS(this)" /></td>
+                        </tr>
+                        <tr>
+                            <td>验证码</td>
+                            <td><input type="text" name="code" tabindex="2" data-required=data-required /></td>
+                        </tr>
                         <tr>
                             <td colspan="2"> &nbsp;</td>
                         </tr>
@@ -73,5 +83,49 @@
             技术支持：贵阳市和谐社区公益信息技术服务中心
         </div>
     </div>
+
+    <script type="text/javascript">
+
+    
+        function SendLoginSMS(e) {
+            var phone = $("#phone").val();
+            var url = '@Url.Action("SMSLogin")' + '?phone=' + phone;
+            url = encodeURI(url);
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: "json",
+                success: function (obj) {
+                    if (obj.State == 1) {
+                        time(e);
+                        alert("验证码发送成功");
+                      
+                    }
+                }
+            });
+        }
+
+        var wait = 60;
+        function time(o) {
+            if (wait == 0) {
+                o.removeAttribute("disabled");
+                o.value = "免费获取验证码";
+                wait = 60;
+            } else {
+                o.setAttribute("disabled", true);
+                o.value = "重新发送(" + wait + ")";
+                wait--;
+                setTimeout(function () {
+                    time(o)
+                },
+                1000)
+            }
+        }
+
+        @if (Model !=null&& !string.IsNullOrEmpty(Model.Msg))
+        {
+            @Html.Raw("alert('登陆失败:" + Model.Msg + "')");
+        }
+    </script>
 </body>
 </html>

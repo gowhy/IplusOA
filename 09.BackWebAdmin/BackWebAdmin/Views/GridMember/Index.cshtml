@@ -1,0 +1,73 @@
+﻿@model  IPagedList<IplusOAEntity.GridMember>
+@using MvcContrib.UI.Grid
+@using MvcContrib.Pagination;
+@using MvcContrib.UI.Pager;
+@using Common;
+
+<script type="text/javascript">
+
+    function del(id) {
+
+        var url = '@Url.Action("Delete")' + '?id=' + id;
+        deleteMethod(id, "Delete");
+    }
+
+
+</script>
+<style>
+    .combo {
+        vertical-align: bottom;
+    }
+</style>
+<div id="button-bar">
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-add'" title="新增" href="@Url.Action("Add")">新增</a>
+</div>
+<div class="grid_box">
+    <div class="grid_top">
+    </div>
+
+    <table class="grid">
+        <thead>
+            <tr>
+                <th style="width:10px;align:center;">编号</th>
+                <th style="width:50px;align:center;">网格号</th>
+                <th style="width:110px;align:center;">网格员姓名</th>
+                <th style="width:150px;align:center;">网格员电话</th>
+                <th style="width:140px;align:center;">负责小区名称</th>
+                <th>网格员头像</th>
+                <th>增加日期</th>
+                <th style="width:120px;align:center;">操作</th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            <tbody>
+                <tr class="gridrow_alternate">
+                    <td>@item.Id</td>
+                    <td>@item.GridNo</td>
+                    <td>@item.GridName</td>
+                    <td>@item.GridPhone</td>
+                    <td>@item.VDeptId</td>
+                    <td>  
+                        <img width="160" height="140" alt="" title="网格员头像" src="@item.GridHeaderImg">   
+                    </td>
+                    <td>@item.AddTime.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td class="grid_btn">
+                        <a href="javascript: del(@item.Id)">删除</a>
+
+                    </td>
+                  
+                </tr>
+            </tbody>
+        }
+    </table>
+
+
+
+    <div class="grid_foot">
+    </div>
+</div>
+
+@Html.Pager(Model)
+
+

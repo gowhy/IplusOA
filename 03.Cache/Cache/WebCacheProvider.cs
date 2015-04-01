@@ -6,18 +6,25 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Caching;
 
-namespace Common
+namespace Common.Cache
 {
     public class WebCacheProvider : ICacheProvider
     {
         public object Get(string key)
         {
             return HttpRuntime.Cache[key];
+        
         }
 
         public void Insert(string key, object value)
         {
             HttpRuntime.Cache.Insert(key, value);
+        }
+
+        public void Insert(string key, object value,int timeOut)
+        {
+              
+            HttpRuntime.Cache.Insert(key, value, null, DateTime.UtcNow.AddMinutes(timeOut), System.Web.Caching.Cache.NoSlidingExpiration);
         }
 
         public void Insert(string key, object value, CacheItemRemovedCallback cacheItemRemovedCallback, params string[] fileDependencies)

@@ -184,6 +184,9 @@ namespace IplusOAEntity
         public int CommentTotal { get; set; }
         public int GoodTotal { get; set; }
         public int ShareTotal { get; set; }
+
+        public string UploadHtmlFile { get; set; }
+        public string LinkSocSerUrl { get; set; }
         #endregion Model
     }
 }

@@ -45,8 +45,10 @@
     <Compile Include="BackAdminUser.cs" />
     <Compile Include="ChangeGoods\ChangeGoods.cs" />
     <Compile Include="ChangeGoods\ChangeGoodsLog.cs" />
+    <Compile Include="CommStatic\SMSStaticConfigField.cs" />
     <Compile Include="Count\DpEntity.cs" />
     <Compile Include="EnumState.cs" />
+    <Compile Include="Gird\GridMember.cs" />
     <Compile Include="Prize\Prize.cs" />
     <Compile Include="Prize\PrizeRecord.cs" />
     <Compile Include="ScoreMall\ScoreMall.cs" />
@@ -78,6 +80,7 @@
     <Compile Include="SystemMsg\SystemMsgEntity.cs" />
     <Compile Include="TV8\MicroShopEntity.cs" />
     <Compile Include="TV8\MicroShopCallRecordEntity.cs" />
+    <Compile Include="VillageCompany\VillageCompany.cs" />
     <Compile Include="Vol\VolunteerEntity.cs" />
     <Compile Include="SOrg\DepartmentEntity.cs" />
     <Compile Include="SOrg\SocialOrgEntity.cs" />

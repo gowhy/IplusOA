@@ -11,7 +11,7 @@
 @Html.IncludeCSS("~/Content/EasyUI/themes/icon.css")
 
 <script>
-    window.UEDITOR_HOME_serverPath = "@Url.Content("../../../notice/ImgFile")";
+    window.UEDITOR_HOME_serverPath = "@Url.Content("../../../workguide/ImgFile")";
 </script>
 
 
@@ -30,7 +30,8 @@
 
 
 <div id="tt">
-    <a href="@Url.Action("Index", "notice")" style=" width:100px;">返回列表</a>
+    <a href="@Url.Action("Index", "workguide")" style=" width:100px;">返回列表</a>
+    @*<a href="@HttpContext.Current.Request.UrlReferrer" style=" width:100px;padding-left:20px;">返回列表</a>*@
 </div>
 <div id="p" class="easyui-panel" title="新增" style="height:530px;padding:10px;"
      data-options="iconCls:'icon-add',closable:false,tools:'#tt'">
@@ -38,44 +39,45 @@
     <form name="postadd" action="@Url.Action("PostAdd")" id="postadd" method="post" enctype="multipart/form-data">
         <table class="form" cellpadding="0" cellspacing="0">
             <tbody>
+             
                 <tr>
-                    <td class="item_title">服务内容标题:</td>
-                    <td class="item_input"><input type="text" class="textbox require easyui-validatebox" missingmessage="必须填写" data-options="required:true" name="Title" /></td>
-                </tr>
-                <tr>
-                    <td class="item_title">广告图片:</td>
+                    <td class="item_title">网格员头像:</td>
                     <td class="item_input">
                         @*用来作为文件队列区域*@
                         <div id="fileQueue">
                         </div>
                         <input type="file" name="uploadify" id="uploadify" multiple="true" />
-                        <input type="hidden" name="ImgUrl" id="ImgUrl" value="" />
+                        <input type="hidden" name="GridHeaderImg" id="GridHeaderImg" value="" />
                         双击删除图片
                         <div id="imgQueue">
                         </div>
                     </td>
                 </tr>
                 <tr>
-                    <td class="item_title">服务外部链接:</td>
+                    <td class="item_title">服务小区:</td>
                     <td class="item_input">
-                        <input type="text" class="textbox" id="办事流程说明" name="LinkSocSerUrl" />
-                        <span>（服务外部链接， 上传服务HTML文件， 服务描述 3者只能填其一）</span>
+                        <input type="hidden" name="VDeptId" id="VDeptId" />
+                        <input id="citySel" type="text" readonly value="" style=" width:600px;" onclick="showMenu();" />
                     </td>
                 </tr>
                 <tr>
-                    <td class="item_title">上传服务HTML文件:</td>
-                    <td class="item_input">
-                        <input type="hidden" id="UploadHtmlFile" name="uploadhtmlfile" />
-                        <span id="HtmlFileName"></span>
-                        <input type="text" class="textbox  easyui-validatebox" id="SaveUploadHtmlFile" name="SaveUploadHtmlFile" />
-                        <span>（服务外部链接， 上传服务HTML文件， 办事流程说明 3者只能填其一）</span>
-                    </td>
+                    <td class="item_title">网格号:</td>
+                    <td class="item_input"><input type="text" class="textbox require easyui-validatebox" missingmessage="必须填写" data-options="required:true" name="GridNo" /></td>
                 </tr>
+                <tr>
+                    <td class="item_title">网格员姓名:</td>
+                    <td class="item_input"><input type="text" class="textbox require easyui-validatebox" missingmessage="必须填写" data-options="required:true" name="GridName" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">网格员电话:</td>
+                    <td class="item_input"><input type="text" class="textbox require easyui-validatebox" missingmessage="必须填写" data-options="required:true" name="GridPhone" /></td>
+                </tr>
+          
                 <tr>
                     <td class="item_title">说明:</td>
                     <td class="item_input">
                         @*<textarea class="textbox require" name="Des" rows="5" cols="70"></textarea>*@
-                        <input type="hidden" name="Des" id="Des" />
+                        <input type="hidden" name="Desc" id="Desc" />
                         <div>
                             <script id="editor" type="text/plain" style="width:800px;height:400px;">
                             </script>
@@ -83,7 +85,7 @@
                         </div>
                     </td>
                 </tr>
-            
+
 
 
                 <tr>
@@ -96,16 +98,20 @@
             </tbody>
         </table>
     </form>
+
+    <div id="menuContent" class="menuContent" style="display:none; position: absolute; z-index:1000;">
+        <ul id="treeDemo" class="ztree" style="margin-top:0; width:180px; height: 300px;"></ul>
+    </div>
 </div>
 @Html.IncludeScript("~/Content/EasyUI/jquery-1.8.0.min.js")
 @Html.IncludeScript("~/Content/Js/jquery.timer.js")
 @Html.IncludeScript("~/Content/Js/common.js")
 
 @Html.IncludeScript("~/Content/EasyUI/jquery.easyui.min.js")
-@*@Html.IncludeScript("~/Content/plug-in/My97DatePicker/WdatePicker.js")
+@*@Html.IncludeScript("~/Content/plug-in/My97DatePicker/WdatePicker.js")*@
 
-    @Html.IncludeScript("~/Content/plug-in/ztree/js/jquery.ztree.core-3.5.js")
-    @Html.IncludeScript("~/Content/plug-in/ztree/js/jquery.ztree.excheck-3.5.js")*@
+@Html.IncludeScript("~/Content/plug-in/ztree/js/jquery.ztree.core-3.5.js")
+@Html.IncludeScript("~/Content/plug-in/ztree/js/jquery.ztree.excheck-3.5.js")
 @Html.IncludeScript("~/Content/plug-in/uploadify/jquery.uploadify-3.1.js")
 
 @Html.IncludeScript("~/Content/plug-in/ueditor/ueditor.config.js")
@@ -113,12 +119,74 @@
 @Html.IncludeScript("~/Content/plug-in/ueditor/lang/zh-cn/zh-cn.js")
 
 
-@*@Html.IncludeCSS("~/Content/CSS/kindediter/default/default.css")
-@Html.IncludeScript("~/Content/JS/kindediter/kindeditor-min.js")
-@Html.IncludeScript("~/Content/JS/kindediter/zh_CN.js")*@
+
 <script>
 
+    <!--
+    var setting = {
+        check: {
+            enable: true,
+            chkboxType: {"Y":"", "N":""}
+        },
+        view: {
+            dblClickExpand: false
+        },
+        data: {
+            simpleData: {
+                enable: true,
+                idKey: "Id",
+                pIdKey: "PId",
+                rootPId: ""
+            },
+            key: {
+                name: "Name"
+            }
 
+        },
+        callback: {
+            beforeClick: beforeClick,
+            onCheck: onCheck
+        }
+    };
+
+    var zNodes =@(Html.Raw(ViewData["Department_List"].ToString()))
+    function beforeClick(treeId, treeNode) {
+        var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+        zTree.checkNode(treeNode, !treeNode.checked, null, true);
+        return false;
+    }
+		
+    function onCheck(e, treeId, treeNode) {
+        var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+        nodes = zTree.getCheckedNodes(true),
+        v = "";
+        var sVDeptId = "";
+        for (var i=0, l=nodes.length; i<l; i++) {
+            v += nodes[i].Name + ",";
+            sVDeptId += nodes[i].Id + ",";
+        }
+        $("#VDeptId").val(sVDeptId);
+        if (v.length > 0 ) v = v.substring(0, v.length-1);
+        var cityObj = $("#citySel");
+        cityObj.attr("value", v);
+    }
+
+    function showMenu() {
+        var cityObj = $("#citySel");
+        var cityOffset = $("#citySel").offset();
+        $("#menuContent").css({left:cityOffset.left + "px", top:cityOffset.top + cityObj.outerHeight() + "px"}).slideDown("fast");
+
+        $("body").bind("mousedown", onBodyDown);
+    }
+    function hideMenu() {
+        $("#menuContent").fadeOut("fast");
+        $("body").unbind("mousedown", onBodyDown);
+    }
+    function onBodyDown(event) {
+        if (!(event.target.id == "menuBtn" || event.target.id == "citySel" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length>0)) {
+            hideMenu();
+        }
+    }
 
 
     function clearForm() {
@@ -133,22 +201,15 @@
 
 
     $(function () {
-      
+        $.fn.zTree.init($("#treeDemo"), setting, zNodes);
         var ue = UE.getEditor('editor');
-
-        //var options = {
-        //    uploadJson: "../../notice/ImgFile",
-        //    filterMode: true
-        //};
-        //var editor = KindEditor.create('textarea[name="content"]', options);
-
 
         function submitForm() {
             $("#imgQueue img").each(function () {
-                $("#ImgUrl").val($("#ImgUrl").val() + "#" + $(this).attr("src"));
+                $("#GridHeaderImg").val($(this).attr("src"));
             });
            //var   html = editor.html();
-            $("#Des").val(UE.getEditor('editor').getContent());
+            $("#Desc").val(UE.getEditor('editor').getContent());
             $('#postadd').submit();
         }
 
@@ -162,7 +223,7 @@
             //指定swf文件
             'swf': "@Url.Content("~/Content/plug-in/uploadify/uploadify.swf")",
             //后台处理的页面
-            'uploader': '/notice/SaveImg',
+            'uploader': '/GridMember/SaveHeaderImg',
             //按钮显示的文字
             'buttonText': '上传图片',
             "queueSizeLimit": 5,//队列中允许的最大文件数目
@@ -184,40 +245,18 @@
             //选择文件后自动上传
             'auto': true,
             //设置为true将允许多文件上传
-            'multi': true,
+            'multi': false,
             onUploadSuccess: function (file, data, response) {//上传完成时触发（每个文件触发一次）
 
                 data = eval("(" + data + ")");
 
                 var imgStr = ' <img   ondblclick="delImgSocSer(this)" src="' + data.HttpUrl + '" title="双击删除图片" alt="" width="160" height="140"  />';
 
-                $("#imgQueue").append(imgStr);
+                $("#imgQueue").html(imgStr);
             }
 
         });
 
-        $("#SaveUploadHtmlFile").uploadify({
-            //指定swf文件
-            'swf':"@Url.Content("~/Content/plug-in/uploadify/uploadify.swf")",
-        //后台处理的页面
-            'uploader': '/Notice/SaveUploadHtmlFile',
-        //按钮显示的文字
-       'buttonText': '上传HTML文件',
-       'fileTypeExts': '*.html; *.htm; ',
-       'cancelImg':"@Url.Content("~/Content/plug-in/uploadify/cancel.jpg")",
-       'auto': true,
-        //设置为true将允许多文件上传
-       'multi': false,
-        onUploadSuccess: function (file, data, response) {//上传完成时触发（每个文件触发一次）
 
-            data = eval("(" + data + ")");
-
-            $("#UploadHtmlFile").val(data.HttpUrl);
-            $("#HtmlFileName").html("已上传成功文件："+data.Name);
-              
-
-        }
-
-    });
     });
 </script>

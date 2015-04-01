@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using BackWebAdmin.CommService;
+using Common;
 using DataLayer.IplusOADB;
 using IplusOAEntity;
 using System;
@@ -186,12 +187,13 @@ namespace BackWebAdmin.Controllers
             {
                 WorkGuideEntity work = db.WorkGuideTable.Find(entity.Id);
 
-                entity.AddTime = DateTime.Now;
+                work.AddTime = DateTime.Now;
                 work.Des = entity.Des;
                 work.AddUser = entity.AddUser;
                 work.ImgUrl = entity.ImgUrl;
                 work.Title = entity.Title;
-           
+                work.LinkSocSerUrl = entity.LinkSocSerUrl;
+                work.UploadHtmlFile = entity.UploadHtmlFile;
                 db.Update(work);
                 db.SaveChanges();
 
@@ -229,6 +231,18 @@ namespace BackWebAdmin.Controllers
                 db.Dispose();
                 return Json("操作成功");
             }
+        }
+
+        public ActionResult SaveUploadHtmlFile()
+        {
+
+            //接收上传后的文件
+            System.Web.HttpPostedFileBase file = Request.Files["Filedata"];
+
+
+            SocSerImgEntity res = UploadFile.SaveFile(file, "WorkGuidHtmlFile", "");
+
+            return Json(res);
         }
     }
 }

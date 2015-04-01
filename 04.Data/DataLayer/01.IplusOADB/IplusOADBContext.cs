@@ -96,7 +96,7 @@ namespace DataLayer.IplusOADB
         public virtual DbSet<SystemMsgEntity> SystemMsgTable { get; set; }
         public virtual DbSet<MicroShopCallRecordEntity> MicroShopCallRecordEntityTable { get; set; }
         public virtual DbSet<MicroShopEntity> MicroShopEntityTable { get; set; }
-       
+
         /// <summary>
         /// 消息推送
         /// </summary>
@@ -115,9 +115,9 @@ namespace DataLayer.IplusOADB
 
         public virtual DbSet<ScoreMall> ScoreMallTable { get; set; }
         public virtual DbSet<ScoreMallChangeLog> ScoreMallChangeLogTable { get; set; }
-          /// <summary>
-          /// 刮刮卡
-          /// </summary>
+        /// <summary>
+        /// 刮刮卡
+        /// </summary>
         public virtual DbSet<ScratchCard> ScratchCardTable { get; set; }
         /// <summary>
         /// 社会服务评论
@@ -129,5 +129,10 @@ namespace DataLayer.IplusOADB
 
         //分享
         public virtual DbSet<SocServiceDetailShare> SocServiceDetailShareTable { get; set; }
+
+        public virtual DbSet<GridMember> GridMemberTable { get; set; }
+        public virtual DbSet<VillageCompany> VillageCompanyTable { get; set; }
+        
+
     }
 }

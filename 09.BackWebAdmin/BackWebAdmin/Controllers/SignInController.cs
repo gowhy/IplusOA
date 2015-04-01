@@ -24,7 +24,7 @@ namespace BackWebAdmin.Controllers
         public ActionResult AppSignIn(SignIn signInModel)
         {
             AppReturnSignInModel returnModel = new AppReturnSignInModel();
-            if (signInModel.UserId<=0)
+            if (signInModel.UserId <= 0)
             {
                 returnModel.State = -1;
                 returnModel.Msg = "UserId(当前登录用户Id)是必填参数";
@@ -51,8 +51,9 @@ namespace BackWebAdmin.Controllers
                     int lastSignInWeek = Convert.ToInt32(signInEntity.SignInTime.DayOfWeek.ToString("d"));//上次签到是星期几
                     int week = Convert.ToInt32(DateTime.Now.DayOfWeek.ToString("d"));//当前星期几
 
-                    TimeSpan ts = DateTime.Now - signInEntity.SignInTime;//2个日期相减如果两天的查是1，表示是连续的2天签到
+                    TimeSpan ts = DateTime.Now.Date - signInEntity.SignInTime.Date;//2个日期相减如果两天的查是1，表示是连续的2天签到
                     int days = ts.Days;
+                   
                     if (days == 0)//表示当天已经签到过
                     {
                         returnModel.State = 0;
@@ -60,7 +61,7 @@ namespace BackWebAdmin.Controllers
                         returnModel.LastSignInTime = signInEntity.Score;
                         return Json(returnModel);
                     }
-                    if ((days == 1) && (week - lastSignInWeek == 1))//表示连续签到获得积分，积分是当前星期几得积分
+                    if (((days == 1) && (week - lastSignInWeek == 1)) || (week == 0 && lastSignInWeek == 6))//表示连续签到获得积分，积分是当前星期几得积分
                     {
                         signInScore = signInEntity.Score + 1;//连续签到
                     }
@@ -83,7 +84,7 @@ namespace BackWebAdmin.Controllers
                 db.SaveChanges();
 
                 returnModel.State = 1;
-                returnModel.Score = userEntity.Score??0;
+                returnModel.Score = userEntity.Score ?? 0;
                 returnModel.LastSignInTime = signInScore;//连续签到次数
                 returnModel.Msg = "签到成功,新增积分:" + signInModel.Score;
                 return Json(returnModel);
@@ -126,31 +127,19 @@ namespace BackWebAdmin.Controllers
                     int lastSignInWeek = Convert.ToInt32(signInEntity.SignInTime.DayOfWeek.ToString("d"));//上次签到是星期几
                     int week = Convert.ToInt32(DateTime.Now.DayOfWeek.ToString("d"));//当前星期几
 
-                    TimeSpan ts = DateTime.Now - signInEntity.SignInTime;//2个日期相减如果两天的查是1，表示是连续的2天签到
+                    TimeSpan ts = DateTime.Now.Date - signInEntity.SignInTime.Date;//2个日期相减如果两天的查是1，表示是连续的2天签到
                     int days = ts.Days;
-                    //if (days == 0)//表示当天已经签到过
-                    //{
-                    //    returnModel.State = 0;
-                    //    returnModel.Msg = "当天已经签到过";
-
-                    //}
-                    //else
-                    //{
-                    //    returnModel.State = 1;//
-                    //    returnModel.Msg = "当天未签到过";
-                    //}
-
                   
                     if (days == 0)//表示当天已经签到过
                     {
                         returnModel.State = 0;
                         returnModel.LastSignInTime = signInEntity.Score;//已经连续签到次数
-                        returnModel.Msg = "当天已经签到过";
+                        returnModel.Msg = "当天已经签到过" + signInEntity.Id+"##" + signInModel.UserId + "##" + signInEntity.SignInTime + "##" + DateTime.Now;
                         return Json(returnModel);
                     }
-                    if ((days == 1) && (week - lastSignInWeek == 1))//表示连续签到获得积分，积分是当前星期几得积分
+                    if (((days == 1) && (week - lastSignInWeek == 1)) || (week == 0 && lastSignInWeek==6))//表示连续签到获得积分，积分是当前星期几得积分
                     {
-                        returnModel.State = 0;
+                        returnModel.State = 1;
                         returnModel.LastSignInTime =signInEntity.Score;//已经连续签到次数
                      
                     }

@@ -215,21 +215,21 @@ namespace BackWebAdmin.Controllers
         [SecurityNode(Name = "保存修改社区服务内容")]
         public ActionResult PostEdit(SocServiceDetailEntity entity, string SocSerImgId)
         {
-
-            var idimgs = SocSerImgId.Split(',');
             List<int> listIdImg = new List<int>();
-            foreach (var item in idimgs)
+            if (!string.IsNullOrEmpty(SocSerImgId))
             {
-                if (!string.IsNullOrEmpty(item))
+                var idimgs = SocSerImgId.Split(',');
+            
+                foreach (var item in idimgs)
                 {
-                    listIdImg.Add(int.Parse(item));
-                }
+                    if (!string.IsNullOrEmpty(item))
+                    {
+                        listIdImg.Add(int.Parse(item));
+                    }
 
+                }   
             }
-
-
-
-
+        
             using (IplusOADBContext db = new IplusOADBContext())
             {
 
@@ -266,6 +266,9 @@ namespace BackWebAdmin.Controllers
                 data.THSScore = entity.THSScore;
                 data.Phone = entity.Phone;
                 data.VHelpDesc = entity.VHelpDesc;
+                data.UploadHtmlFile = entity.UploadHtmlFile;
+                data.LinkSocSerUrl = entity.LinkSocSerUrl;
+
                 db.Update<SocServiceDetailEntity>(data);
                 db.SaveChanges();
                 db.Dispose();
@@ -1364,17 +1367,22 @@ namespace BackWebAdmin.Controllers
              
                 var tab = db.SocServiceDetailCommentTable;
                 //评论第一次加积分
-                if (tab.Count(x=>x.UserId==entity.UserId)<=0)
+                if (tab.Count(x => x.UserId == entity.UserId && x.SdId == entity.SdId) <= 0)
                 {
                     vol.Score = vol.Score + sDetail.CommentSocre;//增加评论积分
                     sDetail.CommentTotal = sDetail.CommentTotal + 1;//增加评论总数
                     db.SaveChanges();
+                    ret.State = 2;
+                }
+                else
+                {
+                    ret.State = 1;
                 }
 
                 //保存评论内容
                 tab.Add(entity);
                 db.SaveChanges();
-                ret.State = 1;
+             
                 ret.Msg = "提交成功";
                 return Json(ret);
 
@@ -1439,23 +1447,58 @@ namespace BackWebAdmin.Controllers
 
                 var tab = db.SocServiceDetailGoodTable;
                 //点赞第一次加积分
-                if (tab.Count(x => x.UserId == entity.UserId) <= 0)
+                if (tab.Count(x => x.UserId == entity.UserId && x.SdId == entity.SdId) <= 0)
                 {
                     vol.Score = vol.Score + sDetail.GoodScore;//增加点赞积分
-                    sDetail.CommentTotal = sDetail.GoodTotal + 1;//增加点赞总数
+                    sDetail.GoodTotal = sDetail.GoodTotal + 1;//增加点赞总数
                     db.SaveChanges();
+                    //保存点赞内容
+                    tab.Add(entity);
+                    db.SaveChanges();
+                    ret.State = 1;
+                    ret.Msg = "提交成功";
+                    return Json(ret);
                 }
+                else
+                {
+                    ret.State = 0;
+                    ret.Msg = "已经点赞";
+                    return Json(ret);
 
-                //保存点赞内容
-                tab.Add(entity);
-                db.SaveChanges();
-                ret.State = 1;
-                ret.Msg = "提交成功";
-                return Json(ret);
+                }
 
             }
         }
 
+        /// <summary>
+        /// 验证点赞
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public ActionResult AppCheckSocServiceDetailGood(SocServiceDetailGood entity)
+        {
+            ReturnModel ret = new ReturnModel();
+            entity.AddTime = DateTime.Now;
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                var tab = db.SocServiceDetailGoodTable;
+                //点赞第一次加积分
+                if (tab.Count(x => x.UserId == entity.UserId&&x.SdId==entity.SdId) <= 0)
+                {
+                    ret.State = 1;
+                    ret.Msg = "未点赞过";
+                    return Json(ret);
+                }
+                else
+                {
+                    ret.State = 0;
+                    ret.Msg = "已经点赞";
+                    return Json(ret);
+
+                }
+
+            }
+        }
 
         /// <summary>
         /// 分享
@@ -1481,21 +1524,42 @@ namespace BackWebAdmin.Controllers
 
                 var tab = db.SocServiceDetailShareTable;
                 //分享第一次加积分
-                if (tab.Count(x => x.UserId == entity.UserId) <= 0)
+                if (tab.Count(x => x.UserId == entity.UserId && x.SdId == entity.SdId) <= 0)
                 {
                     vol.Score = vol.Score + sDetail.ShareScore;//增加分享积分
-                    sDetail.CommentTotal = sDetail.ShareTotal + 1;//增加分享总数
+                    db.Update(vol);
                     db.SaveChanges();
+                    ret.State = 2;
                 }
+                else
+                {
+                    ret.State = 1;
+                }
+                sDetail.ShareTotal = sDetail.ShareTotal + 1;//增加分享总数
+                db.Update(sDetail);
+                db.SaveChanges();
 
                 //保存分享内容
                 tab.Add(entity);
                 db.SaveChanges();
-                ret.State = 1;
+             
                 ret.Msg = "提交成功";
                 return Json(ret);
 
             }
+        }
+
+
+        public ActionResult SaveUploadHtmlFile()
+        {
+
+            //接收上传后的文件
+            System.Web.HttpPostedFileBase file = Request.Files["Filedata"];
+
+         
+            SocSerImgEntity res = UploadFile.SaveFile(file, "SocSerHtmlFile", "");
+
+            return Json(res);
         }
     }
 }

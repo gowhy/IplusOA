@@ -70,6 +70,22 @@
                     </td>
                 </tr>
                 <tr>
+                    <td class="item_title">服务外部链接:</td>
+                    <td class="item_input">
+                        <input type="text" class="textbox" id="LinkSocSerUrl" value="@Model.LinkSocSerUrl" name="LinkSocSerUrl" />
+                        <span>（服务外部链接， 上传服务HTML文件， 服务描述 3者只能填其一）</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="item_title">上传服务HTML文件:</td>
+                    <td class="item_input">
+                        <input type="hidden" id="UploadHtmlFile" value="@Model.UploadHtmlFile" name="uploadhtmlfile" />
+                        <span id="HtmlFileName">@Model.UploadHtmlFile</span>
+                        <input type="text" class="textbox  easyui-validatebox" id="SaveUploadHtmlFile" name="SaveUploadHtmlFile" />
+                        <span>（服务外部链接， 上传服务HTML文件， 服务描述 3者只能填其一）</span>
+                    </td>
+                </tr>
+                <tr>
                     <td class="item_title">说明:</td>
                     <td class="item_input">
 
@@ -196,6 +212,28 @@
 
         });
 
+        $("#SaveUploadHtmlFile").uploadify({
+            //指定swf文件
+            'swf':"@Url.Content("~/Content/plug-in/uploadify/uploadify.swf")",
+        //后台处理的页面
+            'uploader': '/Notice/SaveUploadHtmlFile',
+        //按钮显示的文字
+       'buttonText': '上传HTML文件',
+       'fileTypeExts': '*.html; *.htm; ',
+       'cancelImg':"@Url.Content("~/Content/plug-in/uploadify/cancel.jpg")",
+       'auto': true,
+        //设置为true将允许多文件上传
+       'multi': false,
+        onUploadSuccess: function (file, data, response) {//上传完成时触发（每个文件触发一次）
 
+            data = eval("(" + data + ")");
+
+            $("#UploadHtmlFile").val(data.HttpUrl);
+            $("#HtmlFileName").html("已上传成功文件："+data.Name);
+              
+
+        }
+
+    });
     });
 </script>

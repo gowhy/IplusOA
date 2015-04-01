@@ -162,6 +162,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="CommService\Role\RoleCommService.cs" />
+    <Compile Include="CommService\SMSComm.cs" />
     <Compile Include="CommService\SocSer\SocSerService.cs" />
     <Compile Include="CommService\UploadFile.cs" />
     <Compile Include="Content\plug-in\ueditor\net\App_Code\Config.cs" />
@@ -183,6 +184,7 @@
     <Compile Include="Controllers\ScoreMallController.cs" />
     <Compile Include="Controllers\SignInController.cs" />
     <Compile Include="Controllers\ScratchCardController.cs" />
+    <Compile Include="Controllers\VillageCompanyController.cs" />
     <Compile Include="Controllers\WishController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\AppVerController.cs" />
@@ -192,6 +194,7 @@
     <Compile Include="Controllers\SystemMsgController.cs" />
     <Compile Include="Controllers\TSController.cs" />
     <Compile Include="Controllers\TV8Controller.cs" />
+    <Compile Include="Controllers\GridMemberController.cs" />
     <Compile Include="Controllers\WorkGuideController.cs" />
     <Compile Include="Controllers\NoticeController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
@@ -1216,11 +1219,19 @@
     <Content Include="Views\ScoreMall\Index.cshtml" />
     <Content Include="Views\ScoreMall\Edit.cshtml" />
     <Content Include="Views\ScratchCardControlle\Index.cshtml" />
+    <Content Include="Views\GridMember\Add.cshtml" />
+    <Content Include="Views\GridMember\Index.cshtml" />
+    <Content Include="Views\VillageCompany\Add.cshtml" />
+    <Content Include="Views\VillageCompany\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\02.Common\Common\Common.csproj">
       <Project>{28db7178-112b-44e5-bccd-4a74d5480954}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\03.Cache\Cache\Cache.csproj">
+      <Project>{267783f3-a1f5-45ba-97df-0450e717d029}</Project>
+      <Name>Cache</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\04.Data\DataLayer\DataLayer.csproj">
       <Project>{a56248d5-bbe7-4cbc-a274-283108dd9e1b}</Project>

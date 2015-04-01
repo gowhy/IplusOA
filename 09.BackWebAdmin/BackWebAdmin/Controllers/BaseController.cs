@@ -1,5 +1,6 @@
 ﻿using BackWebAdmin.Models;
 using Common;
+using Common.Cache;
 using DataLayer.IplusOADB;
 using IplusOAEntity;
 using SSO;
@@ -14,10 +15,12 @@ namespace BackWebAdmin.Controllers
     [BaseAuthenticationAttribute]
     public class BaseController : AdminController
     {
+
+      public   ICacheProvider CacheManger = new WebCacheProvider();
         public BaseController()
         {
-         
-
+            
+          
         }
 
         protected BackAdminUser GetBackUserInfo()

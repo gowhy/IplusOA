@@ -74,6 +74,8 @@ namespace BackWebAdmin.CommService
                               GoodTotal = s.GoodTotal,
                               ShareScore = s.ShareScore,
                               ShareTotal = s.ShareTotal,
+                               LinkSocSerUrl=s.LinkSocSerUrl,
+                               UploadHtmlFile=s.UploadHtmlFile,
                               SocSerImgs = img.Where(x => x.SocSerId > 0 && x.SocSerId == s.Id).ToList()
 
                           };
@@ -135,6 +137,8 @@ namespace BackWebAdmin.CommService
                               GoodTotal = s.GoodTotal,
                               ShareScore = s.ShareScore,
                               ShareTotal = s.ShareTotal,
+                              LinkSocSerUrl = s.LinkSocSerUrl,
+                              UploadHtmlFile = s.UploadHtmlFile,
                               SocSerImgs = img.Where(x => x.SocSerId == s.Id).ToList()
 
                           };
@@ -195,6 +199,8 @@ namespace BackWebAdmin.CommService
                               GoodTotal = s.GoodTotal,
                               ShareScore = s.ShareScore,
                               ShareTotal = s.ShareTotal,
+                              LinkSocSerUrl = s.LinkSocSerUrl,
+                              UploadHtmlFile = s.UploadHtmlFile,
                               SocSerImgs = img.Where(x => x.SocSerId > 0 && x.SocSerId == s.Id).ToList()
 
                           };

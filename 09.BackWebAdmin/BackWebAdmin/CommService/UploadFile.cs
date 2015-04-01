@@ -21,7 +21,7 @@ namespace BackWebAdmin.CommService
             string Dir = DateTime.Now.ToString("yyyyMMdd");
             FTPHelper ftp = new FTPHelper(FtpServer, dir+ "/" + Dir, FtpUser, FtpPassWord);
 
-         
+        
             if (string.IsNullOrEmpty(fileName))
             {
                 FileInfo file2 = new FileInfo(file.FileName);

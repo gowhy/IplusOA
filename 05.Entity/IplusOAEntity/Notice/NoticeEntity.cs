@@ -16,6 +16,9 @@ namespace IplusOAEntity
         public string Title { get; set; }
         public string AddUser { get; set; }
         public int State { get; set; }
+
+        public string UploadHtmlFile { get; set; }
+        public string LinkSocSerUrl { get; set; }
     }
    public class NoticeEntityClone
    {
@@ -29,6 +32,8 @@ namespace IplusOAEntity
        public string Title { get; set; }
        public string AddUser { get; set; }
        public int State { get; set; }
+       public string UploadHtmlFile { get; set; }
+       public string LinkSocSerUrl { get; set; }
    }
    public enum NoticePushState
    {
