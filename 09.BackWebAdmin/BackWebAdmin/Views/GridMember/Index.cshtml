@@ -47,12 +47,13 @@
                     <td>@item.GridNo</td>
                     <td>@item.GridName</td>
                     <td>@item.GridPhone</td>
-                    <td>@item.VDeptId</td>
+                    <td>@item.VDeptName</td>
                     <td>  
                         <img width="160" height="140" alt="" title="网格员头像" src="@item.GridHeaderImg">   
                     </td>
                     <td>@item.AddTime.ToString("yyyy-MM-dd HH:mm")</td>
                     <td class="grid_btn">
+                        @Html.ActionLink("编辑", "Edit", new { id = item.Id })
                         <a href="javascript: del(@item.Id)">删除</a>
 
                     </td>

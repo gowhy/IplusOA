@@ -1372,6 +1372,7 @@ namespace BackWebAdmin.Controllers
                     vol.Score = vol.Score + sDetail.CommentSocre;//增加评论积分
                     sDetail.CommentTotal = sDetail.CommentTotal + 1;//增加评论总数
                     db.SaveChanges();
+                    ret.Score = sDetail.CommentSocre;
                     ret.State = 2;
                 }
                 else
@@ -1456,6 +1457,7 @@ namespace BackWebAdmin.Controllers
                     tab.Add(entity);
                     db.SaveChanges();
                     ret.State = 1;
+                    ret.Score = sDetail.GoodScore;
                     ret.Msg = "提交成功";
                     return Json(ret);
                 }
@@ -1530,6 +1532,7 @@ namespace BackWebAdmin.Controllers
                     db.Update(vol);
                     db.SaveChanges();
                     ret.State = 2;
+                    ret.Score = sDetail.ShareScore;
                 }
                 else
                 {

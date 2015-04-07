@@ -40,7 +40,7 @@
                                       column.For(x => x.WebSite).Named("网站");
                                       column.For(x => x.MangerVillageName).Named("管理小区");
                                       column.Buttons(btns => btns
-                                          .Add(x => Html.ActionLink("查看", "view", new { id = x.Id }))
+                                          .Add(x => Html.ActionLink("编辑", "Edit", new { id = x.Id }))
                                           .Add(x => Html.ScriptLink("删除", "del({0})", x.Id))
                                           );
                                   }).Complex(ViewData)

@@ -1,4 +1,5 @@
 ﻿@using Common;
+@model IplusOAEntity.VillageCompany
 @{
     Layout = null;
 }
@@ -30,68 +31,60 @@
 
 
 <div id="tt">
-    <a href="@Url.Action("Index", "GridMember")" style=" width:100px;">返回列表</a>
+    <a href="@Url.Action("Index", "VillageCompany")" style=" width:100px;">返回列表</a>
     @*<a href="@HttpContext.Current.Request.UrlReferrer" style=" width:100px;padding-left:20px;">返回列表</a>*@
 </div>
 <div id="p" class="easyui-panel" title="新增" style="height:530px;padding:10px;"
      data-options="iconCls:'icon-add',closable:false,tools:'#tt'">
 
-    <form name="postadd" action="@Url.Action("PostAdd")" id="postadd" method="post" enctype="multipart/form-data">
+    <form name="PostEdit" action="@Url.Action("PostEdit")" id="postedit" method="post" enctype="multipart/form-data">
         <table class="form" cellpadding="0" cellspacing="0">
             <tbody>
-             
+
+
                 <tr>
-                    <td class="item_title">网格员头像:</td>
+                    <td class="item_title">管理小区:</td>
                     <td class="item_input">
-                        @*用来作为文件队列区域*@
-                        <div id="fileQueue">
-                        </div>
-                        <input type="file" name="uploadify" id="uploadify" multiple="true" />
-                        <input type="hidden" name="GridHeaderImg" id="GridHeaderImg" value="" />
-                        双击删除图片
-                        <div id="imgQueue">
-                        </div>
+                        <input type="hidden" name="MangerVillage" id="MangerVillage" value="@Model.MangerVillage" />
+                        <input id="citySel" type="text" readonly  style=" width:600px;" onclick="showMenu();" value="@Model.MangerVillageName" />
                     </td>
                 </tr>
                 <tr>
-                    <td class="item_title">服务小区:</td>
-                    <td class="item_input">
-                        <input type="hidden" name="VDeptId" id="VDeptId" />
-                        <input id="citySel" type="text" readonly value="" style=" width:600px;" onclick="showMenu();" />
-                    </td>
+                    <td class="item_title">物业公司名称:</td>
+                    <td class="item_input"><input type="text" class="textbox require easyui-validatebox" missingmessage="必须填写" data-options="required:true" name="Name" value="@Model.Name" /></td>
                 </tr>
                 <tr>
-                    <td class="item_title">网格号:</td>
-                    <td class="item_input"><input type="text" class="textbox require easyui-validatebox" missingmessage="必须填写" data-options="required:true" name="GridNo" /></td>
+                    <td class="item_title">联系电话:</td>
+                    <td class="item_input"><input type="text" class="textbox require easyui-validatebox" missingmessage="必须填写" data-options="required:true" name="Tel" value="@Model.Tel" /></td>
                 </tr>
                 <tr>
-                    <td class="item_title">网格员姓名:</td>
-                    <td class="item_input"><input type="text" class="textbox require easyui-validatebox" missingmessage="必须填写" data-options="required:true" name="GridName" /></td>
+                    <td class="item_title">联系人:</td>
+                    <td class="item_input"><input type="text" class="textbox require easyui-validatebox" missingmessage="必须填写" data-options="required:true" name="linkman" value="@Model.LinkMan" /></td>
                 </tr>
                 <tr>
-                    <td class="item_title">网格员电话:</td>
-                    <td class="item_input"><input type="text" class="textbox require easyui-validatebox" missingmessage="必须填写" data-options="required:true" name="GridPhone" /></td>
+                    <td class="item_title">网站:</td>
+                    <td class="item_input"><input type="text" class="textbox require easyui-validatebox" missingmessage="必须填写" data-options="required:true" name="WebSite" value="@Model.WebSite" /></td>
                 </tr>
-          
+
                 <tr>
                     <td class="item_title">说明:</td>
                     <td class="item_input">
-                        @*<textarea class="textbox require" name="Des" rows="5" cols="70"></textarea>*@
+  
                         <input type="hidden" name="Desc" id="Desc" />
                         <div>
                             <script id="editor" type="text/plain" style="width:800px;height:400px;">
+                             @Html.Raw(Model.Desc)
                             </script>
-                            @*<textarea name="content" id="content" style="width:800px;height:400px;"></textarea>*@
+                          
                         </div>
                     </td>
                 </tr>
-
-
-
                 <tr>
                     <td class="item_title"></td>
                     <td class="item_input">
-                        <a href="javascript:void(0)" id="btnsubmitForm" class="easyui-linkbutton">新增</a>
+                        <input type="hidden" name="id" id="id" value="@Model.Id" />
+
+                        <a href="javascript:void(0)" id="btnsubmitForm" class="easyui-linkbutton">修改</a>
                     </td>
                 </tr>
 
@@ -155,17 +148,17 @@
         zTree.checkNode(treeNode, !treeNode.checked, null, true);
         return false;
     }
-		
+
     function onCheck(e, treeId, treeNode) {
         var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
         nodes = zTree.getCheckedNodes(true),
         v = "";
-        var sVDeptId = "";
+        var sMangerVillage = "";
         for (var i=0, l=nodes.length; i<l; i++) {
             v += nodes[i].Name + ",";
-            sVDeptId += nodes[i].Id + ",";
+            sMangerVillage += nodes[i].Id + ",";
         }
-        $("#VDeptId").val(sVDeptId);
+        $("#MangerVillage").val(sMangerVillage);
         if (v.length > 0 ) v = v.substring(0, v.length-1);
         var cityObj = $("#citySel");
         cityObj.attr("value", v);
@@ -210,7 +203,7 @@
             });
            //var   html = editor.html();
             $("#Desc").val(UE.getEditor('editor').getContent());
-            $('#postadd').submit();
+            $('#postedit').submit();
         }
 
         $("#btnsubmitForm").click(function () {

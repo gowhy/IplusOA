@@ -11,5 +11,7 @@ namespace IplusOAEntity
         public int Id { get; set; }
         public int State { get; set; }
         public string Msg { get; set; }
+
+        public int Score { get; set; }
     }
 }

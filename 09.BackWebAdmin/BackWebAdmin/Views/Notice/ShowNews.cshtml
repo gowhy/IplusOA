@@ -1,0 +1,18 @@
+﻿
+@model IplusOAEntity.NoticeEntity
+
+<link href="@Url.Content("~/css/bootstrap.css")" rel="stylesheet">
+<script src="@Url.Content("~/js/bootstrap.js")"></script>
+
+@{
+    ViewBag.Title = "ShowNews";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6">@Html.Raw( Model.Des)</div>
+  
+    </div>
+ 
+</div>
+

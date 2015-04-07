@@ -77,6 +77,7 @@
                         }
                     </td>
                     <td class="grid_btn">
+                        @Html.ActionLink("编辑", "Edit", new { id = item.Id })
                         <a href="javascript: del(@item.Id)">删除</a>
                         @Html.ActionLink("查看拨打情况", "MicroShopCallRecordIndex", new { id = item.Id })
                     </td>

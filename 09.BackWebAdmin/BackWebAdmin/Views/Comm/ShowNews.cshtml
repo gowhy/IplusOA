@@ -1,0 +1,67 @@
+﻿@model IplusOAEntity.NoticeEntity
+
+<link href="@Url.Content("~/css/bootstrap.css")" rel="stylesheet">
+<script src="@Url.Content("~/js/bootstrap.js")"></script>
+
+@{
+    ViewBag.Title = "ShowNews";
+}
+
+@*<div class="container">
+        <div class="row">
+            <div class="col-lg-6">@Html.Raw(Model.Des)</div>
+
+        </div>
+        .text {
+        color: #47494c;
+        font-size: 17px;
+        line-height: 25px;
+        text-align: justify;
+    }
+    </div>*@
+@*<div class="span7 text-center" style="width:600px;  color: #47494c;  font-size: 17px; line-height: 25px;   text-align: justify;">
+
+    <div class="row">
+        <div class="col-lg-6">@Html.Raw(Model.Des)</div>
+
+    </div>
+</div>*@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=100%, initial-scale=1.0, user-scalable=no" />
+    <meta content="telephone=no" name="format-detection" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <title>社区1+1</title>
+
+ 
+    <link rel="dns-prefetch" href="//mat1.gtimg.com">
+    <link rel="dns-prefetch" href="//imgcache.gtimg.cn">
+    <link href="http://mat1.gtimg.com/www/cssn/newsapp/wxnews/wechat20150129.css" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+
+            @*<div id="borderLogo"><div class="logoImg"></div></div>*@
+
+            <div id="content" class="main fontSize2">
+                <p class="title" align="left">@Model.Title</p>
+                <span class="src">@Model.AddTime 社区1+1</span>
+
+                @Html.Raw(Model.Des)
+                )
+            </div>
+
+        </div>
+        <br>
+    </div>
+
+
+
+
+</body>
+</html>

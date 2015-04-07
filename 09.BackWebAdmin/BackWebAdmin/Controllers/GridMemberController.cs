@@ -29,10 +29,30 @@ namespace BackWebAdmin.Controllers
             {
 
                 var work = db.GridMemberTable;
-
+                var dep = db.DepartmentTable;
                 var list = from w in work select w;
 
                 list = list.Where(x => x.DeptId == bUser.DeptId);
+
+
+                //  var list = from v in vill where v.AddUserId == bUser.Id select v;
+
+
+                var depNameList = (from d in dep where d.PId == bUser.DeptId select d).ToList();
+                foreach (var item in list)
+                {
+                    if (item != null && !string.IsNullOrEmpty(item.VDeptId))
+                    {
+                        foreach (var item2 in item.VDeptId.Split(','))
+                        {
+                            string tmp = (depNameList.FirstOrDefault(x => x.Id == item2) ?? new DepartmentEntity()).Name;
+                            if (!string.IsNullOrEmpty(tmp))
+                            {
+                                item.VDeptName += tmp + ",";
+                            }
+                        }
+                    }
+                }
 
                 return View(list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size));
             }
@@ -155,11 +175,34 @@ namespace BackWebAdmin.Controllers
             }
         }
 
-        public ActionResult View(int id)
+        public ActionResult Edit(int id)
         {
+
+            BackAdminUser bUser = this.GetBackUserInfo();
             using (IplusOADBContext db = new IplusOADBContext())
             {
+                var dep = db.DepartmentTable;
                 GridMember work = db.GridMemberTable.Find(id);
+
+                var depNameList = from d in dep where d.PId == work.DeptId select d;
+
+                if (work != null && !string.IsNullOrEmpty(work.VDeptId))
+                {
+                    foreach (var item2 in work.VDeptId.Split(','))
+                    {
+                        string tmp = (depNameList.FirstOrDefault(x => x.Id == item2) ?? new DepartmentEntity()).Name;
+                        if (!string.IsNullOrEmpty(tmp))
+                        {
+                            work.VDeptName += tmp + ",";
+                        }
+                    }
+
+                }
+
+
+                //获取当前登录用户下的小区信息
+                var list = db.DepartmentTable.AsQueryable<DepartmentEntity>().Where(x => x.Level == 7 && x.PId == bUser.DeptId).ToList();
+                ViewData["Department_List"] = HelpSerializer.JSONSerialize<List<DepartmentEntity>>(list);
                 return View(work);
             }
         }
@@ -170,12 +213,14 @@ namespace BackWebAdmin.Controllers
             {
                 GridMember grid = db.GridMemberTable.Find(entity.Id);
 
-                //grid.AddTime = DateTime.Now;
-                //grid.DepId = entity.DepId;
-                //grid.AddUser = entity.AddUser;
-                //grid.ImgUrl = entity.ImgUrl;
-                //grid.Title = entity.Title;
-           
+               // grid.AddTime = DateTime.Now;
+                grid.Desc = entity.Desc;
+                grid.GridHeaderImg = entity.GridHeaderImg;
+                grid.GridName = entity.GridName;
+                grid.GridNo = entity.GridNo;
+                grid.GridPhone = entity.GridPhone;
+                grid.VDeptId = entity.VDeptId;
+             
                 db.Update(grid);
                 db.SaveChanges();
 

@@ -53,7 +53,7 @@ namespace BackWebAdmin.Controllers
 
                     TimeSpan ts = DateTime.Now.Date - signInEntity.SignInTime.Date;//2个日期相减如果两天的查是1，表示是连续的2天签到
                     int days = ts.Days;
-                   
+
                     if (days == 0)//表示当天已经签到过
                     {
                         returnModel.State = 0;
@@ -61,7 +61,37 @@ namespace BackWebAdmin.Controllers
                         returnModel.LastSignInTime = signInEntity.Score;
                         return Json(returnModel);
                     }
-                    if (((days == 1) && (week - lastSignInWeek == 1)) || (week == 0 && lastSignInWeek == 6))//表示连续签到获得积分，积分是当前星期几得积分
+
+                    #region 日期枚举
+                    // 摘要: 
+                    ////     表示星期日。
+                    //Sunday = 0,
+                    ////
+                    //// 摘要: 
+                    ////     表示星期一。
+                    //Monday = 1,
+                    ////
+                    //// 摘要: 
+                    ////     表示星期二。
+                    //Tuesday = 2,
+                    ////
+                    //// 摘要: 
+                    ////     表示星期三。
+                    //Wednesday = 3,
+                    ////
+                    //// 摘要: 
+                    ////     表示星期四。
+                    //Thursday = 4,
+                    ////
+                    //// 摘要: 
+                    ////     表示星期五。
+                    //Friday = 5,
+                    ////
+                    //// 摘要: 
+                    ////     表示星期六。
+                    //Saturday = 6,
+                    #endregion
+                    if (week != 1 && (((days == 1) && (week - lastSignInWeek == 1)) || (week == 0 && lastSignInWeek == 6)))//表示连续签到获得积分，积分是当前星期几得积分
                     {
                         signInScore = signInEntity.Score + 1;//连续签到
                     }
@@ -110,7 +140,7 @@ namespace BackWebAdmin.Controllers
 
                 var sT = db.SignInTable;
                 var vol = db.VolunteerEntityTable;
-          
+
                 //获取用户数据库中最新的1条签到记录
                 SignIn signInEntity = sT.Where(x => x.UserId == signInModel.UserId).OrderByDescending(x => x.Id).FirstOrDefault();
 
@@ -129,31 +159,31 @@ namespace BackWebAdmin.Controllers
 
                     TimeSpan ts = DateTime.Now.Date - signInEntity.SignInTime.Date;//2个日期相减如果两天的查是1，表示是连续的2天签到
                     int days = ts.Days;
-                  
+
                     if (days == 0)//表示当天已经签到过
                     {
                         returnModel.State = 0;
                         returnModel.LastSignInTime = signInEntity.Score;//已经连续签到次数
-                        returnModel.Msg = "当天已经签到过" + signInEntity.Id+"##" + signInModel.UserId + "##" + signInEntity.SignInTime + "##" + DateTime.Now;
+                        returnModel.Msg = "当天已经签到过" + signInEntity.Id + "##" + signInModel.UserId + "##" + signInEntity.SignInTime + "##" + DateTime.Now;
                         return Json(returnModel);
                     }
-                    if (((days == 1) && (week - lastSignInWeek == 1)) || (week == 0 && lastSignInWeek==6))//表示连续签到获得积分，积分是当前星期几得积分
+                    if (week != 1 && (((days == 1) && (week - lastSignInWeek == 1)) || (week == 0 && lastSignInWeek == 6)))//表示连续签到获得积分，积分是当前星期几得积分
                     {
                         returnModel.State = 1;
-                        returnModel.LastSignInTime =signInEntity.Score;//已经连续签到次数
-                     
+                        returnModel.LastSignInTime = signInEntity.Score;//已经连续签到次数
+
                     }
                     else
                     {
-                        returnModel.State =1;
+                        returnModel.State = 1;
                         returnModel.LastSignInTime = 0;//没有连续签到了
-                       
+
                     }
 
                 }
                 VolunteerEntity userEntity = vol.Find(signInModel.UserId);
-                returnModel.Score = userEntity.Score??0;
-              
+                returnModel.Score = userEntity.Score ?? 0;
+
                 return Json(returnModel);
             }
         }

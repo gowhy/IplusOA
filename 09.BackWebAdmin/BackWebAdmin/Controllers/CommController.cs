@@ -483,5 +483,16 @@ namespace BackWebAdmin.Controllers
             }
 
         }
+
+        public ActionResult ShowNews(int id)
+        {
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                NoticeEntity notice = db.NoticeTable.Find(id);
+                return View(notice);
+            }
+
+
+        }
     }
 }

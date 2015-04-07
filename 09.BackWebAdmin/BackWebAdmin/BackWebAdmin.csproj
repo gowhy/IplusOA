@@ -140,7 +140,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\AppMsgSend\" />
-    <Folder Include="Views\Comm\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -1223,6 +1222,10 @@
     <Content Include="Views\GridMember\Index.cshtml" />
     <Content Include="Views\VillageCompany\Add.cshtml" />
     <Content Include="Views\VillageCompany\Index.cshtml" />
+    <Content Include="Views\VillageCompany\Edit.cshtml" />
+    <Content Include="Views\Notice\ShowNews.cshtml" />
+    <Content Include="Views\Comm\ShowNews.cshtml" />
+    <Content Include="Views\GridMember\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\02.Common\Common\Common.csproj">

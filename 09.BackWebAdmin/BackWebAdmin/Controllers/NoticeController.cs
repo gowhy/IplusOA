@@ -271,5 +271,16 @@ namespace BackWebAdmin.Controllers
             SocSerImgEntity res = UploadFile.SaveFile(file, "NoticeHtmlFile", "");
             return Json(res);
         }
+
+        public ActionResult ShowNews(int id)
+        {
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                NoticeEntity notice = db.NoticeTable.Find(id);
+                return View(notice);
+            }
+
+        
+        }
     }
 }
