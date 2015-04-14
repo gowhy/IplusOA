@@ -132,6 +132,8 @@ namespace DataLayer.IplusOADB
 
         public virtual DbSet<GridMember> GridMemberTable { get; set; }
         public virtual DbSet<VillageCompany> VillageCompanyTable { get; set; }
+        public virtual DbSet<Seller> SellerTable { get; set; }
+        
         
 
     }

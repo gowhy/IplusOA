@@ -241,7 +241,8 @@ namespace BackWebAdmin.Controllers
             model.UerName = entity.UerName;
             model.VID = entity.VID;
             model.WeiXin = entity.WeiXin;
-
+            model.VillDeptId = entity.VillDeptId;
+            
             db.Update<VolunteerEntity>(model);
             db.SaveChanges();
             db.Dispose();
@@ -290,7 +291,7 @@ namespace BackWebAdmin.Controllers
 
                 if (entity.Age >0) model.Age = entity.Age;
                 if (entity.Sex != null) model.Sex = entity.Sex;
-
+                if (entity.VillDeptId != null) model.VillDeptId = entity.VillDeptId;
                 db.Update<VolunteerEntity>(model);
                 db.SaveChanges();
 
@@ -529,7 +530,8 @@ namespace BackWebAdmin.Controllers
                               Type = v.Type,
                               UerName = v.UerName,
                               VID = v.VID,
-                              WeiXin = v.WeiXin
+                              WeiXin = v.WeiXin,
+                              VillDeptId=v.VillDeptId
 
                           };
                 if (vol == null)

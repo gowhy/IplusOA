@@ -1,5 +1,5 @@
 ﻿@using Common;
-@model IplusOAEntity.MicroShopEntity;
+@model IplusOAEntity.MicroShopEntity
 
 
 @Html.IncludeCSS("~/Content/plug-in/ztree/css/zTreeStyle/zTreeStyle.css")
@@ -20,8 +20,8 @@
 
 
 <div id="tt">
-    <a href="javascript:void(0)" style=" width:100px;">返回列表</a>
-    @*<a href="@HttpContext.Current.Request.UrlReferrer" style=" width:100px;padding-left:20px;">返回列表</a>*@
+    @*<a href="javascript:void(0)" style=" width:100px;">返回列表</a>*@
+    <a href="@HttpContext.Current.Request.UrlReferrer" style=" width:100px;padding-left:20px;">返回列表</a>
 </div>
 <div id="p" class="easyui-panel" title="新增" style="height:530px;padding:10px;"
      data-options="iconCls:'icon-add',closable:false,tools:'#tt'">
@@ -56,6 +56,18 @@
                         <input type="hidden" name="ImgUrl" id="ImgUrl" value="" />
                         双击删除图片
                         <div id="imgQueue">
+                            @if (!string.IsNullOrEmpty(Model.ImgUrl))
+                            {
+                                foreach (var item in @Model.ImgUrl.Split('#'))
+                                {
+                                    if (!string.IsNullOrEmpty(item))
+                                    {
+                                        <img ondblclick="delImgSocSer(this)" src="@item" title="双击删除图片" alt="" width="160" height="140" />
+                                    }
+
+                                }
+                            }
+                            
                         </div>
                     </td>
                 </tr>
@@ -71,8 +83,8 @@
                             <ul id="ztree" class="ztree" style="margin-top:0;   overflow:scroll; height:270px;"></ul>
                         </div>
 
-                        <span class="textbox" id="CoverCommunityNames"></span>
-
+                        <span class="textbox" id="CoverCommunityNames">@Model.ConverCommunityName</span>
+                      
                     </td>
 
                 </tr>
@@ -104,6 +116,7 @@
 <script>
 
 
+
     var setting = {
         view: {
             dblClickExpand: false,
@@ -121,7 +134,9 @@
                 rootPId: ""
             },
             key: {
-                name: "Name"
+                name: "Name",
+                checked: "IsCheck"
+
             }
 
         },
@@ -184,6 +199,7 @@
     $(function(){
 
         $.fn.zTree.init($("#ztree"), setting, zNodes);
+
       //  var ue = UE.getEditor('editor');
 
         function submitForm() {

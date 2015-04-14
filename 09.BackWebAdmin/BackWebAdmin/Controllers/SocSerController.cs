@@ -269,6 +269,10 @@ namespace BackWebAdmin.Controllers
                 data.UploadHtmlFile = entity.UploadHtmlFile;
                 data.LinkSocSerUrl = entity.LinkSocSerUrl;
 
+                data.ShareScore = entity.ShareScore;
+                data.CommentSocre = entity.CommentSocre;
+                data.GoodScore = entity.GoodScore;
+
                 db.Update<SocServiceDetailEntity>(data);
                 db.SaveChanges();
                 db.Dispose();

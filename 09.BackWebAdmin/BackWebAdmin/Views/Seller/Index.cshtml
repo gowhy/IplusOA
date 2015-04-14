@@ -1,0 +1,50 @@
+﻿@model  IPagedList<IplusOAEntity.Seller>
+@using MvcContrib.UI.Grid
+@using MvcContrib.Pagination;
+@using MvcContrib.UI.Pager;
+@using Common;
+
+<script type="text/javascript">
+
+    function del(id) {
+
+        var url = '@Url.Action("Delete")' + '?id=' + id;
+        deleteMethod(id, "Delete");
+    }
+
+</script>
+<style>
+    .combo {
+        vertical-align: bottom;
+    }
+</style>
+<form id="indexFrom">
+
+    <div style="float: left; height: 40px; text-align: center;">
+        <span><a class="easyui-linkbutton" data-options="iconCls:'icon-add'" title="新增" href="@Url.Action("Add")">新增</a></span>
+
+    </div>
+</form>
+<div class="grid_box">
+    <div class="grid_top">
+    </div>
+    @Html.Grid(Model).Columns(column =>
+                                  {
+                                      column.For(x => x.Id).Named("编号");
+                                      column.For(x => x.UserName).Named("用户名");
+                                      column.For(x => x.Phone).Named("点后");
+                                      column.For(x => x.SellName).Named("网点名称");
+                                      column.For(x => x.DeptId).Named("所属社区");
+                                      column.For(x => x.AddTime.ToString("yyyy-MM-dd HH:mm")).Named("录入时间");
+
+                                      column.Buttons(btns => btns
+                                          .Add(x => Html.ActionLink("编辑", "Edit", new { id = x.Id }))
+                                          .Add(x => Html.ScriptLink("删除", "del({0})".FormatWith(x.Id)))
+
+                                                      );
+                                  }).Complex(ViewData)
+    <div class="grid_foot">
+    </div>
+</div>
+
+@Html.Pager(Model)

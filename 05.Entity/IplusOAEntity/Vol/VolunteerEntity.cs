@@ -212,6 +212,10 @@ namespace IplusOAEntity
 
         public string SerAreas { get; set; }
         public string Speciality { get; set; }
+        /// <summary>
+        /// 小区Id
+        /// </summary>
+        public string VillDeptId { get; set; }
         #endregion Model
 
     }

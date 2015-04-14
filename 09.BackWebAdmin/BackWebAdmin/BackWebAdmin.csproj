@@ -180,6 +180,7 @@
     <Compile Include="Controllers\DpController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LogController.cs" />
+    <Compile Include="Controllers\SellerController.cs" />
     <Compile Include="Controllers\ScoreMallController.cs" />
     <Compile Include="Controllers\SignInController.cs" />
     <Compile Include="Controllers\ScratchCardController.cs" />
@@ -1226,6 +1227,9 @@
     <Content Include="Views\Notice\ShowNews.cshtml" />
     <Content Include="Views\Comm\ShowNews.cshtml" />
     <Content Include="Views\GridMember\Edit.cshtml" />
+    <Content Include="Views\Seller\Index.cshtml" />
+    <Content Include="Views\Seller\Add.cshtml" />
+    <Content Include="Views\Seller\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\02.Common\Common\Common.csproj">

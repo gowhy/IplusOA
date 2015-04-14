@@ -54,6 +54,7 @@
     <Compile Include="ScoreMall\ScoreMall.cs" />
     <Compile Include="ScoreMall\ScoreMallChangeLog.cs" />
     <Compile Include="ScratchCard\ScratchCard.cs" />
+    <Compile Include="Sell\Seller.cs" />
     <Compile Include="SignIn\SignIn.cs" />
     <Compile Include="SMSEntity.cs" />
     <Compile Include="LogEntity.cs" />

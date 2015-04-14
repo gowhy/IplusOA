@@ -215,6 +215,7 @@ namespace IplusOAEntity
         public string Sex { get; set; }
         public string SerAreas { get; set; }
         public string Speciality { get; set; }
+        public string VillDeptId { get; set; }
         #endregion Model
     }
 }

@@ -70,7 +70,25 @@ namespace BackWebAdmin.Controllers
             using (IplusOADBContext db = new IplusOADBContext())
             {
                 var table = db.MicroShopEntityTable;
-                MicroShopEntity model = table.SingleOrDefault(x => x.Id == id);
+
+                var list = db.DepartmentTable.AsQueryable<DepartmentEntity>().ToList();
+              
+
+                MicroShopEntity model = table.Find(id);
+                string CoverCommunityNames = "";
+                IList<string> clit = model.ConverCommunity.Trim().Split(',');
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (clit.Contains(list[i].Id))
+                    {
+                        list[i].IsCheck = true;
+                        CoverCommunityNames += list[i].Name + ",";
+                    }
+                }
+                ViewData["Department_List"] = HelpSerializer.JSONSerialize<List<DepartmentEntity>>(list);
+                model.ConverCommunityName = CoverCommunityNames;
+
+            
                 return View(model);
             }
         }

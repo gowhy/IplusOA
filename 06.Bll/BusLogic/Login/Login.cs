@@ -98,7 +98,9 @@ namespace BusLogic.Login
                                   Age = v.Age,
                                   SerAreas=v.SerAreas,
                                   Speciality = v.Speciality,
-                                  Msg=v.Msg
+                                  Msg=v.Msg,
+                                  VillDeptId=v.VillDeptId
+                                   
 
                               };
 

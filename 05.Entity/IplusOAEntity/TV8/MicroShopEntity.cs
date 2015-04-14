@@ -12,6 +12,9 @@ namespace IplusOAEntity
         public string MicroName { get; set; }
         public string Url { get; set; }
         public string ConverCommunity { get; set; }
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
+        public string ConverCommunityName { get; set; }
+
         public string BusName { get; set; }
         public string Phone { get; set; }
         public int AddUserId { get; set; }

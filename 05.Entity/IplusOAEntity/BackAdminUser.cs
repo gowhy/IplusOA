@@ -106,5 +106,6 @@ namespace IplusOAEntity
         public DepartmentEntity Department { get; set; }
 
         public SocialOrgEntity SocialOrg { get; set; }
+        public string Phone { get; set; }
     }
 }

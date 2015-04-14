@@ -34,6 +34,28 @@ namespace BackWebAdmin.Controllers
             return Json(ret);
 
         }
+
+        public ActionResult SMSLoginV2(string userName, string passWord)
+        {
+            BackAdminUser admin;
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                admin = db.BackAdminUserEntityDBSet.FirstOrDefault<BackAdminUser>(x => x.UserName == userName && x.PassWord == passWord);
+
+            }
+            ReturnModel ret = new ReturnModel();
+            if (admin == null)
+            {
+                ret.State = 0;
+                ret.Msg = "用户名或者密码错误";
+                return Json(ret);
+            }
+            ret = SMSComm.SendLoginCodeSMS(admin.Phone);
+
+            return Json(ret);
+
+        }
+
         [HttpPost]
         public ActionResult Index(LoginModel model, string phone, string code)
         {
