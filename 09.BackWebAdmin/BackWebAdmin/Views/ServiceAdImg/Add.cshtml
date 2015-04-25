@@ -62,7 +62,22 @@
                         <input type="text" class="textbox require" name="SNo" />
                     </td>
                 </tr>
+                <tr>
+                    <td class="item_title">覆盖社区:</td>
+                    <td class="item_input">
+                        <input type="hidden" name="CoverCommunity" id="CoverCommunityIds" />
 
+                        <a id="menuBtn" href="#" onclick="showMenu(this)">请选择 &nbsp; &nbsp;</a>
+
+                        <div id="menuContent" class="menuContent" style="display: none; z-index: 10000; position:absolute;">
+                            <ul id="ztree" class="ztree" style="margin-top:0;   overflow:scroll; height:270px;"></ul>
+                        </div>
+
+                        <span class="textbox" id="CoverCommunityNames"></span>
+
+                    </td>
+
+                </tr>
                 <tr>
                     <td class="item_title"></td>
                     <td class="item_input">
@@ -91,17 +106,14 @@
 <script>
 
 
-  var setting = {
+    var setting = {
         view: {
             dblClickExpand: false,
             showLine: true,
             selectedMulti: false
-
         },
         check: {
-            enable: true ,
-            chkStyle: "radio",
-            radioType: "all"
+            enable: true
         },
         data: {
             simpleData: {
@@ -128,8 +140,18 @@
 
     }
     function onCheck(e, treeId, treeNode) {
-        $("#DepId").val(treeNode.Id);
-        $("#CoverCommunity").val(treeNode.Name);
+        var checkString="";
+        var  checkStringNames="";
+        var zTree = $.fn.zTree.getZTreeObj("ztree");
+        var checkNodesChild=    zTree.getCheckedNodes(true);
+        for (var i = 0; i < checkNodesChild.length; i++) {
+            if (!checkNodesChild[i].isParent) {
+                checkString+=","+checkNodesChild[i].Id;
+                checkStringNames+=checkNodesChild[i].Name+",";
+            }
+        }
+        $("#CoverCommunityIds").val(checkString);
+        $("#CoverCommunityNames").text(checkStringNames);
     }
 
     function showMenu() {

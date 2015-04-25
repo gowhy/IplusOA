@@ -49,7 +49,7 @@
                 <th style="width:10px;align:center;">编号</th>
                 <th style="width:50px;align:center;">状态</th>
                 <th style="width:110px;align:center;">社区编号</th>
-                <th style="width:150px;align:center;">社区名称</th>
+                <th style="width:150px;align:center;">覆盖社区</th>
                 <th style="width:140px;align:center;">添加时间</th>
                 <th>社区广告滚动图片</th>
                 <th style="width:120px;align:center;">操作</th>
@@ -71,7 +71,7 @@
                         }
                     </td>
                     <td>@item.SNo</td>
-                    <td>@item.DepName</td>
+                    <td>@item.CoverCommunity</td>
                     <td>@item.AddTime.ToString("yyyy-MM-dd HH:mm")</td>
                     <td>
                         @foreach (var i in item.HttpUrlList)

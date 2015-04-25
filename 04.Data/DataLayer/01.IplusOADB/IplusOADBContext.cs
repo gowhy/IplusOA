@@ -133,8 +133,12 @@ namespace DataLayer.IplusOADB
         public virtual DbSet<GridMember> GridMemberTable { get; set; }
         public virtual DbSet<VillageCompany> VillageCompanyTable { get; set; }
         public virtual DbSet<Seller> SellerTable { get; set; }
-        
-        
 
+        /// <summary>
+        /// 只允许单个用户登陆控制
+        /// </summary>
+        public virtual DbSet<SingleLoginCheck> SingleLoginCheckTable { get; set; }
+        
+       
     }
 }

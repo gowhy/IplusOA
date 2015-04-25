@@ -31,17 +31,20 @@ namespace BackWebAdmin.Controllers
                 var adimg = db.ServiceAdImgTable;
 
                 var list = from a in adimg
-                           join d in dep on a.SNo equals d.SocialNO
+                          // join d in dep on a.SNo equals d.SocialNO
                            select new ServiceAdImgEntityClone
                            {
 
-                               DepName = d.Name,
+                               //DepName = d.Name,
                                SNo = a.SNo,
                                HttpUrl = a.HttpUrl,
                                Id = a.Id,
                                Des = a.Des,
                                AddTime = a.AddTime,
-                               State=a.State
+                               State=a.State,
+                               CoverCommunity=a.CoverCommunity
+                            
+
                            };
                 return View(list.OrderByDescending(x=>x.Id).ToPagedList(pageNumber - 1, size));
             }

@@ -16,6 +16,10 @@ namespace IplusOAEntity
         public string SNo { get; set; }
         public string Des { get; set; }
         public int State { get; set; }
+     
+        public string CoverCommunity { get; set; }
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
+        public string CoverCommunityNames { get; set; }
     }
 
     public class ServiceAdImgEntityClone
@@ -28,6 +32,9 @@ namespace IplusOAEntity
        public string Des { get; set; }
        public string DepName { get; set; }
        public int State { get; set; }
+       public string CoverCommunity { get; set; }
+       [System.ComponentModel.DataAnnotations.Schema.NotMapped]
+       public string CoverCommunityNames { get; set; }
        private List<string> httpUrlList;
 
        public List<string> HttpUrlList

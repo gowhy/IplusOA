@@ -16,11 +16,11 @@ namespace BackWebAdmin.Controllers
     public class BaseController : AdminController
     {
 
-      public   ICacheProvider CacheManger = new WebCacheProvider();
+        public ICacheProvider CacheManger = new WebCacheProvider();
         public BaseController()
         {
-            
-          
+
+
         }
 
         protected BackAdminUser GetBackUserInfo()
@@ -57,8 +57,8 @@ namespace BackWebAdmin.Controllers
             VolunteerEntity backUser = new VolunteerEntity();
             using (IplusOADBContext db = new IplusOADBContext())
             {
-                    var vol = db.VolunteerEntityTable;
-                    backUser = (from v in vol where v.Id == userId select v).FirstOrDefault();
+                var vol = db.VolunteerEntityTable;
+                backUser = (from v in vol where v.Id == userId select v).FirstOrDefault();
             }
             return backUser;
         }
@@ -133,7 +133,7 @@ namespace BackWebAdmin.Controllers
             });
         }
 
-   
+
 
         protected override void OnException(ExceptionContext filterContext)
         {
@@ -141,14 +141,14 @@ namespace BackWebAdmin.Controllers
 
             if (filterContext.IsChildAction) return;
 
-          
+
             LogEntity model = new LogEntity();
             model.Module = "OA";
             model.UserId = AdminUser.UserName;
             model.Type = "Exception";
             model.Content = filterContext.Exception.Message + filterContext.Exception.InnerException
                 + filterContext.Exception.Source + filterContext.Exception.StackTrace + filterContext.Exception.TargetSite;
-          //  log4net.LogManager.GetLogger(this.GetType()).Error(filterContext.Exception.Message, filterContext.Exception);
+            //  log4net.LogManager.GetLogger(this.GetType()).Error(filterContext.Exception.Message, filterContext.Exception);
             using (IplusOADBContext db = new IplusOADBContext())
             {
                 model.AddTime = DateTime.Now;
@@ -160,12 +160,12 @@ namespace BackWebAdmin.Controllers
         }
 
         #region 创建模块权限
-         internal RoleModel CreateEmptyRoleModel()
+        internal RoleModel CreateEmptyRoleModel()
         {
             return CreateRoleModel(null, new PermissionCollection());
         }
 
-         internal RoleModel CreateRoleModel(RoleEntity role, PermissionCollection permissions)
+        internal RoleModel CreateRoleModel(RoleEntity role, PermissionCollection permissions)
         {
 
             var model = role == null ? new RoleModel() : new RoleModel
@@ -201,6 +201,13 @@ namespace BackWebAdmin.Controllers
 
             return model;
         }
-#endregion
-	}
+        #endregion
+
+        protected override void OnAuthorization(AuthorizationContext filterContext)
+        {
+            base.OnAuthorization(filterContext);
+         
+        }
+       
+    }
 }

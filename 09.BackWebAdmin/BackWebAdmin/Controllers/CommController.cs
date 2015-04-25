@@ -448,6 +448,7 @@ namespace BackWebAdmin.Controllers
                 //广告位图片
                 var serviceAdImg = db.ServiceAdImgTable;
                 var listServiceAdImg = from a in serviceAdImg select a;
+                listServiceAdImg = listServiceAdImg.Where(x=>x.CoverCommunity.Contains(depId));
                 returnModel.ListServiceAdImg = listServiceAdImg.Where(x => x.State == 0).OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size).ToList();
 
 

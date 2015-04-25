@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IplusOAEntity
 {
-  public  class Seller
+    public class Seller
     {
         public int Id { get; set; }
         public System.DateTime AddTime { get; set; }
@@ -16,6 +16,11 @@ namespace IplusOAEntity
         public string SellName { get; set; }
         public string DeptId { get; set; }
         public int AddUserId { get; set; }
-      
+
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
+        public string Msg { get; set; }
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
+        public int State { get; set; }
+
     }
 }

@@ -195,5 +195,14 @@ namespace BackWebAdmin.Controllers
                 return View(list.OrderByDescending(x => x.CGoodsLogs.Id).ToPagedList(pageNumber - 1, pageSize));
             }
         }
+
+        public ActionResult AppGetChangeGoodsByBarCode(string barCode) 
+        {
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                var cg = db.ChangeGoodsTable;
+                return Json(cg.FirstOrDefault(x=>x.Barcode==barCode));
+            }
+        }
     }
 }

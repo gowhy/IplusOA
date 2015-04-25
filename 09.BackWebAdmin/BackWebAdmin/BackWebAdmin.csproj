@@ -161,6 +161,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="CommService\Role\RoleCommService.cs" />
+    <Compile Include="CommService\SingleLoginCheckService.cs" />
     <Compile Include="CommService\SMSComm.cs" />
     <Compile Include="CommService\SocSer\SocSerService.cs" />
     <Compile Include="CommService\UploadFile.cs" />
