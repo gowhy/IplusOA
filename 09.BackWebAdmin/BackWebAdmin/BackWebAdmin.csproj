@@ -46,6 +46,10 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Jpush.API, Version=1.0.0.41149, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\01.Dll\Jpush.API.dll</HintPath>
+    </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\01.Dll\log4net.dll</HintPath>
     </Reference>
@@ -78,6 +82,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
@@ -1260,6 +1265,10 @@
     <ProjectReference Include="..\..\11.SSO\SSO\SSO.csproj">
       <Project>{78bb5d8b-1d16-45b7-9226-a3c3d2483137}</Project>
       <Name>SSO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\12.AutoPush\JPush\WindowsFormsApplication1\JPush.csproj">
+      <Project>{b9387768-2252-4de3-869c-01efd7684995}</Project>
+      <Name>JPush</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -22,16 +22,16 @@ namespace BackWebAdmin.CommService
             using (IplusOADBContext db = new IplusOADBContext())
             {
                //每次登陆记录登陆信息
-                model.AddTime = DateTime.Now;
-                db.Add(model);
-                db.SaveChangesAsync();
+                //model.AddTime = DateTime.Now;
+                //db.Add(model);
+                //db.SaveChangesAsync();
 
                 var slc = db.SingleLoginCheckTable;
 
-                SingleLoginCheck entity = slc.Where(x => x.UserId == model.UserId).OrderByDescending(x => x.Id).FirstOrDefault();
+                SingleLoginCheck entity = slc.Where(x => x.UserId == model.UserId && x.PCode != "" && x.PCode != null).OrderByDescending(x => x.Id).FirstOrDefault();
                 if (entity != null)
                 {
-                    if (model.PCode == entity.PCode && entity.State==0)//上一次和这一次的编码一致
+                    if (!string.IsNullOrEmpty(entity.PCode) && model.PCode == entity.PCode && entity.State == 0)//上一次和这一次的编码一致
                     {
                         return true;
                     }
@@ -44,8 +44,18 @@ namespace BackWebAdmin.CommService
                 {
                     return false;
                 }
-               
+              
+            }
+        }
 
+        public static void SaveLoginRecord(SingleLoginCheck model)
+        {
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                //每次登陆记录登陆信息
+                model.AddTime = DateTime.Now;
+                db.Add(model);
+                db.SaveChangesAsync();
             }
         }
     }

@@ -92,6 +92,7 @@
                         <input type="hidden" name="Des" id="Des" />
                         <div>
                             <script id="editor" type="text/plain" style="width:800px;height:400px;">
+                            @Html.Raw(Model.Des)
                             </script>
                         </div>
                     </td>
@@ -139,7 +140,7 @@
         // editor准备好之后才可以使用
         // ueditor.setContent('');
       
-        UE.getEditor('editor').execCommand('insertHtml', '@Html.Raw(Model.Des)');
+        @*UE.getEditor('editor').execCommand('insertHtml', '@Html.Raw(Model.Des)');*@
     });
 
 

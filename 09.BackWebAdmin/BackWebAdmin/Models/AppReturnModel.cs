@@ -14,6 +14,15 @@ namespace BackWebAdmin
 
 
     }
+    public class AppReturnModel2
+    {
+        public int state { get; set; }
+        public string msg { get; set; }
+
+        public string stateCode { get; set; }
+
+
+    }
 
     public class AppReturnSignInModel
     {

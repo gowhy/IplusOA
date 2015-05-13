@@ -426,41 +426,39 @@ namespace BackWebAdmin.Controllers
             return Json(img);
         }
 
-        public ActionResult UserApplyService(UserApplyServiceEntity entity)
+        public ActionResult UserApplyService(UserApplyServiceEntity entity, string userPhone)
         {
-
-            try
+            AppReturnModel2 ret = new AppReturnModel2();
+            using (IplusOADBContext db = new IplusOADBContext())
             {
-                if (entity.VolId <= 0 || entity.SDId<=0)
+
+
+                var vol = db.VolunteerEntityTable.FirstOrDefault(x => x.Phone == userPhone);
+                if (vol == null)
                 {
-                    return Json(new { state = -1, msg = "VolId或者SDId是必填参数，切必须大于0" });
+                    ret.state = -4;
+                    ret.msg = "手机号未注册";
                 }
-
-                entity.AddTime = DateTime.Now;
-                using (IplusOADBContext db = new IplusOADBContext())
+                if (entity.VolId == 0 && !string.IsNullOrEmpty(userPhone))
                 {
-                    var table = db.UserApplyServiceTable;
-
-                    if (table.Count(x => x.VolId == entity.VolId && x.SDId == entity.SDId) > 0)
-                    {
-                        return Json(new { state = 0, msg = "失败,已经申请该服务" });
-                    }
-                    else
-                    {
-                        entity.AddTime = DateTime.Now;
-                        db.Add(entity);
-                        db.SaveChanges();
-                        return Json(new { state = 1, msg = "成功" });
-                    }
-
+                    entity.VolId = vol.Id;
                 }
+                ret = SocSerService.AppUserApplyService(entity);;
+                if (ret.state != 1)
+                {
+                    var UserList = from c in db.AppMsgSendTable where c.UserId == vol.Id select c.TCode;
+                    string[] uStringList = null;
+                    uStringList = UserList.ToPagedList(0, 999).ToArray();
+                    if (uStringList != null && uStringList.Length > 0)
+                    {
+                        string failMsg = "申请社会服务失败" + ret.msg;
+                        WindowsFormsApplication1.Form1.PushObject_all_regId_alert(failMsg, "", uStringList);
+                    }
+                }
+                return Json(ret);
+            }
 
-            }
-            catch (Exception ex)
-            {
-                return Json(new { state = -1, msg = "接口执行异常：" + ex.Message + ex.TargetSite });
-                throw;
-            }
+           
         }
 
 
@@ -841,60 +839,36 @@ namespace BackWebAdmin.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
 
-        public ActionResult AppVolApplyDo(SerRecordEntity model)
+        public ActionResult AppVolApplyDo(SerRecordEntity model, string userPhone)
         {
-            if (model.VId == 0 || model.SDId == 0)
-            {
-                return Json(new { state = -3, msg = "自愿者ID（VId）或者服务Id（SDId）,是必填参数" });
-            }
-            model.AddTime = DateTime.Now;
+            AppReturnModel2 ret = new AppReturnModel2();
             using (IplusOADBContext db = new IplusOADBContext())
             {
 
-                var apply = db.UserApplyServiceTable;
-                // var vol = db.VolunteerEntityTable;
-                var detail = db.SocServiceDetailEntityTable;
-                var record = db.SerRecordTable;
-                var sorg = db.SocialOrgEntityTable;
-                var img = db.SocSerImgTable;
 
-            
-
-                if (record.Count(r => r.SDId == model.SDId && r.VId == model.VId) > 0)
+                var vol = db.VolunteerEntityTable.FirstOrDefault(x => x.Phone == userPhone);
+                if (vol == null)
                 {
-                    return Json(new { state = 0, msg = "该服务你已经成功申请成为志愿者,不能再申请." });
+                    ret.state = -4;
+                    ret.msg = "手机号未注册";
                 }
-
-                SocServiceDetailEntity sdEntity = detail.Find(model.SDId);
-
-                if (sdEntity.ISUserApply==0)//0表示，需要普通用户申请的服务,反面是1表示是不需要普通用户申请的默认
+                if (model.VId == 0 && !string.IsNullOrEmpty(userPhone))
                 {
-                    UserApplyServiceEntity userApply = (from a in apply
-                                                        where a.SDId == model.SDId
-                                                        && (a.Num > (record.Count(x => x.UASId == a.Id))
-                                                        || record.Count(x => x.UASId == a.Id) == 0) && a.State == 1
-                                                        select a).OrderByDescending(x => x.Id).FirstOrDefault();
-
-                    if (userApply == null)
-                    {
-                        return Json(new { state = -1, msg = "所申请参与的志愿者服务,已经被其他志愿者先申请,没有位置了." });
-                    }
-
-                    if (userApply.VolId == model.VId)
-                    {
-                        return Json(new { state = -2, msg = "该服务你已作受众,不能再申请成为志愿者为项目提供服务." });
-
-                    }
-
-                    model.UASId = userApply.Id;
+                    model.VId = vol.Id;
                 }
-
-                model.SDId = model.SDId;
-
-
-                db.Add(model);
-                db.SaveChanges();
-                return Json(new { state = 1, msg = "成功" });
+                ret = SocSerService.AppVolApplyDoService(model);
+                if (ret.state != 1)
+                {
+                    var UserList = from c in db.AppMsgSendTable where c.UserId == vol.Id select c.TCode;
+                    string[] uStringList = null;
+                    uStringList = UserList.ToPagedList(0, 999).ToArray();
+                    if (uStringList != null && uStringList.Length > 0)
+                    {
+                        string failMsg = "申请社会服务失败" + ret.msg;
+                        WindowsFormsApplication1.Form1.PushObject_all_regId_alert(failMsg, "", uStringList);
+                    }   
+                }
+                return Json(ret);
             }
         }
 

@@ -85,6 +85,26 @@ namespace BackWebAdmin.Controllers
 
         }
 
+        public ActionResult AppLoginCheck(int userId, string type, string pCode)
+        {
+            
+            SingleLoginCheck singleLoginCheck = new SingleLoginCheck();
+            singleLoginCheck.UserId = userId;
+            singleLoginCheck.PCode = pCode;///每个手机的唯一编码
+
+            AppReturnModel ret=new AppReturnModel();
+            if (singleLoginCheck.UserId > 0 && !string.IsNullOrEmpty(pCode) && !SingleLoginCheckService.Check(singleLoginCheck))
+            {
+                ret.Msg += "已有其他手机登陆,请重新登录";
+                ret.State = 2;
+            
+            }
+            else
+            {
+                ret.State = 1;
+            }
+            return Json(ret);
+        }
         [HttpPost]
         public ActionResult App(LoginModel model, string type,string pCode)
         {
@@ -104,18 +124,13 @@ namespace BackWebAdmin.Controllers
 
                 if (res != null)
                 {
-                    SingleLoginCheck singleLoginCheck = new SingleLoginCheck();
-                    singleLoginCheck.UserId = res.Id;
-                    singleLoginCheck.PCode = pCode;///每个手机的唯一编码
-
-
-                    if (singleLoginCheck.UserId > 0 && !string.IsNullOrEmpty(pCode) && !SingleLoginCheckService.Check(singleLoginCheck))
-                    {
-                        res.Msg += "登录成功,其他手机被迫下线";
-                        res.State = 2;
-                        return Json(res);
-                    }
-
+                    SingleLoginCheck singleLogin = new SingleLoginCheck();
+                    singleLogin.UserId = res.Id;
+                    singleLogin.PCode = pCode;///每个手机的唯一编码
+                    singleLogin.Phone = res.Phone;
+                    singleLogin.LoginToken = base.AdminUser.LoginToken;
+                    SingleLoginCheckService.SaveLoginRecord(singleLogin);     
+      
                     res.PassWord = null;
                     res.Msg += "登录成功";
                     res.State = 1;

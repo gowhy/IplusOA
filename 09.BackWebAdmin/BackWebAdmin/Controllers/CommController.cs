@@ -448,12 +448,36 @@ namespace BackWebAdmin.Controllers
                 //广告位图片
                 var serviceAdImg = db.ServiceAdImgTable;
                 var listServiceAdImg = from a in serviceAdImg select a;
-                listServiceAdImg = listServiceAdImg.Where(x=>x.CoverCommunity.Contains(depId));
+                listServiceAdImg = listServiceAdImg.Where(x => x.CoverCommunity.Contains(depId));
                 returnModel.ListServiceAdImg = listServiceAdImg.Where(x => x.State == 0).OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size).ToList();
 
+                for (int i = 0; i < returnModel.ListServiceAdImg.Count; i++)
+                {
+                    returnModel.ListServiceAdImg[i].CoverCommunity = "1";
+                    returnModel.ListServiceAdImg[i].CoverCommunityNames = "1";
+                }
+
+                //广告位图片
+                //var serviceAdImg = db.ServiceAdImgTable;
+                //var listServiceAdImg = from a in serviceAdImg select a;
+                //returnModel.ListServiceAdImg = listServiceAdImg.Where(x => x.State == 0).OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size).ToList();
 
 
                 return Json(returnModel);
+            }
+        }
+        public ActionResult AppServiceAdImg(string depId, int? page, int? pageSize)
+        {
+            var pageNumber = page ?? 1;
+            var size = pageSize ?? 1;
+            AppStartModel returnModel = new AppStartModel();
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                var serviceAdImg = db.ServiceAdImgTable;
+                var listServiceAdImg = from a in serviceAdImg select a;
+                listServiceAdImg = listServiceAdImg.Where(x => x.CoverCommunity.Contains(depId));
+        
+                 return Json(listServiceAdImg.Where(x => x.State == 0).OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size).ToList());
             }
         }
 
