@@ -40,9 +40,15 @@
 </head>
 <body class="easyui-layout">
     <div data-options="region:'north',split:true" style="height: 60px;">
-        <div style="float:right;  ">
-            <span>欢迎 &nbsp; @ViewBag.username  &nbsp;用户使用贵阳市社区公益信息平台</span>
-            <a  style=" font-size:25px; text-decoration:none; margin-right:20px;" href="@Url.Action("Out", "Login")" target="_parent">注销</a>
+        <div style="height:100%;width:100%; background-color:#0080ff;">
+            <span style=" font-size:39px; letter-spacing:8px; color:#fff;">
+                社区1+1--社区服务云
+            </span>
+
+            <div style="float:right;  color:#fff; ">
+                <span>欢迎 &nbsp; @ViewBag.username  &nbsp;用户使用贵阳市社区公益信息平台</span>
+                <a style=" font-size:25px; color:#fff; text-decoration:none; margin-right:20px;" href="@Url.Action("Out", "Login")" target="_parent">注销</a>
+            </div>
         </div>
     </div>
     <div data-options="region:'west',split:true,title:'菜单'" style="width:150px;">

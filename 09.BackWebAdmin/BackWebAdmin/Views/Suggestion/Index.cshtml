@@ -51,7 +51,7 @@
                                   {
                                       // column.CheckBox(x => x.Id);
                                       //   column.For(x => x.Id).Named("编号").HeaderAttributes(style => "width:50px;align:center;");
-                                      column.For(x => x.Content).Named("反馈类容").HeaderAttributes(style => "width:450px;align:center;");
+                                      column.For(x =>Html.Raw( x.Content)).Named("反馈类容").HeaderAttributes(style => "width:450px;align:center;");
                                       column.For(x => x.AddTime.ToString("yyyy-MM-dd HH:mm")).Named("反馈时间").HeaderAttributes(style => "width:140px;align:center;");
                                       column.For(x => x.DepName).Named("社区");
                                       column.For(x => x.volEntity.RealName).Named("真实姓名");

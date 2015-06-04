@@ -1,0 +1,402 @@
+﻿@using Common;
+@{
+    Layout = null;
+}
+
+@Html.IncludeCSS("~/Content/Css/style.css")
+@Html.IncludeCSS("~/Content/plug-in/ztree/css/zTreeStyle/zTreeStyle.css")
+@Html.IncludeCSS("~/Content/Css/demo.css")
+@Html.IncludeCSS("~/Content/plug-in/uploadify/uploadify.css")
+@Html.IncludeCSS("~/Content/EasyUI/themes/gray/easyui.css")
+@Html.IncludeCSS("~/Content/EasyUI/themes/icon.css")
+
+<script>
+    window.UEDITOR_HOME_serverPath = "@Url.Content("../../../workguide/ImgFile")";
+</script>
+
+
+
+<style>
+ 
+    .item_title {
+        background: none;
+    }
+</style>
+
+
+
+<div id="tt">
+    <a href="@Url.Action("Index", "workguide")" style=" width:100px;">返回列表</a>
+    @*<a href="@HttpContext.Current.Request.UrlReferrer" style=" width:100px;padding-left:20px;">返回列表</a>*@
+</div>
+<div id="p" class="easyui-panel" title="新增" style="height:530px;padding:10px;"
+     data-options="iconCls:'icon-add',closable:false,tools:'#tt'">
+
+    <form name="postadd" action="@Url.Action("PostAdd")" id="postadd" method="post" enctype="multipart/form-data">
+        <table id="listHtmlFile" class="form" cellpadding="0" cellspacing="0">
+            <tbody>
+                <tr>
+                    <td class="item_title">姓名:</td>
+                    <td class="item_input"><input type="text" class="textbox require easyui-validatebox" missingmessage="必须填写" data-options="required:true" name="Name" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">手机号:</td>
+                    <td class="item_input"><input type="text" class="textbox require easyui-validatebox" missingmessage="必须填写" data-options="required:true" name="Phone" /></td>
+                </tr>
+                <tr>
+                    <td class="item_title">志愿者类型:</td>
+                    <td class="item_input">
+                        <select id="VolType" name="VolType">
+                            <option value="党员志愿者">党员志愿者</option>
+                            <option value="一般志愿者">一般志愿者</option>
+                            <option value="技术志愿者">技术志愿者</option>
+                            <option value="文化志愿者">文化志愿者</option>
+                            <option value="专业志愿者">专业志愿者</option>
+                            <option value="特殊志愿者">特殊志愿者</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="item_title">App列表图片:</td>
+                    <td class="item_input">
+                        @*用来作为文件队列区域*@
+                        <div id="fileQueue">
+                        </div>
+                        <input type="file" name="uploadify" id="uploadify" multiple="true" />
+                        <input type="hidden" name="ImgUrl" id="ImgUrl" value="" />
+                        双击删除图片
+                        <div id="imgQueue">
+                        </div>
+                    </td>
+                </tr>
+         
+                <tr>
+                    <td class="item_title">上传服务HTML文件:</td>
+                    <td class="item_input">
+                        <input type="hidden" id="UploadHtmlFile" name="uploadhtmlfile" />
+                        <span id="HtmlFileName"></span>
+                        <input type="text" class="textbox  easyui-validatebox" id="SaveUploadHtmlFile" name="SaveUploadHtmlFile" />
+                        <span>（服务外部链接， 上传服务HTML文件， 办事流程说明 3者只能填其一）</span>
+                    </td>
+                </tr>
+            
+              
+                    
+                       
+                <tr>
+                    <td></td>
+                    <td  colspan="1">
+
+                        <table id="dg" class="easyui-datagrid" title="自愿者活动Html文件" style="width:900px;height:auto"
+                               data-options="
+				iconCls: 'icon-edit',
+				singleSelect: true,
+				toolbar: '#tb',
+				url: 'datagrid_data1.json',
+				method: 'get',
+				onClickRow: onClickRow
+			">
+                            <thead>
+                                <tr>
+                                    <th data-options="field:'Id',width:30">ID</th>
+                                    <th data-options="field:'HtmlTitle',width:200">标题</th>
+                                    <th data-options="field:'HtmlFileUrl',width:400">Html文件路径</th>
+                                </tr>
+                            </thead>
+                        </table>
+
+                        <div id="tb" style="height:auto">
+                            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="append()">新增</a>
+                            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="removeit()">删除</a>
+                        
+                        </div>
+
+                        <script type="text/javascript">
+
+                            function onClickCell(index, field) {
+                                alert("111");
+                                if (endEditing()) {
+                                    $('#dg').datagrid('selectRow', index)
+                                            .datagrid('editCell', { index: index, field: field });
+                                    editIndex = index;
+                                }
+                            }
+
+                            var editIndex = undefined;
+                            function endEditing() {
+                                if (editIndex == undefined) { return true }
+                                if ($('#dg').datagrid('validateRow', editIndex)) {
+                                    var ed = $('#dg').datagrid('getEditor', { index: editIndex, field: 'productid' });
+                                    var productname = $(ed.target).combobox('getText');
+                                    $('#dg').datagrid('getRows')[editIndex]['productname'] = productname;
+                                    $('#dg').datagrid('endEdit', editIndex);
+                                    editIndex = undefined;
+                                    alert(productname);
+                                    JSON.stringify($('#dg').datagrid('getRows')[editIndex])
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            }
+                            function onClickRow(index) {
+                                if (editIndex != index) {
+                                    if (endEditing()) {
+                                        $('#dg').datagrid('selectRow', index)
+                                                .datagrid('beginEdit', index);
+                                        editIndex = index;
+                                    } else {
+                                        $('#dg').datagrid('selectRow', editIndex);
+                                    }
+                                }
+                            }
+                            function append() {
+                                $('#w').window('open');
+                               // $('#dg').datagrid('appendRow', { status: 'P', attr1: "why111" });
+                                //if (endEditing()) {
+                                //    $('#dg').datagrid('appendRow', { status: 'P',attr1:"why111" });
+                                //    editIndex = $('#dg').datagrid('getRows').length - 1;
+                                //    $('#dg').datagrid('selectRow', editIndex)
+                                //            .datagrid('beginEdit', editIndex);
+                                //}
+                            }
+                            function removeit() {
+                                if (editIndex == undefined) { return }
+                                $('#dg').datagrid('cancelEdit', editIndex)
+                                        .datagrid('deleteRow', editIndex);
+                                editIndex = undefined;
+                            }
+                            function accept() {
+                                if (endEditing()) {
+                                    $('#dg').datagrid('acceptChanges');
+                                }
+                            }
+                            function reject() {
+                                $('#dg').datagrid('rejectChanges');
+                                editIndex = undefined;
+                            }
+                            function getChanges() {
+                                var rows = $('#dg').datagrid('getChanges');
+                                alert(rows.length + ' rows are changed!');
+                            }
+                        </script>
+
+                    </td>
+                </tr>
+                
+
+
+             
+
+            </tbody>
+        </table>
+
+        <div>
+            <div id="w" class="easyui-window" title="新增自愿者活动Html文件" data-options="iconCls:'icon-save'" style=" text-align:center;width:500px;height:300px;padding:10px; ">
+                <table>
+                    <tr>
+                        <td width="100">Html标题:</td>
+                        <td><input class="easyui-validatebox" type="text" id="HtmlTitle" name="HtmlTitle" data-options="required:true" /></td>
+                    </tr>
+                    <tr>
+                        <td>上传Html:</td>
+                        <td><input type="text" class="textbox  easyui-validatebox" id="SaveUploadHtmlFileWindows" name="HtmlFileUrl" />
+                        <br />   
+                         <span id="SaveUploadHtmlFileSpan"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                       
+                        <td colspan="2">
+                       
+                        <a href="javascript:void(0)" id="btnsubmitHtmlFile" class="easyui-linkbutton">新增Html文件</a></td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+        <input type="hidden" id="volShowIds" name="volShowIds" />
+        <a href="javascript:void(0)" id="btnsubmitForm" class="easyui-linkbutton">保存</a>
+    </form>
+</div>
+@Html.IncludeScript("~/Content/EasyUI/jquery-1.8.0.min.js")
+@Html.IncludeScript("~/Content/Js/jquery.timer.js")
+@Html.IncludeScript("~/Content/Js/common.js")
+
+@Html.IncludeScript("~/Content/EasyUI/jquery.easyui.min.js")
+@*@Html.IncludeScript("~/Content/plug-in/My97DatePicker/WdatePicker.js")
+
+    @Html.IncludeScript("~/Content/plug-in/ztree/js/jquery.ztree.core-3.5.js")
+    @Html.IncludeScript("~/Content/plug-in/ztree/js/jquery.ztree.excheck-3.5.js")*@
+@Html.IncludeScript("~/Content/plug-in/uploadify/jquery.uploadify-3.1.js")
+
+@*@Html.IncludeScript("~/Content/plug-in/ueditor/ueditor.config.js")
+@Html.IncludeScript("~/Content/plug-in/ueditor/ueditor.all.js")
+@Html.IncludeScript("~/Content/plug-in/ueditor/lang/zh-cn/zh-cn.js")*@
+
+
+@*@Html.IncludeCSS("~/Content/CSS/kindediter/default/default.css")
+    @Html.IncludeScript("~/Content/JS/kindediter/kindeditor-min.js")
+    @Html.IncludeScript("~/Content/JS/kindediter/zh_CN.js")*@
+<script>
+
+
+
+
+    function clearForm() {
+        $('#postadd').form('clear');
+    }
+    function delImgSocSer(e) {
+        if (!confirm("确认要删除该图片吗？")) {
+            return false;
+        }
+        $(e).remove();
+    }
+
+
+    $(function () {
+
+        $('#w').window('close');
+
+        function submitForm() {
+            $("#imgQueue img").each(function () {
+                $("#ImgUrl").val($("#ImgUrl").val() + "#" + $(this).attr("src"));
+            });
+            //length
+            // $('#dg').datagrid('getRows')[editIndex]['productname']
+            for (var i = 0; i <  $('#dg').datagrid('getRows').length; i++) {
+                var tmpId = $('#dg').datagrid('getRows')[i]['Id'];
+                $("#volShowIds").val($("#volShowIds").val() + "," + tmpId);
+                
+            }
+         
+            $('#postadd').submit();
+        }
+
+        $("#btnsubmitForm").click(function () {
+            submitForm();
+        });
+
+
+
+        $("#uploadify").uploadify({
+            //指定swf文件
+            'swf': "@Url.Content("~/Content/plug-in/uploadify/uploadify.swf")",
+            //后台处理的页面
+            'uploader': '/VolShow/SaveImg',
+            //按钮显示的文字
+            'buttonText': '上传图片',
+            "queueSizeLimit": 5,//队列中允许的最大文件数目
+            //显示的高度和宽度，默认 height 30；width 120
+            //'height': 15,
+            //'width': 80,
+            //上传文件的类型  默认为所有文件    'All Files'  ;  '*.*'
+            //在浏览窗口底部的文件类型下拉菜单中显示的文本
+            // 'fileTypeDesc': 'Image Files',
+            //允许上传的文件后缀
+            'fileTypeExts': '*.gif; *.jpg; *.png',
+            //发送给后台的其他参数通过formData指定
+            //'formData': $("#postadd").serialize(),
+            //上传文件页面中，你想要用来作为文件队列的元素的id, 默认为false  自动生成,  不带#
+            'cancelImg': "@Url.Content("~/Content/plug-in/uploadify/cancel.jpg")",
+            //  'formData' :  JSON.stringify($('#postadd').serializeArray()),
+            //"removeCompleted":false,
+            //  'queueID': 'fileQueue',
+            //选择文件后自动上传
+            'auto': true,
+            //设置为true将允许多文件上传
+            'multi': true,
+            onUploadSuccess: function (file, data, response) {//上传完成时触发（每个文件触发一次）
+
+                data = eval("(" + data + ")");
+
+                var imgStr = ' <img   ondblclick="delImgSocSer(this)" src="' + data.HttpUrl + '" title="双击删除图片" alt="" width="160" height="140"  />';
+
+                $("#imgQueue").append(imgStr);
+            }
+
+        });
+
+        $("#SaveUploadHtmlFile").uploadify({
+            //指定swf文件
+            'swf':"@Url.Content("~/Content/plug-in/uploadify/uploadify.swf")",
+        //后台处理的页面
+            'uploader': '/VolShow/SaveUploadHtmlFile',
+        //按钮显示的文字
+       'buttonText': '上传HTML文件',
+       'fileTypeExts': '*.html; *.htm; ',
+       'cancelImg':"@Url.Content("~/Content/plug-in/uploadify/cancel.jpg")",
+       'auto': true,
+        //设置为true将允许多文件上传
+       'multi': false,
+        onUploadSuccess: function (file, data, response) {//上传完成时触发（每个文件触发一次）
+
+            data = eval("(" + data + ")");
+
+            $("#UploadHtmlFile").val(data.HttpUrl);
+            $("#HtmlFileName").html("已上传成功文件："+data.Name);
+
+
+        }
+
+        });
+
+        var SaveUploadVolHtmlFileUrl = "";
+        $("#SaveUploadHtmlFileWindows").uploadify({
+            //指定swf文件
+            'swf':"@Url.Content("~/Content/plug-in/uploadify/uploadify.swf")",
+        //后台处理的页面
+            'uploader': '/VolShow/SaveUploadVolHtmlFile',
+        //按钮显示的文字
+       'buttonText': '上传HTML文件',
+       'fileTypeExts': '*.html; *.htm; ',
+       'cancelImg':"@Url.Content("~/Content/plug-in/uploadify/cancel.jpg")",
+       'auto': true,
+        //设置为true将允许多文件上传
+       'multi': false,
+        onUploadSuccess: function (file, data, response) {//上传完成时触发（每个文件触发一次）
+
+            data = eval("(" + data + ")");
+            SaveUploadVolHtmlFileUrl = data.HttpUrl;
+         
+            $("#SaveUploadHtmlFileSpan").text(SaveUploadVolHtmlFileUrl);
+
+        }
+
+    });
+
+        $("#btnsubmitHtmlFile").click(function () {
+
+            UploadVolHtmlFile();
+        });
+
+        function UploadVolHtmlFile() {
+           
+            var url = '@Url.Action("SaveUploadVolHtmlFileTable")';
+            var htmlTitle = $("#HtmlTitle").val();
+            if (!htmlTitle ||  $.trim(htmlTitle)=="") {
+                alert("标题是必填");
+                return;
+            }
+            if (!SaveUploadVolHtmlFileUrl) {
+                alert("必须上传Html文件");
+                return;
+            }
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: { HtmlTitle: htmlTitle, HtmlFileUrl: SaveUploadVolHtmlFileUrl },
+                dataType: "json",
+                success: function (data) {
+                  
+                    $("#SaveUploadHtmlFileSpan").text("");
+                    $("#HtmlTitle").val("");
+
+                    $('#dg').datagrid('appendRow', { Id: data.Id, HtmlTitle: data.HtmlTitle, HtmlFileUrl: data.HtmlFileUrl });
+                }
+            });
+        }
+    });
+</script>

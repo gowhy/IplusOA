@@ -46,7 +46,10 @@ namespace BackWebAdmin.Controllers
                                DepId = s.DepId,
                                DepName = d.Name,
                                Id = s.Id,
-                               volEntity = v
+                               volEntity = v,
+                               Address=s.Address,
+                               Lat=s.Lat,
+                               Lng=s.Lng
                            };
                 list = list.Where(x => x.DepId == DeptId);
                 return View(list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size));
@@ -105,7 +108,7 @@ namespace BackWebAdmin.Controllers
                 var sup = db.SuperviseTable;
                 var dep = db.DepartmentTable;
                 var vol = db.VolunteerEntityTable;
-
+                var grid = db.GridMemberTable;
                 var list = from s in sup
                            join d in dep on s.DepId equals d.Id
                            join v in vol on s.AddUser equals v.Id
@@ -117,12 +120,18 @@ namespace BackWebAdmin.Controllers
                                DepId = s.DepId,
                                DepName = d.Name,
                                Id = s.Id,
-                               ImgUrl=s.ImgUrl,
+                               ImgUrl = s.ImgUrl,
                                volEntity = v,
-                               Msg=s.Msg,
-                               State=s.State
+                               Msg = s.Msg,
+                               State = s.State,
+                               Address = s.Address,
+                               Lat = s.Lat,
+                               Lng = s.Lng
                            };
                 var model = list.SingleOrDefault(x => x.Id == id);
+
+                GridMember gridMember = grid.Where(x => x.VDeptId.StartsWith(model.DepId)).FirstOrDefault();
+                model.GridMember = gridMember;
                 return View(model);
             }
         }
@@ -186,12 +195,19 @@ namespace BackWebAdmin.Controllers
             using (IplusOADBContext db = new IplusOADBContext())
             {
 
-              SuperviseEntity model=  db.SuperviseTable.Find(id);
-              model.Msg = msg.Trim();
-              model.State = state;
+                SuperviseEntity model = db.SuperviseTable.Find(id);
+                model.Msg = msg.Trim();
+                model.State = state;
 
-              db.Update<SuperviseEntity>(model);
-              db.SaveChanges();
+                db.Update<SuperviseEntity>(model);
+                db.SaveChanges();
+
+                var vol = db.VolunteerEntityTable;
+
+                VolunteerEntity vEntity = vol.Find(model.AddUser);
+                vEntity.Score = vEntity.Score + 5;
+                db.Update<VolunteerEntity>(vEntity);
+                db.SaveChanges();
             }
 
 

@@ -83,6 +83,8 @@
     <Compile Include="TV8\MicroShopEntity.cs" />
     <Compile Include="TV8\MicroShopCallRecordEntity.cs" />
     <Compile Include="VillageCompany\VillageCompany.cs" />
+    <Compile Include="VolShow\VolShow.cs" />
+    <Compile Include="VolShow\VolShowHtmlFile.cs" />
     <Compile Include="Vol\VolunteerEntity.cs" />
     <Compile Include="SOrg\DepartmentEntity.cs" />
     <Compile Include="SOrg\SocialOrgEntity.cs" />

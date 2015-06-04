@@ -433,27 +433,38 @@ namespace BackWebAdmin.Controllers
             {
 
 
-                var vol = db.VolunteerEntityTable.FirstOrDefault(x => x.Phone == userPhone);
-                if (vol == null)
-                {
-                    ret.state = -4;
-                    ret.msg = "手机号未注册";
-                }
+                VolunteerEntity vol = null;
                 if (entity.VolId == 0 && !string.IsNullOrEmpty(userPhone))
                 {
-                    entity.VolId = vol.Id;
+                     vol = db.VolunteerEntityTable.FirstOrDefault(x => x.Phone == userPhone);
+                    if (vol == null)
+                    {
+                        ret.state = -4;
+                        ret.msg = "手机号未注册";
+                    }
+                    else
+                    {
+                        entity.VolId = vol.Id;
+                    }
                 }
+             
                 ret = SocSerService.AppUserApplyService(entity);;
                 if (ret.state != 1)
                 {
-                    var UserList = from c in db.AppMsgSendTable where c.UserId == vol.Id select c.TCode;
-                    string[] uStringList = null;
-                    uStringList = UserList.ToPagedList(0, 999).ToArray();
-                    if (uStringList != null && uStringList.Length > 0)
+                    var UserList = from c in db.AppMsgSendTable where c.UserId == entity.VolId select c.TCode;
+                    if (UserList!=null)
                     {
-                        string failMsg = "申请社会服务失败" + ret.msg;
-                        WindowsFormsApplication1.Form1.PushObject_all_regId_alert(failMsg, "", uStringList);
+                        string[] uStringList = null;
+                        uStringList = UserList.ToPagedList(0, 999).ToArray();
+                        if (uStringList != null && uStringList.Length > 0)
+                        {
+                            string failMsg = "申请社会服务失败" + ret.msg;
+                            //WindowsFormsApplication1.Form1.PushObject_all_regId_alert(failMsg, "", uStringList);
+                            WindowsFormsApplication1.Form1.AsyncPush(WindowsFormsApplication1.Form1.PushObject_all_regId_alert(failMsg, "", uStringList));
+                        }
+                        
                     }
+                   
                 }
                 return Json(ret);
             }
@@ -846,27 +857,46 @@ namespace BackWebAdmin.Controllers
             {
 
 
-                var vol = db.VolunteerEntityTable.FirstOrDefault(x => x.Phone == userPhone);
-                if (vol == null)
-                {
-                    ret.state = -4;
-                    ret.msg = "手机号未注册";
-                }
+                //var vol = db.VolunteerEntityTable.FirstOrDefault(x => x.Phone == userPhone);
+                //if (vol == null)
+                //{
+                //    ret.state = -4;
+                //    ret.msg = "手机号未注册";
+                //}
+                //if (model.VId == 0 && !string.IsNullOrEmpty(userPhone))
+                //{
+                //    model.VId = vol.Id;
+                //}
+                VolunteerEntity vol = null;
                 if (model.VId == 0 && !string.IsNullOrEmpty(userPhone))
                 {
-                    model.VId = vol.Id;
+                    vol = db.VolunteerEntityTable.FirstOrDefault(x => x.Phone == userPhone);
+                    if (vol == null)
+                    {
+                        ret.state = -4;
+                        ret.msg = "手机号未注册";
+                    }
+                    else
+                    {
+                        model.VId = vol.Id;
+                    }
                 }
                 ret = SocSerService.AppVolApplyDoService(model);
                 if (ret.state != 1)
                 {
-                    var UserList = from c in db.AppMsgSendTable where c.UserId == vol.Id select c.TCode;
-                    string[] uStringList = null;
-                    uStringList = UserList.ToPagedList(0, 999).ToArray();
-                    if (uStringList != null && uStringList.Length > 0)
+                    var UserList = from c in db.AppMsgSendTable where c.UserId == model.VId select c.TCode;
+                    if (UserList!= null)
                     {
-                        string failMsg = "申请社会服务失败" + ret.msg;
-                        WindowsFormsApplication1.Form1.PushObject_all_regId_alert(failMsg, "", uStringList);
-                    }   
+                        string[] uStringList = null;
+                        uStringList = UserList.ToPagedList(0, 999).ToArray();
+                        if (uStringList != null && uStringList.Length > 0)
+                        {
+                            string failMsg = "申请社会服务失败" + ret.msg;
+                            //WindowsFormsApplication1.Form1.PushObject_all_regId_alert(failMsg, "", uStringList);
+                            WindowsFormsApplication1.Form1.AsyncPush(WindowsFormsApplication1.Form1.PushObject_all_regId_alert(failMsg, "", uStringList));
+                        }  
+                    }
+                 
                 }
                 return Json(ret);
             }

@@ -40,13 +40,14 @@
                 <tr>
                     <td class="item_title">投诉用户地址:</td>
                     <td class="item_input">
-                        <div>@Model.volEntity.Address</div>
+                        <div>@Model.Address</div>
                     </td>
                 </tr>
                 <tr>
                     <td class="item_title">投诉用户真实姓名:</td>
                     <td class="item_input">
-                        <div>@Model.volEntity.RealName</div>
+                        <div>@(Model.volEntity.RealName ?? Model.volEntity.UerName)</div>
+                        @*<div>@Model.volEntity.UerName</div>*@
                     </td>
                 </tr>
                 <tr>
@@ -59,7 +60,7 @@
                                 {
                                     if (!string.IsNullOrEmpty(item))
                                     {
-                                        <img ondblclick="delImgSocSer(this)" src="@item" alt="" width="160" height="140" />
+                                        <a href="@item" target="_blank"><img src="@item" alt="" width="160" height="140" /></a>  
                                     }
 
                                 }
@@ -82,6 +83,8 @@
                     <input type="hidden"  id="id" value="@Model.Id"/>
                             <textarea class="textbox require" id="msg" name="Msg" rows="5" cols="60">@Model.Msg </textarea>
                         <a href="javascript:void(0)" class="easyui-linkbutton" style=" margin-top:-80px; vertical-align:middle; "  id="apply">回复并赠予积分</a>
+                        <a href="javascript:void(0)" class="easyui-linkbutton" style=" margin-top:-80px; vertical-align:middle; " id="apply2">回复</a>
+                        <a href="javascript:void(0)" class="easyui-linkbutton" style=" margin-top:-80px; vertical-align:middle; " id="apply3">提交12319</a>
                     
                     
                     </td>
@@ -96,7 +99,41 @@
                     </tr>
                     }
                     
-                
+                <tr>
+                    <td class="item_title">网格员姓名:</td>
+                    <td class="item_input">
+                        <div>
+                            @Html.Raw(((Model.GridMember??new IplusOAEntity.GridMember())??new IplusOAEntity.GridMember()).GridName)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="item_title">网格员电话:</td>
+                    <td class="item_input">
+                        <div>
+                            @Html.Raw((Model.GridMember??new IplusOAEntity.GridMember()).GridPhone)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="item_title">网格员头像:</td>
+                    <td class="item_input">
+                    
+                            @if (!string.IsNullOrEmpty((Model.GridMember??new IplusOAEntity.GridMember()).GridHeaderImg))
+                            {
+                                foreach (var item in (Model.GridMember??new IplusOAEntity.GridMember()).GridHeaderImg.Split('#'))
+                                {
+                                    if (!string.IsNullOrEmpty(item))
+                                    {
+                                        <a href="@item" target="_blank"><img src="@item" alt="" width="160" height="140" /></a>
+                                    }
+
+                                }
+                            }
+
+                      
+                    </td>
+                </tr>
             </tbody>
         </table>
     </form>
@@ -115,12 +152,13 @@
                 success: function (obj) {
                     $("#info").html(obj.Info);
                     if (obj.Status == true)
+                        alert("操作完成");
                         location.href = location.href;
                 }
             });
         }
 
-        $("#apply").click(function () {
+        $("#apply,#apply2,#apply3").click(function () {
 
             var id = $("#id").val();
             var msg = $("#msg").val();

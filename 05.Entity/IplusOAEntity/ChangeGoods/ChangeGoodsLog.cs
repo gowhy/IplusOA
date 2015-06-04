@@ -13,7 +13,8 @@ namespace IplusOAEntity
         public string Desc { get; set; }
         public int ChangeGoodsId { get; set; }
         public int AdminUserId { get; set; }
-
+        public int ChangeCount { get; set; }
+        
         public int UserId { get; set; }
 
     }

@@ -111,6 +111,10 @@ namespace BackWebAdmin.Controllers
         public ActionResult AppChangeGoodsAction(ChangeGoodsLog entity )
         {
             entity.AddTime = DateTime.Now;
+            if (entity.ChangeCount<1)
+            {
+                entity.ChangeCount = 1;
+            }
             AppReturnModel ret = new AppReturnModel();
      
             using (IplusOADBContext db = new IplusOADBContext())
@@ -134,12 +138,12 @@ namespace BackWebAdmin.Controllers
                 }
 
                 //减掉用户积分
-                vol.Score = vol.Score - cg.Score;
+                vol.Score = vol.Score - cg.Score *entity.ChangeCount ;
                 db.Update(vol);
                 db.SaveChanges();
 
                 //修改库存
-                cg.Count = cg.Count - 1;
+                cg.Count = cg.Count - 1 * entity.ChangeCount;
                 db.Update(cg);
                 db.SaveChanges();
 
@@ -202,6 +206,60 @@ namespace BackWebAdmin.Controllers
             {
                 var cg = db.ChangeGoodsTable;
                 return Json(cg.FirstOrDefault(x=>x.Barcode==barCode));
+            }
+        }
+
+        /// <summary>
+        /// 兑换记录
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public ActionResult AppChangeGoodsLogIndex(int? userId,int? page, int? cGoodsId)
+        {
+            var pageNumber = page ?? 1;
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+
+                var cgl = db.ChangeGoodsLogTable;
+                var cg = db.ChangeGoodsTable;
+                var vol = db.VolunteerEntityTable;
+
+                var list = from cl in cgl
+                           join c in cg on cl.ChangeGoodsId equals c.Id
+                           into clc
+                           from c2  in clc.DefaultIfEmpty()
+                           join v in vol on   cl.UserId equals v.Id into cv
+                           from cv2 in cv.DefaultIfEmpty()
+                           select new ChangeGoodsLogModel
+                           {
+                               CGoodsLogs = cl,
+                               //User = cv2, 
+                               CGoods = c2
+                           };
+                if (cGoodsId.HasValue)
+                {
+                    list = list.Where(x => x.CGoodsLogs.ChangeGoodsId == cGoodsId);
+                }
+                if (userId.HasValue)
+                {
+                    list = list.Where(x => x.CGoodsLogs.UserId == userId);
+                }
+                return Json(list.OrderByDescending(x => x.CGoodsLogs.Id).ToPagedList(pageNumber - 1, pageSize),JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult AppIndex(int? page)
+        {
+            var pageNumber = page ?? 1;
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+
+                var cg = db.ChangeGoodsTable;
+
+
+                var list = from c in cg where c.Count>0 select c ;
+
+                return Json(list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, pageSize));
             }
         }
     }

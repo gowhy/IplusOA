@@ -138,7 +138,8 @@ namespace DataLayer.IplusOADB
         /// 只允许单个用户登陆控制
         /// </summary>
         public virtual DbSet<SingleLoginCheck> SingleLoginCheckTable { get; set; }
+        public virtual DbSet<VolShow> VolShowTable { get; set; }
+        public virtual DbSet<VolShowHtmlFile> VolShowHtmlFileTable { get; set; }
         
-       
     }
 }

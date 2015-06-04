@@ -34,11 +34,12 @@
     <div id="container">
         <div class="logoFont fontsize50px center">
             <div>
-                社区1+1社会服务“云”平台
+                @*社区1+1社会服务“云”平台*@
+                社区1+1--社区服务云
             </div>
 
 
-            <div><span class="logoFont fontsize50px">综合运用后台管理系统<span class="logoFont fontsize20px">(Ver1.0)</span> </span></div>
+            <div><span class="logoFont fontsize50px">综合运营后台管理系统<span class="logoFont fontsize20px">(Ver1.0)</span> </span></div>
 
         </div>
      
@@ -49,20 +50,23 @@
                     <table class="main" style="  margin-left:auto;margin-right:auto;text-align:center;">
                         <tr>
                             <td> 用户名</td>
-                            <td><input type="text" name="username" tabindex="1" data-required=data-required /></td>
+                            <td><input type="text" id="username" name="username" tabindex="1" data-required=data-required /></td>
                         </tr>
                         <tr>
                             <td colspan="2"> &nbsp;</td>
                         </tr>
                         <tr>
                             <td>密码</td>
-                            <td><input type="password" name="password" tabindex="2" data-required=data-required /></td>
+                            <td><input type="password" id="password" name="password" tabindex="2" data-required=data-required /></td>
                         </tr>
-                        <tr style=" height:55px;">
-                            <td>手机号</td>
+                        <tr >
+                            @*<td>手机号</td>
                             <td><input type="text" id="phone" name="phone" tabindex="2" data-required=data-required />
                             <br />
-                                <input type="button" id="btnphone" value="获取验证码" onclick="SendLoginSMS(this)" /></td>
+                                <input type="button" id="btnphone" value="获取验证码" onclick="SendLoginSMS(this)" />
+                            </td>*@
+                            <td> </td>
+                            <td colspan="1"><input type="button" id="btnphone" value="获取手机短信登陆验证码" onclick="SendLoginSMS(this)" /></td>
                         </tr>
                         <tr>
                             <td>验证码</td>
@@ -88,8 +92,11 @@
 
     
         function SendLoginSMS(e) {
-            var phone = $("#phone").val();
-            var url = '@Url.Action("SMSLogin")' + '?phone=' + phone;
+
+            var userName = $("#username").val();
+            var passWord = $("#password").val();
+
+            var url = '@Url.Action("SMSLoginV2")' + '?userName=' + userName + "&passWord=" + passWord;
             url = encodeURI(url);
             $.ajax({
                 url: url,
@@ -99,7 +106,9 @@
                     if (obj.State == 1) {
                         time(e);
                         alert("验证码发送成功");
-                      
+
+                    } else {
+                        alert("登陆失败,失败原因:"+obj.Msg);
                     }
                 }
             });
