@@ -140,6 +140,8 @@ namespace DataLayer.IplusOADB
         public virtual DbSet<SingleLoginCheck> SingleLoginCheckTable { get; set; }
         public virtual DbSet<VolShow> VolShowTable { get; set; }
         public virtual DbSet<VolShowHtmlFile> VolShowHtmlFileTable { get; set; }
+        public virtual DbSet<SerTypes> SerTypesTable { get; set; }
+        public virtual DbSet<SunGovs> SunGovsTable { get; set; }
         
     }
 }

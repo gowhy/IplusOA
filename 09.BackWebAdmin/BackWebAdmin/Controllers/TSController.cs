@@ -97,6 +97,19 @@ namespace BackWebAdmin.Controllers
                 return Json(list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size));
             }
         }
+        public ActionResult AppIndexByDepId(string depId, int? page, int? pageSize)
+        {
+            var pageNumber = page ?? 1;
+            var size = pageSize ?? 20;
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                var sup = db.SuperviseTable;
+                var list = from s in sup select s;
+                list = list.Where(x => x.DepId == depId);
+                return Json(list.ToPagedList(pageNumber - 1, size));
+            }
+        }
+
 
         public ActionResult View(int id)
         {

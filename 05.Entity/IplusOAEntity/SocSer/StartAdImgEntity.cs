@@ -16,6 +16,7 @@ namespace IplusOAEntity
         public string DepId { get; set; }
         public string Des { get; set; }
         public int State { get; set; }
+        public string WebSiteUrl { get; set; }
     }
 
    public class StartAdImgEntityClone
@@ -27,6 +28,7 @@ namespace IplusOAEntity
        public string DepId { get; set; }
        public string Des { get; set; }
        public string DepName { get; set; }
+       public string WebSiteUrl { get; set; }
        public int State { get; set; }
        private List<string> httpUrlList;
 

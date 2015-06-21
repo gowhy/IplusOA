@@ -37,7 +37,7 @@
                             <select id="PayType" name="PayType">
                                 <option value="无偿">无偿</option>
                                 <option value="无偿">低偿</option>
-
+                             
                             </select>
                         </td>
                     </tr>
@@ -52,12 +52,27 @@
                         </td>
                     </tr>
                     <tr>
+                        <td class="item_title">公益/便民:</td>
+                        <td class="item_input">
+                            <select id="SerType" name="ISUserApply">
+                                <option value="0">公益</option>
+                                <option value="1">便民</option>
+
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
                         <td class="item_title">
                             服务类型:
                         </td>
                         <td class="item_input">
                             <select name="Type">
-                                <option value="GYFN">法律服务</option>
+                               
+                                @foreach (var item in (new BackWebAdmin.FunctionHelper()).dicSerType)
+                                {
+                                    <option value="@item.Key">@item.Value</option>
+                                }
+                                @*<option value="GYFN">法律服务</option>
                                 <option value="GYYLFW">医疗服务</option>
                                 <option value="GYWH">文化娱乐</option>
                                 <option value="GYYL">居家养老</option>
@@ -69,7 +84,7 @@
                                 <option value="SYWX">家居维修</option>
                                 <option value="SYJR">金融服务</option>
                                 <option value="SYYH">优惠进社区</option>
-                                @*<option value="TV8">TV8折购物</option>*@
+                                @*<option value="TV8">TV8折购物</option>
                                 <option value="JYPX">教育培训</option>
                                 <option value="MSKD">美食快递</option>
                                 <option value="XLYL">休闲娱乐</option>
@@ -77,7 +92,7 @@
                                 <option value="XHKD">鲜花快递</option>
                                 <option value="SQCF">社区厨房</option>
                                 <option value="MYQZ">母婴亲子</option>
-                                <option value="SSSG">生疏水果</option>
+                                <option value="SSSG">生疏水果</option>*@
                             </select>
                         </td>
                     </tr>

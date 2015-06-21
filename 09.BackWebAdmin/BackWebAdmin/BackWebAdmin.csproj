@@ -179,6 +179,7 @@
     <Compile Include="Content\plug-in\ueditor\net\App_Code\PathFormater.cs" />
     <Compile Include="Content\plug-in\ueditor\net\App_Code\UploadHandler.cs" />
     <Compile Include="Controllers\AppMsgSendController.cs" />
+    <Compile Include="Controllers\SerTypeController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ChangeGoodsController.cs" />
     <Compile Include="Controllers\CommController.cs" />
@@ -202,6 +203,7 @@
     <Compile Include="Controllers\TSController.cs" />
     <Compile Include="Controllers\TV8Controller.cs" />
     <Compile Include="Controllers\GridMemberController.cs" />
+    <Compile Include="Controllers\SunGovController.cs" />
     <Compile Include="Controllers\WorkGuideController.cs" />
     <Compile Include="Controllers\NoticeController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
@@ -231,6 +233,7 @@
     <Compile Include="Models\SocSer\ShowSocSerDetailCommentModel.cs" />
     <Compile Include="Models\SocSer\ShowVolDoingModel.cs" />
     <Compile Include="Models\SOrg\SelectSorgModel.cs" />
+    <Compile Include="Models\SunGovModel.cs" />
     <Compile Include="Models\UEditorModel.cs" />
     <Compile Include="Models\UEditorReturnModel.cs" />
     <Compile Include="Models\Vol\SelectVolModel.cs" />
@@ -1239,6 +1242,11 @@
     <Content Include="Views\Seller\Edit.cshtml" />
     <Content Include="Views\VolShow\Add.cshtml" />
     <Content Include="Views\VolShow\Index.cshtml" />
+    <Content Include="Views\SerType\Index.cshtml" />
+    <Content Include="Views\SerType\Add.cshtml" />
+    <Content Include="Views\SunGov\Index.cshtml" />
+    <Content Include="Views\SunGov\Add.cshtml" />
+    <Content Include="Views\SunGov\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\02.Common\Common\Common.csproj">

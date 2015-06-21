@@ -187,6 +187,7 @@ namespace IplusOAEntity
 
         public string UploadHtmlFile { get; set; }
         public string LinkSocSerUrl { get; set; }
+        public string SerType { get; set; }
         #endregion Model
     }
 }

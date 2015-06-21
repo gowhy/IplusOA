@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SunGovs.cs" />
     <Compile Include="AppMsgSend.cs" />
     <Compile Include="AppSendMsgContent.cs" />
     <Compile Include="BackAdminUser.cs" />
@@ -49,6 +50,7 @@
     <Compile Include="Count\DpEntity.cs" />
     <Compile Include="EnumState.cs" />
     <Compile Include="Gird\GridMember.cs" />
+    <Compile Include="SerTypes.cs" />
     <Compile Include="Login\SingleLoginCheck.cs" />
     <Compile Include="Prize\Prize.cs" />
     <Compile Include="Prize\PrizeRecord.cs" />
