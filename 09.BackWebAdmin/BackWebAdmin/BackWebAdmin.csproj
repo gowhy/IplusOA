@@ -191,6 +191,7 @@
     <Compile Include="Controllers\ScoreMallController.cs" />
     <Compile Include="Controllers\SignInController.cs" />
     <Compile Include="Controllers\ScratchCardController.cs" />
+    <Compile Include="Controllers\MicrWebSiteController.cs" />
     <Compile Include="Controllers\VillageCompanyController.cs" />
     <Compile Include="Controllers\VolShowController.cs" />
     <Compile Include="Controllers\WishController.cs" />
@@ -233,6 +234,7 @@
     <Compile Include="Models\SocSer\ShowSocSerDetailCommentModel.cs" />
     <Compile Include="Models\SocSer\ShowVolDoingModel.cs" />
     <Compile Include="Models\SOrg\SelectSorgModel.cs" />
+    <Compile Include="Models\MicrWebSiteModel.cs" />
     <Compile Include="Models\SunGovModel.cs" />
     <Compile Include="Models\UEditorModel.cs" />
     <Compile Include="Models\UEditorReturnModel.cs" />
@@ -1247,6 +1249,9 @@
     <Content Include="Views\SunGov\Index.cshtml" />
     <Content Include="Views\SunGov\Add.cshtml" />
     <Content Include="Views\SunGov\Edit.cshtml" />
+    <Content Include="Views\MicrWebSite\Index.cshtml" />
+    <Content Include="Views\MicrWebSite\Add.cshtml" />
+    <Content Include="Views\MicrWebSite\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\02.Common\Common\Common.csproj">

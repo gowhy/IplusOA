@@ -1,4 +1,4 @@
-﻿@model  IPagedList<BackWebAdmin.SunGovModel>
+﻿@model  IPagedList<BackWebAdmin.MicrWebSiteModel>
 @using MvcContrib.UI.Grid
 @using MvcContrib.Pagination;
 @using MvcContrib.UI.Pager;
@@ -42,20 +42,21 @@
                                   {
                                       // column.CheckBox(x => x.Id);
                                       //   column.For(x => x.Id).Named("编号").HeaderAttributes(style => "width:50px;align:center;");
-                                      column.For(x => x.SunGovEntity.Id).Named("编号");
-                                      column.For(x => x.SunGovEntity.Phone).Named("电话");
-                                      column.For(x => x.SunGovEntity.DeptId).Named("社区Id");
+                                      column.For(x => x.MicrWebSiteEntity.Id).Named("编号");
+                                      column.For(x => x.MicrWebSiteEntity.Name).Named("名称");
+                                      column.For(x => x.MicrWebSiteEntity.Type).Named("类型");
+                                      column.For(x => x.MicrWebSiteEntity.DeptId).Named("社区Id");
+                                      column.For(x => x.MicrWebSiteEntity.LinkUrl).Named("连接地址");
+                                      column.For(x => x.MicrWebSiteEntity.ImgUrl).Named("App用图片");
                                       column.For(x => x.DepartmentEntity.Name).Named("社区名称");
                                       column.For(x => x.BackAdminUserEntity.UserName).Named("添加人员用户名");
                                       column.For(x => x.BackAdminUserEntity.RealName).Named("添加人员真实姓名");
                                       column.For(x => x.BackAdminUserEntity.Phone).Named("添加人员手机号");
-                                      column.For(x => x.SunGovEntity.UploadHtmlFile).Named("HTML文件地址");
-                                      column.For(x => x.SunGovEntity.ImgUrl).Named("App用图片");
-                                      column.For(x => x.SunGovEntity.AddTime.ToString("yyyy-MM-dd HH:mm")).Named("添加时间");
+                                      column.For(x => x.MicrWebSiteEntity.AddTime.ToString("yyyy-MM-dd HH:mm")).Named("添加时间");
                                       // column.For(x => x.DepName).Named("社区");
                                       column.Buttons(btns => btns
-                                          .Add(x => Html.ActionLink("编辑", "edit", new { id = x.SunGovEntity.Id }))
-                                          .Add(x => Html.ScriptLink("删除", "del({0})".FormatWith(x.SunGovEntity.Id)))
+                                          .Add(x => Html.ActionLink("编辑", "edit", new { id = x.MicrWebSiteEntity.Id }))
+                                          .Add(x => Html.ScriptLink("删除", "del({0})".FormatWith(x.MicrWebSiteEntity.Id)))
 
                                                                  );
                                   }).Complex(ViewData)
@@ -64,4 +65,4 @@
     </div>
     @Html.Pager(Model)
 </div>
- 
+

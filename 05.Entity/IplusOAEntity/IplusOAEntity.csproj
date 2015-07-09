@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MicrWebSite.cs" />
     <Compile Include="SunGovs.cs" />
     <Compile Include="AppMsgSend.cs" />
     <Compile Include="AppSendMsgContent.cs" />

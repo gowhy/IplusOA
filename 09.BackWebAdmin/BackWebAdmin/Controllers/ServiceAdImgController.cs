@@ -42,7 +42,9 @@ namespace BackWebAdmin.Controllers
                                Des = a.Des,
                                AddTime = a.AddTime,
                                State=a.State,
-                               CoverCommunity=a.CoverCommunity
+                               CoverCommunity=a.CoverCommunity,
+                               LinkUrl = a.LinkUrl
+
                             
 
                            };

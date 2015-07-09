@@ -1,4 +1,5 @@
 ﻿@using Common;
+@model  IplusOAEntity.MicrWebSite
 @{
     Layout = null;
 }
@@ -10,9 +11,6 @@
 @Html.IncludeCSS("~/Content/EasyUI/themes/gray/easyui.css")
 @Html.IncludeCSS("~/Content/EasyUI/themes/icon.css")
 
-<script>
-    window.UEDITOR_HOME_serverPath = "@Url.Content("../../../SunGov/ImgFile")";
-</script>
 
 
 
@@ -30,18 +28,30 @@
 
 
 <div id="tt">
-    <a href="@Url.Action("Index", "SunGov")" style=" width:100px;">返回列表</a>
-    @*<a href="@HttpContext.Current.Request.UrlReferrer" style=" width:100px;padding-left:20px;">返回列表</a>*@
+    <a href="@Url.Action("Index", "MicrWebSite")" style=" width:100px;">返回列表</a>
+
 </div>
 <div id="p" class="easyui-panel" title="新增" style="height:530px;padding:10px;"
      data-options="iconCls:'icon-add',closable:false,tools:'#tt'">
 
-    <form name="postadd" action="@Url.Action("PostAdd")" id="postadd" method="post" enctype="multipart/form-data">
+    <form name="postedit" action="@Url.Action("PostEdit")" id="postedit" method="post" enctype="multipart/form-data">
         <table class="form" cellpadding="0" cellspacing="0">
             <tbody>
                 <tr>
-                    <td class="item_title">电话:</td>
-                    <td class="item_input"><input type="text" class="textbox require easyui-validatebox" missingmessage="必须填写" data-options="required:true" name="Phone" /></td>
+                    <td class="item_title">名称:</td>
+                    <td class="item_input">
+                        <input type="text" class="textbox require easyui-validatebox" missingmessage="必须填写" data-options="required:true" value="@Model.Name" name="Name" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="item_title">类型:</td>
+                    <td class="item_input">
+                        <select id="Type" name="Type">
+                            <option value="公益">公益</option>
+                            <option value="便民">便民</option>
+                            <option value="社区">社区</option>
+                        </select>
+                    </td>
                 </tr>
                 <tr>
                     <td class="item_title">App列表图片:</td>
@@ -53,33 +63,50 @@
                         <input type="hidden" name="ImgUrl" id="ImgUrl" value="" />
                         双击删除图片
                         <div id="imgQueue">
+                            @if (!string.IsNullOrEmpty(Model.ImgUrl))
+                            {
+                                foreach (var item in Model.ImgUrl.Split('#'))
+                                {
+                                    if (!string.IsNullOrEmpty(item))
+                                    {
+                                        <img ondblclick="delImgSocSer(this)" src="@item" title="双击删除图片" alt="" width="160" height="140" />
+                                    }
+
+                                }
+                            }
                         </div>
                     </td>
                 </tr>
+
                 <tr>
                     <td class="item_title">连接地址:</td>
-                    <td class="item_input"><input type="text" class="textbox   easyui-validatebox" missingmessage="必须填写"  name="LinkUrl" /></td>
+                    <td class="item_input"><input type="text" class="textbox   easyui-validatebox" missingmessage="必须填写" value="@Model.LinkUrl" name="LinkUrl" /></td>
                 </tr>
                 <tr>
                     <td class="item_title">上传服务HTML文件:</td>
                     <td class="item_input">
-                        <input type="hidden" id="UploadHtmlFile" name="uploadhtmlfile" />
-                        <span id="HtmlFileName"></span>
+                        <input type="hidden" id="UploadHtmlFile" value="@Model.UploadHtmlFile" name="uploadhtmlfile" />
+                        <span id="HtmlFileName">@Model.UploadHtmlFile</span>
                         <input type="text" class="textbox  easyui-validatebox" id="SaveUploadHtmlFile" name="SaveUploadHtmlFile" />
-                   
+
                     </td>
                 </tr>
-              
+
+
+
+
                 <tr>
                     <td class="item_title"></td>
                     <td class="item_input">
-                        <a href="javascript:void(0)" id="btnsubmitForm" class="easyui-linkbutton">新增</a>
+                        <input type="hidden" name="Id" value="@Model.Id" />
+                        <a href="javascript:void(0)" id="btnsubmitForm" class="easyui-linkbutton">修改</a>
                     </td>
                 </tr>
 
             </tbody>
         </table>
     </form>
+
 </div>
 @Html.IncludeScript("~/Content/EasyUI/jquery-1.8.0.min.js")
 @Html.IncludeScript("~/Content/Js/jquery.timer.js")
@@ -93,7 +120,7 @@
 @Html.IncludeScript("~/Content/plug-in/uploadify/jquery.uploadify-3.1.js")
 
 @Html.IncludeScript("~/Content/plug-in/ueditor/ueditor.config.js")
-@Html.IncludeScript("~/Content/plug-in/ueditor/ueditor.all.js")
+@Html.IncludeScript("~/Content/plug-in/ueditor/ueditor.all.min.js")
 @Html.IncludeScript("~/Content/plug-in/ueditor/lang/zh-cn/zh-cn.js")
 
 
@@ -118,14 +145,14 @@
 
     $(function () {
 
- 
+        $("#Type").val("@Model.Type");
 
         function submitForm() {
             $("#imgQueue img").each(function () {
                 $("#ImgUrl").val($("#ImgUrl").val() + "#" + $(this).attr("src"));
             });
-       
-            $('#postadd').submit();
+
+            $('#postedit').submit();
         }
 
         $("#btnsubmitForm").click(function () {
@@ -138,7 +165,7 @@
             //指定swf文件
             'swf': "@Url.Content("~/Content/plug-in/uploadify/uploadify.swf")",
             //后台处理的页面
-            'uploader': '/workguide/SaveImg',
+            'uploader': '/workGuide/SaveImg',
             //按钮显示的文字
             'buttonText': '上传图片',
             "queueSizeLimit": 5,//队列中允许的最大文件数目
@@ -171,12 +198,11 @@
             }
 
         });
-
         $("#SaveUploadHtmlFile").uploadify({
             //指定swf文件
             'swf':"@Url.Content("~/Content/plug-in/uploadify/uploadify.swf")",
         //后台处理的页面
-            'uploader': '/SunGov/SaveUploadHtmlFile',
+            'uploader': '/WorkGuide/SaveUploadHtmlFile',
         //按钮显示的文字
        'buttonText': '上传HTML文件',
        'fileTypeExts': '*.html; *.htm; ',
@@ -195,5 +221,6 @@
         }
 
     });
+
     });
 </script>

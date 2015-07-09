@@ -20,6 +20,7 @@ namespace IplusOAEntity
         public string CoverCommunity { get; set; }
         [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public string CoverCommunityNames { get; set; }
+        public string LinkUrl { get; set; }
     }
 
     public class ServiceAdImgEntityClone
@@ -61,6 +62,6 @@ namespace IplusOAEntity
            }
            set { httpUrlList = value; }
        }
-       
+       public string LinkUrl { get; set; }
    }
 }
