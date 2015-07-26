@@ -1572,5 +1572,29 @@ namespace BackWebAdmin.Controllers
 
             return Json(res);
         }
+
+        /// <summary>
+        /// App推送消息标识
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult PushMsg(int id)
+        {
+
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                SocServiceDetailEntity notice = db.SocServiceDetailEntityTable.Find(id);
+                if (notice.PushState >= 1)
+                {
+                    return Json("已经推送,不能再推送");
+                }
+                notice.PushState = 1;
+
+                db.Update<SocServiceDetailEntity>(notice);
+                db.SaveChanges();
+                db.Dispose();
+                return Json("操作成功");
+            }
+        }
     }
 }

@@ -519,5 +519,35 @@ namespace BackWebAdmin.Controllers
 
 
         }
+
+        public ActionResult MicrWebSite_AppIndex(string depId, int? page, int? pageSize)
+        {
+            var pageNumber = page ?? 1;
+            var size = pageSize ?? 20;
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+
+                var dept = db.DepartmentTable;
+                var sungov = db.MicrWebSiteTable;
+                var backUser = db.BackAdminUserEntityDBSet;
+                var list = from s in sungov
+                           join b in backUser on s.AddUserId equals b.Id
+                           join d in dept on s.DeptId equals d.Id
+                           select new MicrWebSiteModel
+                           {
+                               BackAdminUserEntity = b,
+                               MicrWebSiteEntity = s,
+                               DepartmentEntity = d
+                           };
+
+
+                if (!string.IsNullOrEmpty(depId))
+                {
+                    list = list.Where(x => x.MicrWebSiteEntity.DeptId == depId);
+                }
+
+                return Json(list.OrderByDescending(x => x.MicrWebSiteEntity.Id).ToPagedList(pageNumber - 1, size), JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

@@ -20,5 +20,6 @@ namespace IplusOAEntity
         public int Count { get; set; }
 
         public int AddUserId { get; set; }
+        public string CoverCommunity { get; set; }
     }
 }

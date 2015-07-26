@@ -68,7 +68,22 @@
                     <td class="item_title">库存:</td>
                     <td class="item_input"><input type="text" class="textbox require easyui-validatebox" missingmessage="必须填写" data-options="required:true" name="Count" value="0" /></td>
                 </tr>
+                <tr>
+                    <td class="item_title">覆盖社区:</td>
+                    <td class="item_input">
+                        <input type="hidden" name="CoverCommunity" id="CoverCommunityIds" />
 
+                        <a id="menuBtn" href="#" onclick="showMenu(this)">请选择 &nbsp; &nbsp;</a>
+
+                        <div id="menuContent" class="menuContent" style="display: none; z-index: 10000; position:absolute;">
+                            <ul id="ztree" class="ztree" style="margin-top:0;   overflow:scroll; height:270px;"></ul>
+                        </div>
+
+                        <span class="textbox" id="CoverCommunityNames"></span>
+
+                    </td>
+
+                </tr>
                 <tr>
                     <td class="item_title">描述:</td>
                     <td class="item_input">
@@ -97,13 +112,139 @@
 @Html.IncludeScript("~/Content/Js/common.js")
 
 @Html.IncludeScript("~/Content/EasyUI/jquery.easyui.min.js")
-
+@Html.IncludeScript("~/Content/plug-in/ztree/js/jquery.ztree.core-3.5.js")
+@Html.IncludeScript("~/Content/plug-in/ztree/js/jquery.ztree.excheck-3.5.js")
 @Html.IncludeScript("~/Content/plug-in/uploadify/jquery.uploadify-3.1.js")
+
 
 <script>
 
 
 
+    var setting = {
+        view: {
+            dblClickExpand: false,
+            showLine: true,
+            selectedMulti: false
+
+        },
+        check: {
+            enable: true ,
+            chkStyle: "radio",
+            radioType: "all"
+        },
+        data: {
+            simpleData: {
+                enable: true,
+                idKey: "Id",
+                pIdKey: "PId",
+                rootPId: ""
+            },
+            key: {
+                name: "Name"
+            }
+
+        },
+        callback: {
+            beforeCheck: beforeCheck,
+            onCheck: onCheck
+        }
+    };
+
+    var zNodes =@(Html.Raw(ViewData["Department_List"].ToString()));
+
+
+    function beforeCheck(treeId, treeNode) {
+
+    }
+    function onCheck(e, treeId, treeNode) {
+        $("#DepId").val(treeNode.Id);
+        $("#CoverCommunity").val(treeNode.Name);
+    }
+
+    function showMenu() {
+        $("#menuContent").slideDown("fast");
+        $("body").bind("mousedown", onBodyDown);
+    }
+    function hideMenu() {
+        $("#menuContent").fadeOut("fast");
+        $("body").unbind("mousedown", onBodyDown);
+    }
+    function onBodyDown(event) {
+        if (!(event.target.id == "menuBtn" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length>0)) {
+            hideMenu();
+        }
+    }
+
+
+    $(document).ready(function () {
+        $.fn.zTree.init($("#ztree"), setting, zNodes);
+    });
+
+    var setting = {
+        view: {
+            dblClickExpand: false,
+            showLine: true,
+            selectedMulti: false
+        },
+        check: {
+            enable: true
+        },
+        data: {
+            simpleData: {
+                enable: true,
+                idKey: "Id",
+                pIdKey: "PId",
+                rootPId: ""
+            },
+            key: {
+                name: "Name"
+            }
+
+        },
+        callback: {
+            beforeCheck: beforeCheck,
+            onCheck: onCheck
+        }
+    };
+
+    var zNodes =@(Html.Raw(ViewData["Department_List"].ToString()))
+
+    function onCheck(e, treeId, treeNode) {
+        var checkString="";
+        var  checkStringNames="";
+        var zTree = $.fn.zTree.getZTreeObj("ztree");
+        var checkNodesChild=    zTree.getCheckedNodes(true);
+        for (var i = 0; i < checkNodesChild.length; i++) {
+            if (!checkNodesChild[i].isParent) {
+                checkString+=","+checkNodesChild[i].Id;
+                checkStringNames+=checkNodesChild[i].Name+",";
+            }
+        }
+        $("#CoverCommunityIds").val(checkString);
+        $("#CoverCommunityNames").text(checkStringNames);
+
+    }
+
+    function beforeCheck(treeId, treeNode) {
+
+    }
+
+    function onBodyDown(event) {
+        if (!(event.target.id == "menuBtn" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length>0)) {
+            hideMenu();
+        }
+    }
+
+    function showMenu(e) {
+
+        $("#menuContent").css("top", $(e).offset().top+15).slideDown("fast");
+        $("body").bind("mousedown", onBodyDown);
+    }
+    function hideMenu() {
+        $("#menuContent").fadeOut("fast");
+        $("body").unbind("mousedown", onBodyDown);
+    }
 
     function clearForm() {
         $('#postadd').form('clear');
@@ -118,12 +259,12 @@
 
     $(function () {
 
-      
+        $.fn.zTree.init($("#ztree"), setting, zNodes);
         function submitForm() {
             $("#imgQueue img").each(function () {
                 $("#ImgUrl").val($("#ImgUrl").val() + "#" + $(this).attr("src"));
             });
-          
+
             $('#postadd').submit();
         }
 

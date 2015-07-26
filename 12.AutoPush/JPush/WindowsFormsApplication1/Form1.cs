@@ -68,6 +68,7 @@ namespace WindowsFormsApplication1
                 Console.WriteLine("开始运行时间: " + DateTime.Now);
                 AsyncPushNotice();
                 AsyncPushWorkGuide();
+                AsyncPushSocSer();
                 Console.WriteLine("结束运行时间: " + DateTime.Now);
             }
             catch (APIRequestException ex)
@@ -177,6 +178,67 @@ namespace WindowsFormsApplication1
                 }
                 while (uStringList != null && uStringList.Length == 999);
 
+
+            }
+            var ret = client.SendPush(payload);
+            return ret;
+
+        }
+
+
+        public async static Task<MessageResult> AsyncPushSocSer()
+        {
+
+            MessageResult res = await PushSocSer();
+            return res;
+        }
+        public async static Task<MessageResult> PushSocSer()
+        {
+
+            PushPayload payload = null;
+            string IUrl = "SocSer/AppIndex";
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                var socSerTable = db.SocServiceDetailEntityTable;
+                SocServiceDetailEntity socSerModel = socSerTable.OrderBy(x => x.Id).FirstOrDefault(x => x.PushState == 1);
+                if (socSerModel == null)
+                {
+                    return new MessageResult();
+                }
+                socSerModel.PushState = 2;
+                db.Update<SocServiceDetailEntity>(socSerModel);
+                db.SaveChanges();
+
+
+             
+
+                string[] DepIdList = socSerModel.CoverCommunity.Split(',');
+
+                foreach (var item in DepIdList)
+                {
+                    if (string.IsNullOrEmpty(item))
+                    {
+                        continue;
+                    }
+                    var UserList = from c in db.AppMsgSendTable
+                                   join v in db.VolunteerEntityTable on c.UserId equals v.Id
+                                   where v.DepId == item
+                                   select c.TCode;
+                    string[] uStringList = null;
+                    int i = 0;
+                    do
+                    {
+
+                        uStringList = UserList.ToPagedList(i, 999).ToArray();
+                        if (uStringList == null || uStringList.Length == 0)
+                        {
+                            break;
+                        }
+                        payload = PushObject_all_regId_alert(socSerModel.Context, IUrl + "?id=" + socSerModel.Id, uStringList);
+                        i++;
+                    }
+                    while (uStringList != null && uStringList.Length == 999);
+                }
 
             }
             var ret = client.SendPush(payload);

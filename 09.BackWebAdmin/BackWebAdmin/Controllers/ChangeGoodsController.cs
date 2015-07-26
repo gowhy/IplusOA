@@ -38,6 +38,12 @@ namespace BackWebAdmin.Controllers
 
         public ActionResult Add()
         {
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                var list = db.DepartmentTable.AsQueryable<DepartmentEntity>().Where(x => x.Level <= 6).ToList();
+                ViewData["Department_List"] = HelpSerializer.JSONSerialize<List<DepartmentEntity>>(list);
+            }
+
             return View();
         }
 
