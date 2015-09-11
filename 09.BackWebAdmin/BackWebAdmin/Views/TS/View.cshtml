@@ -15,6 +15,9 @@
 
 
 
+
+
+
 <div id="tt">
     @*<a href="@Url.Action("Index", "ts")" style=" width:100px;">返回列表</a>*@
     <a href="@HttpContext.Current.Request.UrlReferrer" style=" width:100px;padding-left:20px;">返回列表</a>
@@ -25,6 +28,12 @@
     <form name="postedit" action="@Url.Action("PostEdit")" id="postedit" method="post" enctype="multipart/form-data">
         <table class="form" cellpadding="0" cellspacing="0">
             <tbody>
+                <tr>
+                    <td class="item_title">投诉时间:</td>
+                    <td class="item_input">
+                        <div>@Model.AddTime.ToString("yyyy-MM-dd HH:mm")</div>
+                    </td>
+                </tr>
                 <tr>
                     <td class="item_title">投诉用户电话:</td>
                     <td class="item_input">
@@ -41,6 +50,7 @@
                     <td class="item_title">投诉用户地址:</td>
                     <td class="item_input">
                         <div>@Model.Address</div>
+                        <span style="margin-top:20px; float:right;"><a href="javascript:void(0)" class="easyui-linkbutton" id="apply4">地图</a></span>
                     </td>
                 </tr>
                 <tr>
@@ -84,8 +94,8 @@
                             <textarea class="textbox require" id="msg" name="Msg" rows="5" cols="60">@Model.Msg </textarea>
                         <a href="javascript:void(0)" class="easyui-linkbutton" style=" margin-top:-80px; vertical-align:middle; "  id="apply">回复并赠予积分</a>
                         <a href="javascript:void(0)" class="easyui-linkbutton" style=" margin-top:-80px; vertical-align:middle; " id="apply2">回复</a>
-                        <a href="javascript:void(0)" class="easyui-linkbutton" style=" margin-top:-80px; vertical-align:middle; " id="apply3">提交12319</a>
-                    
+                        <a href="javascript:void(0)" class="easyui-linkbutton" style=" margin-top:-80px; vertical-align:middle; " id="apply3">提交12345</a>
+                      
                     
                     </td>
                 </tr>
@@ -136,10 +146,38 @@
                 </tr>
             </tbody>
         </table>
+    
     </form>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=FNPl3QNuzUBsWMRXUSolYLk1"></script>
     <script type="text/javascript">
 
+   
     $(document).ready(function () {
+
+
+        function ShowMap(id) {
+
+            var url = '@Url.Action("ShowMap")' + "?id="+id;
+
+            showAjaxResult(url, "地图", 750, 500);
+        }
+        $("#apply4").click(function () {
+            var id = $("#id").val();
+            ShowMap(id);
+
+            /*var map = new BMap.Map("container", { mapType: BMAP_SATELLITE_MAP });
+            var point = new BMap.Point(106.673397, 26.440882);
+            map.centerAndZoom(point, 18);
+
+
+            var marker = new BMap.Marker(point);  // 创建标注
+            map.addOverlay(marker);
+            var label = new BMap.Label("我是文字标注哦", { offset: new BMap.Size(20, -10) });
+            marker.setLabel(label);
+            */
+          
+
+        });
 
         function AdminApply(id, state, msg) {
 
@@ -177,6 +215,10 @@
 
 
     </script>
+
+  
+
+
 
 </div>
 

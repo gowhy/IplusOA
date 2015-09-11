@@ -1,0 +1,49 @@
+﻿@model  IPagedList<BackWebAdmin.ScoreExchangeRateModel>
+@using MvcContrib.UI.Grid
+@using MvcContrib.Pagination;
+@using MvcContrib.UI.Pager;
+@using Common;
+
+<script type="text/javascript">
+
+    function del(id) {
+
+        var url = '@Url.Action("Delete")' + '?id=' + id;
+        deleteMethod(id, "Delete");
+        //showAjaxResult(url, "删除用户中......", 600, 400);
+    }
+
+
+
+</script>
+<style>
+    .combo {
+        vertical-align: bottom;
+    }
+</style>
+<form id="indexFrom">
+
+    <div style="float: left; height: 40px; text-align: center;">
+        <span><a class="easyui-linkbutton" data-options="iconCls:'icon-add'" title="新增" href="@Url.Action("Add")">新增</a></span>
+
+    </div>
+</form>
+<div class="grid_box">
+    <div class="grid_top">
+    </div>
+    @Html.Grid(Model).Columns(column =>
+                                  {
+                                      column.For(x => x.DepartmentEntity.Name).Named("名称").HeaderAttributes(style => "width:150px;align:center;");
+                                      column.For(x => x.ScoreExchangeRateEntity.AddTime.ToString("yyyy-MM-dd HH:mm")).Named("登记时间").HeaderAttributes(style => "width:140px;align:center;");
+                                      column.For(x => x.ScoreExchangeRateEntity.Rate).Named("积分兑换比例");
+      
+                                      column.Buttons(btns => btns
+                                          .Add(x => Html.ActionLink("编辑", "Edit", new { id = x.ScoreExchangeRateEntity.Id }))
+                                          .Add(x => Html.ScriptLink("删除", "del({0})", x.ScoreExchangeRateEntity.Id))
+                                          );
+                                  }).Complex(ViewData)
+    <div class="grid_foot">
+    </div>
+</div>
+
+@Html.Pager(Model)

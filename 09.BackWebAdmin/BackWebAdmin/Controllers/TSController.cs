@@ -239,5 +239,18 @@ namespace BackWebAdmin.Controllers
 
             return Success("操作成功");
         }
+
+        public PartialViewResult ShowMap(int? id )
+        {
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                SuperviseEntity sup = db.SuperviseTable.Find(id);
+
+                return PartialView(sup);
+            }
+         
+            
+            
+        }
     }
 }

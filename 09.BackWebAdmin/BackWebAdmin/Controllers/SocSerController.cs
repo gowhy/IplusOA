@@ -625,10 +625,22 @@ namespace BackWebAdmin.Controllers
                 for (int i = 0; i < recordListEntity.Count(); i++)
                 {
                     VolunteerEntity volTmp = vol.Find(recordListEntity[i].VId);
-                    volTmp.Score = volTmp.Score + deEntity.Score;//给自愿者加积分
+                   
+                    ScoreExchangeRate serEntity=  db.ScoreExchangeRateTable.SingleOrDefault(x => x.DepId == volTmp.DepId);
+                    if (serEntity!=null)
+                    {
+                        volTmp.Score = volTmp.Score +(int?)(deEntity.Score * serEntity.Rate);//给如果社区配置得有积分比例，则乘与相应比例
+                    }
+                    else
+                    {
+                        volTmp.Score = volTmp.Score + deEntity.Score;//给自愿者加积分
+                    }
+                
+
                     db.Update<VolunteerEntity>(volTmp);
                     db.SaveChanges();
-
+                  
+                
                     recordListEntity[i].State = 2;//修改服务记录状态
                     db.Update<SerRecordEntity>(recordListEntity[i]);
                     db.SaveChanges();

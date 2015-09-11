@@ -276,14 +276,14 @@ namespace BackWebAdmin.Controllers
                         loginModel.UserId = entity.Id;
 
 
-                        if (!SingleLoginCheckService.Check(loginModel))
-                        {
+                        //if (!SingleLoginCheckService.Check(loginModel))
+                        //{
 
-                            entity = new Seller();
-                            entity.State = -3;
-                            entity.Msg = "必须从新登陆." + admin.Msg;
-                            return Json(entity);
-                        }
+                        //    entity = new Seller();
+                        //    entity.State = -3;
+                        //    entity.Msg = "必须从新登陆." + admin.Msg;
+                        //    return Json(entity);
+                        //}
 
                         DateTime codeOutTime = DateTime.Now.AddMinutes(-10);
                         int existCount = db.SMSTable.Count(x => x.Phone == entity.Phone && x.VCode == vCode.Trim() && x.BType == 3 && x.AddTime > codeOutTime);
@@ -293,6 +293,8 @@ namespace BackWebAdmin.Controllers
                             admin.State = -2;
                             return View(admin);
                         }
+
+
 
                         entity.PassWord = null;
                         entity.Msg += "登录成功";

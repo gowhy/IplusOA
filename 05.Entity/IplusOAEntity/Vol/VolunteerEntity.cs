@@ -216,6 +216,8 @@ namespace IplusOAEntity
         /// 小区Id
         /// </summary>
         public string VillDeptId { get; set; }
+
+        public int VolType { get; set; }
         #endregion Model
 
     }

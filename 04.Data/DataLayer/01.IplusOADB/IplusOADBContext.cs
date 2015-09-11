@@ -143,7 +143,7 @@ namespace DataLayer.IplusOADB
         public virtual DbSet<SerTypes> SerTypesTable { get; set; }
         public virtual DbSet<SunGovs> SunGovsTable { get; set; }
         public virtual DbSet<MicrWebSite> MicrWebSiteTable { get; set; }
-        
-        
+        public virtual DbSet<ScoreExchangeRate> ScoreExchangeRateTable { get; set; }
+          
     }
 }

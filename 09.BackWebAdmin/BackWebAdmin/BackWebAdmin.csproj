@@ -180,6 +180,7 @@
     <Compile Include="Content\plug-in\ueditor\net\App_Code\PathFormater.cs" />
     <Compile Include="Content\plug-in\ueditor\net\App_Code\UploadHandler.cs" />
     <Compile Include="Controllers\AppMsgSendController.cs" />
+    <Compile Include="Controllers\ScoreExchangeRateController.cs" />
     <Compile Include="Controllers\SerTypeController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ChangeGoodsController.cs" />
@@ -226,6 +227,7 @@
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\MsgModel.cs" />
     <Compile Include="Models\Role\RoleModel.cs" />
+    <Compile Include="Models\ScoreExchangeRateModel.cs" />
     <Compile Include="Models\ShowPrizeRecordModel.cs" />
     <Compile Include="Models\ShowWishModel.cs" />
     <Compile Include="Models\SocSer\SelectSocSerModel.cs" />
@@ -1253,6 +1255,10 @@
     <Content Include="Views\MicrWebSite\Index.cshtml" />
     <Content Include="Views\MicrWebSite\Add.cshtml" />
     <Content Include="Views\MicrWebSite\Edit.cshtml" />
+    <Content Include="Views\TS\ShowMap.cshtml" />
+    <Content Include="Views\ScoreExchangeRate\Add.cshtml" />
+    <Content Include="Views\ScoreExchangeRate\Index.cshtml" />
+    <Content Include="Views\ScoreExchangeRate\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\02.Common\Common\Common.csproj">

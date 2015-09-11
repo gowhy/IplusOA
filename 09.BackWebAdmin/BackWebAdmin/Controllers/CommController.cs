@@ -549,5 +549,32 @@ namespace BackWebAdmin.Controllers
                 return Json(list.OrderByDescending(x => x.MicrWebSiteEntity.Id).ToPagedList(pageNumber - 1, size), JsonRequestBehavior.AllowGet);
             }
         }
+
+        public ActionResult AppGetVolByDept(string depId,int volType, int? page, int? pageSize)
+        { 
+         var pageNumber = page ?? 1;
+            var size = pageSize ?? 20;
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+
+                var vol = db.VolunteerEntityTable;
+
+                var list = from v in vol
+                           where v.DepId == depId && v.VolType == volType
+                           select new VolunteerEntityClone
+                           {
+                               RealName = v.RealName,
+                               UerName = v.UerName,
+                               Score = v.Score,
+                               ThsScore = v.ThsScore,
+                               Sex = v.Sex,
+                               VolType = v.VolType,
+                               Id=v.Id
+                           };
+
+                return Json(list.OrderBy(x => x.Id).ToPagedList(pageNumber - 1, size));
+            }
+
+        }
     }
 }
