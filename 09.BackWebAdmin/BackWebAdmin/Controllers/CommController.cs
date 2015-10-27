@@ -258,7 +258,7 @@ namespace BackWebAdmin.Controllers
                 Random rad = new Random();//实例化随机数产生器rad；
                 int value = rad.Next(1000, 10000);//用rad生成大于等于1000，小于等于9999的随机数；
                 string code = value.ToString();
-                string msg = "【社区1+1】欢迎成为社区1+1用户，您的注册验证码是：" + code + "。";
+                string msg = "【社区1＋1】欢迎成为社区1+1用户，您的注册验证码是：" + code + "。";
                 msg = HttpUtility.UrlEncode(msg, Encoding.GetEncoding("GBK"));
 
                 entity.AddTime = DateTime.Now;
@@ -336,7 +336,7 @@ namespace BackWebAdmin.Controllers
                 Random rad = new Random();//实例化随机数产生器rad；
                 int value = rad.Next(1000, 10000);//用rad生成大于等于1000，小于等于9999的随机数；
                 string code = value.ToString();
-                string msg = "【社区1+1】欢迎你，您的修改密码验证码是：" + code + "。";
+                string msg = "【社区1＋1】欢迎你，您的修改密码验证码是：" + code + "。";
                 msg = HttpUtility.UrlEncode(msg, Encoding.GetEncoding("GBK"));
 
                 entity.AddTime = DateTime.Now;

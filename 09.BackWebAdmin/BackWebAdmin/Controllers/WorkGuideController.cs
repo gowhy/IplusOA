@@ -244,5 +244,36 @@ namespace BackWebAdmin.Controllers
 
             return Json(res);
         }
+
+        #region 测试能适配多屏（基于Bootstrap）的文本编辑器Summernote
+        public ActionResult AddBootstrap()
+        {
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                var list = db.DepartmentTable.AsQueryable<DepartmentEntity>().Where(x => x.Level <= 6).ToList();
+                ViewData["Department_List"] = HelpSerializer.JSONSerialize<List<DepartmentEntity>>(list);
+            }
+
+            return View();
+
+        }
+
+        [ValidateInput(false)]
+        public ActionResult PostAddBootstrap(WorkGuideEntity entity)
+        {
+            BackAdminUser bUser = this.GetBackUserInfo();
+            entity.DepId = bUser.DeptId;
+            entity.AddUser = bUser.UserName;
+
+            using (IplusOADBContext db = new IplusOADBContext())
+            {
+                entity.AddTime = DateTime.Now;
+                db.Add(entity);
+                db.SaveChanges();
+
+            }
+            return Success("添加成功");
+        }
+        #endregion
     }
 }

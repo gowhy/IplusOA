@@ -18,7 +18,7 @@ namespace IplusOAEntity
         public int AddUser { get; set; }
         public System.DateTime AddTime { get; set; }
         public string Msg { get; set; }
-        public int State { get; set; }
+        public RowState State { get; set; }
         /// <summary>
         /// 纬度
         /// </summary>
@@ -29,7 +29,11 @@ namespace IplusOAEntity
         public double Lng { get; set; }
         public string Address { get; set; }
     }
-
+    public enum RowState
+    {
+        未回复 = 0,
+        已回复 = 1
+    }
     public partial class SuperviseEntityClone
     {
         public int Id { get; set; }
@@ -42,7 +46,7 @@ namespace IplusOAEntity
         public VolunteerEntity volEntity { get; set; }
         public System.DateTime AddTime { get; set; }
         public string Msg { get; set; }
-        public int State { get; set; }
+        public RowState State { get; set; }
         /// <summary>
         /// 纬度
         /// </summary>

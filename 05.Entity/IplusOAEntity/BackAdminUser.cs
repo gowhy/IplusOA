@@ -16,91 +16,46 @@ namespace IplusOAEntity
 
        public string LoginToken { get; set; }
         public string Msg { get; set; }
-        #region Model
-        private int _id;
-        private string _username="";
-        private string _password;
-        private DateTime _addtime =DateTime.Now;
-        private int? _roleid;
-        private string _deptid;
-        private string _realname;
-        private int? _state;
-        private int? _socorgid;
+
         /// <summary>
         /// auto_increment
         /// </summary>
-        public int Id
-        {
-            set { _id = value; }
-            get { return _id; }
-        }
+        public int Id {  set ; get ;}
         /// <summary>
         /// 
         /// </summary>
-        public string UserName
-        {
-            set { _username = value; }
-            get { return _username; }
-        }
+        public string UserName{set; get ; }
         /// <summary>
         /// 
         /// </summary>
-        public string PassWord
-        {
-            set { _password = value; }
-            get { return _password; }
-        }
+        public string PassWord{set ;get; }
         /// <summary>
         /// on update CURRENT_TIMESTAMP
         /// </summary>
-        public DateTime AddTime
-        {
-            set { _addtime = value; }
-            get { return _addtime; }
-        }
+        public DateTime AddTime{set;get;}
         /// <summary>
         /// 
         /// </summary>
-        public int? RoleId
-        {
-            set { _roleid = value; }
-            get { return _roleid; }
-        }
+        public int? RoleId {set; get ;  }
         /// <summary>
         /// 
         /// </summary>
         [ForeignKey("Department")]
-        public string DeptId
-        {
-            set { _deptid = value; }
-            get { return _deptid; }
-        }
+        public string DeptId { set;get ; }
         /// <summary>
         /// 
         /// </summary>
-        public string RealName
-        {
-            set { _realname = value; }
-            get { return _realname; }
-        }
+        public string RealName{set ; get ;}
         /// <summary>
         /// 
         /// </summary>
-        public int? State
-        {
-            set { _state = value; }
-            get { return _state; }
-        }
+        public int? State { set;get ; }
         /// <summary>
         /// 
         /// </summary>
        [ForeignKey("SocialOrg")]
-        public int? SocOrgId
-        {
-            set { _socorgid = value; }
-            get { return _socorgid; }
-        }
-        #endregion Model
+        public int? SocOrgId { set;get ; }
+     
         public RoleEntity Role { get; set; }
 
         public DepartmentEntity Department { get; set; }

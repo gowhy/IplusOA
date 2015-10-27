@@ -9,60 +9,31 @@ namespace IplusOAEntity
 
     public class DepartmentEntity
     {
-        private string _id;
-        private string _pid;
-        private string _name;
-        private DateTime _addtime = DateTime.Now;
-        private int? _state = 1;
-        private string _desc;
+       
         /// <summary>
         /// auto_increment
         /// </summary>
-        public string Id
-        {
-            set { _id = value; }
-            get { return _id; }
-        }
+        public string Id{ set; get; }
         /// <summary>
         /// 
         /// </summary>
-        public string PId
-        {
-            set { _pid = value; }
-            get { return _pid; }
-        }
+        public string PId {  set;get; }
         /// <summary>
         /// 
         /// </summary>
-        public string Name
-        {
-            set { _name = value; }
-            get { return _name; }
-        }
+        public string Name{ set; get; }
         /// <summary>
         /// on update CURRENT_TIMESTAMP
         /// </summary>
-        public DateTime AddTime
-        {
-            set { _addtime = value; }
-            get { return _addtime; }
-        }
+        public DateTime AddTime { set; get; }
         /// <summary>
         /// 
         /// </summary>
-        public int? State
-        {
-            set { _state = value; }
-            get { return _state; }
-        }
+        public int? State { set; get; }
         /// <summary>
         /// 
         /// </summary>
-        public string Desc
-        {
-            set { _desc = value; }
-            get { return _desc; }
-        }
+        public string Desc {set; get; }
         [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public bool IsCheck { get; set; }
 

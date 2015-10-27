@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html lang='ZH_CN'>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+    <title>summernote</title>
+    <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.8.0/jquery-1.8.0.js"></script>
+  
+        <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.0.3/css/bootstrap.css" />
+        <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.0.3/js/bootstrap.js"></script>
+        <link rel="stylesheet" href="http://cdn.bootcss.com/font-awesome/4.0.2/css/font-awesome.css">
+        <!-- include summernote -->
+        <link rel="stylesheet" href="http://cdn.bootcss.com/summernote/0.5.9/summernote.css">
+        <script type="text/javascript" src="http://cdn.bootcss.com/summernote/0.5.9/summernote.js"></script>
+        <!--选择中文语言环境的js  这里下载   -->
+        <!--http://pan.baidu.com/s/1gdIO0pX-->
+        @*<script type="text/javascript" src="summernote-zh-CN.js"></script>*@
+        <script type="text/javascript">
+            $(function () {
+                $('#summernote').summernote({
+                    height: 200,
+                    width: 820,
+                    focus: false,
+                    //lang: 'zh-CN',
+                    onImageUpload: function (files, editor, editable) {
+                        sendFile(files[0], editor, editable);
+                    }
+                });
+            });
+            function sendFile(file, editor, editable) {
+                console.log('image upload:', file, editor, editable);
+                url = "http://www.jqcool.net/wp-content/uploads/2015/05/2015-05-2836.jpg";
+                editor.insertImage(editable, url);
+                data = new FormData();
+                data.append("file", file);
+                //$.ajax({
+                //    data: data,
+                //    type: "POST",
+                //    url: "upload/upload",/*填写后台上传文件的路径*/
+                //    cache: false,
+                //    contentType: false,
+                //    processData: false,
+                //    success: function (url) {/*url为上传成功后返回的图片路径*/
+                //        editor.insertImage(editable, url);
+                //    }
+                //});
+            }
+        </script>
+</head>
+<body>
+    <!--此时的表单只是普通表单，并不是上传表单,-->
+    <form action="upload/subform" method="post">
+    
+            <textarea id="summernote" name="areaCode"></textarea>
+            <button type="submit" class="btn btn-default">submit</button>
+    </form>
+</body>
+</html>

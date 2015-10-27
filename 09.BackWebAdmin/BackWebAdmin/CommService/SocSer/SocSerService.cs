@@ -80,7 +80,7 @@ namespace BackWebAdmin.CommService
 
                           };
 
-                if (!string.IsNullOrEmpty(depId)) res = res.Where(x => x.CoverCommunity.IndexOf(depId) != -1);
+                if (!string.IsNullOrEmpty(depId) && depId.Length>4&&depId!="0") res = res.Where(x => x.CoverCommunity.IndexOf(depId) != -1);
                 if (!string.IsNullOrEmpty(model.Type)) res = res.Where(x => x.Type.Trim().ToUpper() == model.Type.Trim().ToUpper());
                 if (!string.IsNullOrEmpty(model.SocialNo)) res = res.Where(x => x.SocialNo.Trim().ToUpper() == model.SocialNo.Trim().ToUpper());
                 if (model.PubTime != default(DateTime)) res = res.Where(x => x.PubTime >= model.PubTime);

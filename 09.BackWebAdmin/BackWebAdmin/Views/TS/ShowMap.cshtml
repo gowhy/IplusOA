@@ -14,24 +14,72 @@
 <div id="imgBox">
   
 </div>
-
+<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=9bce2cbfb9a8af002e5586eed70888d4"></script> 
 
 <script type="text/javascript">
 
 
+    @if (Model.Lat>0&&Model.Lng>0)
+	{
+		 @Html.Raw("showGaoDeMap();");
 
-    var map = new BMap.Map("imgBox", { mapType: BMAP_SATELLITE_MAP });
-    var point = new BMap.Point(@Model.Lng,@Model.Lat);
-    map.centerAndZoom(point, 18);
+	}else{
+        @Html.Raw("alert('无地图经纬度')");
+    }
+    function showGaoDeMap(){
+        //var map = new AMap.Map('imgBox');
+        //map.setZoom(10);
+
+        var map = new AMap.Map('imgBox', {
+            center:[@Model.Lng,@Model.Lat],
+            //layers: [new AMap.TileLayer.Satellite()],
+            zoom:16
+        });
+
+        // 地图类型切换
+        map.plugin(["AMap.MapType"], function () {
+            var type = new AMap.MapType({
+                defaultType: 0
+            });
+            map.addControl(type);
+        });
+
+        //map.setlayers= [new AMap.TileLayer.Satellite()];
+        //在地图中添加ToolBar插件
+        map.plugin(["AMap.ToolBar"], function () {
+            toolBar = new AMap.ToolBar();
+            map.addControl(toolBar);
+        });
+
+        var marker = new AMap.Marker({
+            position: map.getCenter()
+        });
+        marker.setMap(map);
+
+        // 设置鼠标划过点标记显示的文字提示
+        marker.setTitle('用户投诉地点~');
+
+        // 设置label标签
+        marker.setLabel({//label的父div默认蓝框白底右下角显示，样式className为：amap-marker-label
+            //offset:new AMap.Pixel(50,50),//修改父div相对于maker的位置
+            content:"@Model.Address"
+        });
+
+    }
+
+    function showBaiduMap(){//百度地图
+        var map = new BMap.Map("imgBox", { mapType: BMAP_SATELLITE_MAP });
+        var point = new BMap.Point(@Model.Lng,@Model.Lat);
+        map.centerAndZoom(point, 18);
 
 
-    var marker = new BMap.Marker(point);  // 创建标注
-    map.addOverlay(marker);
-    var label = new BMap.Label("@Model.Address", { offset: new BMap.Size(20, -10) });
-    marker.setLabel(label);
+        var marker = new BMap.Marker(point);  // 创建标注
+        map.addOverlay(marker);
+        var label = new BMap.Label("@Model.Address", { offset: new BMap.Size(20, -10) });
+        marker.setLabel(label);
 
 
-
+    }
 
 
 </script>

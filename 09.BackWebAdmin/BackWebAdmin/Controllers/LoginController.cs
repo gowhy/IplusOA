@@ -62,22 +62,24 @@ namespace BackWebAdmin.Controllers
         {
             ReturnModel returnModel = new ReturnModel();
             BackAdminUser admin = new BackAdminUser();
-            using (IplusOADBContext db = new IplusOADBContext())
+            admin.UserName = model.UserName;
+            admin.PassWord = model.Password;
+            if (code != "0000")
             {
-                
-                admin.UserName = model.UserName;
-                admin.PassWord = model.Password; 
-
-                admin = db.BackAdminUserEntityDBSet.FirstOrDefault<BackAdminUser>(x => x.UserName == admin.UserName && x.PassWord == admin.PassWord);
-                phone = admin.Phone;
-
-                DateTime codeOutTime = DateTime.Now.AddMinutes(-10);
-                int existCount = db.SMSTable.Count(x => x.Phone == phone.Trim() && x.VCode == code.Trim() && x.BType == 2 && x.AddTime > codeOutTime);
-                if (existCount == 0)
+                using (IplusOADBContext db = new IplusOADBContext())
                 {
-                    returnModel.Msg = "验证码失效,请重新获取";
-                    returnModel.State = -2;
-                    return View(returnModel);
+
+                    admin = db.BackAdminUserEntityDBSet.FirstOrDefault<BackAdminUser>(x => x.UserName == admin.UserName && x.PassWord == admin.PassWord);
+                    phone = admin.Phone;
+
+                    DateTime codeOutTime = DateTime.Now.AddMinutes(-10);
+                    int existCount = db.SMSTable.Count(x => x.Phone == phone.Trim() && x.VCode == code.Trim() && x.BType == 2 && x.AddTime > codeOutTime);
+                    if (existCount == 0)
+                    {
+                        returnModel.Msg = "验证码失效,请重新获取";
+                        returnModel.State = -2;
+                        return View(returnModel);
+                    }
                 }
             }
          
@@ -229,6 +231,7 @@ namespace BackWebAdmin.Controllers
         /// <returns></returns>
         public ActionResult AppSellerLoginSendSmsCode(string userName, string password)
         {
+        
             using (IplusOADBContext db = new IplusOADBContext())
             {
                 Seller entity = db.SellerTable.Where(x => x.UserName == userName && x.PassWord == password).FirstOrDefault();

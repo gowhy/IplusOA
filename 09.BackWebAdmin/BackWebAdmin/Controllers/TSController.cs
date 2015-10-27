@@ -18,7 +18,7 @@ namespace BackWebAdmin.Controllers
         private static int PageSize = 20;
         // GET: TS
         [SecurityNode(Name = "首页")]
-        public ActionResult Index(int? page, int? pageSize)
+        public ActionResult Index(int? page, int? pageSize, int? state)
         {
 
 
@@ -49,9 +49,14 @@ namespace BackWebAdmin.Controllers
                                volEntity = v,
                                Address=s.Address,
                                Lat=s.Lat,
-                               Lng=s.Lng
+                               Lng=s.Lng,
+                               State=s.State
                            };
                 list = list.Where(x => x.DepId == DeptId);
+                if (state.HasValue)
+                {
+                    list = list.Where(x => x.State == (RowState)state);
+                }
                 return View(list.OrderByDescending(x => x.Id).ToPagedList(pageNumber - 1, size));
             }
 
@@ -209,19 +214,29 @@ namespace BackWebAdmin.Controllers
             {
 
                 SuperviseEntity model = db.SuperviseTable.Find(id);
+               
+
+                var vol = db.VolunteerEntityTable;
+                VolunteerEntity vEntity = vol.Find(model.AddUser);
+                if ( model.State!=RowState.已回复)
+                {            
+                    vEntity.Score = vEntity.Score + 5;
+                    db.Update<VolunteerEntity>(vEntity);
+                    db.SaveChanges();
+                }
+             
                 model.Msg = msg.Trim();
-                model.State = state;
+                model.State = (RowState)state;
 
                 db.Update<SuperviseEntity>(model);
                 db.SaveChanges();
 
-                var vol = db.VolunteerEntityTable;
+                #region 发送通知信息
+                //短信通知
+                string failMsg = "【社区1＋1】您于" + model.AddTime.ToString("yyyy-MM-dd HH:mm") + "投诉的:" + model.Content + ".管理员处理,处理意见是:" + msg;
+                SMSComm.SendSMS(vEntity.Phone, "【社区1＋1】您于" + model.AddTime.ToString("yyyy-MM-dd HH:mm") + "反映的问题我们将尽快核实处理，感谢您的参与.");
 
-                VolunteerEntity vEntity = vol.Find(model.AddUser);
-                vEntity.Score = vEntity.Score + 5;
-                db.Update<VolunteerEntity>(vEntity);
-                db.SaveChanges();
-
+                //App 推送通知
                 var UserList = from c in db.AppMsgSendTable where c.UserId == model.AddUser select c.TCode;
                 if (UserList != null)
                 {
@@ -229,11 +244,12 @@ namespace BackWebAdmin.Controllers
                     uStringList = UserList.ToPagedList(0, 999).ToArray();
                     if (uStringList != null && uStringList.Length > 0)
                     {
-                        string failMsg = "您于" + model.AddTime.ToString("yyyy-MM-dd HH:mm") + "投诉的"+model.Content+"，管理员已回复";
+                       
                         //WindowsFormsApplication1.Form1.PushObject_all_regId_alert(failMsg, "", uStringList);
                         WindowsFormsApplication1.Form1.AsyncPush(WindowsFormsApplication1.Form1.PushObject_all_regId_alert(failMsg, "TS/AdminApply", uStringList));
                     }
                 }
+                #endregion
             }
 
 

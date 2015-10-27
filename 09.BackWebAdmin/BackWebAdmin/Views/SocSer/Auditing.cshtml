@@ -116,11 +116,14 @@
                         <input type="hidden" name="SocSerImgId" id="SocSerImgId" value="" />*@
                         <div id="imgQueue">
                             @*<a href="javascript:$('#uploadify').uploadify('upload')">上传</a>*@
-
-                            @foreach (var item in @Model.SocSerImgs)
+                            @if (Model.SocSerImgs != null)
                             {
-                                <img socserimgid="@item.Id" ondblclick="delImgSocSer(this)" src="@item.HttpUrl" title="双击删除图片" alt="" width="160" height="140" />
+                                foreach (var item in Model.SocSerImgs)
+                                {
+                                    <img socserimgid="@item.Id" ondblclick="delImgSocSer(this)" src="@item.HttpUrl" title="双击删除图片" alt="" width="160" height="140" />
+                                }
                             }
+                         
 
                         </div>
                     </td>

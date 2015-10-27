@@ -3,8 +3,8 @@
 @{
     Layout = null;
 }
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>贵阳社区公益平台 - 管理平台 </title>
@@ -16,26 +16,57 @@
 
     <script>
         var index = 0;
-        function addTab(name, url) {
-            if ($('#tt').tabs('exists', name)) {
-                $('#tt').tabs('select', name);
+        //function addTab(name, url) {
+        //    if ($('#tt').tabs('exists', name)) {
+        //        $('#tt').tabs('select', name);
+        //    } else {
+        //        $('#tt').tabs('add', {
+        //            title: name,
+        //            content: " <iframe scrolling=\"auto\" frameborder=\"0\"  width=\"95%\" height=\"530px\" src=" + url + " style=\"width:100%;overflow-x:scroll;\"></iframe>",
+        //            iconCls: 'icon-reload',
+        //            closable: true
+        //            //,
+        //            //tools: [{
+        //            //    iconCls: 'icon-mini-refresh',
+        //            //    handler: function () {
+        //            //        alert('refresh');
+        //            //    }
+        //            //}]
+        //        });
+        //    }
+        //}
+        function addTab(plugin, route) {
+            if ($('#tt').tabs('exists', plugin)) {
+                $('#tt').tabs('select', plugin);
+                // tab刷新内容
+                var tab = $('#tt').tabs('getSelected');
+                $("#tt").tabs('update', {
+                    tab: tab,
+                    options: {
+                        title: plugin,
+                        content: '<iframe scrolling="auto" frameborder="0"  src="' + route + '" style="width:100%;height:100%;"></iframe>',
+                        closable: true,
+                        selected: true
+                    }
+                });
             } else {
-                $('#tt').tabs('add', {
-                    title: name,
-                    content: " <iframe scrolling=\"auto\" frameborder=\"0\"  width=\"95%\" height=\"530px\" src=" + url + " style=\"width:100%;overflow-x:scroll;\"></iframe>",
-                    iconCls: 'icon-reload',
-                    closable: true
-                    //,
-                    //tools: [{
-                    //    iconCls: 'icon-mini-refresh',
-                    //    handler: function () {
-                    //        alert('refresh');
-                    //    }
-                    //}]
+                //var content = '<iframe scrolling="auto" frameborder="0"  src="'+route+'" style="width:100%;height:100%;"></iframe>';
+
+                $('#tt').tabs('add', {});
+
+                // tab刷新内容 fix 自适应高度
+                var tab = $('#tt').tabs('getSelected');
+                $("#tt").tabs('update', {
+                    tab: tab,
+                    options: {
+                        title: plugin,
+                        content: '<iframe scrolling="auto" frameborder="0"  src="' + route + '" style="width:100%;height:100%;"></iframe>',
+                        closable: true,
+                        selected: true
+                    }
                 });
             }
         }
-
     </script>
 </head>
 <body class="easyui-layout">
@@ -54,30 +85,30 @@
     <div data-options="region:'west',split:true,title:'菜单'" style="width:150px;">
         <div id="aa" class="easyui-accordion">
             @foreach (var item in Model)
-                {
-                    <div title="@item.name" data-options="iconCls:'icon-reload'" style="overflow:auto; text-align:center;">
+            {
+                <div title="@item.name" data-options="iconCls:'icon-reload'" style="overflow:auto; text-align:center;">
 
-                        @foreach (var chlid in item.ChildList)
+                    @foreach (var chlid in item.ChildList)
+                    {
+                        if (string.IsNullOrEmpty(chlid.AText))
                         {
-                            if (string.IsNullOrEmpty(chlid.AText))
-                            {
-                                 <div style="padding-bottom:5px; padding-top:5px;"><a style="color: #0099FF; color: black; " href="#" onclick="addTab('@chlid.name', '@chlid.file')">@chlid.name</a>  </div>
-                            }
-                            else
-                            {
-                                 <div style="padding-bottom:5px; padding-top:5px;">@Html.Raw(chlid.AText) </div>
-                            }
-                           
+                            <div style="padding-bottom:5px; padding-top:5px;"><a style="color: #0099FF; color: black; " href="#" onclick="addTab('@chlid.name', '@chlid.file')">@chlid.name</a>  </div>
                         }
-                    </div>
-                }
-        
+                        else
+                        {
+                            <div style="padding-bottom:5px; padding-top:5px;">@Html.Raw(chlid.AText) </div>
+                        }
+
+                    }
+                </div>
+            }
+
         </div>
-       
+
     </div>
 
     <div data-options="region:'center'">
-        <div id="tt" class="easyui-tabs" data-options="tools:'#tab-tools'">
+        <div id="tt" class="easyui-tabs" data-options="tools:'#tab-tools',fit:true">
         </div>
 
     </div>

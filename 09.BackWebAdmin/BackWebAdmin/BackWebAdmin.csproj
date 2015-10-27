@@ -307,6 +307,10 @@
     <Content Include="Content\Css\style.css" />
     <Content Include="Content\Css\top.css" />
     <Content Include="Content\Css\weebox.css" />
+    <Content Include="Content\dist\summernote-bs3.css" />
+    <Content Include="Content\dist\summernote.css" />
+    <Content Include="Content\dist\summernote.js" />
+    <Content Include="Content\dist\summernote.min.js" />
     <Content Include="Content\EasyUI\easyui.css" />
     <Content Include="Content\EasyUI\jquery-1.8.0.min.js" />
     <Content Include="Content\EasyUI\jquery.easyui.min.js" />
@@ -1259,6 +1263,7 @@
     <Content Include="Views\ScoreExchangeRate\Add.cshtml" />
     <Content Include="Views\ScoreExchangeRate\Index.cshtml" />
     <Content Include="Views\ScoreExchangeRate\Edit.cshtml" />
+    <Content Include="Views\WorkGuide\AddBootstrap.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\02.Common\Common\Common.csproj">

@@ -25,7 +25,7 @@ namespace BackWebAdmin
             Random rad = new Random();//实例化随机数产生器rad；
             int value = rad.Next(1000, 10000);//用rad生成大于等于1000，小于等于9999的随机数；
             string code = value.ToString();
-            string msg = "【社区1+1】欢迎你，您的登陆验证码是：" + code + "。";
+            string msg = "【社区1＋1】欢迎你，您的登陆验证码是：" + code + "。";
 
             SMSEntity entity = new SMSEntity();
             entity.AddTime = DateTime.Now;
@@ -117,7 +117,9 @@ namespace BackWebAdmin
             Random rad = new Random();//实例化随机数产生器rad；
             int value = rad.Next(1000, 10000);//用rad生成大于等于1000，小于等于9999的随机数；
             string code = value.ToString();
-            string msg = "【社区1+1】欢迎你，您的登陆验证码是：" + code + "。";
+            string msg = "【社区1＋1】欢迎你，您的登陆验证码是：" + code + "。";
+            //[微愿]你的验证码是xxxx
+            //string msg = "【微愿】你的验证码是" + code + "。";
 
             SMSEntity entity = new SMSEntity();
             entity.AddTime = DateTime.Now;
