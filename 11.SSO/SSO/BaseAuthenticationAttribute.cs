@@ -38,9 +38,20 @@ namespace SSO
             if (!string.IsNullOrEmpty(encryptTicket))
             {
                 BackAdminUser user = new BackAdminUser();
-                if (UserTicketManager.ValidateUserTicket(encryptTicket,ref user))
+                try
                 {
-                 
+                    UserTicketManager.ValidateUserTicket(encryptTicket, ref user);
+               
+                }
+                catch (Exception)
+                {
+                    
+                    throw;
+                }
+
+                if (true)
+                {
+
                     base.OnActionExecuting(actionContext);
                     HttpContext.Current.Items["Login_User_Info"] = user;
                     return;

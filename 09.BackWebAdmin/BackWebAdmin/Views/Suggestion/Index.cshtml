@@ -49,16 +49,14 @@
     </div>
     @Html.Grid(Model).Columns(column =>
                                   {
-                                      // column.CheckBox(x => x.Id);
-                                      //   column.For(x => x.Id).Named("编号").HeaderAttributes(style => "width:50px;align:center;");
+                                   
                                       column.For(x =>Html.Raw( x.Content)).Named("反馈类容").HeaderAttributes(style => "width:450px;align:center;");
                                       column.For(x => x.AddTime.ToString("yyyy-MM-dd HH:mm")).Named("反馈时间").HeaderAttributes(style => "width:140px;align:center;");
                                       column.For(x => x.DepName).Named("社区");
                                       column.For(x => x.volEntity.RealName).Named("真实姓名");
                                       column.For(x => x.volEntity.Phone).Named("联系电话");
                                       column.For(x => x.volEntity.Address).Named("地址");
-                                      
-                                      //column.Buttons(btns => btns.Add(x => Html.ActionLink("查看", "view", new { id = x.Id })));
+
                                   }).Complex(ViewData)
     <div class="grid_foot">
     </div>

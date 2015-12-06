@@ -9,6 +9,11 @@ using Common;
 using System.IO;
 using ServiceAPI;
 using System.Text;
+using BackWebAdmin.Models;
+using MvcContrib.UI.Grid;
+using BackWebAdmin.CommService;
+using System.Configuration;
+using System.Web.Configuration;
 
 namespace BackWebAdmin.Controllers
 {
@@ -569,12 +574,72 @@ namespace BackWebAdmin.Controllers
                                ThsScore = v.ThsScore,
                                Sex = v.Sex,
                                VolType = v.VolType,
-                               Id=v.Id
+                               Id = v.Id,
+                               LoveBankScore = v.LoveBankScore
                            };
 
                 return Json(list.OrderBy(x => x.Id).ToPagedList(pageNumber - 1, size));
             }
 
         }
+
+        public ActionResult AppSocSerIndex(SelectSocSerModel model,string depId, GridSortOptions sort, int? page, int? pageSize = 20)
+        {
+            var pageNumber = page ?? 1;
+            int size = pageSize ?? 20;
+        
+            model.State = 1;//表示待审核的
+           
+           return Json(SocSerService.TypeListState(pageNumber, size, depId, model, sort), JsonRequestBehavior.AllowGet);
+            //return Json(SocSerService.TypeList(pageNumber, size, depId, model, sort), JsonRequestBehavior.AllowGet);
+        }
+
+    
+        private string ConvertToHex(byte[] binary)
+        {
+            return binary.Aggregate(
+                new StringBuilder(),
+                (acc, c) => acc.AppendFormat("{0:x2}", c),
+                acc => acc.ToString());
+        }
+
+        string key = "", iv = "";
+        public ActionResult GetMachineKey()
+        {
+            System.Web.Configuration.MachineKeySection section = (System.Web.Configuration.MachineKeySection)
+                ConfigurationManager.GetSection("system.web/machineKey");
+
+            System.Reflection.BindingFlags flags =
+                System.Reflection.BindingFlags.Instance |
+                System.Reflection.BindingFlags.NonPublic |
+                System.Reflection.BindingFlags.GetProperty;
+
+            Func<string, byte[]> propertyReader = name => (byte[])section
+                .GetType()
+                .GetProperty(name, flags)
+                .GetValue(section, null);
+
+            key = ConvertToHex(propertyReader("DecryptionKeyInternal"));
+
+            iv = ConvertToHex(propertyReader("ValidationKeyInternal"));
+
+          
+
+            Configuration config = WebConfigurationManager.OpenWebConfiguration("/");
+            MachineKeySection configSection = (MachineKeySection)config.GetSection("system.web/machineKey");
+            configSection.ValidationKey = iv;
+            configSection.DecryptionKey = key;
+            configSection.Validation = MachineKeyValidation.SHA1;
+            //configSection.Decryption = "";
+            if (!configSection.SectionInformation.IsLocked)
+            {
+                config.Save();
+            }
+
+            return Json(new { key=key,iv=iv},JsonRequestBehavior.AllowGet);
+        }
+
+
+
     }
 }

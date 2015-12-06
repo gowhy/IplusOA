@@ -99,7 +99,8 @@ namespace BusLogic.Login
                                   SerAreas=v.SerAreas,
                                   Speciality = v.Speciality,
                                   Msg=v.Msg,
-                                  VillDeptId=v.VillDeptId
+                                  VillDeptId=v.VillDeptId,
+                                  LoveBankScore=v.LoveBankScore
                                    
 
                               };

@@ -28,6 +28,8 @@ namespace SSO
 
             string ticString = FormsAuthentication.Encrypt(ticket);
 
+          
+
             //把票据信息写入Cookie和Session  
             //SetAuthCookie方法用于标识用户的Identity状态为true  
             HttpContext.Current.Response.Cookies.Add(new HttpCookie("UserLoginCookieToken", ticString));

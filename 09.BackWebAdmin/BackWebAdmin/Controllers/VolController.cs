@@ -502,7 +502,7 @@ namespace BackWebAdmin.Controllers
 
                 var vol = from v in db.VolunteerEntityTable
                           where v.Id == volEntity.Id
-                          select new  VolunteerEntityClone
+                          select new VolunteerEntityClone
                           {
                               Address = v.Address,
                               Age = v.Age,
@@ -514,7 +514,7 @@ namespace BackWebAdmin.Controllers
                               EMail = v.EMail,
                               GroupID = v.GroupID,
                               Honor = v.Honor,
-                            //  LoginState = v.LoginState,
+                              //  LoginState = v.LoginState,
                               Msg = v.Msg,
                               Number = v.Number,
                               Phone = v.Phone,
@@ -531,7 +531,8 @@ namespace BackWebAdmin.Controllers
                               UerName = v.UerName,
                               VID = v.VID,
                               WeiXin = v.WeiXin,
-                              VillDeptId=v.VillDeptId
+                              VillDeptId = v.VillDeptId,
+                              LoveBankScore = v.LoveBankScore
 
                           };
                 if (vol == null)
@@ -614,7 +615,11 @@ namespace BackWebAdmin.Controllers
                     tmp.SocialNO = socialNO;
                     tmp.DepId = deptId;
                     tmp.VID = tmp.Phone;
+                    if (volList.Count(x => x.Phone == tmp.Phone) > 0)
+                    {
+                          return Error("批量导入失败，Excel表格中手机号重复：" + tmp.Phone + "、姓名是" + tmp.RealName + "");
 
+                    }
                     volList.Add(tmp);
                 }
 

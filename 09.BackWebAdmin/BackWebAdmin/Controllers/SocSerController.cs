@@ -51,7 +51,8 @@ namespace BackWebAdmin.Controllers
             model.SocSerList = SocSerService.TypeList(pageNumber, pageSize, depId, model, sort);
             return View(model);
         }
-        [SecurityNode(Name = "App获取用户本社区服务内容")]
+        //[SecurityNode(Name = "App获取用户本社区服务内容")]
+        
         public ActionResult AppIndex(SelectSocSerModel model, GridSortOptions sort, int? page, int? pageSize = 20)
         {
             var pageNumber = page ?? 1;

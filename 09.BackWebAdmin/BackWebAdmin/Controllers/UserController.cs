@@ -68,6 +68,8 @@ namespace BackWebAdmin.Controllers
         [SecurityNode(Name = "增加用户")]
         public ActionResult PostAdd(BackAdminUser user)
         {
+            user.AddTime = DateTime.Now;
+           
             using (IplusOADBContext db = new IplusOADBContext())
             {
                 if (db.BackAdminUserEntityDBSet.Count(u => u.UserName.Trim() == user.UserName.Trim()) > 0)

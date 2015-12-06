@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace BackWebAdmin.Controllers
 {
-    [SecurityModule(Name = "服务评价")]
+    [SecurityModule(Name = "书记信箱")]
     public class SuggestionController : BaseController
     {
         private static int PageSize = 20;
@@ -63,8 +63,7 @@ namespace BackWebAdmin.Controllers
         [ValidateInput(false)]
         public ActionResult AppPostAdd(SuggestionEntity entity)
         {
-            //try
-            //{
+           
             VolunteerEntity bUser = this.GetAppUserInfoById(entity.AddUser);
             entity.DepId = bUser.DepId;
 
@@ -77,12 +76,7 @@ namespace BackWebAdmin.Controllers
 
             }
             return Json(new { state = 1, msg = "新增成功" });
-            //}
-            //catch (Exception ex)
-            //{
-
-            //    throw ex;
-            //}
+        
 
         }
 

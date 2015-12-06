@@ -217,6 +217,7 @@ namespace IplusOAEntity
         public string Speciality { get; set; }
         public string VillDeptId { get; set; }
         public int VolType { get; set; }
+        public int? LoveBankScore { get; set; }
         #endregion Model
     }
 }

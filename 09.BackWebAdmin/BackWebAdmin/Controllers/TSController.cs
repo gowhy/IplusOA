@@ -71,9 +71,17 @@ namespace BackWebAdmin.Controllers
         {
             try
             {
+
                 // entity.DepId = AdminUser.DeptId;
                 using (IplusOADBContext db = new IplusOADBContext())
                 {
+                    var user = db.VolunteerEntityTable;
+
+                    if (user.Count(x => x.Id == entity.AddUser) < 1)
+                    {
+                        return Json(new { state = 0, msg = "用户已经被删除" });
+                    }
+
                     entity.AddTime = DateTime.Now;
                     db.Add(entity);
                     db.SaveChanges();
@@ -84,9 +92,9 @@ namespace BackWebAdmin.Controllers
             catch (Exception ex)
             {
 
-                return Json(new { state = 0, msg = ex.Message+ex.TargetSite });
+                return Json(new { state = 0, msg = ex.Message + ex.TargetSite });
             }
-      
+
         }
 
 
